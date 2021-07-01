@@ -1,4 +1,6 @@
 .terraform
+.terraform.lock.hcl
 main.plan
+terraform.log
 terraform.tfstate
 terraform.tfstate.backup
