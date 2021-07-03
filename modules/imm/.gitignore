@@ -1,5 +1,5 @@
-.terraform
 .terraform.lock.hcl
+.terraform
 main.plan
 terraform.log
 terraform.tfstate

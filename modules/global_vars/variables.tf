@@ -792,6 +792,24 @@ output "device_model" {
   value       = var.device_model == "6454" ? "UCS-FI-6454" : "UCS-FI-64108"
 }
 
+variable "serial_a" {
+  description = "Serial Number of Fabric Interconnect A."
+  type        = string
+}
+output "serial_a" {
+  description = "Serial Number of Fabric Interconnect A."
+  value       = var.serial_a
+}
+
+variable "serial_b" {
+  description = "Serial Number of Fabric Interconnect B."
+  type        = string
+}
+output "serial_b" {
+  description = "Serial Number of Fabric Interconnect B."
+  value       = var.serial_b
+}
+
 variable "server_port_range" {
   default     = "5-18"
   description = "Range of Ports to Configure as Server Ports.\r\nNote: Ports 1-4 will be assigned as Fibre Channel ports.  So the range must start after 5"

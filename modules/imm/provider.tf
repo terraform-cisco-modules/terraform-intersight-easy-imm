@@ -20,6 +20,6 @@ terraform {
 
 provider "intersight" {
   apikey    = var.apikey
-  endpoint  = local.endpoint
+  endpoint  = yamldecode(data.terraform_remote_state.global.outputs.endpoint)
   secretkey = var.secretkey
 }

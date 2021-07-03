@@ -114,6 +114,7 @@ output "domain_cluster" {
 
 module "switch_profile_a" {
   depends_on = [
+    data.intersight_network_element_summary.fabric_interconnect_a,
     data.intersight_organization_organization.org_moid,
     module.domain_cluster
   ]
@@ -121,12 +122,13 @@ module "switch_profile_a" {
   description     = "${local.cluster_prefix} A Switch Profile."
   name            = "${local.cluster_prefix}_a"
   tags            = local.tags
-  assigned_switch = []
+  assigned_switch = [{ moid = data.intersight_network_element_summary.fabric_interconnect_a.results.0.moid }]
   cluster_moid    = [{ moid = module.domain_cluster.moid }]
 }
 
 module "switch_profile_b" {
   depends_on = [
+    data.intersight_network_element_summary.fabric_interconnect_b,
     data.intersight_organization_organization.org_moid,
     module.domain_cluster
   ]
@@ -134,7 +136,7 @@ module "switch_profile_b" {
   description     = "${local.cluster_prefix} B Switch Profile."
   name            = "${local.cluster_prefix}_b"
   tags            = local.tags
-  assigned_switch = []
+  assigned_switch = [{ moid = data.intersight_network_element_summary.fabric_interconnect_b.results.0.moid }]
   cluster_moid    = [{ moid = module.domain_cluster.moid }]
 }
 
@@ -318,29 +320,31 @@ module "vsan_b" {
 
 module "port_policy_a" {
   depends_on = [
+    data.intersight_network_element_summary.fabric_interconnect_a,
     data.intersight_organization_organization.org_moid,
     module.switch_profile_a
   ]
   source       = "terraform-cisco-modules/imm/intersight//modules/domain_port_policy"
   description  = "${local.cluster_prefix} Port Policy A."
-  device_model = local.device_model
+  device_model = data.intersight_network_element_summary.fabric_interconnect_a.results.0.model
   name         = "${local.port_policy}_a"
   org_moid     = local.org_moid
-  # profiles     = [ { moid = module.switch_profile_a.moid } ]
+  profiles     = [ { moid = module.switch_profile_a.moid } ]
   tags = local.tags
 }
 
 module "port_policy_b" {
   depends_on = [
+    data.intersight_network_element_summary.fabric_interconnect_b,
     data.intersight_organization_organization.org_moid,
     module.switch_profile_b
   ]
   source       = "terraform-cisco-modules/imm/intersight//modules/domain_port_policy"
   description  = "${local.cluster_prefix} Port Policy B."
-  device_model = local.device_model
+  device_model = data.intersight_network_element_summary.fabric_interconnect_b.results.0.model
   name         = "${local.port_policy}_b"
   org_moid     = local.org_moid
-  # profiles     = [ { moid = module.switch_profile_b.moid } ]
+  profiles     = [ { moid = module.switch_profile_b.moid } ]
   tags = local.tags
 }
 
@@ -450,7 +454,7 @@ module "link_aggregation" {
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_link_aggregation"
   description = "${local.cluster_prefix} Link Aggregation Policy."
   lacp_rate   = "normal"
-  name        = local.flowctrl_policy
+  name        = local.linkagg_policy
   org_moid    = local.org_moid
   tags        = local.tags
 }
@@ -546,9 +550,10 @@ module "san_uplink_port_channel_a" {
   source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
   san_uplink_pc_id    = local.san_pc_id
   san_uplink_pc_ports = local.san_pc_list
+  san_uplink_speed    = "32Gbps"
   port_policy_moid = [
     {
-      moid = module.port_policy_b.moid
+      moid = module.port_policy_a.moid
     }
   ]
   vsan_id = local.vsan_fabric_a
@@ -569,6 +574,7 @@ module "san_uplink_port_channel_b" {
   source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
   san_uplink_pc_id    = local.san_pc_id
   san_uplink_pc_ports = local.san_pc_list
+  san_uplink_speed    = "32Gbps"
   port_policy_moid = [
     {
       moid = module.port_policy_b.moid
@@ -653,7 +659,7 @@ module "system_qos_example" {
     module.switch_profile_a,
     module.switch_profile_b
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
+  source      = "../../../terraform-intersight-imm/modules/domain_system_qos"
   description = "${local.cluster_prefix} System QoS Policy."
   name        = local.systemqos_policy
   org_moid    = local.org_moid
@@ -668,7 +674,68 @@ module "system_qos_example" {
     },
   ]
   tags    = local.tags
-  classes = []
+  classes      = [
+    {
+      admin_state         = "Disabled"
+      bandwidth_percent   = 0
+      cos                 = 5
+      mtu                 = 1500
+      multicast_optimize  = false
+      name                = "Platinum"
+      packet_drop         = true
+      weight              = 10
+    },
+    {
+      admin_state         = "Disabled"
+      bandwidth_percent   = 0
+      cos                 = 4
+      mtu                 = 1500
+      multicast_optimize  = false
+      name                = "Gold"
+      packet_drop         = true
+      weight              = 9
+    },
+    {
+      admin_state         = "Disabled"
+      bandwidth_percent   = 0
+      cos                 = 2
+      mtu                 = 1500
+      multicast_optimize  = false
+      name                = "Silver"
+      packet_drop         = true
+      weight              = 8
+    },
+    {
+      admin_state         = "Disabled"
+      bandwidth_percent   = 0
+      cos                 = 1
+      mtu                 = 1500
+      multicast_optimize  = false
+      name                = "Bronze"
+      packet_drop         = true
+      weight              = 7
+    },
+    {
+      admin_state         = "Enabled"
+      bandwidth_percent   = 50
+      cos                 = 255
+      mtu                 = 9216
+      multicast_optimize  = false
+      name                = "Best Effort"
+      packet_drop         = null
+      weight              = 5
+    },
+    {
+      admin_state         = "Enabled"
+      bandwidth_percent   = 50
+      cos                 = 3
+      mtu                 = 2240
+      multicast_optimize  = null
+      name                = "FC"
+      packet_drop         = false
+      weight              = 5
+    },
+  ]
 }
 
 

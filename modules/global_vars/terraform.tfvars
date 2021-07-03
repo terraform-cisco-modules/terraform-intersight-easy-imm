@@ -21,7 +21,7 @@ organization = "Asgard"
 # Domain Name
 domain_name = "rich.ciscolabs.com"
 
-# DNS Server List.  1 or 2 servers.
+# DNS Server List.  1 or more servers.
 dns_servers_v4 = ["10.101.128.15", "10.101.128.16"]
 
 #______________________________________________
@@ -32,7 +32,7 @@ dns_servers_v4 = ["10.101.128.15", "10.101.128.16"]
 # Timezone.  See https://github.com/terraform-cisco-modules/terraform-intersight-imm/blob/master/modules/policies_ntp/README.md for full list
 timezone = "America/New_York"
 
-# NTP Server List.  1 or 2 Servers
+# NTP Server List.  1 or more Servers
 ntp_servers = ["10.101.128.15", "10.101.128.16"]
 
 #______________________________________________
@@ -72,14 +72,17 @@ ip_pool_size = "16"
 # Intersight UCS Domain Variables
 #______________________________________________
 
-# Model of the Fabric Interconnects
-device_model = "64108"
+# Fabric Interconnect A Serial Number.
+serial_a = "FDO23360Y8U"
+
+# Fabric Interconnect B Serial Number.
+serial_b = "FDO23360XWU"
 
 # Server Port Range
 # server_port_range = "5-18"
 
 # LAN Uplink Port-Channel List
-lan_uplink_pc_list = [97, 98]
+lan_uplink_pc_list = [97, 99]
 
 # SAN Uplink Port-Channel List
 san_uplink_pc_list = [1, 3]
@@ -94,4 +97,4 @@ vlan_list = "101-199,201-299,1100-1299,1700-1799"
 #______________________________________________
 
 # Tags to assign to the Cluster
-tags = [ { key = "Owner", value = "rich-lab@cisco.com" }, { key = "Terraform", value = "Module" } ]
+tags = [ { key = "Owner", value = "rich-lab@cisco.com" }, { key = "Terraform Module", value = "Easy IMM" } ]
