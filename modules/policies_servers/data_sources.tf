@@ -10,13 +10,6 @@ data "terraform_remote_state" "global" {
   }
 }
 
-data "terraform_remote_state" "domain" {
-  backend = "local"
-  config = {
-    path = "../domain/terraform.tfstate"
-  }
-}
-
 #____________________________________________________________
 #
 # Intersight Organization Data Source

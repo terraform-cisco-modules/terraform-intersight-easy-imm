@@ -403,19 +403,11 @@ variable "syslog_destinations" {
   description = "Configure up to 2 remote syslog servers."
   type        = list(map(string))
 }
-output "syslog_destinations" {
-  description = "List of Remote Syslog Servers."
-  value       = var.syslog_destinations
-}
 
 variable "syslog_policy" {
   default     = ""
   description = "Intersight Syslog Policy Name.  Default name is {organization}"
   type        = string
-}
-output "syslog_policy" {
-  description = "Intersight Syslog Policy Name."
-  value       = var.syslog_policy != "" ? var.syslog_policy : var.organization
 }
 
 variable "syslog_severity" {
@@ -423,8 +415,3 @@ variable "syslog_severity" {
   description = "Lowest level of messages to be included in the local log.\r\n * warning - Use logging level warning for logs classified as warning.\r\n * emergency - Use logging level emergency for logs classified as emergency.\r\n * alert - Use logging level alert for logs classified as alert.\r\n * critical - Use logging level critical for logs classified as critical.\r\n * error - Use logging level error for logs classified as error.\r\n * notice - Use logging level notice for logs classified as notice.\r\n * informational - Use logging level informational for logs classified as informational.\r\n * debug - Use logging level debug for logs classified as debug."
   type = string
 }
-output "syslog_severity" {
-  description = "Syslog Severity Level."
-  value       = var.syslog_severity
-}
-
