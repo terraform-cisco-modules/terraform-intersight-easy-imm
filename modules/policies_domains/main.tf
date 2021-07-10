@@ -50,9 +50,9 @@ module "native_vlan" {
   source           = "../../../terraform-intersight-imm/modules/domain_vlan"
   is_native        = true
   multicast_moid   = module.multicast.moid
-  vlan             = var.domain_native_vlan
+  vlan             = var.native_vlan
   vlan_policy_moid = module.vlan_policy.moid
-  vlan_prefix      = var.cluster_name
+  vlan_prefix      = local.org_name
 }
 
 #______________________________________________
@@ -69,9 +69,9 @@ module "vlan_list" {
   source           = "../../../terraform-intersight-imm/modules/domain_vlan_list"
   is_native        = false
   multicast_moid   = module.multicast.moid
-  vlan_list        = var.domain_vlan_list
+  vlan_list        = var.vlan_list
   vlan_policy_moid = module.vlan_policy.moid
-  vlan_prefix      = var.cluster_name
+  vlan_prefix      = local.org_name
 }
 
 
@@ -86,8 +86,8 @@ module "vsan_policy_a" {
     data.intersight_organization_organization.org_moid,
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
-  description = var.vsan_policy != "" ? "${var.vsan_policy} VSAN Policy Fabric A." : "${var.org_name} VSAN Policy Fabric A."
-  name        = var.vsan_policy != "" ? "${var.vsan_policy}_a" : "${var.org_name}_a"
+  description = var.vsan_policy != "" ? "${var.vsan_policy} VSAN Policy Fabric A." : "${local.org_name} VSAN Policy Fabric A."
+  name        = var.vsan_policy != "" ? "${var.vsan_policy}_a" : "${local.org_name}_a"
   org_moid    = local.org_moid
   profiles    = var.assign_domain == false ? [] : [local.domain_profile_a.moid]
   tags        = local.tags
@@ -98,8 +98,8 @@ module "vsan_policy_b" {
     data.intersight_organization_organization.org_moid,
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
-  description = var.vsan_policy != "" ? "${var.vsan_policy} VSAN Policy Fabric B." : "${var.org_name} VSAN Policy Fabric B."
-  name        = var.vsan_policy != "" ? "${var.vsan_policy}_b" : "${var.org_name}_b"
+  description = var.vsan_policy != "" ? "${var.vsan_policy} VSAN Policy Fabric B." : "${local.org_name} VSAN Policy Fabric B."
+  name        = var.vsan_policy != "" ? "${var.vsan_policy}_b" : "${local.org_name}_b"
   org_moid    = local.org_moid
   profiles    = var.assign_domain == false ? [] : [local.domain_profile_b.moid]
   tags        = local.tags
@@ -117,11 +117,11 @@ module "vsan_a" {
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
   vsan_policy_moid = module.vsan_policy_a.moid
-  vsan_prefix      = local.cluster_name
+  vsan_prefix      = local.org_name
   vsan_list = {
     vsan_a = {
-      fcoe_vlan = local.vsan_fabric_a,
-      vsan_id   = local.vsan_fabric_a
+      fcoe_vlan = var.vsan_fabric_a,
+      vsan_id   = var.vsan_fabric_a
     }
   }
 }
@@ -138,11 +138,11 @@ module "vsan_b" {
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
   vsan_policy_moid = module.vsan_policy_b.moid
-  vsan_prefix      = local.cluster_name
+  vsan_prefix      = local.org_name
   vsan_list = {
     vsan_a = {
-      fcoe_vlan = local.vsan_fabric_b,
-      vsan_id   = local.vsan_fabric_b
+      fcoe_vlan = var.vsan_fabric_b,
+      vsan_id   = var.vsan_fabric_b
     }
   }
 }
@@ -159,12 +159,12 @@ module "port_policy_a" {
     data.intersight_organization_organization.org_moid
   ]
   source       = "terraform-cisco-modules/imm/intersight//modules/domain_port_policy"
-  description  = "${local.org_name} Port Policy A."
+  description  = var.port_policy != "" ? "${var.port_policy} Port Policy Fabric A." : "${local.org_name} Port Policy Fabric A."
   device_model = local.domain_profile_a.model
-  name         = "${local.port_policy}_a"
+  name         = var.port_policy != "" ? "${var.port_policy}_a" : "${local.org_name}_a"
   org_moid     = local.org_moid
   profiles     = var.assign_domain == false ? [] : [local.domain_profile_a.moid]
-  tags = local.tags
+  tags         = local.tags
 }
 
 module "port_policy_b" {
@@ -172,12 +172,12 @@ module "port_policy_b" {
     data.intersight_organization_organization.org_moid
   ]
   source       = "terraform-cisco-modules/imm/intersight//modules/domain_port_policy"
-  description  = "${local.org_name} Port Policy B."
+  description  = var.port_policy != "" ? "${var.port_policy} Port Policy Fabric B." : "${local.org_name} Port Policy Fabric B."
   device_model = local.domain_profile_b.model
-  name         = "${local.port_policy}_b"
+  name         = var.port_policy != "" ? "${var.port_policy}_b" : "${local.org_name}_b"
   org_moid     = local.org_moid
   profiles     = var.assign_domain == false ? [] : [local.domain_profile_b.moid]
-  tags = local.tags
+  tags         = local.tags
 }
 
 
@@ -256,8 +256,8 @@ module "flow_control" {
     data.intersight_organization_organization.org_moid
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_flow_control"
-  description = "${local.org_name} Flow Control Policy."
-  name        = local.flow_control_policy
+  description = var.flow_control_policy != "" ? "${var.flow_control_policy} Flow Control Policy." : "${local.org_name} Flow Control Policy"
+  name        = var.flow_control_policy != "" ? "${var.flow_control_policy}" : "${local.org_name}"
   org_moid    = local.org_moid
   tags        = local.tags
 }
@@ -272,9 +272,9 @@ module "link_aggregation" {
     data.intersight_organization_organization.org_moid
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_link_aggregation"
-  description = "${local.org_name} Link Aggregation Policy."
+  description = var.link_aggregation_policy != "" ? "${var.link_aggregation_policy} Link Aggregation Policy." : "${local.org_name} Link Aggregation Policy."
   lacp_rate   = "normal"
-  name        = local.link_aggregation_plcy
+  name        = var.link_aggregation_policy != "" ? "${var.link_aggregation_policy}" : "${local.org_name}"
   org_moid    = local.org_moid
   tags        = local.tags
 }
@@ -289,8 +289,8 @@ module "link_control" {
     data.intersight_organization_organization.org_moid
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_link_control"
-  description = "${local.org_name} Link Control Policy."
-  name        = local.link_control_policy
+  description = var.link_control_policy != "" ? "${var.link_control_policy} Link Control Policy." : "${local.org_name} Link Control Policy."
+  name        = var.link_control_policy != "" ? "${var.link_control_policy}" : "${local.org_name}"
   org_moid    = local.org_moid
   tags        = local.tags
 }
@@ -309,12 +309,15 @@ module "lan_uplink_port_channel_a" {
     module.port_policy_a
   ]
   source                = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_lan_port_channel"
+  breakout_sw_port      = var.lan_pc_breakout_swport
   flow_control_moid     = [module.flow_control.moid]
-  lan_uplink_pc_id      = local.lan_port_channel.id
-  lan_uplink_pc_ports   = local.lan_port_channel.list
+  lan_uplink_pc_id      = element(var.lan_port_channel, 0)
+  lan_uplink_pc_ports   = var.lan_port_channel
+  lan_uplink_speed      = var.lan_uplink_speed
   link_aggregation_moid = [module.link_aggregation.moid]
   link_control_moid     = [module.link_control.moid]
   port_policy_moid      = module.port_policy_a.moid
+  slot_id               = var.lan_pc_slot_id
   tags                  = local.tags
 }
 
@@ -332,12 +335,15 @@ module "lan_uplink_port_channel_b" {
     module.port_policy_b
   ]
   source                = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_lan_port_channel"
+  breakout_sw_port      = var.lan_pc_breakout_swport
   flow_control_moid     = [module.flow_control.moid]
-  lan_uplink_pc_id      = local.lan_port_channel.id
-  lan_uplink_pc_ports   = local.lan_port_channel.list
+  lan_uplink_pc_id      = element(var.lan_port_channel, 0)
+  lan_uplink_pc_ports   = var.lan_port_channel
+  lan_uplink_speed      = var.lan_uplink_speed
   link_aggregation_moid = [module.link_aggregation.moid]
   link_control_moid     = [module.link_control.moid]
   port_policy_moid      = module.port_policy_b.moid
+  slot_id               = var.lan_pc_slot_id
   tags                  = local.tags
 }
 
@@ -360,12 +366,15 @@ module "san_uplink_port_channel_a" {
     module.port_policy_a
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
-  san_uplink_pc_id    = local.san_port_channel.id
-  san_uplink_pc_ports = local.san_port_channel.list
-  san_uplink_speed    = "32Gbps"
+  breakout_sw_port    = var.san_pc_breakout_swport
+  fill_pattern        = var.fill_pattern
+  san_uplink_pc_id    = element(var.san_port_channel, 0)
+  san_uplink_pc_ports = var.san_port_channel
+  san_uplink_speed    = var.san_uplink_speed
   port_policy_moid    = module.port_policy_a.moid
-  vsan_id             = local.vsan_fabric_a
+  slot_id             = var.san_pc_slot_id
   tags                = local.tags
+  vsan_id             = var.vsan_fabric_a
 }
 
 #______________________________________________
@@ -380,12 +389,15 @@ module "san_uplink_port_channel_b" {
     module.port_policy_b
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
-  san_uplink_pc_id    = local.san_port_channel.id
-  san_uplink_pc_ports = local.san_port_channel.list
-  san_uplink_speed    = "32Gbps"
+  breakout_sw_port    = var.san_pc_breakout_swport
+  fill_pattern        = var.fill_pattern
+  san_uplink_pc_id    = element(var.san_port_channel, 0)
+  san_uplink_pc_ports = var.san_port_channel
+  san_uplink_speed    = var.san_uplink_speed
   port_policy_moid    = module.port_policy_b.moid
-  vsan_id             = local.vsan_fabric_b
+  slot_id             = var.san_pc_slot_id
   tags                = local.tags
+  vsan_id             = var.vsan_fabric_b
 }
 
 #____________________________________________________________
@@ -399,8 +411,8 @@ module "system_qos_1" {
     data.intersight_organization_organization.org_moid,
   ]
   source      = "../../../terraform-intersight-imm/modules/domain_system_qos"
-  description = "${local.org_name} System QoS Policy."
-  name        = local.system_qos_policy
+  description = var.system_qos_policy != "" ? "${var.system_qos_policy} System QoS Policy." : "${local.org_name} System QoS Policy."
+  name        = var.system_qos_policy != "" ? "${var.system_qos_policy}" : "${local.org_name}"
   org_moid    = local.org_moid
   tags        = local.tags
   profiles = var.assign_domain == false ? [] : [
@@ -415,8 +427,8 @@ module "system_qos_2" {
     data.intersight_organization_organization.org_moid,
   ]
   source      = "../../../terraform-intersight-imm/modules/domain_system_qos"
-  description = "${local.org_name} System QoS Policy."
-  name        = local.system_qos_policy
+  description = var.system_qos_policy != "" ? "${var.system_qos_policy} System QoS Policy." : "${local.org_name} System QoS Policy."
+  name        = var.system_qos_policy != "" ? "${var.system_qos_policy}" : "${local.org_name}"
   org_moid    = local.org_moid
   tags        = local.tags
   profiles = var.assign_domain == false ? [] : [
@@ -425,64 +437,64 @@ module "system_qos_2" {
   ]
   classes = [
     {
-      admin_state         = "Disabled"
-      bandwidth_percent   = 0
-      cos                 = 1
-      mtu                 = 9216
-      multicast_optimize  = false
+      admin_state         = var.bronze_admin_state
+      bandwidth_percent   = var.bronze_bandwidth
+      cos                 = var.bronze_cos
+      mtu                 = var.bronze_mtu
+      multicast_optimize  = var.bronze_multicast_optimize
       name                = "Bronze"
-      packet_drop         = true
-      weight              = 7
+      packet_drop         = var.bronze_packet_drop
+      weight              = var.bronze_weight
     },
     {
-      admin_state         = "Disabled"
-      bandwidth_percent   = 0
-      cos                 = 2
-      mtu                 = 9216
-      multicast_optimize  = false
+      admin_state         = var.silver_admin_state
+      bandwidth_percent   = var.silver_bandwidth
+      cos                 = var.silver_cos
+      mtu                 = var.silver_mtu
+      multicast_optimize  = var.silver_multicast_optimize
       name                = "Silver"
-      packet_drop         = true
-      weight              = 8
+      packet_drop         = var.silver_packet_drop
+      weight              = var.silver_weight
     },
     {
-      admin_state         = "Disabled"
-      bandwidth_percent   = 0
-      cos                 = 4
-      mtu                 = 9216
-      multicast_optimize  = false
+      admin_state         = var.gold_admin_state
+      bandwidth_percent   = var.gold_bandwidth
+      cos                 = var.gold_cos
+      mtu                 = var.gold_mtu
+      multicast_optimize  = var.gold_multicast_optimize
       name                = "Gold"
-      packet_drop         = true
-      weight              = 9
+      packet_drop         = var.gold_packet_drop
+      weight              = var.gold_weight
     },
     {
-      admin_state         = "Disabled"
-      bandwidth_percent   = 0
-      cos                 = 5
-      mtu                 = 9216
-      multicast_optimize  = false
+      admin_state         = var.platinum_admin_state
+      bandwidth_percent   = var.platinum_bandwidth
+      cos                 = var.platinum_cos
+      mtu                 = var.platinum_mtu
+      multicast_optimize  = var.platinum_multicast_optimize
       name                = "Platinum"
-      packet_drop         = true
-      weight              = 10
+      packet_drop         = var.platinum_packet_drop
+      weight              = var.platinum_weight
     },
     {
-      admin_state         = "Enabled"
-      bandwidth_percent   = 50
+      admin_state         = var.best_effort_admin_state
+      bandwidth_percent   = var.best_effort_bandwidth
       cos                 = 255
-      mtu                 = 9216
-      multicast_optimize  = false
+      mtu                 = var.best_effort_mtu
+      multicast_optimize  = var.best_effort_multicast_optimize
       name                = "Best Effort"
       packet_drop         = null
-      weight              = 5
+      weight              = var.best_effort_weight
     },
     {
       admin_state         = "Enabled"
-      bandwidth_percent   = 50
+      bandwidth_percent   = var.fc_bandwidth
       cos                 = 3
       mtu                 = 2240
       multicast_optimize  = null
       name                = "FC"
       packet_drop         = false
-      weight              = 5
+      weight              = var.fc_weight
     },
   ]
 }
@@ -498,13 +510,13 @@ module "switch_control" {
     data.intersight_organization_organization.org_moid,
   ]
   source                = "terraform-cisco-modules/imm/intersight//modules/domain_switch_control"
-  description           = "${local.org_name} Switch Control Policy."
-  name                  = local.switch_control_policy
-  mac_aging_option      = "Custom"
-  mac_aging_time        = 1200
-  udld_message_interval = 15
-  udld_recovery_action  = "reset"
-  vlan_optimization     = true
+  description           = var.switch_control_policy != "" ? "${var.switch_control_policy} Switch Control Policy." : "${local.org_name} Switch Control Policy."
+  name                  = var.switch_control_policy != "" ? "${var.switch_control_policy}" : "${local.org_name}"
+  mac_aging_option      = var.mac_aging_option
+  mac_aging_time        = var.mac_aging_time
+  udld_message_interval = var.udld_message_interval
+  udld_recovery_action  = var.udld_recovery_action
+  vlan_optimization     = var.vlan_optimization
   org_moid              = local.org_moid
   tags                  = local.tags
   profiles = var.assign_domain == false ? [] : [
@@ -520,15 +532,17 @@ module "switch_control" {
 # GUI Location: Policies > Create Policy
 #_______________________________________________________________
 
-module "dns_domain" {
+module "dns" {
   depends_on = [
     data.intersight_organization_organization.org_moid,
   ]
   source         = "terraform-cisco-modules/imm/intersight//modules/policies_network_connectivity"
-  description    = "${local.org_name} DNS Policy."
-  dns_servers_v4 = regex("empty", local.dns_servers_v4) ? [] : local.dns_servers_v4
-  dns_servers_v6 = regex("empty", local.dns_servers_v6) ? [] : local.dns_servers_v6
-  name           = "${local.netwrk_connect_policy}_domain"
+  description    = var.dns_policy != "" ? "${var.dns_policy} DNS Policy." : "${local.org_name} DNS Policy."
+  dns_servers_v4 = var.dns_servers_v4
+  dns_servers_v6 = var.dns_servers_v6
+  dynamic_dns    = var.dynamic_dns
+  ipv6_enable    = var.ipv6_enable
+  name           = var.dns_policy != "" ? "${var.dns_policy}" : "${local.org_name}_domain"
   org_moid       = local.org_moid
   tags           = local.tags
   profile_type   = "domain"
@@ -536,6 +550,7 @@ module "dns_domain" {
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
   ]
+  update_domain  = var.update_domain
 }
 
 
@@ -545,18 +560,18 @@ module "dns_domain" {
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
-module "ntp_domain" {
+module "ntp" {
   depends_on = [
     data.intersight_organization_organization.org_moid,
   ]
   source       = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
-  description  = "${local.org_name} NTP Policy."
-  name         = "${local.ntp_policy}_domain"
-  ntp_servers  = local.ntp_servers
+  description    = var.ntp_policy != "" ? "${var.ntp_policy} NTP Policy." : "${local.org_name} NTP Policy."
+  name           = var.ntp_policy != "" ? "${var.ntp_policy}" : "${local.org_name}_domain"
+  ntp_servers  = var.ntp_servers
   org_moid     = local.org_moid
   profile_type = "domain"
   tags         = local.tags
-  timezone     = local.timezone
+  timezone     = var.timezone
   profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
@@ -570,20 +585,20 @@ module "ntp_domain" {
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
-module "snmp_domain" {
+module "snmp" {
   depends_on = [
     data.intersight_organization_organization.org_moid
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
-  description     = "${local.org_name} SNMP Policy."
-  name            = "${local.snmp_policy}_domain"
+  description    = var.snmp_policy != "" ? "${var.snmp_policy} SNMP Policy." : "${local.org_name} SNMP Policy."
+  name           = var.snmp_policy != "" ? "${var.snmp_policy}" : "${local.org_name}_domain"
   org_moid        = local.org_moid
   profile_type    = "domain"
   snmp_community  = var.snmp_community
-  snmp_traps      = local.snmp_trap_destinations
+  snmp_traps      = var.snmp_trap_destinations
   snmp_users      = var.snmp_users
-  system_contact  = local.system_contact
-  system_location = local.system_location
+  system_contact  = var.system_contact
+  system_location = var.system_location
   tags            = local.tags
   trap_community  = var.trap_community
   profiles = var.assign_domain == false ? [] : [
@@ -599,17 +614,17 @@ module "snmp_domain" {
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
-module "syslog_domain" {
+module "syslog" {
   depends_on = [
     data.intersight_organization_organization.org_moid
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_syslog"
-  description     = "${local.org_name} Syslog Policy."
-  name            = "${local.syslog_policy}_domain"
+  description    = var.syslog_policy != "" ? "${var.syslog_policy} Syslog Policy." : "${local.org_name} Syslog Policy."
+  name           = var.syslog_policy != "" ? "${var.syslog_policy}" : "${local.org_name}_domain"
   org_moid        = local.org_moid
   profile_type    = "domain"
-  remote_clients  = local.syslog_destinations
-  syslog_severity = local.syslog_severity
+  remote_clients  = var.syslog_destinations
+  syslog_severity = var.syslog_severity
   tags            = local.tags
   profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,

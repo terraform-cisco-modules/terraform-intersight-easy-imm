@@ -50,9 +50,9 @@ variable "dynamic_dns" {
   type        = bool
 }
 
-variable "domain_name" {
-  default     = "example.com"
-  description = "Domain Name for Deployment."
+variable "update_domain" {
+  default     = ""
+  description = "Name of the Domain to Update when using Dynamic DNS for the Policy."
   type        = string
 }
 
