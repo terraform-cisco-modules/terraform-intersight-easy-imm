@@ -33,12 +33,12 @@ module "domain_profile_a" {
     module.domain_profile
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/domain_profile_switch"
+  action          = var.action
   assigned_switch = var.assign_switches == true ? [data.intersight_network_element_summary.fabric_interconnect_a.results.0.moid] : []
   cluster_moid    = module.domain_profile.moid
   description     = "${var.cluster_name} Switch A Profile."
   name            = "${var.cluster_name}-a"
   tags            = local.tags
-  switch_action   = var.switch_action
 }
 
 

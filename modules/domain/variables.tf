@@ -1,3 +1,7 @@
+terraform {
+  experiments = [module_variable_optional_attrs]
+}
+
 #__________________________________________________________
 #
 # Intersight Provider Variables
@@ -19,6 +23,18 @@ variable "secretkey" {
   description = "Intersight Secret Key."
   sensitive   = true
   type        = string
+}
+
+variable "organization" {
+  default     = "default"
+  description = "Intersight Organization Name."
+  type        = string
+}
+
+variable "tags" {
+  default     = []
+  description = "List of Key/Value Pairs to Assign as Attributes to the Policy."
+  type        = list(map(string))
 }
 
 
@@ -46,11 +62,30 @@ variable "cluster_name" {
 }
 
 variable "serial_switch_a" {
+  default     = ""
   description = "Serial Number of Fabric Interconnect A."
   type        = string
 }
 
 variable "serial_switch_b" {
+  default     = ""
   description = "Serial Number of Fabric Interconnect B."
   type        = string
 }
+
+variable "tfc_variables" {
+  type = object({
+    serial_a           = string
+    serial_b           = string
+    dns_policy         = optional(string)
+    ntp_policy         = optional(string)
+    port_policy        = optional(string)
+    snmp_policy        = optional(string)
+    switch_ctrl_policy = optional(string)
+    syslog_policy      = optional(string)
+    system_qos_policy  = optional(string)
+    vlan_policy        = optional(string)
+    vsan_policy        = optional(string)
+  })
+}
+

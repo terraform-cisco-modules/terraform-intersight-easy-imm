@@ -3,6 +3,12 @@
 # Variables for the Intersight API
 #__________________________________________________________
 
+vcs_repo = "scotttyso/easy-imm"
+#__________________________________________________________
+#
+# Variables for the Intersight API
+#__________________________________________________________
+
 # Intersight URL
 # endpoint = "https://intersight.com"
 

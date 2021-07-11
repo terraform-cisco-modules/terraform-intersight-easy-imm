@@ -5,9 +5,6 @@
 #____________________________________________________________
 
 data "intersight_organization_organization" "org_moid" {
-  depends_on = [
-    data.terraform_remote_state.global
-  ]
   name = var.organization
 }
 
@@ -18,9 +15,9 @@ data "intersight_organization_organization" "org_moid" {
 #____________________________________________________________
 
 data "intersight_network_element_summary" "fabric_interconnect_a" {
-  serial = var.serial_switch_a
+  serial = local.serial_a
 }
 
 data "intersight_network_element_summary" "fabric_interconnect_b" {
-  serial = var.serial_switch_b
+  serial = local.serial_b
 }

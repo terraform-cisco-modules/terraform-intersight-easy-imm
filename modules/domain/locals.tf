@@ -17,7 +17,7 @@ locals {
   endpoint = var.endpoint
 
   # Tags for Deployment
-  tags = data.terraform_remote_state.global.outputs.tags
-  serial_a = var.hcl_variables.serial_a == null ? "" : var.hcl_variables.serial_a
-  serial_b = var.hcl_variables.serial_b == null ? "" : var.hcl_variables.serial_b
+  tags     = var.tags
+  serial_a = var.tfc_variables.serial_a == null ? "" : var.tfc_variables.serial_a
+  serial_b = var.tfc_variables.serial_b == null ? "" : var.tfc_variables.serial_b
 }

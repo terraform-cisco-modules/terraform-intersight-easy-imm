@@ -8,7 +8,7 @@ output "domain_profile_a" {
   value = {
     model  = data.intersight_network_element_summary.fabric_interconnect_a.results.0.model
     moid   = module.domain_profile_a.moid
-    serial = data.terraform_remote_state.global.outputs.serial_a
+    serial = data.intersight_network_element_summary.fabric_interconnect_a.results.0.serial
   }
 }
 
@@ -17,6 +17,6 @@ output "domain_profile_b" {
   value = {
     model  = data.intersight_network_element_summary.fabric_interconnect_b.results.0.model
     moid   = module.domain_profile_b.moid
-    serial = data.terraform_remote_state.global.outputs.serial_b
+    serial = data.intersight_network_element_summary.fabric_interconnect_b.results.0.serial
   }
 }
