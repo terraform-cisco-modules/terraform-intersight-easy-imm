@@ -3,11 +3,6 @@
 # Terraform Cloud Variables
 #__________________________________________________________
 
-variable "agent_pool" {
-  description = "Terraform Cloud Agent Pool."
-  type        = string
-}
-
 variable "terraform_cloud_token" {
   description = "Token to Authenticate to the Terraform Cloud."
   sensitive   = true
@@ -51,5 +46,17 @@ variable "apikey" {
 variable "secretkey" {
   description = "Intersight Secret Key."
   sensitive   = true
+  type        = string
+}
+
+variable "organization" {
+  default     = "default"
+  description = "Intersight Organization Name."
+  type        = string
+}
+
+variable "tags" {
+  default     = "[]"
+  description = "List of Key/Value Pairs to Assign as Attributes to the Policy."
   type        = string
 }

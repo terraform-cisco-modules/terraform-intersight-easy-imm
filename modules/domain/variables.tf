@@ -9,6 +9,12 @@ variable "apikey" {
   type        = string
 }
 
+variable "endpoint" {
+  default     = "https://intersight.com"
+  description = "Intersight URL."
+  type        = string
+}
+
 variable "secretkey" {
   description = "Intersight Secret Key."
   sensitive   = true

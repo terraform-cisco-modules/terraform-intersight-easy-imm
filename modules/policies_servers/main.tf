@@ -1,6 +1,6 @@
 #____________________________________________________________
 #
-# Intersight BIOS Policy
+# BIOS Policies
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -134,7 +134,7 @@ module "bios_m4" {
 
 #____________________________________________________________
 #
-# Intersight Boot Policies
+# Boot Policies
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -276,7 +276,7 @@ module "boot_uefi_sdcard" {
 
 #____________________________________________________________
 #
-# Intersight Device Connector Policy
+# Device Connector Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -295,7 +295,7 @@ module "device_connector" {
 
 #____________________________________________________________
 #
-# Intersight Disk Group Policy
+# Disk Group Policies
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -374,7 +374,48 @@ module "disk_group_raid10" {
 
 #____________________________________________________________
 #
-# Intersight IMC Access Policy
+# Storage Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "storage" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid,
+    module.disk_group_raid1,
+    module.disk_group_raid5,
+    module.disk_group_raid10
+  ]
+  source        = "terraform-cisco-modules/imm/intersight//modules/policies_storage"
+  description   = var.storage_policy != "" ? "${var.storage_policy} Storage Policy." : "${local.org_name} Storage Policy."
+  name          = var.storage_policy != "" ? var.storage_policy : local.org_name
+  org_moid      = local.org_moid
+  profiles      = []
+  retain_policy = true
+  tags          = var.tags
+  unused_disks  = "UnconfiguredGood"
+  virtual_drives = [
+    {
+      access_policy         = "Default"
+      additional_properties = ""
+      boot_drive            = false
+      disk_group_name       = module.disk_group_raid5.name
+      disk_group_policy     = module.disk_group_raid5.moid
+      drive_cache           = "Default"
+      expand_to_available   = true
+      io_policy             = "Default"
+      name                  = "vd0"
+      read_policy           = "Default"
+      size                  = 25
+      strip_size            = "Default"
+      vdid                  = "value"
+      write_policy          = "Default"
+    }
+  ]
+}
+
+#____________________________________________________________
+#
+# IMC Access Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -395,7 +436,7 @@ module "imc_access" {
 
 #____________________________________________________________
 #
-# Intersight IPMI over LAN Policy
+# IPMI over LAN Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -418,7 +459,7 @@ module "ipmi_over_lan" {
 
 #____________________________________________________________
 #
-# Intersight LDAP Policy
+# LDAP Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -492,7 +533,7 @@ module "ldap_groups" {
 
 #____________________________________________________________
 #
-# Intersight Local User Policy
+# Local User Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -544,7 +585,7 @@ module "local_users" {
 
 #_______________________________________________________________
 #
-# Intersight Network Connectivity (DNS) Policy
+# Network Connectivity (DNS) Policy
 # GUI Location: Policies > Create Policy
 #_______________________________________________________________
 
@@ -558,7 +599,7 @@ module "dns" {
   dns_servers_v6 = var.dns_servers_v6
   dynamic_dns    = var.dynamic_dns
   ipv6_enable    = var.ipv6_enable
-  name           = var.dns_policy != "" ? "${var.dns_policy}" : "${local.org_name}_domain"
+  name           = var.dns_policy != "" ? var.dns_policy : local.org_name
   org_moid       = local.org_moid
   tags           = local.tags
   update_domain  = var.update_domain
@@ -567,7 +608,7 @@ module "dns" {
 
 #____________________________________________________________
 #
-# Intersight NTP Policy
+# NTP Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -577,7 +618,7 @@ module "ntp" {
   ]
   source       = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
   description    = var.ntp_policy != "" ? "${var.ntp_policy} NTP Policy." : "${local.org_name} NTP Policy."
-  name           = var.ntp_policy != "" ? "${var.ntp_policy}" : "${local.org_name}_domain"
+  name           = var.ntp_policy != "" ? var.ntp_policy : local.org_name
   ntp_servers  = var.ntp_servers
   org_moid     = local.org_moid
   tags         = local.tags
@@ -587,7 +628,118 @@ module "ntp" {
 
 #____________________________________________________________
 #
-# Intersight SNMP Policy
+# Persistent Memory Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "persistent_memory" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source            = "terraform-cisco-modules/imm/intersight//modules/policies_persistent_memory"
+  description       = var.persistent_memory_policy != "" ? "${var.persistent_memory_policy} Persistent Memory Policy." : "${local.org_name} Persistent Memory Policy."
+  name              = var.persistent_memory_policy != "" ? var.persistent_memory_policy : local.org_name
+  org_moid          = local.org_moid
+  profiles          = []
+  retain_namespaces = var.retain_namespaces
+  secure_passphrase = var.persistent_passphrase
+  tags              = var.tags
+  logical_namespaces = [
+    {
+      capacity         = 512
+      mode             = "raw"
+      name             = "example_1"
+      socket_id        = 1
+      socket_memory_id = "Not Applicable"
+    }
+  ]
+}
+
+
+#____________________________________________________________
+#
+# SD Card Policies
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "sd_card_m4" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_sd_card"
+  description    = var.sdcard_policy != "" ? "${var.sdcard_policy} M4 SD Card Policy." : "${local.org_name} M4 SD Card Policy."
+  name           = var.sdcard_policy != "" ? "${var.sdcard_policy}_m4" : "${local.org_name}_m4"
+  org_moid    = local.org_moid
+  tags        = var.tags
+}
+
+module "sd_card_m5" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_sd_card"
+  description    = var.sdcard_policy != "" ? "${var.sdcard_policy} M5 SD Card Policy without FlexUtil." : "${local.org_name} M5 SD Card Policy without FlexUtil."
+  name           = var.sdcard_policy != "" ? "${var.sdcard_policy}_m5" : "${local.org_name}_m5"
+  org_moid    = local.org_moid
+  tags        = var.tags
+}
+
+module "sd_card_m5_flexutil" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_sd_card"
+  description = var.sdcard_policy != "" ? "${var.sdcard_policy} M5 SD Card Policy with FlexUtil." : "${local.org_name} M5 SD Card Policy with FlexUtil."
+  name        = var.sdcard_policy != "" ? "${var.sdcard_policy}_m5flexutil" : "${local.org_name}_m5flexutil"
+  org_moid    = local.org_moid
+  tags        = var.tags
+}
+
+
+#____________________________________________________________
+#
+# Serial over LAN Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "serial_over_lan" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_serial_over_lan"
+  description = var.serial_over_lan_policy != "" ? "${var.serial_over_lan_policy} Serial over LAN Policy." : "${local.org_name} Serial over LAN Policy."
+  name        = var.serial_over_lan_policy != "" ? var.serial_over_lan_policy : local.org_name
+  org_moid    = local.org_moid
+  profiles    = []
+  tags        = var.tags
+}
+
+
+#____________________________________________________________
+#
+# SMTP Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "smtp" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source          = "terraform-cisco-modules/imm/intersight//modules/policies_smtp"
+  description     = var.smtp_policy != "" ? "${var.smtp_policy} SMTP Policy." : "${local.org_name} SMTP Policy."
+  name            = var.smtp_policy != "" ? var.smtp_policy : local.org_name
+  org_moid        = local.org_moid
+  profiles        = []
+  sender_email    = "admin@example.com"
+  smtp_recipients = ["server_admins@example.com"]
+  smtp_server     = "smtp-relay.example.com"
+  tags            = var.tags
+}
+
+
+#____________________________________________________________
+#
+# SNMP Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -597,7 +749,7 @@ module "snmp" {
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
   description    = var.snmp_policy != "" ? "${var.snmp_policy} SNMP Policy." : "${local.org_name} SNMP Policy."
-  name           = var.snmp_policy != "" ? "${var.snmp_policy}" : local.org_name
+  name           = var.snmp_policy != "" ? var.snmp_policy : local.org_name
   org_moid        = local.org_moid
   snmp_community  = var.snmp_community
   snmp_traps      = var.snmp_trap_destinations
@@ -611,7 +763,26 @@ module "snmp" {
 
 #____________________________________________________________
 #
-# Intersight Syslog Policy
+# SSH Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "ssh" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_ssh"
+  description = var.ssh_policy != "" ? "${var.ssh_policy} SSH Policy." : "${local.org_name} SSH Policy."
+  name        = var.ssh_policy != "" ? var.ssh_policy : local.org_name
+  org_moid    = local.org_moid
+  profiles    = []
+}
+
+
+
+#____________________________________________________________
+#
+# Syslog Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -620,8 +791,8 @@ module "syslog" {
     data.intersight_organization_organization.org_moid
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_syslog"
-  description    = var.syslog_policy != "" ? "${var.syslog_policy} Syslog Policy." : "${local.org_name} Syslog Policy."
-  name           = var.syslog_policy != "" ? "${var.syslog_policy}" : "${local.org_name}_domain"
+  description     = var.syslog_policy != "" ? "${var.syslog_policy} Syslog Policy." : "${local.org_name} Syslog Policy."
+  name            = var.syslog_policy != "" ? var.syslog_policy : local.org_name
   org_moid        = local.org_moid
   remote_clients  = var.syslog_destinations
   syslog_severity = var.syslog_severity
@@ -631,7 +802,95 @@ module "syslog" {
 
 #____________________________________________________________
 #
-# Intersight Adapter Configuration (Standalone Servers)
+# Fibre Channel (vHBA) Adapter Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "vhba_adapter_example" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter"
+  description = "vHBA Adapter Policy Example."
+  name        = "vhba_adapter"
+  org_moid    = local.org_moid
+  error_detection_timeout          = 20000
+  error_recovery_enabled           = false
+  error_recovery_io_retry_count    = 8
+  error_recovery_io_retry_timeout  = 5
+  error_recovery_link_down_timeout = 30000
+  error_recovery_port_down_timeout = 10000
+  flogi_retries                    = 8
+  flogi_timeout                    = 4000
+  interrupt_mode                   = "MSIx"
+  io_throttle_count                = 512
+  lun_count                        = 1024
+  lun_queue_depth                  = 20
+  plogi_retries                    = 8
+  plogi_timeout                    = 20000
+  resource_allocation_timeout      = 10000
+  rx_ring_size                     = 64
+  scsi_io_queues                   = 1
+  scsi_io_ring_size                = 512
+  tags                             = var.tags
+  tx_ring_size                     = 64
+}
+
+
+# Fabric Interconnect Attached Example
+module "vhba_network_example_a" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_network"
+  vsan_id     = 100
+  description = "vHBA Network Policy Fabric A Example."
+  name        = "example_a"
+  org_moid    = local.org_moid
+  tags        = var.tags
+}
+
+module "vhba_network_example_b" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_network"
+  vsan_id     = 200
+  description = "vHBA Network Policy Fabric B Example."
+  name        = "example_b"
+  org_moid    = local.org_moid
+  tags        = var.tags
+}
+
+
+# Fabric Interconnect Attached Example
+module "vhba_qos_example_1" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_qos"
+  description = "FI Attached vHBA QoS Example"
+  name        = "example_1"
+  org_moid    = local.org_moid
+  tags        = var.tags
+}
+
+# Standalone Example
+module "vhba_qos_example_2" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_qos"
+  description = "Standalone vHBA QoS Example"
+  name        = "example_2"
+  org_moid    = local.org_moid
+  tags        = var.tags
+}
+
+
+#____________________________________________________________
+#
+# (VIC) Adapter Configuration (Standalone Servers)
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
@@ -640,12 +899,351 @@ module "vic_adapter" {
     data.intersight_organization_organization.org_moid
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/policies_vic_adapter"
-  description         = "${local.cluster_name} VIC Adapter Policy."
-  name                = "${local.cluster_name}_adapter"
+  description         = var.vic_adapter_policy != "" ? "${var.vic_adapter_policy} VIC Adapter Policy (Standalone Servers)." : "${local.org_name} VIC Adapter Policy (Standalone Servers)."
+  fip_enabled         = var.vic_fip_enabled
+  int0_fec_mode       = var.vic_fec_mode_int0
+  int1_fec_mode       = var.vic_fec_mode_int1
+  int2_fec_mode       = var.vic_fec_mode_int2
+  int3_fec_mode       = var.vic_fec_mode_int3
+  lldp_enabled        = var.vic_lldp_enabled
+  name                = var.vic_adapter_policy != "" ? var.vic_adapter_policy : local.org_name
   org_moid            = local.org_moid
-  portchannel_enabled = true
+  portchannel_enabled = var.vic_portchannel
   tags                = var.tags
 }
 
 
+#____________________________________________________________
+#
+# Virtual KVM Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "virtual_kvm" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source                    = "terraform-cisco-modules/imm/intersight//modules/policies_virtual_kvm"
+  description               = var.virtual_kvm_policy != "" ? "${var.virtual_kvm_policy} Virtual KVM Policy." : "${local.org_name} Virtual KVM Policy."
+  enable_local_server_video = var.vkvm_local_server_video
+  enable_video_encryption   = var.vkvm_video_encryption
+  enabled                   = var.vkvm_enabled
+  maximum_sessions          = var.vkvm_maximum_sessions
+  name                      = var.virtual_kvm_policy != "" ? var.virtual_kvm_policy : local.org_name
+  org_moid                  = local.org_moid
+  remote_port               = var.vkvm_remote_port
+  tags                      = local.tags
+}
+
+
+#____________________________________________________________
+#
+# Virtual Media Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "virtual_media" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source        = "terraform-cisco-modules/imm/intersight//modules/policies_virtual_media"
+  description   = var.virtual_media_policy != "" ? "${var.virtual_media_policy} Virtual Media Policy." : "${local.org_name} Virtual Media Policy."
+  enabled       = var.vmedia_enabled
+  encryption    = var.vmedia_encryption
+  low_power_usb = var.vmedia_low_power_usb
+  name          = var.virtual_media_policy != "" ? var.virtual_media_policy : local.org_name
+  org_moid      = local.org_moid
+  tags          = local.tags
+  mappings      = var.vmedia_mappings
+}
+
+#____________________________________________________________
+#
+# Ethernet (vNIC) Adapter Policies
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "vnic_adapter_nvmeof" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
+  description = var.vnic_adapter_policy != "" ? "${var.vnic_adapter_policy} vNIC Adapter Policy for NVMe over Fabric." : "${local.org_name} vNIC Adapter Policy for NVMe over Fabric."
+  name        = var.vnic_adapter_policy != "" ? "${var.vnic_adapter_policy}_nvmeof" : "${local.org_name}_nvmeof"
+  org_moid    = local.org_moid
+  tags        = var.tags
+  # Completion Settings - Reduce Queue Count
+  completion_queue_count = 2
+  # Interrupt Settings - Increase Interupts
+  interrupt_interrupts = 256
+  # Enable RoCE
+  roce_enable          = true
+  roce_memory_regions  = 131072
+  roce_queue_pairs     = 256
+  roce_resource_groups = 4
+  # Reduce Recieve Queue Count
+  rx_queue_count = 1
+}
+
+module "vnic_adapter_vmware" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
+  description = var.vnic_adapter_policy != "" ? "${var.vnic_adapter_policy} vNIC Adapter Policy for VMware." : "${local.org_name} vNIC Adapter Policy for VMware."
+  name        = var.vnic_adapter_policy != "" ? "${var.vnic_adapter_policy}_vmware" : "${local.org_name}_vmware"
+  org_moid    = local.org_moid
+  tags        = var.tags
+  # Completion Settings - Reduce Queue Count
+  completion_queue_count = 2
+  # Interrupt Settings - Reduce Interupts
+  interrupt_interrupts = 4
+  # Disable Receive Side Scaling
+  receive_side_scaling = false
+  # Reduce Recieve Queue Count
+  rx_queue_count = 1
+}
+
+module "vnic_adapter_windows" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
+  description = var.vnic_adapter_policy != "" ? "${var.vnic_adapter_policy} vNIC Adapter Policy." : "${local.org_name} vNIC Adapter Policy."
+  name        = var.vnic_adapter_policy != "" ? "${var.vnic_adapter_policy}_windows" : "${local.org_name}_windows"
+  org_moid    = local.org_moid
+  tags        = var.tags
+}
+
+
+#____________________________________________________________
+#
+# Ethernet (vNIC) Network Control Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "vnic_netctrl_policy" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source                = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_network_control"
+  description           = var.vnic_netctrl_policy != "" ? "${var.vnic_netctrl_policy} vNIC Network Control Policy." : "${local.org_name} vNIC Network Control Policy."
+  mac_registration_mode = "allVlans"
+  name                  = var.vnic_netctrl_policy != "" ? "${var.vnic_netctrl_policy}" : "${local.org_name}"
+  org_moid              = local.org_moid
+  tags                  = var.tags
+}
+
+module "vnic_netctrl_policy_cdp" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source                = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_network_control"
+  cdp_enabled           = true
+  description           = var.vnic_netctrl_policy != "" ? "${var.vnic_netctrl_policy} vNIC Network Control Policy - CDP Eanbled." : "${local.org_name} vNIC Network Control Policy - CDP Eanbled."
+  mac_registration_mode = "allVlans"
+  name                  = var.vnic_netctrl_policy != "" ? "${var.vnic_netctrl_policy}_cdp" : "${local.org_name}_cdp"
+  org_moid              = local.org_moid
+  tags                  = var.tags
+}
+
+module "vnic_netctrl_policy_lldp" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source                = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_network_control"
+  description           = var.vnic_netctrl_policy != "" ? "${var.vnic_netctrl_policy} vNIC Network Control Policy - LLDP Eanbled." : "${local.org_name} vNIC Network Control Policy - LLDP Eanbled."
+  mac_registration_mode = "allVlans"
+  lldp_receive          = true
+  lldp_transmit         = true
+  name                  = var.vnic_netctrl_policy != "" ? "${var.vnic_netctrl_policy}_lldp" : "${local.org_name}_lldp"
+  org_moid              = local.org_moid
+  tags                  = var.tags
+}
+
+
+#____________________________________________________________
+#
+# Example Intersight Ethernet vNIC Adapter Policy Module
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+#________________________________________________
+#
+# Example VLAN Group using a Range of VLANs
+# GUI Location: Policies > Create Policy
+#________________________________________________
+
+
+
+module "vnic_vlan_group_1" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_network_group"
+  description = "Example VLAN Group using Range."
+  name        = "vlan_group_range"
+  org_moid    = local.org_moid
+  tags        = var.tags
+  native_vlan = 1
+  # The Range Below would add VLANs 1 thru 100.
+  list_type  = "range"
+  vlan_start = 1
+  vlan_stop  = 101
+}
+
+#____________________________________________________________
+#
+# Ethernet (vNIC) Network Policy (Standalone Servers)
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "vnic_network" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source        = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_network"
+  allowed_vlans = "1-100"
+  default_vlan  = 1
+  description   = "vNIC Network Example."
+  mode          = "TRUNK"
+  name          = "example"
+  org_moid      = local.org_moid
+  tags          = var.tags
+}
+
+#______________________________________________
+#
+# Ethernet (vNIC) QoS Policy - FI-Attached
+# GUI Location: Policies > Create Policy
+#______________________________________________
+
+module "vnic_qos_domain" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source         = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_qos"
+  description    = "Recommended Domain Attached vNIC QoS Example."
+  name           = "recommended"
+  mtu            = 9000
+  burst          = 1024
+  priority       = "Best Effort"
+  rate_limit     = 0
+  trust_host_cos = false
+  org_moid       = local.org_moid
+  tags           = var.tags
+}
+
+
+#______________________________________________
+#
+# Ethernet (vNIC) QoS Policy - Standalone
+# GUI Location: Policies > Create Policy
+#______________________________________________
+
+module "vnic_qos_standalone" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source         = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_qos"
+  description    = "Default Standalone vNIC QoS Example."
+  name           = "default_standalone"
+  cos            = 0
+  mtu            = 1500
+  rate_limit     = 0
+  trust_host_cos = false
+  org_moid       = local.org_moid
+  tags           = var.tags
+}
+
+#______________________________________________
+#
+# LAN Connectivity
+#______________________________________________
+
+module "vnic_lan_connectivity" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid
+  ]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_lan_connectivity"
+  description = "vNIC LAN Connectivity Example."
+  name        = "example"
+  org_moid    = local.org_moid
+  profiles    = []
+  tags        = var.tags
+}
+
+
+#______________________________________________
+#
+# Create vNICs
+#______________________________________________
+
+module "vnic_loop" {
+  depends_on = [
+    data.intersight_organization_organization.org_moid,
+    module.vnic_adapter_policy,
+    module.vnic_lan_connectivity,
+    module.vnic_netctrl_policy,
+    module.vnic_vlan_group_1,
+    module.vnic_vlan_group_2,
+    module.vnic_vlan_group_3,
+    module.vnic_qos_domain
+  ]
+  source     = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_loop"
+  cdn_source = "vnic"
+  fabric_vnic = {
+    vNIC_1 = {
+      mac_pool   = data.terraform_remote_state.pools.outputs.mac_pool_a.moid
+      switch_id  = "A"
+      vlan_group = module.vlan_group_list.moid
+      vnic_name  = "vNIC-1"
+      vnic_order = 0
+    },
+    vNIC_2 = {
+      mac_pool   = data.terraform_remote_state.pools.outputs.mac_pool_b.moid
+      switch_id  = "B"
+      vlan_group = module.vlan_group_list.moid
+      vnic_name  = "vNIC-2"
+      vnic_order = 1
+    },
+    vNIC_3 = {
+      mac_pool   = data.terraform_remote_state.pools.outputs.mac_pool_a.moid
+      switch_id  = "A"
+      vlan_group = module.vlan_group_list.moid
+      vnic_name  = "vNIC-3"
+      vnic_order = 2
+    },
+    vNIC_4 = {
+      mac_pool   = data.terraform_remote_state.pools.outputs.mac_pool_b.moid
+      switch_id  = "B"
+      vlan_group = module.vlan_group_list.moid
+      vnic_name  = "vNIC-4"
+      vnic_order = 3
+    },
+    vNIC_5 = {
+      mac_pool   = data.terraform_remote_state.pools.outputs.mac_pool_a.moid
+      switch_id  = "A"
+      vlan_group = module.vlan_group_list.moid
+      vnic_name  = "vNIC-5"
+      vnic_order = 4
+    },
+    vNIC_6 = {
+      mac_pool   = data.terraform_remote_state.pools.outputs.mac_pool_b.moid
+      pci_order  = 5
+      switch_id  = "B"
+      vlan_group = module.vlan_group_list.moid
+      vnic_name  = "vNIC-6"
+      vnic_order = 5
+    }
+  }
+  lan_connectivity_moid = module.vnic_lan_connectivity.moid
+  mac_address_type      = "POOL"
+  placement_pci_link    = 0
+  placement_uplink      = 0
+  placement_slot_id     = "MLOM"
+  vnic_adapter_moid     = module.vnic_adapter_policy.moid
+  vnic_control_moid     = module.vnic_netctrl_policy_lldp.moid
+  vnic_qos_moid         = module.vnic_qos_domain.moid
+}
 
