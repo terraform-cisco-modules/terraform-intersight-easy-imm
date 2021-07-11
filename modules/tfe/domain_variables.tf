@@ -5,7 +5,10 @@
 
 variable "domain_list" {
   description = "List of UCS Domain Names to Create workspaces for."
-  type    = set(string)
+  type        = map(object({
+    domain        = string
+    tfc_variables = string
+  }))
 }
 
 variable "action" {
@@ -32,7 +35,7 @@ module "tfc_variables" {
   ]
   for_each     = var.domain_list
   category     = "terraform"
-  workspace_id = module.tfc_workspaces["${each.value}"].workspace.id
+  workspace_id = module.tfc_workspaces["${each.value.domain}"].workspace.id
   variable_list = [
     #---------------------------
     # Terraform Cloud Variables
@@ -65,7 +68,7 @@ module "tfc_variables" {
     # UCS Domain Variables
     #---------------------------
     {
-      description = "Action to Perform on the Switch Profile Assignment.  Options are {Deploy|No-op|Unassign}."
+      description = "Options are - 'Deploy' - 'No-op' - 'Unassign': Action to Perform on the Switch Profile Assignment."
       hcl         = false
       key         = "action"
       sensitive   = false
@@ -83,14 +86,14 @@ module "tfc_variables" {
       hcl         = false
       key         = "cluster_name"
       sensitive   = false
-      value       = each.value
+      value       = each.value.domain
     },
     {
       description = "Terraform Cloud HCL Block for Additional Variables."
       hcl         = true
-      key         = "variables_tfc"
+      key         = "tfc_variables"
       sensitive   = false
-      value       = ""
+      value       = each.value.tfc_variables
     },
   ]
 }

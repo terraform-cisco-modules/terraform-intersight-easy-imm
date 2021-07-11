@@ -1,5 +1,27 @@
 #__________________________________________________________
 #
+# Terraform Cloud Organization
+#__________________________________________________________
+
+variable "tfc_organization" {
+  description = "Terraform Cloud Organization."
+  type        = string
+}
+
+
+#______________________________________________
+#
+# Terraform Cloud global_vars Workspace
+#______________________________________________
+
+variable "domain_workspace" {
+  description = "Domain Workspace Name."
+  type        = string
+}
+
+
+#__________________________________________________________
+#
 # Intersight Provider Variables
 #__________________________________________________________
 
@@ -9,10 +31,28 @@ variable "apikey" {
   type        = string
 }
 
+variable "endpoint" {
+  default     = "https://intersight.com"
+  description = "Intersight URL."
+  type        = string
+}
+
 variable "secretkey" {
   description = "Intersight Secret Key."
   sensitive   = true
   type        = string
+}
+
+variable "organization" {
+  default     = "default"
+  description = "Intersight Organization Name."
+  type        = string
+}
+
+variable "tags" {
+  default     = []
+  description = "List of Key/Value Pairs to Assign as Attributes to the Policy."
+  type        = list(map(string))
 }
 
 

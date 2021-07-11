@@ -7,14 +7,14 @@ module "tfc_workspaces" {
   source              = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
   for_each            = var.domain_list
   auto_apply          = true
-  description         = "Terraform Workspace for Organization ${var.organization}, UCS Domain ${each.value}"
+  description         = "Terraform Workspace for Organization ${var.organization}, UCS Domain ${each.value.domain}"
   global_remote_state = true
-  name                = "${var.organization}_${each.value}"
+  name                = "${var.organization}_${each.value.domain}"
   terraform_version   = var.terraform_version
   tfc_oath_token      = var.tfc_oath_token
   tfc_org_name        = var.tfc_organization
   vcs_repo            = var.vcs_repo
-  working_directory   = "domain"
+  working_directory   = "modules/domain"
 }
 
 output "workspaces" {

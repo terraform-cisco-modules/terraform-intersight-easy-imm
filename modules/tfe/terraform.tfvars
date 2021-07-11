@@ -3,7 +3,7 @@
 # Variables for the Intersight API
 #__________________________________________________________
 
-vcs_repo = "scotttyso/easy-imm"
+vcs_repo = "scotttyso/terraform-intersight-easy-imm"
 #__________________________________________________________
 #
 # Variables for the Intersight API
@@ -35,7 +35,12 @@ tags = "[ { key = \"Owner\", value = \"rich-lab@cisco.com\" }, { key = \"Terrafo
 #______________________________________________
 
 # List of UCS Domains to for Workspace Creation.
-domain_list = ["asgard-ucs"]
+domain_list = {
+  "asgard-ucs" = {
+    domain        = "asgard-ucs"
+    tfc_variables = "{ serial_a = \"FDO23360Y8U\", serial_b = \"FDO23360XWU\" }"
+  }
+}
 
 # Flag to Disable Switch Assignment.  true or false.
 assign_switches = false

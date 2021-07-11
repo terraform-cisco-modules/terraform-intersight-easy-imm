@@ -1,3 +1,20 @@
+#__________________________________________________________
+#
+# Variables for the Intersight Organization
+#__________________________________________________________
+
+# Intersight Organization Name
+# organization = "default"
+organization = "Asgard"
+
+#______________________________________________
+#
+# Intersight Tag Variables
+#______________________________________________
+
+# Tags to assign to the Cluster
+tags = [ { key = "Owner", value = "rich-lab@cisco.com" }, { key = "Terraform Module", value = "Easy IMM" } ]
+
 #______________________________________________
 #
 # Intersight UCS Domain Variables

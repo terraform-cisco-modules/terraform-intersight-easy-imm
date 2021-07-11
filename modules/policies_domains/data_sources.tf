@@ -3,17 +3,13 @@
 # Terraform Remote State for Global Variables
 #____________________________________________________________
 
-data "terraform_remote_state" "global" {
-  backend = "local"
-  config = {
-    path = "../global_vars/terraform.tfstate"
-  }
-}
-
 data "terraform_remote_state" "domain" {
-  backend = "local"
+  backend = "remote"
   config = {
-    path = "../domain/terraform.tfstate"
+    organization = var.tfc_organization
+    workspaces = {
+      name = var.domain_workspace
+    }
   }
 }
 
@@ -24,8 +20,5 @@ data "terraform_remote_state" "domain" {
 #____________________________________________________________
 
 data "intersight_organization_organization" "org_moid" {
-  depends_on = [
-    data.terraform_remote_state.global
-  ]
-  name = data.terraform_remote_state.global.outputs.organization
+  name = var.organization
 }
