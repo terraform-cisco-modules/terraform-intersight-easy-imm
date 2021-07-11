@@ -11,7 +11,7 @@ variable "tfc_organization" {
 
 #______________________________________________
 #
-# Terraform Cloud global_vars Workspace
+# Terraform Cloud domain_workspace Workspace
 #______________________________________________
 
 variable "domain_workspace" {

@@ -4,6 +4,28 @@ terraform {
 
 #__________________________________________________________
 #
+# Terraform Cloud Organization
+#__________________________________________________________
+
+variable "tfc_organization" {
+  description = "Terraform Cloud Organization."
+  type        = string
+}
+
+
+#______________________________________________
+#
+# Terraform Cloud global_vars Workspace
+#______________________________________________
+
+variable "domain_policies_workspace" {
+  description = "Domain Workspace Name."
+  type        = string
+}
+
+
+#__________________________________________________________
+#
 # Intersight Provider Variables
 #__________________________________________________________
 

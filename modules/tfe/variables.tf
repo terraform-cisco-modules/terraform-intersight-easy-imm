@@ -49,6 +49,12 @@ variable "secretkey" {
   type        = string
 }
 
+variable "endpoint" {
+  default     = "https://intersight.com"
+  description = "Intersight URL."
+  type        = string
+}
+
 variable "organization" {
   default     = "default"
   description = "Intersight Organization Name."

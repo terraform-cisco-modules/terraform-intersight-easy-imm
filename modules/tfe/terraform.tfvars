@@ -44,3 +44,10 @@ domain_list = {
 
 # Flag to Disable Switch Assignment.  true or false.
 assign_switches = false
+
+# Variable to Assign Workspace for remote state
+domain_workspace = "Asgard_asgard-ucs"
+
+# Flag to assign Policies to domain or not.
+assign_domain = false
+
