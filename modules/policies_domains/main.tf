@@ -47,7 +47,7 @@ module "native_vlan" {
     module.multicast,
     module.vlan_policy
   ]
-  source           = "../../../terraform-intersight-imm/modules/domain_vlan"
+  source           = "terraform-cisco-modules/imm/intersight//modules/domain_vlan"
   is_native        = true
   multicast_moid   = module.multicast.moid
   vlan             = var.native_vlan
@@ -66,7 +66,7 @@ module "vlan_list" {
     module.multicast,
     module.vlan_policy
   ]
-  source           = "../../../terraform-intersight-imm/modules/domain_vlan_list"
+  source           = "terraform-cisco-modules/imm/intersight//modules/domain_vlan_list"
   is_native        = false
   multicast_moid   = module.multicast.moid
   vlan_list        = var.vlan_list
@@ -410,7 +410,7 @@ module "system_qos_1" {
   depends_on = [
     data.intersight_organization_organization.org_moid,
   ]
-  source      = "../../../terraform-intersight-imm/modules/domain_system_qos"
+  source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
   description = var.system_qos_policy != "" ? "${var.system_qos_policy} System QoS Policy." : "${local.org_name} System QoS Policy."
   name        = var.system_qos_policy != "" ? "${var.system_qos_policy}" : "${local.org_name}"
   org_moid    = local.org_moid
@@ -426,7 +426,7 @@ module "system_qos_2" {
   depends_on = [
     data.intersight_organization_organization.org_moid,
   ]
-  source      = "../../../terraform-intersight-imm/modules/domain_system_qos"
+  source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
   description = var.system_qos_policy != "" ? "${var.system_qos_policy} System QoS Policy." : "${local.org_name} System QoS Policy."
   name        = var.system_qos_policy != "" ? "${var.system_qos_policy}" : "${local.org_name}"
   org_moid    = local.org_moid
