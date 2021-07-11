@@ -4,8 +4,7 @@
 #__________________________________________________________
 
 module "tfc_workspaces" {
-  source              = "../../../terraform-cloud/modules/tfc_workspace"
-  # source            = "terraform-cisco-modules/modules/tfe//modules/tfc_workspaces"
+  source              = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
   for_each            = var.domain_list
   auto_apply          = true
   description         = "Terraform Workspace for Organization ${var.organization}, UCS Domain ${each.value}"
@@ -21,6 +20,5 @@ module "tfc_workspaces" {
 output "workspaces" {
   description = "Terraform Cloud Workspace ID and Name."
   value       = { for v in sort(keys(module.tfc_workspaces)) : v => module.tfc_workspaces[v] }
-  # value       = module.tfc_workspaces
 }
 
