@@ -36,12 +36,13 @@ locals {
   ntp_servers = var.tfc_variables.ntp_servers == null ? ["time-a-g.nist.gov", "time-b-g.nist.gov"] : var.tfc_variables.ntp_servers
   timezone = var.tfc_variables.timezone       == null ? "Etc/GMT"                                  : var.tfc_variables.timezone
 
-  # Port Policy
+  # Port Policy, LAN Port-Channel, SAN Port-Channel, and Server Ports
   port_policy            = var.tfc_variables.port_policy            == null ? ""       : var.tfc_variables.port_policy
   lan_pc_breakout_swport = var.tfc_variables.lan_pc_breakout_swport == null ? 0        : var.tfc_variables.lan_pc_breakout_swport
   lan_port_channel       = var.tfc_variables.lan_port_channel       == null ? [53, 54] : var.tfc_variables.lan_port_channel
   lan_uplink_speed       = var.tfc_variables.lan_uplink_speed       == null ? "Auto"   : var.tfc_variables.lan_uplink_speed
   lan_pc_slot_id         = var.tfc_variables.lan_pc_slot_id         == null ? 1        : var.tfc_variables.lan_pc_slot_id
+  fill_pattern           = var.tfc_variables.fill_pattern           == null ? "Idle"   : var.tfc_variables.fill_pattern
   san_pc_breakout_swport = var.tfc_variables.san_pc_breakout_swport == null ? 0        : var.tfc_variables.san_pc_breakout_swport
   san_port_channel       = var.tfc_variables.san_port_channel       == null ? [1, 2]   : var.tfc_variables.san_port_channel
   san_uplink_speed       = var.tfc_variables.san_uplink_speed       == null ? "16Gbps" : var.tfc_variables.san_uplink_speed
@@ -62,6 +63,11 @@ locals {
   udld_message_interval = var.tfc_variables.udld_message_interval == null ? 15        : var.tfc_variables.udld_message_interval
   udld_recovery_action  = var.tfc_variables.udld_recovery_action  == null ? "reset"   : var.tfc_variables.udld_recovery_action
   vlan_optimization     = var.tfc_variables.vlan_optimization     == null ? true      : var.tfc_variables.vlan_optimization
+
+  # Syslog Policy
+  syslog_policy       = var.tfc_variables.syslog_policy       == null ? ""        : var.tfc_variables.syslog_policy
+  syslog_destinations = var.tfc_variables.syslog_destinations == null ? []        : var.tfc_variables.syslog_destinations
+  syslog_severity     = var.tfc_variables.syslog_severity     == null ? "warning" : var.tfc_variables.syslog_severity
 
   # System QoS Policy
   system_qos_policy              = var.tfc_variables.system_qos_policy              == null ? ""         : var.tfc_variables.system_qos_policy
