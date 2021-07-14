@@ -941,7 +941,7 @@ variable "tfc_variables" {
     ipv6_enable                     = optional(bool)
     update_domain                   = optional(string)
     ntp_policy                      = optional(string)
-    ntp_servers                     = optional(string)
+    ntp_servers                     = optional(list(string))
     timezone                        = optional(string)
     port_policy                     = optional(string)
     lan_port_channel                = optional(list(number))
