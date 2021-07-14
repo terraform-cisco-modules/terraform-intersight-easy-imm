@@ -222,7 +222,7 @@ module "server_ports_a" {
     module.port_policy_a
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_port_server"
-  port_list        = "5-12"
+  port_list        = var.server_ports
   port_policy_moid = module.port_policy_a.moid
   tags             = local.tags
 }
@@ -233,7 +233,7 @@ module "server_ports_b" {
     module.port_policy_b
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_port_server"
-  port_list        = "5-12"
+  port_list        = var.server_ports
   port_policy_moid = module.port_policy_b.moid
   tags             = local.tags
 }

@@ -1,3 +1,7 @@
+terraform {
+  experiments = [module_variable_optional_attrs]
+}
+
 #__________________________________________________________
 #
 # Terraform Cloud Organization
@@ -497,6 +501,12 @@ variable "san_pc_breakout_swport" {
   type        = number
 }
 
+variable "san_pc_slot_id" {
+  default     = 1
+  description = "Slot Identifier of the Switch/FEX/Chassis Interface."
+  type        = number
+}
+
 variable "san_port_channel" {
   default     = [1, 2]
   description = "List of Ports to Assign to the SAN Port-Channel Policy."
@@ -509,19 +519,13 @@ variable "san_uplink_speed" {
   type        = string
 }
 
-variable "san_pc_slot_id" {
-  default     = 1
-  description = "Slot Identifier of the Switch/FEX/Chassis Interface."
-  type        = number
-}
-
 
 #______________________________________________
 #
 # Server Port Variables
 #______________________________________________
 
-variable "server_port_range" {
+variable "server_ports" {
   default     = "5-18"
   description = "List of Ports to Configure as Server Ports.\r\nNote: Ports 1-4 will be assigned as Fibre Channel ports.  So the list must start after 5"
   type        = string
@@ -926,3 +930,86 @@ variable "vsan_policy" {
   description = "Intersight VSAN Policy Name.  Default name is {organization}"
   type        = string
 }
+
+variable "tfc_variables" {
+  description = "Object Map of Variables to Assign to the Domain Profile."
+  type        = object({
+    dns_policy                      = optional(string)
+    dns_servers_v4                  = optional(list(string))
+    dns_servers_v6                  = optional(list(string))
+    dynamic_dns                     = optional(bool)
+    ipv6_enable                     = optional(bool)
+    update_domain                   = optional(string)
+    ntp_policy                      = optional(string)
+    ntp_servers                     = optional(string)
+    timezone                        = optional(string)
+    port_policy                     = optional(string)
+    lan_port_channel                = optional(list(number))
+    lan_pc_breakout_swport          = optional(number)
+    lan_pc_slot_id                  = optional(number)
+    lan_uplink_speed                = optional(string)
+    san_port_channel                = optional(list(number))
+    fill_pattern                    = optional(string)
+    san_pc_breakout_swport          = optional(number)
+    san_pc_slot_id                  = optional(number)
+    san_uplink_speed                = optional(string)
+    server_ports                    = optional(string)
+    snmp_policy                     = optional(string)
+    snmp_trap_destinations          = optional(list(map(string)))
+    snmp_users                      = optional(list(map(string)))
+    system_contact                  = optional(string)
+    system_location                 = optional(string)
+    switch_control_policy           = optional(string)
+    mac_aging_option                = optional(string)
+    mac_aging_time                  = optional(number)
+    udld_message_interval           = optional(number)
+    udld_recovery_action            = optional(string)
+    vlan_optimization               = optional(bool)
+    syslog_policy                   = optional(string)
+    syslog_destinations             = optional(list(map(string)))
+    syslog_severity                 = optional(string)
+    system_qos_policy               = optional(string)
+    best_effort_admin_state         = optional(string)
+    best_effort_bandwidth           = optional(number)
+    best_effort_mtu                 = optional(number)
+    best_effort_multicast_optimize  = optional(bool)
+    best_effort_weight              = optional(number)
+    bronze_admin_state              = optional(string)
+    bronze_bandwidth                = optional(number)
+    bronze_cos                      = optional(number)
+    bronze_mtu                      = optional(number)
+    bronze_multicast_optimize       = optional(bool)
+    bronze_packet_drop              = optional(bool)
+    bronze_weight                   = optional(number)
+    fc_bandwidth                    = optional(number)
+    fc_weight                       = optional(number)
+    gold_admin_state                = optional(string)
+    gold_bandwidth                  = optional(number)
+    gold_cos                        = optional(number)
+    gold_mtu                        = optional(number)
+    gold_multicast_optimize         = optional(bool)
+    gold_packet_drop                = optional(bool)
+    gold_weight                     = optional(number)
+    platinum_admin_state            = optional(string)
+    platinum_bandwidth              = optional(number)
+    platinum_cos                    = optional(number)
+    platinum_mtu                    = optional(number)
+    platinum_multicast_optimize     = optional(bool)
+    platinum_packet_drop            = optional(bool)
+    platinum_weight                 = optional(number)
+    silver_admin_state              = optional(string)
+    silver_bandwidth                = optional(number)
+    silver_cos                      = optional(number)
+    silver_mtu                      = optional(number)
+    silver_multicast_optimize       = optional(bool)
+    silver_packet_drop              = optional(bool)
+    silver_weight                   = optional(number)
+    vlan_policy                     = optional(string)
+    native_vlan                     = optional(number)
+    vlan_list                       = optional(string)
+    vsan_policy                     = optional(string)
+    vsan_fabric_a                   = optional(number)
+    vsan_fabric_b                   = optional(number)
+  })
+}
+

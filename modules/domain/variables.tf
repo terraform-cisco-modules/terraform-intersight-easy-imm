@@ -96,18 +96,19 @@ variable "serial_switch_b" {
 }
 
 variable "tfc_variables" {
-  type = object({
-    serial_a           = string
-    serial_b           = string
-    dns_policy         = optional(string)
-    ntp_policy         = optional(string)
-    port_policy        = optional(string)
-    snmp_policy        = optional(string)
-    switch_ctrl_policy = optional(string)
-    syslog_policy      = optional(string)
-    system_qos_policy  = optional(string)
-    vlan_policy        = optional(string)
-    vsan_policy        = optional(string)
+  description = "Object Map of Variables to Assign to the Domain Profile."
+  type        = object({
+    serial_a              = string
+    serial_b              = string
+    dns_policy            = optional(string)
+    ntp_policy            = optional(string)
+    port_policy           = optional(string)
+    snmp_policy           = optional(string)
+    switch_control_policy = optional(string)
+    syslog_policy         = optional(string)
+    system_qos_policy     = optional(string)
+    vlan_policy           = optional(string)
+    vsan_policy           = optional(string)
   })
 }
 

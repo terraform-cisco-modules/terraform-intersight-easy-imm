@@ -16,8 +16,10 @@ locals {
   # Intersight Provider Variables
   endpoint = var.endpoint
 
-  # Tags for Deployment
-  tags     = var.tags
+  # Variables from the tfc_variables input
   serial_a = var.tfc_variables.serial_a == null ? "" : var.tfc_variables.serial_a
   serial_b = var.tfc_variables.serial_b == null ? "" : var.tfc_variables.serial_b
+
+  # Tags for Deployment
+  tags     = var.tags
 }
