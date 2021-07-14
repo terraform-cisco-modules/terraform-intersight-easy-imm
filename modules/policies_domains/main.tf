@@ -29,7 +29,7 @@ module "vlan_policy" {
   description = local.vlan_policy != "" ? "${local.vlan_policy} VLAN Policy." : "${local.org_name} VLAN Policy."
   name        = local.vlan_policy != "" ? local.vlan_policy : local.org_name
   org_moid    = local.org_moid
-  profiles = local.assign_domain == false ? [] : [
+  profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
   ]
@@ -89,7 +89,7 @@ module "vsan_policy_a" {
   description = local.vsan_policy != "" ? "${local.vsan_policy} VSAN Policy Fabric A." : "${local.org_name} VSAN Policy Fabric A."
   name        = local.vsan_policy != "" ? "${local.vsan_policy}_a" : "${local.org_name}_a"
   org_moid    = local.org_moid
-  profiles    = local.assign_domain == false ? [] : [local.domain_profile_a.moid]
+  profiles    = var.assign_domain == false ? [] : [local.domain_profile_a.moid]
   tags        = local.tags
 }
 
@@ -101,7 +101,7 @@ module "vsan_policy_b" {
   description = local.vsan_policy != "" ? "${local.vsan_policy} VSAN Policy Fabric B." : "${local.org_name} VSAN Policy Fabric B."
   name        = local.vsan_policy != "" ? "${local.vsan_policy}_b" : "${local.org_name}_b"
   org_moid    = local.org_moid
-  profiles    = local.assign_domain == false ? [] : [local.domain_profile_b.moid]
+  profiles    = var.assign_domain == false ? [] : [local.domain_profile_b.moid]
   tags        = local.tags
 }
 
@@ -163,7 +163,7 @@ module "port_policy_a" {
   device_model = local.domain_profile_a.model
   name         = local.port_policy != "" ? "${local.port_policy}_a" : "${local.org_name}_a"
   org_moid     = local.org_moid
-  profiles     = local.assign_domain == false ? [] : [local.domain_profile_a.moid]
+  profiles     = var.assign_domain == false ? [] : [local.domain_profile_a.moid]
   tags         = local.tags
 }
 
@@ -176,7 +176,7 @@ module "port_policy_b" {
   device_model = local.domain_profile_b.model
   name         = local.port_policy != "" ? "${local.port_policy}_b" : "${local.org_name}_b"
   org_moid     = local.org_moid
-  profiles     = local.assign_domain == false ? [] : [local.domain_profile_b.moid]
+  profiles     = var.assign_domain == false ? [] : [local.domain_profile_b.moid]
   tags         = local.tags
 }
 
@@ -415,7 +415,7 @@ module "system_qos_1" {
   name        = local.system_qos_policy != "" ? "${local.system_qos_policy}" : "${local.org_name}"
   org_moid    = local.org_moid
   tags        = local.tags
-  profiles = local.assign_domain == false ? [] : [
+  profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
   ]
@@ -519,7 +519,7 @@ module "switch_control" {
   vlan_optimization     = local.vlan_optimization
   org_moid              = local.org_moid
   tags                  = local.tags
-  profiles = local.assign_domain == false ? [] : [
+  profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
   ]
@@ -546,7 +546,7 @@ module "dns" {
   org_moid       = local.org_moid
   tags           = local.tags
   profile_type   = "domain"
-  profiles = local.assign_domain == false ? [] : [
+  profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
   ]
@@ -572,7 +572,7 @@ module "ntp" {
   profile_type = "domain"
   tags         = local.tags
   timezone     = local.timezone
-  profiles = local.assign_domain == false ? [] : [
+  profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
   ]
@@ -594,14 +594,14 @@ module "snmp" {
   name            = local.snmp_policy != "" ? "${local.snmp_policy}" : "${local.org_name}_domain"
   org_moid        = local.org_moid
   profile_type    = "domain"
-  snmp_community  = local.snmp_community
+  snmp_community  = var.snmp_community
   snmp_traps      = local.snmp_trap_destinations
   snmp_users      = local.snmp_users
   system_contact  = local.system_contact
   system_location = local.system_location
   tags            = local.tags
-  trap_community  = local.trap_community
-  profiles = local.assign_domain == false ? [] : [
+  trap_community  = var.trap_community
+  profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
   ]
@@ -626,7 +626,7 @@ module "syslog" {
   remote_clients  = local.syslog_destinations
   syslog_severity = local.syslog_severity
   tags            = local.tags
-  profiles = local.assign_domain == false ? [] : [
+  profiles = var.assign_domain == false ? [] : [
     local.domain_profile_a.moid,
     local.domain_profile_b.moid
   ]
