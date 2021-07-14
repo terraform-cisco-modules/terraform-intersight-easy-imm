@@ -47,7 +47,7 @@ locals {
   san_port_channel       = var.tfc_variables.san_port_channel       == null ? [1, 2]   : var.tfc_variables.san_port_channel
   san_uplink_speed       = var.tfc_variables.san_uplink_speed       == null ? "16Gbps" : var.tfc_variables.san_uplink_speed
   san_pc_slot_id         = var.tfc_variables.san_pc_slot_id         == null ? 1        : var.tfc_variables.san_pc_slot_id
-  server_ports           = var.tfc_variables.server_ports           == null ? 1        : var.tfc_variables.server_ports
+  server_ports           = var.tfc_variables.server_ports           == null ? "5-18"   : var.tfc_variables.server_ports
 
   # SNMP Policy
   snmp_policy            = var.tfc_variables.snmp_policy            == null ? "" : var.tfc_variables.snmp_policy
