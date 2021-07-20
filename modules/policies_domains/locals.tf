@@ -32,14 +32,14 @@ locals {
   multicast_policy        = var.tfc_variables.multicast_policy        == null ? "" : var.tfc_variables.multicast_policy
 
   # NTP Policy
-  ntp_policy = var.tfc_variables.ntp_policy   == null ? ""                                         : var.tfc_variables.ntp_policy
+  ntp_policy  = var.tfc_variables.ntp_policy  == null ? ""                                         : var.tfc_variables.ntp_policy
   ntp_servers = var.tfc_variables.ntp_servers == null ? ["time-a-g.nist.gov", "time-b-g.nist.gov"] : var.tfc_variables.ntp_servers
-  timezone = var.tfc_variables.timezone       == null ? "Etc/GMT"                                  : var.tfc_variables.timezone
+  timezone    = var.tfc_variables.timezone    == null ? "Etc/GMT"                                  : var.tfc_variables.timezone
 
   # Port Policy, LAN Port-Channel, SAN Port-Channel, and Server Ports
   port_policy            = var.tfc_variables.port_policy            == null ? ""       : var.tfc_variables.port_policy
   lan_pc_breakout_swport = var.tfc_variables.lan_pc_breakout_swport == null ? 0        : var.tfc_variables.lan_pc_breakout_swport
-  lan_port_channel       = var.tfc_variables.lan_port_channel       == null ? [53, 54] : var.tfc_variables.lan_port_channel
+  lan_port_channel       = var.tfc_variables.lan_port_channel       == null ? [49, 50] : var.tfc_variables.lan_port_channel
   lan_uplink_speed       = var.tfc_variables.lan_uplink_speed       == null ? "Auto"   : var.tfc_variables.lan_uplink_speed
   lan_pc_slot_id         = var.tfc_variables.lan_pc_slot_id         == null ? 1        : var.tfc_variables.lan_pc_slot_id
   fill_pattern           = var.tfc_variables.fill_pattern           == null ? "Idle"   : var.tfc_variables.fill_pattern
@@ -72,40 +72,40 @@ locals {
   # System QoS Policy
   system_qos_policy              = var.tfc_variables.system_qos_policy              == null ? ""         : var.tfc_variables.system_qos_policy
   best_effort_admin_state        = var.tfc_variables.best_effort_admin_state        == null ? "Enabled"  : var.tfc_variables.best_effort_admin_state
-  best_effort_bandwidth          = var.tfc_variables.best_effort_bandwidth          == null ? 50         : var.tfc_variables.best_effort_bandwidth
+  best_effort_bandwidth          = var.tfc_variables.best_effort_bandwidth          == null ? 5          : var.tfc_variables.best_effort_bandwidth
   best_effort_mtu                = var.tfc_variables.best_effort_mtu                == null ? 9216       : var.tfc_variables.best_effort_mtu
   best_effort_multicast_optimize = var.tfc_variables.best_effort_multicast_optimize == null ? false      : var.tfc_variables.best_effort_multicast_optimize
-  best_effort_weight             = var.tfc_variables.best_effort_weight             == null ? 5          : var.tfc_variables.best_effort_weight
+  best_effort_weight             = var.tfc_variables.best_effort_weight             == null ? 1          : var.tfc_variables.best_effort_weight
   bronze_admin_state             = var.tfc_variables.bronze_admin_state             == null ? "Disabled" : var.tfc_variables.bronze_admin_state
-  bronze_bandwidth               = var.tfc_variables.bronze_bandwidth               == null ? 0          : var.tfc_variables.bronze_bandwidth
+  bronze_bandwidth               = var.tfc_variables.bronze_bandwidth               == null ? 5          : var.tfc_variables.bronze_bandwidth
   bronze_cos                     = var.tfc_variables.bronze_cos                     == null ? 1          : var.tfc_variables.bronze_cos
   bronze_mtu                     = var.tfc_variables.bronze_mtu                     == null ? 9216       : var.tfc_variables.bronze_mtu
   bronze_multicast_optimize      = var.tfc_variables.bronze_multicast_optimize      == null ? false      : var.tfc_variables.bronze_multicast_optimize
   bronze_packet_drop             = var.tfc_variables.bronze_packet_drop             == null ? true       : var.tfc_variables.bronze_packet_drop
-  bronze_weight                  = var.tfc_variables.bronze_weight                  == null ? 7          : var.tfc_variables.bronze_weight
-  fc_bandwidth                   = var.tfc_variables.fc_bandwidth                   == null ? 50         : var.tfc_variables.fc_bandwidth
-  fc_weight                      = var.tfc_variables.fc_weight                      == null ? 5          : var.tfc_variables.fc_weight
+  bronze_weight                  = var.tfc_variables.bronze_weight                  == null ? 1          : var.tfc_variables.bronze_weight
+  fc_bandwidth                   = var.tfc_variables.fc_bandwidth                   == null ? 39         : var.tfc_variables.fc_bandwidth
+  fc_weight                      = var.tfc_variables.fc_weight                      == null ? 6          : var.tfc_variables.fc_weight
   gold_admin_state               = var.tfc_variables.gold_admin_state               == null ? "Disabled" : var.tfc_variables.gold_admin_state
-  gold_bandwidth                 = var.tfc_variables.gold_bandwidth                 == null ? 0          : var.tfc_variables.gold_bandwidth
+  gold_bandwidth                 = var.tfc_variables.gold_bandwidth                 == null ? 23         : var.tfc_variables.gold_bandwidth
   gold_cos                       = var.tfc_variables.gold_cos                       == null ? 4          : var.tfc_variables.gold_cos
   gold_mtu                       = var.tfc_variables.gold_mtu                       == null ? 9216       : var.tfc_variables.gold_mtu
   gold_multicast_optimize        = var.tfc_variables.gold_multicast_optimize        == null ? false      : var.tfc_variables.gold_multicast_optimize
   gold_packet_drop               = var.tfc_variables.gold_packet_drop               == null ? true       : var.tfc_variables.gold_packet_drop
-  gold_weight                    = var.tfc_variables.gold_weight                    == null ? 9          : var.tfc_variables.gold_weight
+  gold_weight                    = var.tfc_variables.gold_weight                    == null ? 4          : var.tfc_variables.gold_weight
   platinum_admin_state           = var.tfc_variables.platinum_admin_state           == null ? "Disabled" : var.tfc_variables.platinum_admin_state
-  platinum_bandwidth             = var.tfc_variables.platinum_bandwidth             == null ? 0          : var.tfc_variables.platinum_bandwidth
+  platinum_bandwidth             = var.tfc_variables.platinum_bandwidth             == null ? 23         : var.tfc_variables.platinum_bandwidth
   platinum_cos                   = var.tfc_variables.platinum_cos                   == null ? 5          : var.tfc_variables.platinum_cos
   platinum_mtu                   = var.tfc_variables.platinum_mtu                   == null ? 9216       : var.tfc_variables.platinum_mtu
   platinum_multicast_optimize    = var.tfc_variables.platinum_multicast_optimize    == null ? false      : var.tfc_variables.platinum_multicast_optimize
-  platinum_packet_drop           = var.tfc_variables.platinum_packet_drop           == null ? true       : var.tfc_variables.platinum_packet_drop
-  platinum_weight                = var.tfc_variables.platinum_weight                == null ? 10         : var.tfc_variables.platinum_weight
+  platinum_packet_drop           = var.tfc_variables.platinum_packet_drop           == null ? false      : var.tfc_variables.platinum_packet_drop
+  platinum_weight                = var.tfc_variables.platinum_weight                == null ? 4          : var.tfc_variables.platinum_weight
   silver_admin_state             = var.tfc_variables.silver_admin_state             == null ? "Disabled" : var.tfc_variables.silver_admin_state
-  silver_bandwidth               = var.tfc_variables.silver_bandwidth               == null ? 0          : var.tfc_variables.silver_bandwidth
+  silver_bandwidth               = var.tfc_variables.silver_bandwidth               == null ? 5          : var.tfc_variables.silver_bandwidth
   silver_cos                     = var.tfc_variables.silver_cos                     == null ? 2          : var.tfc_variables.silver_cos
   silver_mtu                     = var.tfc_variables.silver_mtu                     == null ? 9216       : var.tfc_variables.silver_mtu
   silver_multicast_optimize      = var.tfc_variables.silver_multicast_optimize      == null ? false      : var.tfc_variables.silver_multicast_optimize
   silver_packet_drop             = var.tfc_variables.silver_packet_drop             == null ? true       : var.tfc_variables.silver_packet_drop
-  silver_weight                  = var.tfc_variables.silver_weight                  == null ? 8          : var.tfc_variables.silver_weight
+  silver_weight                  = var.tfc_variables.silver_weight                  == null ? 1          : var.tfc_variables.silver_weight
 
   # VLAN Policy
   vlan_policy = var.tfc_variables.vlan_policy == null ? ""         : var.tfc_variables.vlan_policy
