@@ -9,7 +9,7 @@ variable "terraform_cloud_token" {
   type        = string
 }
 
-variable "tfc_oath_token" {
+variable "tfc_oauth_token" {
   description = "Terraform Cloud OAuth Token for VCS_Repo Integration."
   sensitive   = true
   type        = string
