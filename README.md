@@ -83,15 +83,9 @@
 
 4. Integrate your VCS Repository into the TFCB Orgnization following these instructions: <https://www.terraform.io/docs/cloud/vcs/index.html>.  Be sure to copy the OAth Token which you will use later on for Workspace provisioning.
 
-5. You will need access to a vSphere infrastructure.  You will use this to install the Intersight Assist Appliance and provision the Kubernetes (IKS) Cluster.
-
-6. You will log into your Intersight account and create the following targets. Please refer to Intersight docs for details on how to create these Targets:
-
 ## VERY IMPORTANT NOTE: The Terraform Cloud provider stores terraform state in plain text.  Do not remove the .gitignore that is protecting you from uploading the state files to a public repository in this base directory.  The rest of the modules don't have this same risk
 
 ## Obtain tokens and keys
-
-Follow the base repository instructions to obtain values for the following variables:
 
 ### Terraform Cloud Variables
 
@@ -117,7 +111,7 @@ Follow the base repository instructions to obtain values for the following varia
 
 ### Import the Variables into your Environment before Running the Terraform Cloud Provider module(s) in this directory
 
-Modify the terraform.tfvars file to the unique attributes of your environment
+Modify the terraform.tfvars file to the unique attributes of your environment for your domain and server profiles and policies.
 
 Once finished with the modification commit the changes to your reposotiry.
 
