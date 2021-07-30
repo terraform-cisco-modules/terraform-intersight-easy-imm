@@ -1,4 +1,4 @@
-# Terraform Intersight Module - Easy Intersight Managed Mode
+# Intersight Module - Easy Intersight Managed Mode
 
 ## Use Cases
 
