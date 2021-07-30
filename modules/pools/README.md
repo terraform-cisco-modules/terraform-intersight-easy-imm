@@ -5,7 +5,7 @@
 ## Usage
 
 ```hcl
-module "switch_profile" {
+module "pools" {
 
   source = "terraform-cisco-modules/easy-imm/intersight//modules/pools"
 

@@ -17,7 +17,7 @@ module "multicast" {
 
 #____________________________________________________________
 #
-# Intersight VLAN Policy
+# Intersight UCS Domain VLAN Policy
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 

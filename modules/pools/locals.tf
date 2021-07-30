@@ -3,11 +3,6 @@
 # Local Variables Section
 #__________________________________________________________
 
-#__________________________________________________________
-#
-# Assign Global Attributes from global_vars Workspace
-#__________________________________________________________
-
 locals {
   # Intersight Organization Variables
   organizations = var.organizations

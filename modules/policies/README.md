@@ -1,19 +1,19 @@
-# pools - Intersight Management Mode IP Pool Deployment Module
+# policies - Intersight Management Mode Policies Deployment Module
 
-## Use this module to create IMM Domain Profiles in Intersight
+## Use this module to create Intersight Managed Mode Policies in Intersight
 
 ## Usage
 
 ```hcl
-module "switch_profile" {
+module "policies" {
 
-  source = "terraform-cisco-modules/easy-imm/intersight//modules/pools"
+  source = "terraform-cisco-modules/easy-imm/intersight//modules/policies"
 
   # omitted...
 }
 ```
 
-This module will create Pool resources in Intersight.  These pools can be assigned to Policies and Profiles.  
+This module will create Policy resources in Intersight.  These Policies can be assigned to Server and UCS Domain Profiles.  
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

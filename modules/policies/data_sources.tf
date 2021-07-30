@@ -1,7 +1,7 @@
 #____________________________________________________________
 #
 # Intersight Organization Data Source
-# GUI Location: User Drop Down > Account {Name} > Account ID
+# GUI Location: Settings > Settings > Organizations > Name
 #____________________________________________________________
 
 data "intersight_organization_organization" "org_moid" {
