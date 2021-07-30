@@ -1,4 +1,96 @@
-# Workspace and Variable Creation
+# Terraform Intersight Module - Easy Intersight Managed Mode
+
+## Use Cases
+
+* Build Workspaces in TFCB to support Infrastructure as Code Provisioning.
+* Use TFCB to provision Intersight Pools.
+* Use TFCB to provision Intersight IMM Policies.
+* Use TFCB to provision UCS Domains in IMM Mode.
+* Use TFCB to provision UCS Server Profiles in IMM Mode.
+
+### Pools - module/pools
+
+* Fibre-Channel Pools (WWNN/WWPN)
+* IP Pools
+* IQN Pools
+* MAC Pools
+* UUID Pools
+
+### Domain Policies - module/domains and module/domain_vlans
+
+* Ethernet Network Control (CDP/LLDP)
+* Ethernet Network Group (VLAN Groups)
+* Flow Control
+* Link Aggregation
+* Link Control
+* Multicast
+* Network Connectivity (DNS)
+* NTP
+* Port
+* SNMP
+* Switch Control
+* Syslog
+* System QoS
+* VLAN
+* VSAN
+
+### Server Policies - module/policies
+
+* Adapter Configuration (Standalone Servers)
+* BIOS
+* Boot Order
+* Certificate Management (under development)
+* Device Connector
+* Disk Group
+* Ethernet Adapter (vnIC Adapter Policy)
+* Ethernet Network (Standalone Servers)
+* Ethernet Network Control (CDP/LLDP)
+* Ethernet Network Group (VLAN Groups)
+* Ethernet QoS (vNIC QoS)
+* Fibre Channel Adapter (vHBA Adapter Policy)
+* Fibre Channel Network
+* Fibre Channel QoS (vHBA QoS)
+* IMC Access
+* IPMI Over LAN
+* iSCSI Adapter
+* iSCSI Boot
+* iSCSI Static Target
+* LAN Connectivity
+* LDAP (Standalone Servers)
+* Local User
+* Network Connectivity
+* NTP
+* Persistent Memory
+* Power
+* SAN Connectivity
+* SD Card
+* Serial Over LAN
+* SMTP
+* SNMP
+* SSH
+* Storage
+* Syslog
+* Virtual KVM
+* Virtual Media
+
+* As a Cloud Admin, use IST, ((Intersight Service for HashiCorp Terraform), to deploy IWO (Intersight Workload Optimizer) Collector to collect app and infrastructure insights.
+* As an App Developer, use IST to deploy a sample "Hello IKS" Application.
+
+![alt text](https://github.com/prathjan/images/blob/main/iksnew.png?raw=true)
+
+### Pre-requisites and Guidelines
+
+1. Sign up for a user account on Intersight.com. You will need at least one Advantage Tier license as well as a Intersight Workload Optimizer license to complete this use case. Log in to intersight.com and generate API/Secret Keys.  Both licensing requirements can utilize the available demo licensing if you don't have the subscription levels.
+
+2. Sign up for a TFCB (Terraform for Cloud Business) at <https://app.terraform.io/>. Log in and generate the User API Key. You will need this when you create the TF Cloud Target in Intersight.  If not a paid version, you will need to enable the trial account.
+
+3. Clone this repository to your own VCS Repository for the VCS Integration with Terraform Cloud.
+
+4. Integrate your VCS Repository into the TFCB Orgnization following these instructions: <https://www.terraform.io/docs/cloud/vcs/index.html>.  Be sure to copy the OAth Token which you will use later on for Workspace provisioning.
+
+5. You will need access to a vSphere infrastructure.  You will use this to install the Intersight Assist Appliance and provision the Kubernetes (IKS) Cluster.
+
+6. You will log into your Intersight account and create the following targets. Please refer to Intersight docs for details on how to create these Targets:
 
 ## VERY IMPORTANT NOTE: The Terraform Cloud provider stores terraform state in plain text.  Do not remove the .gitignore that is protecting you from uploading the state files to a public repository in this base directory.  The rest of the modules don't have this same risk
 
