@@ -27,6 +27,12 @@ variable "configure_snmp" {
   type        = bool
 }
 
+variable "configure_snmp_type" {
+  default     = "snmp_community"
+  description = "When configuring SNMP, should the script use snmp communities or users.  Options are {snmp_community|snmp_1_user|snmp_2_user}."
+  type        = string
+}
+
 variable "configure_syslog" {
   default     = false
   description = "Flag to Specify if the Syslog Policy should be configured."

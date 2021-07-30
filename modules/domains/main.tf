@@ -656,14 +656,14 @@ module "ntp" {
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
-module "snmp" {
+module "snmp_community" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profile_a,
     module.ucs_domain_profile_b
   ]
-  source                  = "../../../terraform-intersight-imm/modules/policies_snmp_1_user"
-  for_each                = var.configure_snmp == true ? local.ucs_domain_profile : {}
+  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  for_each                = var.configure_snmp == true && var.configure_snmp_type == "snmp_community" ? local.ucs_domain_profile : {}
   description             = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
   name                    = "${each.key}_snmp"
   org_moid                = local.org_moids[each.value.organization].moid
@@ -674,11 +674,65 @@ module "snmp" {
   system_location         = each.value.snmp_system_location
   tags                    = each.value.tags != [] ? each.value.tags : local.tags
   trap_community          = var.snmp_trap_community
+  profiles                = var.assign_domain == true ? [
+    module.ucs_domain_profile_a[each.key].moid,
+    module.ucs_domain_profile_b[each.key].moid
+  ] : []
+}
+
+module "snmp_1_user" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_domain_profile_a,
+    module.ucs_domain_profile_b
+  ]
+  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user"
+  for_each                = var.configure_snmp == true && var.configure_snmp_type == "snmp_1_user" ? local.ucs_domain_profile : {}
+  description             = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
+  name                    = "${each.key}_snmp"
+  org_moid                = local.org_moids[each.value.organization].moid
+  profile_type            = "domain"
+  snmp_traps              = each.value.snmp_trap_destinations
+  system_contact          = each.value.snmp_system_contact
+  system_location         = each.value.snmp_system_location
+  tags                    = each.value.tags != [] ? each.value.tags : local.tags
   user_1_auth_password    = var.snmp_user_1_auth_password
   user_1_auth_type        = each.value.snmp_user_1_auth_type
   user_1_name             = each.value.snmp_user_1_name
   user_1_privacy_password = var.snmp_user_1_privacy_password
   user_1_security_level   = each.value.snmp_user_1_security_level
+  profiles                = var.assign_domain == true ? [
+    module.ucs_domain_profile_a[each.key].moid,
+    module.ucs_domain_profile_b[each.key].moid
+  ] : []
+}
+
+module "snmp_2_user" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_domain_profile_a,
+    module.ucs_domain_profile_b
+  ]
+  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_user"
+  for_each                = var.configure_snmp == true && var.configure_snmp_type == "snmp_2_user" ? local.ucs_domain_profile : {}
+  description             = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
+  name                    = "${each.key}_snmp"
+  org_moid                = local.org_moids[each.value.organization].moid
+  profile_type            = "domain"
+  snmp_traps              = each.value.snmp_trap_destinations
+  system_contact          = each.value.snmp_system_contact
+  system_location         = each.value.snmp_system_location
+  tags                    = each.value.tags != [] ? each.value.tags : local.tags
+  user_1_auth_password    = var.snmp_user_1_auth_password
+  user_1_auth_type        = each.value.snmp_user_1_auth_type
+  user_1_name             = each.value.snmp_user_1_name
+  user_1_privacy_password = var.snmp_user_1_privacy_password
+  user_1_security_level   = each.value.snmp_user_1_security_level
+  user_2_auth_password    = var.snmp_user_2_auth_password
+  user_2_auth_type        = each.value.snmp_user_2_auth_type
+  user_2_name             = each.value.snmp_user_2_name
+  user_2_privacy_password = var.snmp_user_2_privacy_password
+  user_2_security_level   = each.value.snmp_user_2_security_level
   profiles                = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid

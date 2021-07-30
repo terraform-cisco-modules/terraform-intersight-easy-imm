@@ -211,6 +211,11 @@ module "workspaces_domain_variables" {
       key         = "configure_snmp"
       value       = var.configure_snmp
     },
+    configure_snmp_type = {
+      description = "When configuring SNMP, should the script use snmp communities or users.  Options are {snmp_community|snmp_1_user|snmp_2_user}."
+      key         = "configure_snmp_type"
+      value       = var.configure_snmp_type
+    },
     configure_syslog = {
       description = "Flag to Specify if Syslog Policy should be configured."
       key         = "configure_syslog"
