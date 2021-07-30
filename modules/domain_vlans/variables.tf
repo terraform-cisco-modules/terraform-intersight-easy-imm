@@ -4,28 +4,6 @@ terraform {
 
 #__________________________________________________________
 #
-# Terraform Cloud Organization
-#__________________________________________________________
-
-variable "tfc_organization" {
-  description = "Terraform Cloud Organization."
-  type        = string
-}
-
-
-#______________________________________________
-#
-# Terraform Cloud domain_workspace Workspace
-#______________________________________________
-
-variable "domain_workspace" {
-  description = "Domain Workspace Name."
-  type        = string
-}
-
-
-#__________________________________________________________
-#
 # Intersight Provider Variables
 #__________________________________________________________
 
@@ -54,513 +32,255 @@ variable "secretkey" {
 #__________________________________________________________
 
 variable "organizations" {
-  description = "Intersight Organization Names to Apply Policy to.  https://intersight.com/an/settings/organizations/."
+  default     = ["default"]
+  description = "Intersight Organization Names."
   type        = set(string)
 }
 
 variable "tags" {
   default     = []
-  description = "Tags to be Associated with Objects Created in Intersight."
+  description = "List of Key/Value Pairs to Assign as Attributes to the Policy."
   type        = list(map(string))
-}
-
-
-#______________________________________________
-#
-# Deployment Variables
-#______________________________________________
-
-variable "Cluster_ID" {
-  default     = "0"
-  description = "A single digit Cluster Identifier between 0 and 256 in Hex. (0-9, A, B, C, D, E, F)."
-  type        = string
-}
-
-variable "Organization_ID" {
-  default     = "0"
-  description = "A single digit site identifier between 0 and 15 in Hex. (0-9, A, B, C, D, E, F)."
-  type        = string
-  validation {
-    condition = (
-      var.Organization_ID == "0" ||
-      var.Organization_ID == "1" ||
-      var.Organization_ID == "2" ||
-      var.Organization_ID == "3" ||
-      var.Organization_ID == "4" ||
-      var.Organization_ID == "5" ||
-      var.Organization_ID == "6" ||
-      var.Organization_ID == "7" ||
-      var.Organization_ID == "8" ||
-      var.Organization_ID == "9" ||
-      var.Organization_ID == "A" ||
-      var.Organization_ID == "B" ||
-      var.Organization_ID == "C" ||
-      var.Organization_ID == "D" ||
-      var.Organization_ID == "E" ||
-      var.Organization_ID == "F" ||
-      var.Organization_ID == "a" ||
-      var.Organization_ID == "b" ||
-      var.Organization_ID == "c" ||
-      var.Organization_ID == "d" ||
-      var.Organization_ID == "e" ||
-      var.Organization_ID == "f"
-    )
-    error_message = "Organization_ID Must be a single digit value in Hex between 0 and F."
-  }
-}
-
-variable "Site_ID" {
-  default     = "0"
-  description = "A single digit site identifier between 0 and 15 in Hex. (0-9, A, B, C, D, E, F)."
-  type        = string
-  validation {
-    condition = (
-      var.Site_ID == "0" ||
-      var.Site_ID == "1" ||
-      var.Site_ID == "2" ||
-      var.Site_ID == "3" ||
-      var.Site_ID == "4" ||
-      var.Site_ID == "5" ||
-      var.Site_ID == "6" ||
-      var.Site_ID == "7" ||
-      var.Site_ID == "8" ||
-      var.Site_ID == "9" ||
-      var.Site_ID == "A" ||
-      var.Site_ID == "B" ||
-      var.Site_ID == "C" ||
-      var.Site_ID == "D" ||
-      var.Site_ID == "E" ||
-      var.Site_ID == "F" ||
-      var.Site_ID == "a" ||
-      var.Site_ID == "b" ||
-      var.Site_ID == "c" ||
-      var.Site_ID == "d" ||
-      var.Site_ID == "e" ||
-      var.Site_ID == "f"
-    )
-    error_message = "Site_ID Must be a single digit value in Hex between 0 and F."
-  }
-}
-output "Site_ID" {
-  description = "Site Identifier."
-  value       = var.Site_ID
 }
 
 
 #__________________________________________________________
 #
-# Policies Shared between Domains and Servers
+# Intersight UCS Domain Profile Variables
 #__________________________________________________________
 
-#______________________________________________
-#
-# Global IP Variables
-#______________________________________________
-
-variable "ipv4_enable" {
-  default     = true
-  description = "Flag to Enable or Disable IPv4 for the deployment."
-  type        = bool
-}
-
-variable "ipv6_enable" {
-  default     = false
-  description = "Flag to Enable or Disable IPv6 for the deployment."
-  type        = bool
-}
-
-
-#______________________________________________
-#
-# (DNS) Network Connectivity Policy Variables
-#______________________________________________
-
-variable "dns_policy" {
-  default     = ""
-  description = "Intersight Network Connectivity (DNS) Policy Name.  Default name is {organization}"
-  type        = string
-}
-
-variable "dns_servers_v4" {
-  default     = ["208.67.222.222", "208.67.220.220"]
-  description = "List of IPv4 DNS Server(s) for Deployment.  Can be one or two servers."
-  type        = list(string)
-}
-
-variable "dns_servers_v6" {
-  default     = ["empty"]
-  description = "List of IPv6 DNS Server(s) for Deployment.  Can be one or two servers."
-  type        = list(string)
-}
-
-variable "dynamic_dns" {
-  default     = false
-  description = "Flag to Enable or Disable Dynamic DNS on the Policy.  Meaning obtain DNS Servers from DHCP Service."
-  type        = bool
-}
-
-variable "update_domain" {
-  default     = ""
-  description = "Name of the Domain to Update when using Dynamic DNS for the Policy."
-  type        = string
-}
-
-
-#______________________________________________
-#
-# NTP Policy Variables
-#______________________________________________
-
-variable "ntp_policy" {
-  default     = ""
-  description = "Intersight NTP Policy Name.  Default name is {organization}"
-  type        = string
-}
-
-variable "ntp_servers" {
-  default     = ["time-a-g.nist.gov", "time-b-g.nist.gov"]
-  description = "List of NTP Server for Deployment.  If undefined then the dns_servers will be used."
-  type        = list(string)
-}
-
-variable "timezone" {
-  default     = "Etc/GMT"
-  description = "Timezone for Deployment.  For a List of supported timezones see the following URL.\r\n https://github.com/terraform-cisco-modules/terraform-intersight-imm/blob/master/modules/policies_ntp/README.md."
-  type        = string
-  validation {
-    condition = (
-      var.timezone == "Africa/Abidjan" ||
-      var.timezone == "Africa/Accra" ||
-      var.timezone == "Africa/Algiers" ||
-      var.timezone == "Africa/Bissau" ||
-      var.timezone == "Africa/Cairo" ||
-      var.timezone == "Africa/Casablanca" ||
-      var.timezone == "Africa/Ceuta" ||
-      var.timezone == "Africa/El_Aaiun" ||
-      var.timezone == "Africa/Johannesburg" ||
-      var.timezone == "Africa/Khartoum" ||
-      var.timezone == "Africa/Lagos" ||
-      var.timezone == "Africa/Maputo" ||
-      var.timezone == "Africa/Monrovia" ||
-      var.timezone == "Africa/Nairobi" ||
-      var.timezone == "Africa/Ndjamena" ||
-      var.timezone == "Africa/Tripoli" ||
-      var.timezone == "Africa/Tunis" ||
-      var.timezone == "Africa/Windhoek" ||
-      var.timezone == "America/Anchorage" ||
-      var.timezone == "America/Araguaina" ||
-      var.timezone == "America/Argentina/Buenos_Aires" ||
-      var.timezone == "America/Asuncion" ||
-      var.timezone == "America/Bahia" ||
-      var.timezone == "America/Barbados" ||
-      var.timezone == "America/Belem" ||
-      var.timezone == "America/Belize" ||
-      var.timezone == "America/Boa_Vista" ||
-      var.timezone == "America/Bogota" ||
-      var.timezone == "America/Campo_Grande" ||
-      var.timezone == "America/Cancun" ||
-      var.timezone == "America/Caracas" ||
-      var.timezone == "America/Cayenne" ||
-      var.timezone == "America/Cayman" ||
-      var.timezone == "America/Chicago" ||
-      var.timezone == "America/Costa_Rica" ||
-      var.timezone == "America/Cuiaba" ||
-      var.timezone == "America/Curacao" ||
-      var.timezone == "America/Danmarkshavn" ||
-      var.timezone == "America/Dawson_Creek" ||
-      var.timezone == "America/Denver" ||
-      var.timezone == "America/Edmonton" ||
-      var.timezone == "America/El_Salvador" ||
-      var.timezone == "America/Fortaleza" ||
-      var.timezone == "America/Godthab" ||
-      var.timezone == "America/Grand_Turk" ||
-      var.timezone == "America/Guatemala" ||
-      var.timezone == "America/Guayaquil" ||
-      var.timezone == "America/Guyana" ||
-      var.timezone == "America/Halifax" ||
-      var.timezone == "America/Havana" ||
-      var.timezone == "America/Hermosillo" ||
-      var.timezone == "America/Iqaluit" ||
-      var.timezone == "America/Jamaica" ||
-      var.timezone == "America/La_Paz" ||
-      var.timezone == "America/Lima" ||
-      var.timezone == "America/Los_Angeles" ||
-      var.timezone == "America/Maceio" ||
-      var.timezone == "America/Managua" ||
-      var.timezone == "America/Manaus" ||
-      var.timezone == "America/Martinique" ||
-      var.timezone == "America/Mazatlan" ||
-      var.timezone == "America/Mexico_City" ||
-      var.timezone == "America/Miquelon" ||
-      var.timezone == "America/Montevideo" ||
-      var.timezone == "America/Nassau" ||
-      var.timezone == "America/New_York" ||
-      var.timezone == "America/Noronha" ||
-      var.timezone == "America/Panama" ||
-      var.timezone == "America/Paramaribo" ||
-      var.timezone == "America/Phoenix" ||
-      var.timezone == "America/Port_of_Spain" ||
-      var.timezone == "America/Port-au-Prince" ||
-      var.timezone == "America/Porto_Velho" ||
-      var.timezone == "America/Puerto_Rico" ||
-      var.timezone == "America/Recife" ||
-      var.timezone == "America/Regina" ||
-      var.timezone == "America/Rio_Branco" ||
-      var.timezone == "America/Santiago" ||
-      var.timezone == "America/Santo_Domingo" ||
-      var.timezone == "America/Sao_Paulo" ||
-      var.timezone == "America/Scoresbysund" ||
-      var.timezone == "America/St_Johns" ||
-      var.timezone == "America/Tegucigalpa" ||
-      var.timezone == "America/Thule" ||
-      var.timezone == "America/Tijuana" ||
-      var.timezone == "America/Toronto" ||
-      var.timezone == "America/Vancouver" ||
-      var.timezone == "America/Whitehorse" ||
-      var.timezone == "America/Winnipeg" ||
-      var.timezone == "America/Yellowknife" ||
-      var.timezone == "Antarctica/Casey" ||
-      var.timezone == "Antarctica/Davis" ||
-      var.timezone == "Antarctica/DumontDUrville" ||
-      var.timezone == "Antarctica/Mawson" ||
-      var.timezone == "Antarctica/Palmer" ||
-      var.timezone == "Antarctica/Rothera" ||
-      var.timezone == "Antarctica/Syowa" ||
-      var.timezone == "Antarctica/Vostok" ||
-      var.timezone == "Asia/Almaty" ||
-      var.timezone == "Asia/Amman" ||
-      var.timezone == "Asia/Aqtau" ||
-      var.timezone == "Asia/Aqtobe" ||
-      var.timezone == "Asia/Ashgabat" ||
-      var.timezone == "Asia/Baghdad" ||
-      var.timezone == "Asia/Baku" ||
-      var.timezone == "Asia/Bangkok" ||
-      var.timezone == "Asia/Beirut" ||
-      var.timezone == "Asia/Bishkek" ||
-      var.timezone == "Asia/Brunei" ||
-      var.timezone == "Asia/Calcutta" ||
-      var.timezone == "Asia/Choibalsan" ||
-      var.timezone == "Asia/Colombo" ||
-      var.timezone == "Asia/Damascus" ||
-      var.timezone == "Asia/Dhaka" ||
-      var.timezone == "Asia/Dili" ||
-      var.timezone == "Asia/Dubai" ||
-      var.timezone == "Asia/Dushanbe" ||
-      var.timezone == "Asia/Gaza" ||
-      var.timezone == "Asia/Hong_Kong" ||
-      var.timezone == "Asia/Hovd" ||
-      var.timezone == "Asia/Irkutsk" ||
-      var.timezone == "Asia/Jakarta" ||
-      var.timezone == "Asia/Jayapura" ||
-      var.timezone == "Asia/Jerusalem" ||
-      var.timezone == "Asia/Kabul" ||
-      var.timezone == "Asia/Kamchatka" ||
-      var.timezone == "Asia/Karachi" ||
-      var.timezone == "Asia/Katmandu" ||
-      var.timezone == "Asia/Kolkata" ||
-      var.timezone == "Asia/Krasnoyarsk" ||
-      var.timezone == "Asia/Kuala_Lumpur" ||
-      var.timezone == "Asia/Macau" ||
-      var.timezone == "Asia/Magadan" ||
-      var.timezone == "Asia/Makassar" ||
-      var.timezone == "Asia/Manila" ||
-      var.timezone == "Asia/Nicosia" ||
-      var.timezone == "Asia/Omsk" ||
-      var.timezone == "Asia/Pyongyang" ||
-      var.timezone == "Asia/Qatar" ||
-      var.timezone == "Asia/Rangoon" ||
-      var.timezone == "Asia/Riyadh" ||
-      var.timezone == "Asia/Saigon" ||
-      var.timezone == "Asia/Seoul" ||
-      var.timezone == "Asia/Shanghai" ||
-      var.timezone == "Asia/Singapore" ||
-      var.timezone == "Asia/Taipei" ||
-      var.timezone == "Asia/Tashkent" ||
-      var.timezone == "Asia/Tbilisi" ||
-      var.timezone == "Asia/Tehran" ||
-      var.timezone == "Asia/Thimphu" ||
-      var.timezone == "Asia/Tokyo" ||
-      var.timezone == "Asia/Ulaanbaatar" ||
-      var.timezone == "Asia/Vladivostok" ||
-      var.timezone == "Asia/Yakutsk" ||
-      var.timezone == "Asia/Yekaterinburg" ||
-      var.timezone == "Asia/Yerevan" ||
-      var.timezone == "Atlantic/Azores" ||
-      var.timezone == "Atlantic/Bermuda" ||
-      var.timezone == "Atlantic/Canary" ||
-      var.timezone == "Atlantic/Cape_Verde" ||
-      var.timezone == "Atlantic/Faroe" ||
-      var.timezone == "Atlantic/Reykjavik" ||
-      var.timezone == "Atlantic/South_Georgia" ||
-      var.timezone == "Atlantic/Stanley" ||
-      var.timezone == "Australia/Adelaide" ||
-      var.timezone == "Australia/Brisbane" ||
-      var.timezone == "Australia/Darwin" ||
-      var.timezone == "Australia/Hobart" ||
-      var.timezone == "Australia/Perth" ||
-      var.timezone == "Australia/Sydney" ||
-      var.timezone == "Etc/GMT" ||
-      var.timezone == "Europe/Amsterdam" ||
-      var.timezone == "Europe/Andorra" ||
-      var.timezone == "Europe/Athens" ||
-      var.timezone == "Europe/Belgrade" ||
-      var.timezone == "Europe/Berlin" ||
-      var.timezone == "Europe/Brussels" ||
-      var.timezone == "Europe/Bucharest" ||
-      var.timezone == "Europe/Budapest" ||
-      var.timezone == "Europe/Chisinau" ||
-      var.timezone == "Europe/Copenhagen" ||
-      var.timezone == "Europe/Dublin" ||
-      var.timezone == "Europe/Gibraltar" ||
-      var.timezone == "Europe/Helsinki" ||
-      var.timezone == "Europe/Istanbul" ||
-      var.timezone == "Europe/Kaliningrad" ||
-      var.timezone == "Europe/Kiev" ||
-      var.timezone == "Europe/Lisbon" ||
-      var.timezone == "Europe/London" ||
-      var.timezone == "Europe/Luxembourg" ||
-      var.timezone == "Europe/Madrid" ||
-      var.timezone == "Europe/Malta" ||
-      var.timezone == "Europe/Minsk" ||
-      var.timezone == "Europe/Monaco" ||
-      var.timezone == "Europe/Moscow" ||
-      var.timezone == "Europe/Oslo" ||
-      var.timezone == "Europe/Paris" ||
-      var.timezone == "Europe/Prague" ||
-      var.timezone == "Europe/Riga" ||
-      var.timezone == "Europe/Rome" ||
-      var.timezone == "Europe/Samara" ||
-      var.timezone == "Europe/Sofia" ||
-      var.timezone == "Europe/Stockholm" ||
-      var.timezone == "Europe/Tallinn" ||
-      var.timezone == "Europe/Tirane" ||
-      var.timezone == "Europe/Vienna" ||
-      var.timezone == "Europe/Vilnius" ||
-      var.timezone == "Europe/Warsaw" ||
-      var.timezone == "Europe/Zurich" ||
-      var.timezone == "Indian/Chagos" ||
-      var.timezone == "Indian/Christmas" ||
-      var.timezone == "Indian/Cocos" ||
-      var.timezone == "Indian/Kerguelen" ||
-      var.timezone == "Indian/Mahe" ||
-      var.timezone == "Indian/Maldives" ||
-      var.timezone == "Indian/Mauritius" ||
-      var.timezone == "Indian/Reunion" ||
-      var.timezone == "Pacific/Apia" ||
-      var.timezone == "Pacific/Auckland" ||
-      var.timezone == "Pacific/Chuuk" ||
-      var.timezone == "Pacific/Easter" ||
-      var.timezone == "Pacific/Efate" ||
-      var.timezone == "Pacific/Enderbury" ||
-      var.timezone == "Pacific/Fakaofo" ||
-      var.timezone == "Pacific/Fiji" ||
-      var.timezone == "Pacific/Funafuti" ||
-      var.timezone == "Pacific/Galapagos" ||
-      var.timezone == "Pacific/Gambier" ||
-      var.timezone == "Pacific/Guadalcanal" ||
-      var.timezone == "Pacific/Guam" ||
-      var.timezone == "Pacific/Honolulu" ||
-      var.timezone == "Pacific/Kiritimati" ||
-      var.timezone == "Pacific/Kosrae" ||
-      var.timezone == "Pacific/Kwajalein" ||
-      var.timezone == "Pacific/Majuro" ||
-      var.timezone == "Pacific/Marquesas" ||
-      var.timezone == "Pacific/Nauru" ||
-      var.timezone == "Pacific/Niue" ||
-      var.timezone == "Pacific/Norfolk" ||
-      var.timezone == "Pacific/Noumea" ||
-      var.timezone == "Pacific/Pago_Pago" ||
-      var.timezone == "Pacific/Palau" ||
-      var.timezone == "Pacific/Pitcairn" ||
-      var.timezone == "Pacific/Pohnpei" ||
-      var.timezone == "Pacific/Port_Moresby" ||
-      var.timezone == "Pacific/Rarotonga" ||
-      var.timezone == "Pacific/Tahiti" ||
-      var.timezone == "Pacific/Tarawa" ||
-      var.timezone == "Pacific/Tongatapu" ||
-      var.timezone == "Pacific/Wake" ||
-      var.timezone == "Pacific/Wallis"
-    )
-    error_message = "Please Validate that you have input a valid timezone. For a List of supported timezones see the following URL.\r\n https://github.com/terraform-cisco-modules/terraform-intersight-imm/blob/master/modules/policies_ntp/README.md."
+variable "ucs_domain_profile" {
+  default = {
+    default = { # The UCS Domain Profile Name will be {each.key}.  In this case it would be default if left like this.
+      domain_action                      = "No-op"
+      domain_description                 = ""
+      domain_descr_fi_a                  = ""
+      domain_descr_fi_b                  = ""
+      domain_policy_bucket               = []
+      domain_serial_a                    = ""
+      domain_serial_b                    = ""
+      dns_description                    = ""
+      dns_dynamic                        = false
+      dns_ipv6_enable                    = false
+      dns_servers_v4                     = ["208.67.220.220", "208.67.222.222"]
+      dns_servers_v6                     = []
+      dns_update_domain                  = ""
+      flow_control_description           = ""
+      flow_control_mode                  = "auto"
+      flow_control_receive               = "Disabled"
+      flow_control_send                  = "Disabled"
+      link_agg_description               = ""
+      link_agg_lacp_rate                 = "normal"
+      link_agg_suspend_individual        = false
+      link_ctrl_description              = ""
+      link_ctrl_udld_admin_state         = "Enabled"
+      link_ctrl_udld_mode                = "normal"
+      multicast_description              = ""
+      multicast_querier_ip               = ""
+      multicast_querier_state            = "Disabled"
+      multicast_snooping_state           = "Enabled"
+      ntp_description                    = ""
+      ntp_servers                        = ["time-a-g.nist.gov", "time-b-g.nist.gov"]
+      ntp_timezone                       = "Etc/GMT"
+      organization                       = "default"
+      port_policy_a_description          = ""
+      port_policy_b_description          = ""
+      ports_device_model                 = "UCS-FI-6454"
+      ports_fc_ports                     = [1, 4]
+      ports_fc_slot_id                   = 1
+      ports_lan_pc_breakoutswport        = 0
+      ports_lan_pc_ports                 = [49, 50]
+      ports_lan_pc_speed                 = "Auto"
+      ports_lan_pc_slot_id               = 1
+      ports_san_fill_pattern             = "Arbff"
+      ports_san_pc_breakoutswport        = 0
+      ports_san_pc_ports                 = [1, 2]
+      ports_san_pc_speed                 = "16Gbps"
+      ports_san_pc_slot_id               = 1
+      ports_servers                      = "5-18"
+      qos_best_effort_admin_state        = "Enabled"
+      qos_best_effort_bandwidth          = 5
+      qos_best_effort_mtu                = 9216
+      qos_best_effort_multicast_optimize = false
+      qos_best_effort_weight             = 1
+      qos_bronze_admin_state             = "Enabled"
+      qos_bronze_bandwidth               = 5
+      qos_bronze_cos                     = 1
+      qos_bronze_mtu                     = 9216
+      qos_bronze_multicast_optimize      = false
+      qos_bronze_packet_drop             = true
+      qos_bronze_weight                  = 1
+      qos_description                    = ""
+      qos_fc_bandwidth                   = 39
+      qos_fc_weight                      = 6
+      qos_gold_admin_state               = "Enabled"
+      qos_gold_bandwidth                 = 23
+      qos_gold_cos                       = 4
+      qos_gold_mtu                       = 9216
+      qos_gold_multicast_optimize        = false
+      qos_gold_packet_drop               = true
+      qos_gold_weight                    = 4
+      qos_platinum_admin_state           = "Enabled"
+      qos_platinum_bandwidth             = 23
+      qos_platinum_cos                   = 5
+      qos_platinum_mtu                   = 9216
+      qos_platinum_multicast_optimize    = false
+      qos_platinum_packet_drop           = false
+      qos_platinum_weight                = 4
+      qos_silver_admin_state             = "Enabled"
+      qos_silver_bandwidth               = 5
+      qos_silver_cos                     = 2
+      qos_silver_mtu                     = 9216
+      qos_silver_multicast_optimize      = false
+      qos_silver_packet_drop             = true
+      qos_silver_weight                  = 1
+      snmp_description                   = ""
+      snmp_system_contact                = ""
+      snmp_system_location               = ""
+      snmp_trap_destinations             = []
+      snmp_user_1_auth_type              = "SHA"
+      snmp_user_1_name                   = "snmp_user_1"
+      snmp_user_1_security_level         = "AuthPriv"
+      snmp_user_2_auth_type              = "SHA"
+      snmp_user_2_name                   = "snmp_user_2"
+      snmp_user_2_security_level         = "AuthPriv"
+      sw_ctrl_description                = ""
+      sw_ctrl_mac_aging_option           = "Default"
+      sw_ctrl_mac_aging_time             = 14500
+      sw_ctrl_udld_message_interval      = 15
+      sw_ctrl_udld_recovery_action       = "reset"
+      sw_ctrl_vlan_optimization          = true
+      syslog_description                 = ""
+      syslog_destinations                = []
+      syslog_severity                    = "warning"
+      tags                               = []
+      vlan_description                   = ""
+      vlan_native                        = 1
+      vlan_list                          = "2-3"
+      vsan_a_description                 = ""
+      vsan_b_description                 = ""
+      vsan_enable_trunking               = false
+      vsan_fabric_a                      = 100
+      vsan_fabric_a_fcoe                 = ""
+      vsan_fabric_b                      = 200
+      vsan_fabric_b_fcoe                 = ""
+    }
   }
-}
-
-
-#______________________________________________
-#
-# SNMP Policy Variables
-#______________________________________________
-
-variable "snmp_auth_password" {
-  default     = ""
-  description = "SNMP User Authentication Password."
-  sensitive   = true
-  type        = string
-}
-
-variable "snmp_community" {
-  default     = ""
-  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
-  sensitive   = true
-  type        = string
-}
-
-variable "snmp_policy" {
-  default     = ""
-  description = "Intersight SNMP Policy Name.  Default name is {organization}"
-  type        = string
-}
-
-variable "snmp_trap_destinations" {
-  default     = []
-  description = "SNMP Trap Destinations Settings."
-  type        = list(map(string))
-}
-
-variable "snmp_users" {
-  default     = []
-  description = "List of SNMP User Settings."
-  type        = list(map(string))
-}
-
-variable "system_contact" {
-  default     = ""
-  description = "SNMP System Contact."
-  type        = string
-}
-
-variable "system_location" {
-  default     = ""
-  description = "SNMP System Location."
-  type        = string
-}
-
-variable "trap_community" {
-  default     = ""
-  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
-  sensitive   = true
-  type        = string
-}
-
-#______________________________________________
-#
-# Syslog Policy Variables
-#______________________________________________
-
-variable "syslog_destinations" {
-  default     = []
-  description = "Configure up to 2 remote syslog servers."
-  type        = list(map(string))
-}
-
-variable "syslog_policy" {
-  default     = ""
-  description = "Intersight Syslog Policy Name.  Default name is {organization}"
-  type        = string
-}
-
-variable "syslog_severity" {
-  default = "warning"
-  description = "Lowest level of messages to be included in the local log.\r\n * warning - Use logging level warning for logs classified as warning.\r\n * emergency - Use logging level emergency for logs classified as emergency.\r\n * alert - Use logging level alert for logs classified as alert.\r\n * critical - Use logging level critical for logs classified as critical.\r\n * error - Use logging level error for logs classified as error.\r\n * notice - Use logging level notice for logs classified as notice.\r\n * informational - Use logging level informational for logs classified as informational.\r\n * debug - Use logging level debug for logs classified as debug."
-  type = string
+  description = "Intersight UCS Domain Profile Variable Map.\r\n1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ \r\n2. For the remainder of the option documentation refer to these sources:\r\n* https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_cluster\r\n* https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_switch"
+  type = map(object(
+    {
+      domain_action                      = optional(string)
+      domain_description                 = optional(string)
+      domain_descr_fi_a                  = optional(string)
+      domain_descr_fi_b                  = optional(string)
+      domain_policy_bucket               = optional(list(map(string)))
+      domain_serial_a                    = optional(string)
+      domain_serial_b                    = optional(string)
+      dns_description                    = optional(string)
+      dns_dynamic                        = optional(bool)
+      dns_ipv6_enable                    = optional(bool)
+      dns_servers_v4                     = optional(list(string))
+      dns_servers_v6                     = optional(list(string))
+      dns_update_domain                  = optional(string)
+      flow_control_description           = optional(string)
+      flow_control_mode                  = optional(string)
+      flow_control_receive               = optional(string)
+      flow_control_send                  = optional(string)
+      link_agg_description               = optional(string)
+      link_agg_lacp_rate                 = optional(string)
+      link_agg_suspend_individual        = optional(bool)
+      link_ctrl_description              = optional(string)
+      link_ctrl_udld_admin_state         = optional(string)
+      link_ctrl_udld_mode                = optional(string)
+      multicast_description              = optional(string)
+      multicast_querier_ip               = optional(string)
+      multicast_querier_state            = optional(string)
+      multicast_snooping_state           = optional(string)
+      ntp_description                    = optional(string)
+      ntp_servers                        = optional(list(string))
+      ntp_timezone                       = optional(string)
+      organization                       = optional(string)
+      port_policy_a_description          = optional(string)
+      port_policy_b_description          = optional(string)
+      ports_device_model                 = optional(string)
+      ports_fc_ports                     = optional(list(string))
+      ports_fc_slot_id                   = optional(number)
+      ports_lan_pc_breakoutswport        = optional(number)
+      ports_lan_pc_ports                 = optional(list(string))
+      ports_lan_pc_speed                 = optional(string)
+      ports_lan_pc_slot_id               = optional(number)
+      ports_san_fill_pattern             = optional(string)
+      ports_san_pc_breakoutswport        = optional(number)
+      ports_san_pc_ports                 = optional(list(string))
+      ports_san_pc_speed                 = optional(string)
+      ports_san_pc_slot_id               = optional(number)
+      ports_servers                      = optional(string)
+      qos_best_effort_admin_state        = optional(string)
+      qos_best_effort_bandwidth          = optional(number)
+      qos_best_effort_mtu                = optional(number)
+      qos_best_effort_multicast_optimize = optional(bool)
+      qos_best_effort_weight             = optional(number)
+      qos_bronze_admin_state             = optional(string)
+      qos_bronze_bandwidth               = optional(number)
+      qos_bronze_cos                     = optional(number)
+      qos_bronze_mtu                     = optional(number)
+      qos_bronze_multicast_optimize      = optional(bool)
+      qos_bronze_packet_drop             = optional(bool)
+      qos_bronze_weight                  = optional(number)
+      qos_description                    = optional(string)
+      qos_fc_bandwidth                   = optional(number)
+      qos_fc_weight                      = optional(number)
+      qos_gold_admin_state               = optional(string)
+      qos_gold_bandwidth                 = optional(number)
+      qos_gold_cos                       = optional(number)
+      qos_gold_mtu                       = optional(number)
+      qos_gold_multicast_optimize        = optional(bool)
+      qos_gold_packet_drop               = optional(bool)
+      qos_gold_weight                    = optional(number)
+      qos_platinum_admin_state           = optional(string)
+      qos_platinum_bandwidth             = optional(number)
+      qos_platinum_cos                   = optional(number)
+      qos_platinum_mtu                   = optional(number)
+      qos_platinum_multicast_optimize    = optional(bool)
+      qos_platinum_packet_drop           = optional(bool)
+      qos_platinum_weight                = optional(number)
+      qos_silver_admin_state             = optional(string)
+      qos_silver_bandwidth               = optional(number)
+      qos_silver_cos                     = optional(number)
+      qos_silver_mtu                     = optional(number)
+      qos_silver_multicast_optimize      = optional(bool)
+      qos_silver_packet_drop             = optional(bool)
+      qos_silver_weight                  = optional(number)
+      snmp_description                   = optional(string)
+      snmp_system_contact                = optional(string)
+      snmp_system_location               = optional(string)
+      snmp_trap_destinations             = optional(list(map(string)))
+      snmp_user_1_auth_type              = optional(string)
+      snmp_user_1_name                   = optional(string)
+      snmp_user_1_security_level         = optional(string)
+      snmp_user_2_auth_type              = optional(string)
+      snmp_user_2_name                   = optional(string)
+      snmp_user_2_security_level         = optional(string)
+      sw_ctrl_description                = optional(string)
+      sw_ctrl_mac_aging_option           = optional(string)
+      sw_ctrl_mac_aging_time             = optional(number)
+      sw_ctrl_udld_message_interval      = optional(number)
+      sw_ctrl_udld_recovery_action       = optional(string)
+      sw_ctrl_vlan_optimization          = optional(bool)
+      syslog_description                 = optional(string)
+      syslog_destinations                = optional(list(map(string)))
+      syslog_severity                    = optional(string)
+      tags                               = optional(list(map(string)))
+      vlan_description                   = optional(string)
+      vlan_native                        = optional(number)
+      vlan_list                          = optional(string)
+      vsan_a_description                 = optional(string)
+      vsan_b_description                 = optional(string)
+      vsan_enable_trunking               = optional(bool)
+      vsan_fabric_a                      = optional(number)
+      vsan_fabric_a_fcoe                 = optional(string)
+      vsan_fabric_b                      = optional(number)
+      vsan_fabric_b_fcoe                 = optional(string)
+    }
+  ))
 }

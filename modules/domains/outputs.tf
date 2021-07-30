@@ -85,3 +85,15 @@ output "ucs_domain_profile_b_hardware" {
     }
   } : {}
 }
+
+#__________________________________________________________
+#
+# UCS Domain VLAN Policy Outputs
+#__________________________________________________________
+
+output "vlan_policy" {
+  description = "moid of the UCS Domain VLAN Policies."
+  value       = { for v in sort(keys(module.vlan_policy)) : v => module.vlan_policy[v].moid }
+}
+
+

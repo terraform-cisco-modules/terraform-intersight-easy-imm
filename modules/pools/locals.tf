@@ -15,14 +15,14 @@ locals {
   endpoint = var.endpoint
 
   # Tags for Deployment
-  tags = var.tags
+  tags = jsondecode(var.tags)
 
   #______________________________________________
   #
   # Fibre-Channel Pools
   #______________________________________________
   fc_pools_map = {
-    for k, v in var.fc_pools_map : k => {
+    for k, v in jsondecode(var.fc_pools_map) : k => {
       assignment_order = (v.assignment_order != null ? v.assignment_order : "default")
       description      = (v.description != null ? v.description : "")
       id_blocks        = (v.id_blocks != null ? v.id_blocks : [
@@ -41,7 +41,7 @@ locals {
   # IP Pools
   #______________________________________________
   ip_pools_map = {
-    for k, v in var.ip_pools_map : k => {
+    for k, v in jsondecode(var.ip_pools_map) : k => {
       assignment_order = (v.assignment_order != null ? v.assignment_order : "default")
       description      = (v.description != null ? v.description : "")
       dns_servers_v4   = (v.dns_servers_v4 != null ? v.dns_servers_v4 : ["208.67.220.220", "208.67.222.222"])
@@ -59,7 +59,7 @@ locals {
   # IQN Pools
   #______________________________________________
   iqn_pools_map = {
-    for k, v in var.iqn_pools_map : k => {
+    for k, v in jsondecode(var.iqn_pools_map) : k => {
       assignment_order  = (v.assignment_order != null ? v.assignment_order : "default")
       description       = (v.description != null ? v.description : "")
       iqn_prefix        = (v.iqn_prefix != null ? v.iqn_prefix : "iqn.2021-11.com.cisco")
@@ -73,7 +73,7 @@ locals {
   # MAC Pools
   #______________________________________________
   mac_pools_map = {
-    for k, v in var.mac_pools_map : k => {
+    for k, v in jsondecode(var.mac_pools_map) : k => {
       assignment_order  = (v.assignment_order != null ? v.assignment_order : "default")
       description       = (v.description != null ? v.description : "")
       mac_blocks        = (v.mac_blocks != null ? v.mac_blocks : [])
@@ -86,7 +86,7 @@ locals {
   # UUID Pools
   #______________________________________________
   uuid_pools_map = {
-    for k, v in var.uuid_pools_map : k => {
+    for k, v in jsondecode(var.uuid_pools_map) : k => {
       assignment_order   = (v.assignment_order != null ? v.assignment_order : "default")
       description        = (v.description != null ? v.description : "")
       prefix             = (v.prefix != null ? v.prefix : "") # "123e4567-e89b-42d3"
