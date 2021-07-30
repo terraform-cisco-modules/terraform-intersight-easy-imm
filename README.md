@@ -1,152 +1,157 @@
-# Configuring IKS cluster with Cisco Intersight Service for HashiCorp Terraform on vSphere Infrastructure
+# Workspace and Variable Creation
 
-## Contents
+## VERY IMPORTANT NOTE: The Terraform Cloud provider stores terraform state in plain text.  Do not remove the .gitignore that is protecting you from uploading the state files to a public repository
 
-* Use Cases
-* Pre-requisites and Guidelines
-* Create TFCB Workspaces using the TFE Provider
-* Execute Plans in Terraform Cloud Workspaces
-* Provision IP Pools, Kubernetes Policies, and an IKS Cluster with TFCB
-* Import the IKS Cluster kube_config into a TFCB Workspace
-* Deploy IWO Performance Collector App using Helm
-* Deploy the sample "Hello IKS" App using Helm
-* Try with a Cisco DevNet Sandbox
+## Obtain tokens and keys
 
-### Use Cases
+Follow the base repository instructions to obtain values for the following variables:
 
-* As a Cloud Admin, Build Workspaces in TFCB to support Infrastructure as Code Provisioning.
-* As a Cloud Admin, use TFCB to provision IP Pools, Kubernetes Policies, and an IKS Cluster on vSphere Infrastructure to be leveraged by DevOps Teams.
-* As a Cloud Admin, use IST, ((Intersight Service for HashiCorp Terraform), to deploy IWO (Intersight Workload Optimizer) Collector to collect app and infrastructure insights.
-* As an App Developer, use IST to deploy a sample "Hello IKS" Application.
+### Terraform Cloud Variables
 
-![alt text](https://github.com/prathjan/images/blob/main/iksnew.png?raw=true)
+* terraform_cloud_token
 
-### Pre-requisites and Guidelines
+  instructions: <https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html>
 
-1. Sign up for a user account on Intersight.com. You will need at least one Advantage Tier license as well as a Intersight Workload Optimizer license to complete this use case. Log in to intersight.com and generate API/Secret Keys.  Both licensing requirements can utilize the available demo licensing if you don't have the subscription levels.
+* tfc_oath_token
 
-2. Sign up for a TFCB (Terraform for Cloud Business) at <https://app.terraform.io/>. Log in and generate the User API Key. You will need this when you create the TF Cloud Target in Intersight.  If not a paid version, you will need to enable the trial account.
+  instructions: <https://www.terraform.io/docs/cloud/vcs/index.html>
 
-3. Clone this repository to your own VCS Repository for the VCS Integration with Terraform Cloud.
+* tfc_organization (TFCB Organization Name)
+* tfc_email (Must be an Email Assigned to the TFCB Account)
+* agent_pool (The Name of the Agent Pool in the TFCB Account)
+* vcs_repo (The Name of your Version Control Repository. i.e. CiscoDevNet/intersight-tfb-iks)
 
-4. Integrate your VCS Repository into the TFCB Orgnization following these instructions: <https://www.terraform.io/docs/cloud/vcs/index.html>.  Be sure to copy the OAth Token which you will use later on for Workspace provisioning.
+### Intersight Variables
 
-5. You will need access to a vSphere infrastructure.  You will use this to install the Intersight Assist Appliance and provision the Kubernetes (IKS) Cluster.
+* apikey
+* secretkey
 
-6. You will log into your Intersight account and create the following targets. Please refer to Intersight docs for details on how to create these Targets:
+  instructions: <https://community.cisco.com/t5/data-center-documents/intersight-api-overview/ta-p/3651994>
 
-  Intersight Assist - This will provide on-premise proxy communication services. i.e. vSphere and Kubernetes.
-  
-  vSphere Target - Requires Intersight Assist Appliance.  
-  
-  TFC Cloud (This requires a Terraform for Cloud Business Account and at least 1 Advantage Tier License in Intersight)
-  
-  TFC Cloud Agent - After Claiming the TFCB Target, provising a Terraform Agent.  Be sure to add the following Managed Hosts/Networks:
+### Import the Variables into your Environment before Running the Terraform Cloud Provider module(s) in this directory
 
-    network for vsphere host i.e. 198.18.0.0/24
-    network for Kubernetes Pod IP Range, i.e 198.18.1.0/24 (CIDR Ranges are not required)
-    github-releases.githubusercontent.com
-    github.com
-    prathjan.github.io
+Modify the terraform.tfvars file to the unique attributes of your environment
 
-### Create TFCB Workspaces using the TFE Provider
+Once finished with the modification commit the changes to your reposotiry.
 
-1. Follow the instructions in the "tfe" folder of this repository to provision the TFCB Workspaces.
+The Following examples are for a Linux based Operating System.  Note that the TF_VAR_ prefix is used as a notification to the terraform engine that the environment variable will be consumed by terraform.
 
-### Execute Plans in Terraform Cloud Workspaces
+* Terraform Cloud Variables
 
-1. Open the Workspace "{cluster_name}_global_vars" in TFCB and queue a plan manually. This will populate the global variables that will be used by the other TFCB workspaces.
+```bash
+export TF_VAR_terraform_cloud_token="your_cloud_token"
+export TF_VAR_tfc_oauth_token="your_oath_token"
+```
 
-2. You will execute the Runs in the workspaces in this order:
+* Intersight apikey and secretkey
 
-    * {cluster_name}_iks - See section below on "Provision IKS Policies and IP Pools with TFCB"
+```bash
+export TF_VAR_apikey="your_api_key"
+export TF_VAR_secretkey=`../../../../intersight_secretkey.txt`
+```
 
-    * {cluster_name}_kube - See section below on "Provision a IKS Cluster with TFCB"
+### SNMP Secure Variables
 
-    * {cluster_name}_iwo - See section below on "Deploy IWO collector using Helm"
+Use the following environment variables based on your deployment for SNMP Settings
 
-    * {cluster_name}_app_hello - See section below on "Deploy a sample "Hello IKS" App using Helm"
+* SNMP User Attributes
 
-### Provision IP Pools, Kubernetes Policies, and an IKS Cluster with TFCB
+```bash
+export TF_VAR_snmp_user_1_auth_password="your_password"
+export TF_VAR_snmp_user_1_privacy_password="your_password"
+export TF_VAR_snmp_user_2_auth_password="your_password"
+export TF_VAR_snmp_user_2_privacy_password="your_password"
+```
 
-![alt text](https://github.com/prathjan/images/blob/main/prof.png?raw=true)
+* SNMP Communities
 
-### Get the Cluster kube_config
+```bash
+export TF_VAR_snmp_community="your_community"
+export TF_VAR_trap_community="your_community"
+```
 
-Currently due to order of operations in Intersight you must use a seperate task after Cluster creation to download the kube_config.  the {cluster_name}_kube Workspace will be used to accomplish this.
+### Execute the Terraform Plan
 
-Once you have confirmed in Intersight that the cluster has been fully provisioned run the plan in the {cluster_name}_kube workspace.
+Once all Variables have been imported into your environment, run the plan in the tfe folder:
 
-Download the cluster kube_config from from the workspace and run a couple of kubectl commands to verify an operational cluster:
+* Execute the Plan
 
-    kubectl get nodes
+```bash
+terraform plan -out=main.plan
+terraform apply main.plan
+```
 
-    kubectl get pods --all-namespaces
+When run, this module will Create the Terraform Cloud Workspace(s) and Assign the Variables to the workspace(s).
 
-### Deploy IWO Performance Collector App using Helm
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
 
-If you don't have Intersight Workload Optimizer licensing tied to your Intersight Instance you can skip this section.
+| Name | Version |
+|------|---------|
+| <a name="requirement_tfe"></a> [tfe](#requirement\_tfe) | 0.25.3 |
 
-As a Cloud Admin it is imperative to be able to have insights into the infrastructure. The workspace "{cluster_name}_iwo" provides an example helm chart provisioning process to add the iwo collector pod to the deployed cluster.
+## Providers
 
-Open "{cluster_name}_iwo" and Queue a plan manually.
+No providers.
 
-Once successful, the collector is installed into your Kubernetes cluster and requires you to claim it as target in Intersight->Target. You will use the following steps to get the Device ID and Code:
+## Modules
 
-Download kube_config for the {cluster_name} from Intersight or your {cluster_name}_kube workspace.
-
-Execute:
-
-    kubectl <path_to_kubeconfig> port-forward <collector_pod_id> 9110
-
-Execute this to get the Device ID:
-
-    curl -s http://localhost:9110/DeviceIdentifiers
-
-Execute this to get the Claim Code:
-
-    curl -s http://localhost:9110/SecurityTokens
-
-Once successful, open the Optimizer in Intersight and view insights for the App just deployed:
-
-Note: This can take approximately 30 minutes to begin to see the cluster in IWO.
-
-![alt text](https://github.com/prathjan/images/blob/main/insights.png?raw=true)
-
-### Deploy the sample "Hello IKS" App using Helm
-
-What use is a cluster without an Application? The workspace "{cluster_name}_app_hello" accounts for this.
-
-Open "{cluster_name}_app_hello" and Queue a plan manually.
-
-Once successful, access the app with the loadbalancer IP:
-
-    kubectl get svc --all-namespaces
-
-or
-
-    kubectl get ingress
-
-Open URL in a browser window : <https://LB_IP>
-
-You should see this:
-
-![alt text](https://github.com/prathjan/images/blob/main/helloiks.png?raw=true)
-
-### De-provisioning
-
-There is a three step process to decomission the lab.
-
-1. Go into the IKS workspace and change the variable "action" from "Deploy" to "Delete" and Queue a Plan.  Monitor in Intersight for the Completed deletion of the cluster deployment. Workspace > Variables > "action": edit.  Then "Queue plan manually".
-
-2. Run a Destroy Infrastrucutre Plan on the {cluster_name}_iks workspace to delete the Kubernetes Policies from Intersight.  Workspace > Settings > Destruction and Deletion > "Queue destroy plan".  Wait for the Completion of the Destroy Apply.
-
-3. Back on your machine where you have downloaded the tfe folder and ran the plan to build the workspaces run the command:
-
-      terraform destroy
-
-### Try with a Cisco DevNet Sandbox
-
-A sandbox covering a lot of the above concepts can be found here:
-
-<https://devnetsandbox.cisco.com/RM/Diagram/Index/daad55dd-45f1-46c6-a1b4-7339b318c970?diagramType=Topology>
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_workspace_pools"></a> [workspace\_pools](#module\_workspace\_pools) | terraform-cisco-modules/modules/tfe//modules/tfc_workspace | n/a |
+| <a name="module_workspace_pools_variables"></a> [workspace\_pools\_variables](#module\_workspace\_pools\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | n/a |
+| <a name="module_workspaces_domain"></a> [workspaces\_domain](#module\_workspaces\_domain) | terraform-cisco-modules/modules/tfe//modules/tfc_workspace | n/a |
+| <a name="module_workspaces_domain_variables"></a> [workspaces\_domain\_variables](#module\_workspaces\_domain\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | n/a |
+| <a name="module_workspaces_domain_vlans"></a> [workspaces\_domain\_vlans](#module\_workspaces\_domain\_vlans) | terraform-cisco-modules/modules/tfe//modules/tfc_workspace | n/a |
+| <a name="module_workspaces_domain_vlans_variables"></a> [workspaces\_domain\_vlans\_variables](#module\_workspaces\_domain\_vlans\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | n/a |
+
+## Resources
+
+No resources.
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_apikey"></a> [apikey](#input\_apikey) | Intersight API Key. | `string` | n/a | yes |
+| <a name="input_assign_domain"></a> [assign\_domain](#input\_assign\_domain) | Flag to Assign Policies to Domain or not. | `bool` | `false` | no |
+| <a name="input_assign_switches"></a> [assign\_switches](#input\_assign\_switches) | Setting this Flag to True will Assign Switches to Profile. | `bool` | `false` | no |
+| <a name="input_configure_fibre_channel"></a> [configure\_fibre\_channel](#input\_configure\_fibre\_channel) | Flag to Specify if Fibre-Channel should be configured. | `bool` | `false` | no |
+| <a name="input_configure_snmp"></a> [configure\_snmp](#input\_configure\_snmp) | Flag to Specify if the SNMP Policy should be configured. | `bool` | `false` | no |
+| <a name="input_configure_snmp_type"></a> [configure\_snmp\_type](#input\_configure\_snmp\_type) | When configuring SNMP, should the script use snmp communities or users.  Options are {snmp\_community\|snmp\_1\_user\|snmp\_2\_users}. | `string` | `"snmp_community"` | no |
+| <a name="input_configure_syslog"></a> [configure\_syslog](#input\_configure\_syslog) | Flag to Specify if the Syslog Policy should be configured. | `bool` | `false` | no |
+| <a name="input_endpoint"></a> [endpoint](#input\_endpoint) | Intersight URL. | `string` | `"https://intersight.com"` | no |
+| <a name="input_fc_pools_create"></a> [fc\_pools\_create](#input\_fc\_pools\_create) | Set this to True if you want to Create a Fibre-Channel Pool. | `bool` | `false` | no |
+| <a name="input_fc_pools_map"></a> [fc\_pools\_map](#input\_fc\_pools\_map) | Intersight Fibre-Channel Pool Variable Map.<br>1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ <br>2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_fc | <pre>map(object(<br>    {<br>      assignment_order = optional(string)<br>      description      = optional(string)<br>      id_blocks        = optional(list(map(string)))<br>      organization     = optional(string)<br>      pool_purpose     = optional(string)<br>      tags             = optional(list(map(string)))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "assignment_order": "default",<br>    "description": "",<br>    "id_blocks": [<br>      {<br>        "from": "20:00:00:25:B5:0a:00:00",<br>        "to": "20:00:00:25:B5:0a:00:ff"<br>      }<br>    ],<br>    "organization": "default",<br>    "pool_purpose": "WWPN",<br>    "tags": []<br>  }<br>}</pre> | no |
+| <a name="input_ip_pools_create"></a> [ip\_pools\_create](#input\_ip\_pools\_create) | Set this to True if you want to Create an IP Pool. | `bool` | `false` | no |
+| <a name="input_ip_pools_map"></a> [ip\_pools\_map](#input\_ip\_pools\_map) | Intersight IP Pool Variable Map.<br>1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ <br>2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_ip | <pre>map(object(<br>    {<br>      assignment_order = optional(string)<br>      description      = optional(string)<br>      dns_servers_v4   = optional(set(string))<br>      dns_servers_v6   = optional(set(string))<br>      ipv4_block       = optional(list(map(string)))<br>      ipv4_config      = optional(list(map(string)))<br>      ipv6_block       = optional(list(map(string)))<br>      ipv6_config      = optional(list(map(string)))<br>      organization     = optional(string)<br>      tags             = optional(list(map(string)))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "assignment_order": "default",<br>    "description": "",<br>    "dns_servers_v4": [<br>      "208.67.220.220",<br>      "208.67.222.222"<br>    ],<br>    "dns_servers_v6": [],<br>    "ipv4_block": [],<br>    "ipv4_config": [],<br>    "ipv6_block": [],<br>    "ipv6_config": [],<br>    "organization": "default",<br>    "tags": []<br>  }<br>}</pre> | no |
+| <a name="input_iqn_pools_create"></a> [iqn\_pools\_create](#input\_iqn\_pools\_create) | Set this to True if you want to Create an IQN Pool. | `bool` | `false` | no |
+| <a name="input_iqn_pools_map"></a> [iqn\_pools\_map](#input\_iqn\_pools\_map) | Intersight IQN Pool Variable Map.<br>1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ <br>2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_iqn | <pre>map(object(<br>    {<br>      assignment_order  = optional(string)<br>      description       = optional(string)<br>      iqn_prefix        = optional(string)<br>      iqn_suffix_blocks = optional(list(map(string)))<br>      organization      = optional(string)<br>      tags              = optional(list(map(string)))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "assignment_order": "default",<br>    "description": "",<br>    "iqn_prefix": "iqn.2021-11.com.cisco",<br>    "iqn_suffix_blocks": [<br>      {<br>        "pool_size": 255,<br>        "starting_iqn": 1,<br>        "suffix": "ucs-host"<br>      }<br>    ],<br>    "organization": "default",<br>    "tags": []<br>  }<br>}</pre> | no |
+| <a name="input_mac_pools_create"></a> [mac\_pools\_create](#input\_mac\_pools\_create) | Set this to True if you want to Create an MAC Pool. | `bool` | `false` | no |
+| <a name="input_mac_pools_map"></a> [mac\_pools\_map](#input\_mac\_pools\_map) | Intersight MAC Pool Variable Map.<br>1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ <br>2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_mac | <pre>map(object(<br>    {<br>      assignment_order = optional(string)<br>      description      = optional(string)<br>      mac_blocks       = optional(list(map(string)))<br>      organization     = optional(string)<br>      tags             = optional(list(map(string)))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "assignment_order": "default",<br>    "description": "",<br>    "mac_blocks": [<br>      {<br>        "from": "00:25:B5:0a:00:00",<br>        "to": "00:25:B5:0a:00:ff"<br>      }<br>    ],<br>    "organization": "default",<br>    "tags": []<br>  }<br>}</pre> | no |
+| <a name="input_organizations"></a> [organizations](#input\_organizations) | Intersight Organization Names. | `set(string)` | <pre>[<br>  "default"<br>]</pre> | no |
+| <a name="input_secretkey"></a> [secretkey](#input\_secretkey) | Intersight Secret Key. | `string` | n/a | yes |
+| <a name="input_snmp_community"></a> [snmp\_community](#input\_snmp\_community) | The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long. | `string` | `""` | no |
+| <a name="input_snmp_trap_community"></a> [snmp\_trap\_community](#input\_snmp\_trap\_community) | The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long. | `string` | `""` | no |
+| <a name="input_snmp_user_1_auth_password"></a> [snmp\_user\_1\_auth\_password](#input\_snmp\_user\_1\_auth\_password) | Authorization password for the user. | `string` | `""` | no |
+| <a name="input_snmp_user_1_privacy_password"></a> [snmp\_user\_1\_privacy\_password](#input\_snmp\_user\_1\_privacy\_password) | Privacy password for the user. | `string` | `""` | no |
+| <a name="input_snmp_user_2_auth_password"></a> [snmp\_user\_2\_auth\_password](#input\_snmp\_user\_2\_auth\_password) | Authorization password for the user. | `string` | `""` | no |
+| <a name="input_snmp_user_2_privacy_password"></a> [snmp\_user\_2\_privacy\_password](#input\_snmp\_user\_2\_privacy\_password) | Privacy password for the user. | `string` | `""` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | List of Key/Value Pairs to Assign as Attributes to the Policy. | `list(map(string))` | `[]` | no |
+| <a name="input_terraform_cloud_token"></a> [terraform\_cloud\_token](#input\_terraform\_cloud\_token) | Token to Authenticate to the Terraform Cloud. | `string` | n/a | yes |
+| <a name="input_terraform_version"></a> [terraform\_version](#input\_terraform\_version) | Terraform Target Version. | `string` | `"1.0.3"` | no |
+| <a name="input_tfc_oauth_token"></a> [tfc\_oauth\_token](#input\_tfc\_oauth\_token) | Terraform Cloud OAuth Token for VCS\_Repo Integration. | `string` | n/a | yes |
+| <a name="input_tfc_organization"></a> [tfc\_organization](#input\_tfc\_organization) | Terraform Cloud Organization Name. | `string` | n/a | yes |
+| <a name="input_ucs_domain_profile"></a> [ucs\_domain\_profile](#input\_ucs\_domain\_profile) | Intersight UCS Domain Profile Variable Map.<br>1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ <br>2. For the remainder of the option documentation refer to these sources:<br>* https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_cluster<br>* https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_switch | <pre>map(object(<br>    {<br>      domain_action                      = optional(string)<br>      domain_description                 = optional(string)<br>      domain_descr_fi_a                  = optional(string)<br>      domain_descr_fi_b                  = optional(string)<br>      domain_policy_bucket               = optional(list(map(string)))<br>      domain_serial_a                    = optional(string)<br>      domain_serial_b                    = optional(string)<br>      dns_description                    = optional(string)<br>      dns_dynamic                        = optional(bool)<br>      dns_ipv6_enable                    = optional(bool)<br>      dns_servers_v4                     = optional(list(string))<br>      dns_servers_v6                     = optional(list(string))<br>      dns_update_domain                  = optional(string)<br>      flow_control_description           = optional(string)<br>      flow_control_mode                  = optional(string)<br>      flow_control_receive               = optional(string)<br>      flow_control_send                  = optional(string)<br>      link_agg_description               = optional(string)<br>      link_agg_lacp_rate                 = optional(string)<br>      link_agg_suspend_individual        = optional(bool)<br>      link_ctrl_description              = optional(string)<br>      link_ctrl_udld_admin_state         = optional(string)<br>      link_ctrl_udld_mode                = optional(string)<br>      multicast_description              = optional(string)<br>      multicast_querier_ip               = optional(string)<br>      multicast_querier_state            = optional(string)<br>      multicast_snooping_state           = optional(string)<br>      ntp_description                    = optional(string)<br>      ntp_servers                        = optional(list(string))<br>      ntp_timezone                       = optional(string)<br>      organization                       = optional(string)<br>      port_policy_a_description          = optional(string)<br>      port_policy_b_description          = optional(string)<br>      ports_device_model                 = optional(string)<br>      ports_fc_ports                     = optional(list(string))<br>      ports_fc_slot_id                   = optional(number)<br>      ports_lan_pc_breakoutswport        = optional(number)<br>      ports_lan_pc_ports                 = optional(list(string))<br>      ports_lan_pc_speed                 = optional(string)<br>      ports_lan_pc_slot_id               = optional(number)<br>      ports_san_fill_pattern             = optional(string)<br>      ports_san_pc_breakoutswport        = optional(number)<br>      ports_san_pc_ports                 = optional(list(string))<br>      ports_san_pc_speed                 = optional(string)<br>      ports_san_pc_slot_id               = optional(number)<br>      ports_servers                      = optional(string)<br>      qos_best_effort_admin_state        = optional(string)<br>      qos_best_effort_bandwidth          = optional(number)<br>      qos_best_effort_mtu                = optional(number)<br>      qos_best_effort_multicast_optimize = optional(bool)<br>      qos_best_effort_weight             = optional(number)<br>      qos_bronze_admin_state             = optional(string)<br>      qos_bronze_bandwidth               = optional(number)<br>      qos_bronze_cos                     = optional(number)<br>      qos_bronze_mtu                     = optional(number)<br>      qos_bronze_multicast_optimize      = optional(bool)<br>      qos_bronze_packet_drop             = optional(bool)<br>      qos_bronze_weight                  = optional(number)<br>      qos_description                    = optional(string)<br>      qos_fc_bandwidth                   = optional(number)<br>      qos_fc_weight                      = optional(number)<br>      qos_gold_admin_state               = optional(string)<br>      qos_gold_bandwidth                 = optional(number)<br>      qos_gold_cos                       = optional(number)<br>      qos_gold_mtu                       = optional(number)<br>      qos_gold_multicast_optimize        = optional(bool)<br>      qos_gold_packet_drop               = optional(bool)<br>      qos_gold_weight                    = optional(number)<br>      qos_platinum_admin_state           = optional(string)<br>      qos_platinum_bandwidth             = optional(number)<br>      qos_platinum_cos                   = optional(number)<br>      qos_platinum_mtu                   = optional(number)<br>      qos_platinum_multicast_optimize    = optional(bool)<br>      qos_platinum_packet_drop           = optional(bool)<br>      qos_platinum_weight                = optional(number)<br>      qos_silver_admin_state             = optional(string)<br>      qos_silver_bandwidth               = optional(number)<br>      qos_silver_cos                     = optional(number)<br>      qos_silver_mtu                     = optional(number)<br>      qos_silver_multicast_optimize      = optional(bool)<br>      qos_silver_packet_drop             = optional(bool)<br>      qos_silver_weight                  = optional(number)<br>      snmp_description                   = optional(string)<br>      snmp_system_contact                = optional(string)<br>      snmp_system_location               = optional(string)<br>      snmp_trap_destinations             = optional(list(map(string)))<br>      snmp_user_1_auth_type              = optional(string)<br>      snmp_user_1_name                   = optional(string)<br>      snmp_user_1_security_level         = optional(string)<br>      snmp_user_2_auth_type              = optional(string)<br>      snmp_user_2_name                   = optional(string)<br>      snmp_user_2_security_level         = optional(string)<br>      sw_ctrl_description                = optional(string)<br>      sw_ctrl_mac_aging_option           = optional(string)<br>      sw_ctrl_mac_aging_time             = optional(number)<br>      sw_ctrl_udld_message_interval      = optional(number)<br>      sw_ctrl_udld_recovery_action       = optional(string)<br>      sw_ctrl_vlan_optimization          = optional(bool)<br>      syslog_description                 = optional(string)<br>      syslog_destinations                = optional(list(map(string)))<br>      syslog_severity                    = optional(string)<br>      tags                               = optional(list(map(string)))<br>      vlan_description                   = optional(string)<br>      vlan_native                        = optional(number)<br>      vlan_list                          = optional(string)<br>      vsan_a_description                 = optional(string)<br>      vsan_b_description                 = optional(string)<br>      vsan_enable_trunking               = optional(bool)<br>      vsan_fabric_a                      = optional(number)<br>      vsan_fabric_a_fcoe                 = optional(string)<br>      vsan_fabric_b                      = optional(number)<br>      vsan_fabric_b_fcoe                 = optional(string)<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "dns_description": "",<br>    "dns_dynamic": false,<br>    "dns_ipv6_enable": false,<br>    "dns_servers_v4": [<br>      "208.67.220.220",<br>      "208.67.222.222"<br>    ],<br>    "dns_servers_v6": [],<br>    "dns_update_domain": "",<br>    "domain_action": "No-op",<br>    "domain_descr_fi_a": "",<br>    "domain_descr_fi_b": "",<br>    "domain_description": "",<br>    "domain_policy_bucket": [],<br>    "domain_serial_a": "",<br>    "domain_serial_b": "",<br>    "flow_control_description": "",<br>    "flow_control_mode": "auto",<br>    "flow_control_receive": "Disabled",<br>    "flow_control_send": "Disabled",<br>    "link_agg_description": "",<br>    "link_agg_lacp_rate": "normal",<br>    "link_agg_suspend_individual": false,<br>    "link_ctrl_description": "",<br>    "link_ctrl_udld_admin_state": "Enabled",<br>    "link_ctrl_udld_mode": "normal",<br>    "multicast_description": "",<br>    "multicast_querier_ip": "",<br>    "multicast_querier_state": "Disabled",<br>    "multicast_snooping_state": "Enabled",<br>    "ntp_description": "",<br>    "ntp_servers": [<br>      "time-a-g.nist.gov",<br>      "time-b-g.nist.gov"<br>    ],<br>    "ntp_timezone": "Etc/GMT",<br>    "organization": "default",<br>    "port_policy_a_description": "",<br>    "port_policy_b_description": "",<br>    "ports_device_model": "UCS-FI-6454",<br>    "ports_fc_ports": [<br>      1,<br>      4<br>    ],<br>    "ports_fc_slot_id": 1,<br>    "ports_lan_pc_breakoutswport": 0,<br>    "ports_lan_pc_ports": [<br>      49,<br>      50<br>    ],<br>    "ports_lan_pc_slot_id": 1,<br>    "ports_lan_pc_speed": "Auto",<br>    "ports_san_fill_pattern": "Arbff",<br>    "ports_san_pc_breakoutswport": 0,<br>    "ports_san_pc_ports": [<br>      1,<br>      2<br>    ],<br>    "ports_san_pc_slot_id": 1,<br>    "ports_san_pc_speed": "16Gbps",<br>    "ports_servers": "5-18",<br>    "qos_best_effort_admin_state": "Enabled",<br>    "qos_best_effort_bandwidth": 5,<br>    "qos_best_effort_mtu": 9216,<br>    "qos_best_effort_multicast_optimize": false,<br>    "qos_best_effort_weight": 1,<br>    "qos_bronze_admin_state": "Enabled",<br>    "qos_bronze_bandwidth": 5,<br>    "qos_bronze_cos": 1,<br>    "qos_bronze_mtu": 9216,<br>    "qos_bronze_multicast_optimize": false,<br>    "qos_bronze_packet_drop": true,<br>    "qos_bronze_weight": 1,<br>    "qos_description": "",<br>    "qos_fc_bandwidth": 39,<br>    "qos_fc_weight": 6,<br>    "qos_gold_admin_state": "Enabled",<br>    "qos_gold_bandwidth": 23,<br>    "qos_gold_cos": 4,<br>    "qos_gold_mtu": 9216,<br>    "qos_gold_multicast_optimize": false,<br>    "qos_gold_packet_drop": true,<br>    "qos_gold_weight": 4,<br>    "qos_platinum_admin_state": "Enabled",<br>    "qos_platinum_bandwidth": 23,<br>    "qos_platinum_cos": 5,<br>    "qos_platinum_mtu": 9216,<br>    "qos_platinum_multicast_optimize": false,<br>    "qos_platinum_packet_drop": false,<br>    "qos_platinum_weight": 4,<br>    "qos_silver_admin_state": "Enabled",<br>    "qos_silver_bandwidth": 5,<br>    "qos_silver_cos": 2,<br>    "qos_silver_mtu": 9216,<br>    "qos_silver_multicast_optimize": false,<br>    "qos_silver_packet_drop": true,<br>    "qos_silver_weight": 1,<br>    "snmp_description": "",<br>    "snmp_system_contact": "",<br>    "snmp_system_location": "",<br>    "snmp_trap_destinations": [],<br>    "snmp_user_1_auth_type": "SHA",<br>    "snmp_user_1_name": "snmp_user_1",<br>    "snmp_user_1_security_level": "AuthPriv",<br>    "snmp_user_2_auth_type": "SHA",<br>    "snmp_user_2_name": "snmp_user_2",<br>    "snmp_user_2_security_level": "AuthPriv",<br>    "sw_ctrl_description": "",<br>    "sw_ctrl_mac_aging_option": "Default",<br>    "sw_ctrl_mac_aging_time": 14500,<br>    "sw_ctrl_udld_message_interval": 15,<br>    "sw_ctrl_udld_recovery_action": "reset",<br>    "sw_ctrl_vlan_optimization": true,<br>    "syslog_description": "",<br>    "syslog_destinations": [],<br>    "syslog_severity": "warning",<br>    "tags": [],<br>    "vlan_description": "",<br>    "vlan_list": "2-3",<br>    "vlan_native": 1,<br>    "vsan_a_description": "",<br>    "vsan_b_description": "",<br>    "vsan_enable_trunking": false,<br>    "vsan_fabric_a": 100,<br>    "vsan_fabric_a_fcoe": "",<br>    "vsan_fabric_b": 200,<br>    "vsan_fabric_b_fcoe": ""<br>  }<br>}</pre> | no |
+| <a name="input_uuid_pools_create"></a> [uuid\_pools\_create](#input\_uuid\_pools\_create) | Set this to True if you want to Create an MAC Pool. | `bool` | `false` | no |
+| <a name="input_uuid_pools_map"></a> [uuid\_pools\_map](#input\_uuid\_pools\_map) | Intersight UUID Pool Variable Map.<br>1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ <br>2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_uuid | <pre>map(object(<br>    {<br>      assignment_order   = optional(string)<br>      description        = optional(string)<br>      organization       = optional(string)<br>      prefix             = optional(string)<br>      tags               = optional(list(map(string)))<br>      uuid_suffix_blocks = optional(list(map(string)))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "assignment_order": "default",<br>    "description": "",<br>    "organization": "default",<br>    "prefix": "000025B5-0000-0000",<br>    "tags": [],<br>    "uuid_suffix_blocks": [<br>      {<br>        "from": "0000-000000000000",<br>        "size": 32768<br>      }<br>    ]<br>  }<br>}</pre> | no |
+| <a name="input_vcs_repo"></a> [vcs\_repo](#input\_vcs\_repo) | Version Control System Repository. | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_workspace_pools"></a> [workspace\_pools](#output\_workspace\_pools) | Terraform Cloud Intersight Pools Workspace ID and Name. |
+| <a name="output_workspaces_domain"></a> [workspaces\_domain](#output\_workspaces\_domain) | Terraform Cloud UCS Domain Workspace IDs and Names. |
+| <a name="output_workspaces_domain_vlans"></a> [workspaces\_domain\_vlans](#output\_workspaces\_domain\_vlans) | Terraform Cloud UCS Domain VLANs Workspace IDs and Names. |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
