@@ -73,11 +73,6 @@
 * Virtual KVM
 * Virtual Media
 
-* As a Cloud Admin, use IST, ((Intersight Service for HashiCorp Terraform), to deploy IWO (Intersight Workload Optimizer) Collector to collect app and infrastructure insights.
-* As an App Developer, use IST to deploy a sample "Hello IKS" Application.
-
-![alt text](https://github.com/prathjan/images/blob/main/iksnew.png?raw=true)
-
 ### Pre-requisites and Guidelines
 
 1. Sign up for a user account on Intersight.com. You will need at least one Advantage Tier license as well as a Intersight Workload Optimizer license to complete this use case. Log in to intersight.com and generate API/Secret Keys.  Both licensing requirements can utilize the available demo licensing if you don't have the subscription levels.
