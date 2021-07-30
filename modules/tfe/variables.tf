@@ -21,7 +21,7 @@ variable "tfc_organization" {
 }
 
 variable "terraform_version" {
-  default     = "1.0.0"
+  default     = "1.0.3"
   description = "Terraform Target Version."
   type        = string
 }
@@ -62,7 +62,7 @@ variable "organization" {
 }
 
 variable "tags" {
-  default     = "[]"
+  default     = []
   description = "List of Key/Value Pairs to Assign as Attributes to the Policy."
-  type        = string
+  type        = list(map(string))
 }

@@ -1,12 +1,16 @@
 #__________________________________________________________
 #
-# Variables for the Intersight API
+# Variables for Terraform Cloud
 #__________________________________________________________
 
+# agent_pool        = "Richfield_Agents"
+terraform_version = "1.0.3"
+# tfc_email         = "tyscott@cisco.com"
+tfc_organization = "Cisco-Richfield-Lab"
 vcs_repo = "scotttyso/terraform-intersight-easy-imm"
 #__________________________________________________________
 #
-# Variables for the Intersight API
+# Variables for Intersight
 #__________________________________________________________
 
 # Intersight URL
@@ -19,7 +23,7 @@ vcs_repo = "scotttyso/terraform-intersight-easy-imm"
 
 # Intersight Organization Name
 # organization = "default"
-organization = "Asgard"
+organizations = ["Asgard"]
 
 #______________________________________________
 #
@@ -27,7 +31,7 @@ organization = "Asgard"
 #______________________________________________
 
 # Tags to assign to the Cluster
-tags = "[ { key = \"Owner\", value = \"rich-lab@cisco.com\" }, { key = \"Terraform Module\", value = \"Easy IMM\" } ]"
+tags = [ { key = "Owner", value = "rich-lab@cisco.com" }, { key = "Terraform Module", value = "Easy IMM" } ]
 
 #______________________________________________
 #
@@ -38,7 +42,7 @@ tags = "[ { key = \"Owner\", value = \"rich-lab@cisco.com\" }, { key = \"Terrafo
 domain_list = {
   "asgard-ucs" = {
     domain        = "asgard-ucs"
-    tfc_variables = "{ serial_a = \"FDO23360Y8U\", serial_b = \"FDO23360XWU\" }"
+    tfc_variables = { serial_a = "FDO23360Y8U", serial_b = "FDO23360XWU" }
   }
 }
 
