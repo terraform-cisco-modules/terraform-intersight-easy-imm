@@ -60,7 +60,7 @@ variable "endpoint" {
 }
 
 variable "organizations" {
-  default     = "default"
+  default     = ["default"]
   description = "Intersight Organization Names."
   type        = set(string)
 }

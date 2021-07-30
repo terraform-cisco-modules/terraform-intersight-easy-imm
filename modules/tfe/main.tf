@@ -1,25 +1,19 @@
-#__________________________________________________________
-#
-# Terraform Cloud Workspace - Domains
-#__________________________________________________________
-
-module "domain_workspaces" {
+module "workspace_pools" {
   source              = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
-  for_each            = var.ucs_domain_profile
   auto_apply          = true
-  description         = "Terraform Workspace for Organization ${var.organization}, UCS Domain ${each.value.domain}"
+  description         = "Terraform Workspace for Pools."
   global_remote_state = true
-  name                = "${var.organization}_${each.value.domain}"
+  name                = "Intersight_Pools"
   terraform_version   = var.terraform_version
   tfc_oauth_token     = var.tfc_oauth_token
   tfc_org_name        = var.tfc_organization
   vcs_repo            = var.vcs_repo
-  working_directory   = "modules/domain"
+  working_directory   = "modules/pools"
 }
 
-output "domain_workspaces" {
-  description = "Terraform Cloud UCS Domain Workspace ID and Name."
-  value       = { for v in sort(keys(module.domain_workspaces)) : v => module.domain_workspaces[v] }
+output "workspace_pools" {
+  description = "Terraform Cloud Intersight Pools Workspace ID and Name."
+  value       = module.workspace_pools
 }
 
 
@@ -28,28 +22,15 @@ output "domain_workspaces" {
 # Terraform Cloud Workspace Variables: domain
 #__________________________________________________________
 
-module "domain_variables" {
-  source = "../../../terraform-tfe-modules/modules/tfc_variables"
+module "workspace_pools_variables" {
+  source = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
   depends_on = [
-    module.domain_workspaces
+    module.workspace_pools
   ]
-  for_each     = var.domain_list
+  for_each     = var.organizations
   category     = "terraform"
-  workspace_id = module.domain_workspaces["${each.value.domain}"].workspace.id
+  workspace_id = module.workspace_pools.workspace.id
   variable_list = {
-    #---------------------------
-    # Terraform Cloud Variables
-    #---------------------------
-    tfcorg = {
-      description = "Terraform Cloud Organization."
-      key         = "tfc_organization"
-      value       = var.tfc_organization
-    },
-    tfcws = {
-      description = "Domain Policies Workspace Name."
-      key         = "domain_policies_workspace"
-      value       = "${var.organization}_policies_domains"
-    },
     #---------------------------
     # Intersight Variables
     #---------------------------
@@ -59,100 +40,278 @@ module "domain_variables" {
       sensitive   = true
       value       = var.apikey
     },
-    url = {
-      description = "Intersight URL."
+    endpoint = {
+      description = "Intersight Endpoint."
       key         = "endpoint"
       value       = var.endpoint
     },
-    org = {
-      description = "Intersight Organization."
-      key         = "organization"
-      value       = var.organization
+    organizations = {
+      description = "Intersight Organizations."
+      key         = "organizations"
+      value       = jsonencode(var.organizations)
     },
-    secret = {
+    secretkey = {
       description = "Intersight Secret Key."
       key         = "secretkey"
       sensitive   = true
       value       = var.secretkey
     },
     tags = {
-      description = "Tags to be Associated with Objects Created in Intersight."
-      hcl         = true
+      description = "Intersight Tags for Poliices and Profiles."
       key         = "tags"
-      value       = var.tags
+      value       = jsonencode(var.tags)
     },
-    #---------------------------
-    # UCS Domain Variables
-    #---------------------------
-    swflag = {
-      description = "Setting this Flag to True will Assign Switches to Profile."
-      key         = "assign_switches"
-      value       = var.assign_switches
+    #----------------------------
+    # Intersight Pools Variables
+    #----------------------------
+    fc_pools_create = {
+      description = "Set this to True if you want to Create Fibre-Channel Pools."
+      key         = "fc_pools_create"
+      value       = var.fc_pools_create
     },
-    cluster = {
-      description = "UCS Domain Profile Name."
-      key         = "cluster_name"
-      value       = each.value.domain
+    fc_pools_map = {
+      description = "Fibre-Channel Pools Variable Map."
+      key         = "fc_pools_map"
+      value       = jsonencode(var.fc_pools_map)
     },
-    # var10 = {
-    #   description = "Terraform Cloud HCL Block for Additional Variables."
-    #   hcl         = true
-    #   key         = "tfc_variables"
-    #   value       = each.value.tfc_variables
-    # },
+    ip_pools_create = {
+      description = "Set this to True if you want to Create IP Pools."
+      key         = "ip_pools_create"
+      value       = var.ip_pools_create
+    },
+    ip_pools_map = {
+      description = "IP Pools Variable Map."
+      key         = "ip_pools_map"
+      value       = jsonencode(var.ip_pools_map)
+    },
+    iqn_pools_create = {
+      description = "Set this to True if you want to Create IQN Pools."
+      key         = "iqn_pools_create"
+      value       = var.iqn_pools_create
+    },
+    iqn_pools_map = {
+      description = "IQN Pools Variable Map."
+      key         = "iqn_pools_map"
+      value       = jsonencode(var.iqn_pools_map)
+    },
+    mac_pools_create = {
+      description = "Set this to True if you want to Create MAC Pools."
+      key         = "mac_pools_create"
+      value       = var.mac_pools_create
+    },
+    mac_pools_map = {
+      description = "MAC Pools Variable Map."
+      key         = "mac_pools_map"
+      value       = jsonencode(var.mac_pools_map)
+    },
+    uuid_pools_create = {
+      description = "Set this to True if you want to Create an IP Pool."
+      key         = "uuid_pools_create"
+      value       = var.uuid_pools_create
+    },
+    uuid_pools_map = {
+      description = "UUID Pools Variable Map."
+      key         = "uuid_pools_map"
+      value       = jsonencode(var.uuid_pools_map)
+    }
   }
 }
 
 
 #__________________________________________________________
 #
-# Terraform Cloud Workspace - Domain Policies
+# Terraform Cloud Workspaces - UCS Domain Profiles
 #__________________________________________________________
 
-module "domain_policies_workspace" {
+module "workspaces_domain" {
   source              = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
+  for_each            = local.ucs_domain_profile
   auto_apply          = true
-  description         = "Terraform Workspace for Organization ${var.organization} Domain Policies."
+  description         = "Terraform Workspace for Organization ${each.value.organization}, UCS Domain ${each.key} Profile."
   global_remote_state = true
-  name                = "${var.organization}_policies_domains"
+  name                = each.key
   terraform_version   = var.terraform_version
   tfc_oauth_token     = var.tfc_oauth_token
   tfc_org_name        = var.tfc_organization
   vcs_repo            = var.vcs_repo
-  working_directory   = "modules/policies_domains"
+  working_directory   = "modules/domains"
 }
 
-output "domain_policies_workspace" {
-  description = "Terraform Cloud UCS Domain Workspace ID and Name."
-  value       = module.domain_policies_workspace
+output "workspaces_domain" {
+  description = "Terraform Cloud UCS Domain Workspace IDs and Names."
+  value       = { for v in sort(keys(module.workspaces_domain)) : v => module.workspaces_domain[v] }
 }
 
 
 #__________________________________________________________
 #
-# Terraform Cloud Workspace Variables: policies_domains
+# Terraform Cloud Workspace Variables: UCS Domain Profiles
 #__________________________________________________________
 
-module "domain_policies_variables" {
-  source = "../../../terraform-tfe-modules/modules/tfc_variables"
+module "workspaces_domain_variables" {
+  source = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
   depends_on = [
-    module.domain_policies_workspace
+    module.workspaces_domain
   ]
+  for_each     = var.ucs_domain_profile
   category     = "terraform"
-  workspace_id = module.domain_policies_workspace.workspace.id
+  workspace_id = module.workspaces_domain[each.key].workspace.id
+  variable_list = {
+    #---------------------------
+    # Intersight Variables
+    #---------------------------
+    apikey = {
+      description = "Intersight API Key."
+      key         = "apikey"
+      sensitive   = true
+      value       = var.apikey
+    },
+    endpoint = {
+      description = "Intersight Endpoint."
+      key         = "endpoint"
+      value       = var.endpoint
+    },
+    organizations = {
+      description = "Intersight Organizations."
+      key         = "organizations"
+      value       = jsonencode(var.organizations)
+    },
+    secretkey = {
+      description = "Intersight Secret Key."
+      key         = "secretkey"
+      sensitive   = true
+      value       = var.secretkey
+    },
+    tags = {
+      description = "Intersight Tags for Poliices and Profiles."
+      hcl         = false
+      key         = "tags"
+      value       = jsonencode(var.tags)
+    },
+    #-----------------------------------------
+    # Intersight UCS Domain Profile Variables
+    #-----------------------------------------
+    assign_domain = {
+      description = "Flag to Assign Policies to Domain or not."
+      key         = "assign_domain"
+      value       = var.assign_domain
+    },
+    assign_switches = {
+      description = "Setting this Flag to True will Assign Switches to Profile."
+      key         = "assign_switches"
+      value       = var.assign_switches
+    },
+    configure_fibre_channel = {
+      description = "Flag to Specify if Fibre-Channel should be configured."
+      key         = "configure_fibre_channel"
+      value       = var.configure_fibre_channel
+    },
+    configure_snmp = {
+      description = "Flag to Specify if SNMP Policy should be configured."
+      key         = "configure_snmp"
+      value       = var.configure_snmp
+    },
+    configure_syslog = {
+      description = "Flag to Specify if Syslog Policy should be configured."
+      key         = "configure_syslog"
+      value       = var.configure_syslog
+    },
+    snmp_community = {
+      description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+      key         = "snmp_community"
+      sensitive   = true
+      value       = var.snmp_community
+    },
+    snmp_trap_community = {
+      description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+      key         = "snmp_trap_community"
+      sensitive   = true
+      value       = var.snmp_trap_community
+    },
+    snmp_user_1_auth_password = {
+      description = "Authorization password for the user."
+      key         = "snmp_user_1_auth_password"
+      sensitive   = true
+      value       = var.snmp_user_1_auth_password
+    },
+    snmp_user_1_privacy_password = {
+      description = "Privacy password for the user."
+      key         = "snmp_user_1_privacy_password"
+      sensitive   = true
+      value       = var.snmp_user_1_privacy_password
+    },
+    snmp_user_2_auth_password = {
+      description = "Authorization password for the user."
+      key         = "snmp_user_2_auth_password"
+      sensitive   = true
+      value       = var.snmp_user_2_auth_password
+    },
+    snmp_user_2_privacy_password = {
+      description = "Privacy password for the user."
+      key         = "snmp_user_2_privacy_password"
+      sensitive   = true
+      value       = var.snmp_user_2_privacy_password
+    },
+    ucs_domain_profile = {
+      description = "Intersight UCS Domain Profiles."
+      key         = "ucs_domain_profile"
+      value       = jsonencode(var.ucs_domain_profile)
+    },
+  }
+}
+
+
+#__________________________________________________________
+#
+# Terraform Cloud Workspaces - UCS Domain Profiles
+#__________________________________________________________
+
+module "workspaces_domain_vlans" {
+  source              = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
+  for_each            = local.ucs_domain_profile
+  auto_apply          = true
+  description         = "Terraform Workspace for Organization ${each.value.organization}, UCS Domain ${each.key} VLANs."
+  global_remote_state = true
+  name                = "${each.key}_vlans"
+  terraform_version   = var.terraform_version
+  tfc_oauth_token     = var.tfc_oauth_token
+  tfc_org_name        = var.tfc_organization
+  vcs_repo            = var.vcs_repo
+  working_directory   = "modules/domain_vlans"
+}
+
+output "workspaces_domain_vlans" {
+  description = "Terraform Cloud UCS Domain VLANs Workspace IDs and Names."
+  value       = { for v in sort(keys(module.workspaces_domain_vlans)) : v => module.workspaces_domain_vlans[v] }
+}
+
+
+#__________________________________________________________
+#
+# Terraform Cloud Workspace Variables: UCS Domain Profiles
+#__________________________________________________________
+
+module "workspaces_domain_vlans_variables" {
+  source = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
+  depends_on = [
+    module.workspaces_domain_vlans
+  ]
+  for_each     = var.ucs_domain_profile
+  category     = "terraform"
+  workspace_id = module.workspaces_domain_vlans[each.key].workspace.id
   variable_list = {
     #---------------------------
     # Terraform Cloud Variables
     #---------------------------
-    tfcorg = {
+    tfc_organization = {
       description = "Terraform Cloud Organization."
       key         = "tfc_organization"
       value       = var.tfc_organization
     },
-    tfcws = {
-      description = "Domain Workspace Name."
-      key         = "domain_workspace"
-      value       = var.domain_workspace
+    ws_domain = {
+      description = "Terraform Cloud UCS Domain Workspace."
+      key         = "ws_domain"
+      value       = each.key
     },
     #---------------------------
     # Intersight Variables
@@ -163,53 +322,30 @@ module "domain_policies_variables" {
       sensitive   = true
       value       = var.apikey
     },
-    url = {
-      description = "Intersight URL."
+    endpoint = {
+      description = "Intersight Endpoint."
       key         = "endpoint"
       value       = var.endpoint
     },
-    org = {
-      description = "Intersight Organization."
-      key         = "organization"
-      value       = var.organization
+    organizations = {
+      description = "Intersight Organizations."
+      key         = "organizations"
+      value       = jsonencode(var.organizations)
     },
-    secret = {
+    secretkey = {
       description = "Intersight Secret Key."
       key         = "secretkey"
       sensitive   = true
       value       = var.secretkey
     },
-    tags = {
-      description = "Tags to be Associated with Objects Created in Intersight."
-      hcl         = true
-      key         = "tags"
-      value       = var.tags
+    #-----------------------------------------
+    # Intersight UCS Domain Profile Variables
+    #-----------------------------------------
+    ucs_domain_profile = {
+      description = "Intersight UCS Domain Profiles."
+      key         = "ucs_domain_profile"
+      value       = jsonencode(var.ucs_domain_profile)
     },
-    #---------------------------
-    # Domain Policies Variables
-    #---------------------------
-    domflag = {
-      description = "Flag to Assign Policies to Domain or not."
-      key         = "assign_domain"
-      value       = var.assign_domain
-    },
-    comm = {
-      description = "SNMP Community to Assign to the SNMP Policy."
-      key         = "snmp_community"
-      sensitive   = true
-      value       = var.snmp_community
-    },
-    trap = {
-      description = "SNMP Trap Community to Assign to the SNMP Policy."
-      key         = "trap_community"
-      sensitive   = true
-      value       = var.trap_community
-    },
-    # var10 = {
-    #   description = "SNMP Trap Community to Assign to the SNMP Policy."
-    #   key         = "snmp_users"
-    #   sensitive   = true
-    #   value       = var.snmp_users
-    # },
   }
 }
+
