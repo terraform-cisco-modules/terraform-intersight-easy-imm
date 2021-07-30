@@ -29,7 +29,7 @@ variable "configure_snmp" {
 
 variable "configure_snmp_type" {
   default     = "snmp_community"
-  description = "When configuring SNMP, should the script use snmp communities or users.  Options are {snmp_community|snmp_1_user|snmp_2_user}."
+  description = "When configuring SNMP, should the script use snmp communities or users.  Options are {snmp_community|snmp_1_user|snmp_2_users}."
   type        = string
 }
 

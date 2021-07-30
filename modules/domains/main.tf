@@ -707,14 +707,14 @@ module "snmp_1_user" {
   ] : []
 }
 
-module "snmp_2_user" {
+module "snmp_2_users" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profile_a,
     module.ucs_domain_profile_b
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_user"
-  for_each                = var.configure_snmp == true && var.configure_snmp_type == "snmp_2_user" ? local.ucs_domain_profile : {}
+  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users"
+  for_each                = var.configure_snmp == true && var.configure_snmp_type == "snmp_2_users" ? local.ucs_domain_profile : {}
   description             = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
   name                    = "${each.key}_snmp"
   org_moid                = local.org_moids[each.value.organization].moid
