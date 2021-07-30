@@ -11,12 +11,14 @@ locals {
       moid = data.intersight_organization_organization.org_moid[v].results[0].moid
     }
   }
-
   # Intersight Provider Variables
   endpoint = var.endpoint
   # Tags for Deployment
   tags     = jsondecode(var.tags)
-
+  # UCS Domain Outputs
+  ucs_domain_profile_a = data.terraform_remote_state.domain.outputs.ucs_domain_profile_a
+  ucs_domain_profile_b = data.terraform_remote_state.domain.outputs.ucs_domain_profile_b
+  vlan_policy          = data.terraform_remote_state.domain.outputs.vlan_policy
   #______________________________________________
   #
   # UCS Domain Variables

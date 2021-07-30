@@ -5,24 +5,26 @@
 
 locals {
   # Intersight Organization Variables
-  organizations = var.organizations
+  organizations = jsondecode(var.organizations)
   org_moids = {
     for v in sort(keys(data.intersight_organization_organization.org_moid)) : v => {
       moid = data.intersight_organization_organization.org_moid[v].results[0].moid
     }
   }
-
   # Intersight Provider Variables
   endpoint = var.endpoint
   # Tags for Deployment
-  tags     = var.tags
-
+  tags     = jsondecode(var.tags)
+  # UCS Domain Outputs
+  ucs_domain_profile_a = data.terraform_remote_state.domain.outputs.ucs_domain_profile_a
+  ucs_domain_profile_b = data.terraform_remote_state.domain.outputs.ucs_domain_profile_b
+  vlan_policy          = data.terraform_remote_state.domain.outputs.vlan_policy
   #______________________________________________
   #
   # UCS Domain Variables
   #______________________________________________
   ucs_domain_profile = {
-    for k, v in var.ucs_domain_profile : k => {
+    for k, v in jsondecode(var.ucs_domain_profile) : k => {
       domain_action                      = ( v.domain_action != null ? v.domain_action : "No-op" )
       domain_description                 = ( v.domain_description != null ? v.domain_description : "" )
       domain_descr_fi_a                  = ( v.domain_descr_fi_a != null ? v.domain_descr_fi_a : "" )

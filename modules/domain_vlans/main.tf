@@ -40,7 +40,7 @@ module "native_vlan" {
   is_native        = true
   multicast_moid   = module.multicast[each.key].moid
   vlan             = each.value.vlan_native
-  vlan_policy_moid = module.vlan_policy[each.key].moid
+  vlan_policy_moid = local.vlan_policy[each.key]
   vlan_prefix      = each.value.organization
 }
 
@@ -59,6 +59,6 @@ module "vlan_list" {
   is_native        = false
   multicast_moid   = module.multicast[each.key].moid
   vlan_list        = each.value.vlan_list
-  vlan_policy_moid = module.vlan_policy[each.key].moid
+  vlan_policy_moid = local.vlan_policy[each.key]
   vlan_prefix      = each.value.organization
 }
