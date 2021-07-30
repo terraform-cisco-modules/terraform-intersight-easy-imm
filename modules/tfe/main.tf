@@ -5,7 +5,7 @@
 
 module "domain_workspaces" {
   source              = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
-  for_each            = var.domain_list
+  for_each            = var.ucs_domain_profile
   auto_apply          = true
   description         = "Terraform Workspace for Organization ${var.organization}, UCS Domain ${each.value.domain}"
   global_remote_state = true

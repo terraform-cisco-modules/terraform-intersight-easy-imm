@@ -1,3 +1,7 @@
+terraform {
+  experiments = [module_variable_optional_attrs]
+}
+
 #__________________________________________________________
 #
 # Terraform Cloud Variables
@@ -55,10 +59,10 @@ variable "endpoint" {
   type        = string
 }
 
-variable "organization" {
+variable "organizations" {
   default     = "default"
-  description = "Intersight Organization Name."
-  type        = string
+  description = "Intersight Organization Names."
+  type        = set(string)
 }
 
 variable "tags" {
