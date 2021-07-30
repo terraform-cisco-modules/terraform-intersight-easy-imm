@@ -32,15 +32,15 @@ variable "secretkey" {
 #__________________________________________________________
 
 variable "organizations" {
-  default     = ["default"]
-  description = "Intersight Organization Names."
-  type        = set(string)
+  default     = "[\"default\"]"
+  description = "Intersight Organization Names to Apply Policy to.  https://intersight.com/an/settings/organizations/."
+  type        = string
 }
 
 variable "tags" {
-  default     = []
-  description = "List of Key/Value Pairs to Assign as Attributes to the Policy."
-  type        = list(map(string))
+  default     = "[]"
+  description = "Tags to be Associated with Objects Created in Intersight."
+  type        = string
 }
 
 
