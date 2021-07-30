@@ -25,15 +25,15 @@ locals {
     for k, v in jsondecode(var.fc_pools_map) : k => {
       assignment_order = (v.assignment_order != null ? v.assignment_order : "default")
       description      = (v.description != null ? v.description : "")
-      id_blocks        = (v.id_blocks != null ? v.id_blocks : [
+      id_blocks = (v.id_blocks != null ? v.id_blocks : [
         {
           from = "20:00:00:25:B5:0a:00:00"
           to   = "20:00:00:25:B5:0a:00:ff"
         }
       ])
-      organization     = (v.organization != null ? v.organization : "default")
-      pool_purpose     = (v.pool_purpose != null ? v.pool_purpose : "WWPN")
-      tags             = (v.tags != null ? v.tags : [])
+      organization = (v.organization != null ? v.organization : "default")
+      pool_purpose = (v.pool_purpose != null ? v.pool_purpose : "WWPN")
+      tags         = (v.tags != null ? v.tags : [])
     }
   }
   #______________________________________________
@@ -74,11 +74,11 @@ locals {
   #______________________________________________
   mac_pools_map = {
     for k, v in jsondecode(var.mac_pools_map) : k => {
-      assignment_order  = (v.assignment_order != null ? v.assignment_order : "default")
-      description       = (v.description != null ? v.description : "")
-      mac_blocks        = (v.mac_blocks != null ? v.mac_blocks : [])
-      organization      = (v.organization != null ? v.organization : "default")
-      tags              = (v.tags != null ? v.tags : [])
+      assignment_order = (v.assignment_order != null ? v.assignment_order : "default")
+      description      = (v.description != null ? v.description : "")
+      mac_blocks       = (v.mac_blocks != null ? v.mac_blocks : [])
+      organization     = (v.organization != null ? v.organization : "default")
+      tags             = (v.tags != null ? v.tags : [])
     }
   }
   #______________________________________________

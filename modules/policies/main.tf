@@ -27,7 +27,7 @@ module "bios_blade_virtualization" {
   #+++++++++++++++++++++++++++++++
   # LOM and PCIe Slots Section
   #+++++++++++++++++++++++++++++++
-  cdn_support         = "enabled"  # CDN Support for LOM
+  cdn_support = "enabled" # CDN Support for LOM
   # lom_ports_all_state = "disabled" # All Onboard LOM Ports
   #+++++++++++++++++++++++++++++++
   # Memory Section
@@ -44,16 +44,16 @@ module "bios_blade_virtualization" {
   # cpu_energy_performance          = "performance" # Energy Performance
   # cpu_performance                 = "hpc"         # CPU Performance
   # cpu_frequency_floor             = "enabled"     # Frequency Floor Override
-  cpu_power_management            = "Custom"      # Power Technology
+  cpu_power_management = "Custom" # Power Technology
   # direct_cache_access             = "enabled"     # Direct Cache Access Support
   # dram_clock_throttling           = "Performance" # DRAM Clock Throttling
   # imc_interleave                  = "Auto"        # IMC Interleaving
   # intel_virtualization_technology = "enabled"     # Intel(R) VT
   # llc_prefetch                    = "disabled"    # LLC Prefetch
-  processor_c1e                   = "disabled"    # Processor C1E
-  processor_c3report              = "disabled"    # Processor C3 Report
-  processor_c6report              = "disabled"    # Processor C6 Report
-  processor_cstate                = "disabled"    # CPU C State
+  processor_c1e      = "disabled" # Processor C1E
+  processor_c3report = "disabled" # Processor C3 Report
+  processor_c6report = "disabled" # Processor C6 Report
+  processor_cstate   = "disabled" # CPU C State
   # snc                             = "disabled"    # Sub Numa Clustering
   # xpt_prefetch                    = "disabled"    # XPT Prefetch
   #+++++++++++++++++++++++++++++++
@@ -63,7 +63,7 @@ module "bios_blade_virtualization" {
   #+++++++++++++++++++++++++++++++
   # Server Management Section
   #+++++++++++++++++++++++++++++++
-  cdn_enable            = "enabled"       # Consistent Device Naming
+  cdn_enable = "enabled" # Consistent Device Naming
   # console_redirection   = "serial-port-a" # Console Redirection
   # out_of_band_mgmt_port = "enabled"       # Out-of-Band Mgmt Port
   #+++++++++++++++++++++++++++++++
@@ -176,9 +176,9 @@ module "boot_uefi_m2pch" {
 
         }
       )
-      enabled               = true,
-      name                  = "M2",
-      object_type           = "boot.PchStorage",
+      enabled     = true,
+      name        = "M2",
+      object_type = "boot.PchStorage",
     },
   ]
 }
@@ -221,9 +221,9 @@ module "boot_uefi_m2raid" {
 
         }
       )
-      enabled               = true,
-      name                  = "LocalDisk",
-      object_type           = "boot.LocalDisk",
+      enabled     = true,
+      name        = "LocalDisk",
+      object_type = "boot.LocalDisk",
     },
   ]
 }
@@ -266,9 +266,9 @@ module "boot_uefi_sdcard" {
           Subtype = "none"
         }
       )
-      enabled               = true,
-      name                  = "SdCard",
-      object_type           = "boot.SdCard",
+      enabled     = true,
+      name        = "SdCard",
+      object_type = "boot.SdCard",
     },
   ]
 }
@@ -441,7 +441,7 @@ module "imc_access" {
 #____________________________________________________________
 
 module "ipmi_over_lan" {
-  depends_on        = [
+  depends_on = [
     data.intersight_organization_organization.org_moid
   ]
   source                = "terraform-cisco-modules/imm/intersight//modules/policies_ipmi_over_lan"
@@ -575,7 +575,7 @@ module "local_users" {
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_local_user"
   org_moid         = local.org_moid
   user_enabled     = each.value.enabled
-  user_password    = "${join(".", var, join("_", password_user, each.value.user_count))}"
+  user_password    = join(".", var, join("_", password_user, each.value.user_count))
   user_policy_moid = module.local_user.moid
   user_role        = each.value.role
   username         = each.value.username
@@ -616,13 +616,13 @@ module "ntp" {
   depends_on = [
     data.intersight_organization_organization.org_moid,
   ]
-  source       = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
-  description  = local.ntp_policy != "" ? "${local.ntp_policy} NTP Policy." : "${local.org_name} NTP Policy."
-  name         = local.ntp_policy != "" ? local.ntp_policy : local.org_name
-  ntp_servers  = local.ntp_servers
-  org_moid     = local.org_moid
-  tags         = var.tags
-  timezone     = local.timezone
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
+  description = local.ntp_policy != "" ? "${local.ntp_policy} NTP Policy." : "${local.org_name} NTP Policy."
+  name        = local.ntp_policy != "" ? local.ntp_policy : local.org_name
+  ntp_servers = local.ntp_servers
+  org_moid    = local.org_moid
+  tags        = var.tags
+  timezone    = local.timezone
 }
 
 
@@ -667,8 +667,8 @@ module "sd_card_m4" {
     data.intersight_organization_organization.org_moid
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_sd_card"
-  description    = local.sdcard_policy != "" ? "${local.sdcard_policy} M4 SD Card Policy." : "${local.org_name} M4 SD Card Policy."
-  name           = local.sdcard_policy != "" ? "${local.sdcard_policy}_m4" : "${local.org_name}_m4"
+  description = local.sdcard_policy != "" ? "${local.sdcard_policy} M4 SD Card Policy." : "${local.org_name} M4 SD Card Policy."
+  name        = local.sdcard_policy != "" ? "${local.sdcard_policy}_m4" : "${local.org_name}_m4"
   org_moid    = local.org_moid
   tags        = var.tags
 }
@@ -678,8 +678,8 @@ module "sd_card_m5" {
     data.intersight_organization_organization.org_moid
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_sd_card"
-  description    = var.sdcard_policy != "" ? "${var.sdcard_policy} M5 SD Card Policy without FlexUtil." : "${local.org_name} M5 SD Card Policy without FlexUtil."
-  name           = var.sdcard_policy != "" ? "${var.sdcard_policy}_m5" : "${local.org_name}_m5"
+  description = var.sdcard_policy != "" ? "${var.sdcard_policy} M5 SD Card Policy without FlexUtil." : "${local.org_name} M5 SD Card Policy without FlexUtil."
+  name        = var.sdcard_policy != "" ? "${var.sdcard_policy}_m5" : "${local.org_name}_m5"
   org_moid    = local.org_moid
   tags        = var.tags
 }
@@ -826,10 +826,10 @@ module "vhba_adapter" {
   depends_on = [
     data.intersight_organization_organization.org_moid
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter"
-  description = local.vhba_adapter_policy != "" ? "${local.vhba_adapter_policy} vHBA Adapter Policy." : "${local.org_name} vHBA Adapter Policy."
-  name        = local.vhba_adapter_policy != "" ? local.vhba_adapter_policy : local.org_name
-  org_moid    = local.org_moid
+  source                           = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter"
+  description                      = local.vhba_adapter_policy != "" ? "${local.vhba_adapter_policy} vHBA Adapter Policy." : "${local.org_name} vHBA Adapter Policy."
+  name                             = local.vhba_adapter_policy != "" ? local.vhba_adapter_policy : local.org_name
+  org_moid                         = local.org_moid
   error_detection_timeout          = local.vhba_error_detection_timeout
   error_recovery_enabled           = local.vhba_error_recovery_enabled
   error_recovery_io_retry_count    = local.vhba_error_recovery_io_retry_count
@@ -965,13 +965,13 @@ module "vnic_adapter_linux" {
   org_moid    = local.org_moid
   tags        = var.tags
   # Completion Settings - Reduce Queue Count
-  completion_queues    = 2
+  completion_queues = 2
   # Interrupt Settings - Reduce Interrupts
   interrupt_interrupts = 4
   # Disable Receive Side Scaling
   receive_side_scaling = false
   # Reduce Receive Queues
-  rx_queue_count       = 1
+  rx_queue_count = 1
 }
 
 module "vnic_adapter_nvmeof" {
@@ -984,7 +984,7 @@ module "vnic_adapter_nvmeof" {
   org_moid    = local.org_moid
   tags        = var.tags
   # Completion Settings - Increase Completion Queues
-  completion_queues    = 16
+  completion_queues = 16
   # Interrupt Settings - Increase Interrupts
   interrupt_interrupts = 256
   # Enable RoCE
@@ -993,11 +993,11 @@ module "vnic_adapter_nvmeof" {
   roce_queue_pairs     = 1024
   roce_resource_groups = 8
   # Recieve Settings - Increase Receive Settings
-  rx_queue_count  = 8
-  rx_ring_size    = 4096
+  rx_queue_count = 8
+  rx_ring_size   = 4096
   # Transmit Settings - Increase Transmit Settings
-  tx_queue_count  = 8
-  tx_ring_size    = 4096
+  tx_queue_count = 8
+  tx_ring_size   = 4096
 }
 
 module "vnic_adapter_vmware" {
@@ -1010,13 +1010,13 @@ module "vnic_adapter_vmware" {
   org_moid    = local.org_moid
   tags        = var.tags
   # Completion Settings - Reduce Queue Count
-  completion_queues    = 2
+  completion_queues = 2
   # Interrupt Settings - Reduce Interupts
   interrupt_interrupts = 4
   # Disable Receive Side Scaling
   receive_side_scaling = false
   # Reduce Receive Queues
-  rx_queue_count       = 1
+  rx_queue_count = 1
 }
 
 module "vnic_adapter_windows" {

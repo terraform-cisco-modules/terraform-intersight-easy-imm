@@ -17,7 +17,7 @@ locals {
   endpoint = yamldecode(data.terraform_remote_state.global.outputs.endpoint)
 
   # DNS Variables
-  domain_name = yamldecode(data.terraform_remote_state.global.outputs.domain_name)
+  domain_name    = yamldecode(data.terraform_remote_state.global.outputs.domain_name)
   dns_servers_v4 = data.terraform_remote_state.global.outputs.dns_servers_v4
 
   # Time Variables
@@ -25,10 +25,10 @@ locals {
   timezone    = yamldecode(data.terraform_remote_state.global.outputs.timezone)
 
   # Variables for making unique pool values
-  Cluster_ID = yamldecode(data.terraform_remote_state.global.outputs.Cluster_ID)
+  Cluster_ID      = yamldecode(data.terraform_remote_state.global.outputs.Cluster_ID)
   Organization_ID = yamldecode(data.terraform_remote_state.global.outputs.Organization_ID)
-  Site_ID = yamldecode(data.terraform_remote_state.global.outputs.Site_ID)
-  cluster_name = yamldecode(data.terraform_remote_state.global.outputs.cluster_name)
+  Site_ID         = yamldecode(data.terraform_remote_state.global.outputs.Site_ID)
+  cluster_name    = yamldecode(data.terraform_remote_state.global.outputs.cluster_name)
 
   # IP Pool Variables
   ip_pool_gateway = yamldecode(data.terraform_remote_state.global.outputs.ip_pool_gateway)
@@ -312,7 +312,7 @@ module "port_policy_a" {
   name         = "${local.port_policy}_a"
   org_moid     = local.org_moid
   profiles     = [module.domain_profile_a.moid]
-  tags = local.tags
+  tags         = local.tags
 }
 
 module "port_policy_b" {
@@ -327,7 +327,7 @@ module "port_policy_b" {
   name         = "${local.port_policy}_b"
   org_moid     = local.org_moid
   profiles     = [module.domain_profile_b.moid]
-  tags = local.tags
+  tags         = local.tags
 }
 
 
@@ -614,64 +614,64 @@ module "system_qos_example" {
   ]
   classes = [
     {
-      admin_state         = "Disabled"
-      bandwidth_percent   = 0
-      cos                 = 5
-      mtu                 = 1500
-      multicast_optimize  = false
-      name                = "Platinum"
-      packet_drop         = true
-      weight              = 10
+      admin_state        = "Disabled"
+      bandwidth_percent  = 0
+      cos                = 5
+      mtu                = 1500
+      multicast_optimize = false
+      name               = "Platinum"
+      packet_drop        = true
+      weight             = 10
     },
     {
-      admin_state         = "Disabled"
-      bandwidth_percent   = 0
-      cos                 = 4
-      mtu                 = 1500
-      multicast_optimize  = false
-      name                = "Gold"
-      packet_drop         = true
-      weight              = 9
+      admin_state        = "Disabled"
+      bandwidth_percent  = 0
+      cos                = 4
+      mtu                = 1500
+      multicast_optimize = false
+      name               = "Gold"
+      packet_drop        = true
+      weight             = 9
     },
     {
-      admin_state         = "Disabled"
-      bandwidth_percent   = 0
-      cos                 = 2
-      mtu                 = 1500
-      multicast_optimize  = false
-      name                = "Silver"
-      packet_drop         = true
-      weight              = 8
+      admin_state        = "Disabled"
+      bandwidth_percent  = 0
+      cos                = 2
+      mtu                = 1500
+      multicast_optimize = false
+      name               = "Silver"
+      packet_drop        = true
+      weight             = 8
     },
     {
-      admin_state         = "Disabled"
-      bandwidth_percent   = 0
-      cos                 = 1
-      mtu                 = 1500
-      multicast_optimize  = false
-      name                = "Bronze"
-      packet_drop         = true
-      weight              = 7
+      admin_state        = "Disabled"
+      bandwidth_percent  = 0
+      cos                = 1
+      mtu                = 1500
+      multicast_optimize = false
+      name               = "Bronze"
+      packet_drop        = true
+      weight             = 7
     },
     {
-      admin_state         = "Enabled"
-      bandwidth_percent   = 50
-      cos                 = 255
-      mtu                 = 9216
-      multicast_optimize  = false
-      name                = "Best Effort"
-      packet_drop         = null
-      weight              = 5
+      admin_state        = "Enabled"
+      bandwidth_percent  = 50
+      cos                = 255
+      mtu                = 9216
+      multicast_optimize = false
+      name               = "Best Effort"
+      packet_drop        = null
+      weight             = 5
     },
     {
-      admin_state         = "Enabled"
-      bandwidth_percent   = 50
-      cos                 = 3
-      mtu                 = 2240
-      multicast_optimize  = null
-      name                = "FC"
-      packet_drop         = false
-      weight              = 5
+      admin_state        = "Enabled"
+      bandwidth_percent  = 50
+      cos                = 3
+      mtu                = 2240
+      multicast_optimize = null
+      name               = "FC"
+      packet_drop        = false
+      weight             = 5
     },
   ]
 }

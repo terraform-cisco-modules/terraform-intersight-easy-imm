@@ -14,15 +14,15 @@ module "multicast" {
   depends_on = [
     local.org_moids
   ]
-  source             = "terraform-cisco-modules/imm/intersight//modules/domain_multicast"
-  for_each           = local.ucs_domain_profile
-  description        = each.value.multicast_description != "" ? each.value.multicast_description : "${each.value.organization} ${each.key} Multicast Policy."
-  name               = "${each.key}_multicast"
-  org_moid           = local.org_moids[each.value.organization].moid
-  querier_ip         = each.value.multicast_querier_ip
-  querier_state      = each.value.multicast_querier_state
-  snooping_state     = each.value.multicast_snooping_state
-  tags               = each.value.tags != [] ? each.value.tags : local.tags
+  source         = "terraform-cisco-modules/imm/intersight//modules/domain_multicast"
+  for_each       = local.ucs_domain_profile
+  description    = each.value.multicast_description != "" ? each.value.multicast_description : "${each.value.organization} ${each.key} Multicast Policy."
+  name           = "${each.key}_multicast"
+  org_moid       = local.org_moids[each.value.organization].moid
+  querier_ip     = each.value.multicast_querier_ip
+  querier_state  = each.value.multicast_querier_state
+  snooping_state = each.value.multicast_snooping_state
+  tags           = each.value.tags != [] ? each.value.tags : local.tags
 }
 
 #______________________________________________

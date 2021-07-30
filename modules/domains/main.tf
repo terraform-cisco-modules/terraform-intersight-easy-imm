@@ -85,7 +85,7 @@ module "vlan_policy" {
   name        = "${each.key}_vlan"
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles    = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
@@ -474,7 +474,7 @@ module "system_qos_1" {
   name        = "${each.key}_qos"
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles    = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
@@ -493,70 +493,70 @@ module "system_qos_2" {
   name        = "${each.key}_qos"
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles    = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
   classes = [
     {
-      admin_state         = each.value.qos_bronze_admin_state
-      bandwidth_percent   = each.value.qos_bronze_bandwidth
-      cos                 = each.value.qos_bronze_cos
-      mtu                 = each.value.qos_bronze_mtu
-      multicast_optimize  = each.value.qos_bronze_multicast_optimize
-      name                = "Bronze"
-      packet_drop         = each.value.qos_bronze_packet_drop
-      weight              = each.value.qos_bronze_weight
+      admin_state        = each.value.qos_bronze_admin_state
+      bandwidth_percent  = each.value.qos_bronze_bandwidth
+      cos                = each.value.qos_bronze_cos
+      mtu                = each.value.qos_bronze_mtu
+      multicast_optimize = each.value.qos_bronze_multicast_optimize
+      name               = "Bronze"
+      packet_drop        = each.value.qos_bronze_packet_drop
+      weight             = each.value.qos_bronze_weight
     },
     {
-      admin_state         = each.value.qos_silver_admin_state
-      bandwidth_percent   = each.value.qos_silver_bandwidth
-      cos                 = each.value.qos_silver_cos
-      mtu                 = each.value.qos_silver_mtu
-      multicast_optimize  = each.value.qos_silver_multicast_optimize
-      name                = "Silver"
-      packet_drop         = each.value.qos_silver_packet_drop
-      weight              = each.value.qos_silver_weight
+      admin_state        = each.value.qos_silver_admin_state
+      bandwidth_percent  = each.value.qos_silver_bandwidth
+      cos                = each.value.qos_silver_cos
+      mtu                = each.value.qos_silver_mtu
+      multicast_optimize = each.value.qos_silver_multicast_optimize
+      name               = "Silver"
+      packet_drop        = each.value.qos_silver_packet_drop
+      weight             = each.value.qos_silver_weight
     },
     {
-      admin_state         = each.value.qos_gold_admin_state
-      bandwidth_percent   = each.value.qos_gold_bandwidth
-      cos                 = each.value.qos_gold_cos
-      mtu                 = each.value.qos_gold_mtu
-      multicast_optimize  = each.value.qos_gold_multicast_optimize
-      name                = "Gold"
-      packet_drop         = each.value.qos_gold_packet_drop
-      weight              = each.value.qos_gold_weight
+      admin_state        = each.value.qos_gold_admin_state
+      bandwidth_percent  = each.value.qos_gold_bandwidth
+      cos                = each.value.qos_gold_cos
+      mtu                = each.value.qos_gold_mtu
+      multicast_optimize = each.value.qos_gold_multicast_optimize
+      name               = "Gold"
+      packet_drop        = each.value.qos_gold_packet_drop
+      weight             = each.value.qos_gold_weight
     },
     {
-      admin_state         = each.value.qos_platinum_admin_state
-      bandwidth_percent   = each.value.qos_platinum_bandwidth
-      cos                 = each.value.qos_platinum_cos
-      mtu                 = each.value.qos_platinum_mtu
-      multicast_optimize  = each.value.qos_platinum_multicast_optimize
-      name                = "Platinum"
-      packet_drop         = each.value.qos_platinum_packet_drop
-      weight              = each.value.qos_platinum_weight
+      admin_state        = each.value.qos_platinum_admin_state
+      bandwidth_percent  = each.value.qos_platinum_bandwidth
+      cos                = each.value.qos_platinum_cos
+      mtu                = each.value.qos_platinum_mtu
+      multicast_optimize = each.value.qos_platinum_multicast_optimize
+      name               = "Platinum"
+      packet_drop        = each.value.qos_platinum_packet_drop
+      weight             = each.value.qos_platinum_weight
     },
     {
-      admin_state         = each.value.qos_best_effort_admin_state
-      bandwidth_percent   = each.value.qos_best_effort_bandwidth
-      cos                 = 255
-      mtu                 = each.value.qos_best_effort_mtu
-      multicast_optimize  = each.value.qos_best_effort_multicast_optimize
-      name                = "Best Effort"
-      packet_drop         = null
-      weight              = each.value.qos_best_effort_weight
+      admin_state        = each.value.qos_best_effort_admin_state
+      bandwidth_percent  = each.value.qos_best_effort_bandwidth
+      cos                = 255
+      mtu                = each.value.qos_best_effort_mtu
+      multicast_optimize = each.value.qos_best_effort_multicast_optimize
+      name               = "Best Effort"
+      packet_drop        = null
+      weight             = each.value.qos_best_effort_weight
     },
     {
-      admin_state         = "Enabled"
-      bandwidth_percent   = each.value.qos_fc_bandwidth
-      cos                 = 3
-      mtu                 = 2240
-      multicast_optimize  = null
-      name                = "FC"
-      packet_drop         = false
-      weight              = each.value.qos_fc_weight
+      admin_state        = "Enabled"
+      bandwidth_percent  = each.value.qos_fc_bandwidth
+      cos                = 3
+      mtu                = 2240
+      multicast_optimize = null
+      name               = "FC"
+      packet_drop        = false
+      weight             = each.value.qos_fc_weight
     },
   ]
 }
@@ -584,7 +584,7 @@ module "switch_control" {
   vlan_optimization     = each.value.sw_ctrl_vlan_optimization
   org_moid              = local.org_moids[each.value.organization].moid
   tags                  = each.value.tags != [] ? each.value.tags : local.tags
-  profiles              = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
@@ -615,7 +615,7 @@ module "dns" {
   tags           = each.value.tags != [] ? each.value.tags : local.tags
   profile_type   = "domain"
   update_domain  = each.value.dns_update_domain
-  profiles       = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
@@ -643,7 +643,7 @@ module "ntp" {
   profile_type = "domain"
   tags         = each.value.tags != [] ? each.value.tags : local.tags
   timezone     = each.value.ntp_timezone
-  profiles     = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
@@ -662,19 +662,19 @@ module "snmp_community" {
     module.ucs_domain_profile_a,
     module.ucs_domain_profile_b
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
-  for_each                = var.configure_snmp == true && var.configure_snmp_type == "snmp_community" ? local.ucs_domain_profile : {}
-  description             = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
-  name                    = "${each.key}_snmp"
-  org_moid                = local.org_moids[each.value.organization].moid
-  profile_type            = "domain"
-  snmp_community          = var.snmp_community
-  snmp_traps              = each.value.snmp_trap_destinations
-  system_contact          = each.value.snmp_system_contact
-  system_location         = each.value.snmp_system_location
-  tags                    = each.value.tags != [] ? each.value.tags : local.tags
-  trap_community          = var.snmp_trap_community
-  profiles                = var.assign_domain == true ? [
+  source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  for_each        = var.configure_snmp == true && var.configure_snmp_type == "snmp_community" ? local.ucs_domain_profile : {}
+  description     = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
+  name            = "${each.key}_snmp"
+  org_moid        = local.org_moids[each.value.organization].moid
+  profile_type    = "domain"
+  snmp_community  = var.snmp_community
+  snmp_traps      = each.value.snmp_trap_destinations
+  system_contact  = each.value.snmp_system_contact
+  system_location = each.value.snmp_system_location
+  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  trap_community  = var.snmp_trap_community
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
@@ -701,7 +701,7 @@ module "snmp_1_user" {
   user_1_name             = each.value.snmp_user_1_name
   user_1_privacy_password = var.snmp_user_1_privacy_password
   user_1_security_level   = each.value.snmp_user_1_security_level
-  profiles                = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
@@ -733,7 +733,7 @@ module "snmp_2_users" {
   user_2_name             = each.value.snmp_user_2_name
   user_2_privacy_password = var.snmp_user_2_privacy_password
   user_2_security_level   = each.value.snmp_user_2_security_level
-  profiles                = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []
@@ -761,7 +761,7 @@ module "syslog" {
   remote_clients  = each.value.syslog_destinations
   syslog_severity = each.value.syslog_severity
   tags            = each.value.tags != [] ? each.value.tags : local.tags
-  profiles    = var.assign_domain == true ? [
+  profiles = var.assign_domain == true ? [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ] : []

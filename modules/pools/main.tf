@@ -32,7 +32,7 @@ module "fc_pools" {
 #______________________________________________
 
 module "ip_pools" {
-  depends_on        = [
+  depends_on = [
     local.org_moids
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/pools_ip"
@@ -57,7 +57,7 @@ module "ip_pools" {
 #______________________________________________
 
 module "iqn_pools" {
-  depends_on        = [
+  depends_on = [
     local.org_moids
   ]
   source            = "terraform-cisco-modules/imm/intersight//modules/pools_iqn"
@@ -78,7 +78,7 @@ module "iqn_pools" {
 #______________________________________________
 
 module "mac_pools" {
-  depends_on        = [
+  depends_on = [
     local.org_moids
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/pools_mac"
@@ -98,7 +98,7 @@ module "mac_pools" {
 #______________________________________________
 
 module "uuid_pools" {
-  depends_on        = [
+  depends_on = [
     local.org_moids
   ]
   source             = "terraform-cisco-modules/imm/intersight//modules/pools_uuid"
