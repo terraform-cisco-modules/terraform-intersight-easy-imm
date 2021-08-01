@@ -3,42 +3,6 @@
 # Intersight UCS Domain Profile Variables
 #__________________________________________________________
 
-variable "assign_domain" {
-  default     = false
-  description = "Flag to Assign Policies to Domain or not."
-  type        = bool
-}
-
-variable "assign_switches" {
-  default     = false
-  description = "Setting this Flag to True will Assign Switches to Profile."
-  type        = bool
-}
-
-variable "configure_fibre_channel" {
-  default     = false
-  description = "Flag to Specify if Fibre-Channel should be configured."
-  type        = bool
-}
-
-variable "configure_snmp" {
-  default     = false
-  description = "Flag to Specify if the SNMP Policy should be configured."
-  type        = bool
-}
-
-variable "configure_snmp_type" {
-  default     = "snmp_community"
-  description = "When configuring SNMP, should the script use snmp communities or users.  Options are {snmp_community|snmp_1_user|snmp_2_users}."
-  type        = string
-}
-
-variable "configure_syslog" {
-  default     = false
-  description = "Flag to Specify if the Syslog Policy should be configured."
-  type        = bool
-}
-
 variable "snmp_community" {
   default     = ""
   description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
@@ -85,6 +49,8 @@ variable "snmp_user_2_privacy_password" {
 variable "ucs_domain_profile" {
   default = {
     default = { # The UCS Domain Profile Name will be {each.key}.  In this case it would be default if left like this.
+      assign_switches                    = false
+      config_fibre_channel               = false
       domain_action                      = "No-op"
       domain_description                 = ""
       domain_descr_fi_a                  = ""
@@ -167,6 +133,7 @@ variable "ucs_domain_profile" {
       qos_silver_multicast_optimize      = false
       qos_silver_packet_drop             = true
       qos_silver_weight                  = 1
+      snmp_config_type                   = "snmp_community"
       snmp_description                   = ""
       snmp_system_contact                = ""
       snmp_system_location               = ""
@@ -183,6 +150,7 @@ variable "ucs_domain_profile" {
       sw_ctrl_udld_message_interval      = 15
       sw_ctrl_udld_recovery_action       = "reset"
       sw_ctrl_vlan_optimization          = true
+      syslog_configure                   = false
       syslog_description                 = ""
       syslog_destinations                = []
       syslog_severity                    = "warning"
@@ -199,9 +167,22 @@ variable "ucs_domain_profile" {
       vsan_fabric_b_fcoe                 = ""
     }
   }
-  description = "Intersight UCS Domain Profile Variable Map.\r\n1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ \r\n2. For the remainder of the option documentation refer to these sources:\r\n* https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_cluster\r\n* https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_switch"
+  description = <<-EOT
+  Intersight UCS Domain Profile Variable Map.
+  1. assign_switches - Flag to define if the physical FI's should be assigned to the policy or not at this time.
+  2. config_fibre_channel = Flag to define if fibre-channel should be configured for the UCS Domain.
+  3. organization - Name of the Intersight Organization to assign this pool to:
+  4. snmp_type - There are three SNMP modules: snmp_community, snmp_1_user, and snmp_2_users.  Use this field to define which policy to assign to the domain when snmp_configure is set to true.
+  5. syslog_configure - Flag to define if Syslog should be assigned to the Domain or not.
+    * https://intersight.com/an/settings/organizations/
+  6. For the remainder of the option documentation refer to these sources:
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_cluster
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_switch
+  EOT
   type = map(object(
     {
+      assign_switches                    = optional(bool)
+      config_fibre_channel               = optional(bool)
       domain_action                      = optional(string)
       domain_description                 = optional(string)
       domain_descr_fi_a                  = optional(string)
@@ -284,6 +265,7 @@ variable "ucs_domain_profile" {
       qos_silver_multicast_optimize      = optional(bool)
       qos_silver_packet_drop             = optional(bool)
       qos_silver_weight                  = optional(number)
+      snmp_config_type                   = optional(string)
       snmp_description                   = optional(string)
       snmp_system_contact                = optional(string)
       snmp_system_location               = optional(string)
@@ -300,6 +282,7 @@ variable "ucs_domain_profile" {
       sw_ctrl_udld_message_interval      = optional(number)
       sw_ctrl_udld_recovery_action       = optional(string)
       sw_ctrl_vlan_optimization          = optional(bool)
+      syslog_configure                   = optional(bool)
       syslog_description                 = optional(string)
       syslog_destinations                = optional(list(map(string)))
       syslog_severity                    = optional(string)

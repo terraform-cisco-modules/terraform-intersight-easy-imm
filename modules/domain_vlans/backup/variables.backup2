@@ -182,7 +182,14 @@ variable "ucs_domain_profile" {
       vsan_fabric_b_fcoe                 = ""
     }
   }
-  description = "Intersight UCS Domain Profile Variable Map.\r\n1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ \r\n2. For the remainder of the option documentation refer to these sources:\r\n* https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_cluster\r\n* https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_switch"
+  description = <<-EOT
+  Intersight UCS Domain Profile Variable Map.
+  1. organization - Name of the Intersight Organization to assign this pool to:
+    * https://intersight.com/an/settings/organizations/
+  2. For the remainder of the option documentation refer to these sources:
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_cluster
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/domain_profile_switch
+  EOT
   type = map(object(
     {
       domain_action                      = optional(string)

@@ -49,42 +49,6 @@ variable "tags" {
 # Intersight UCS Domain Profile Variables
 #__________________________________________________________
 
-variable "assign_switches" {
-  default     = false
-  description = "Setting this Flag to True will Assign Switches to Profile."
-  type        = bool
-}
-
-variable "assign_domain" {
-  default     = false
-  description = "Flag to Assign Policies to Domain or not."
-  type        = bool
-}
-
-variable "configure_fibre_channel" {
-  default     = false
-  description = "Flag to Specify if Fibre-Channel should be configured."
-  type        = bool
-}
-
-variable "configure_snmp" {
-  default     = false
-  description = "Flag to Specify if the SNMP Policy should be configured."
-  type        = bool
-}
-
-variable "configure_snmp_type" {
-  default     = "snmp_community"
-  description = "When configuring SNMP, should the script use snmp communities or users.  Options are {snmp_community|snmp_1_user|snmp_2_users}"
-  type        = string
-}
-
-variable "configure_syslog" {
-  default     = false
-  description = "Flag to Specify if the Syslog Policy should be configured."
-  type        = bool
-}
-
 variable "snmp_community" {
   default     = ""
   description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
@@ -127,6 +91,11 @@ variable "snmp_user_2_privacy_password" {
   type        = string
 }
 
+
+#__________________________________________________________
+#
+# Intersight UCS Domain Profile Variables
+#__________________________________________________________
 
 variable "ucs_domain_profile" {
   description = "Please Refer to the ucs_domain_profile variable information in the tfe module.  In the domains module the variable is accepted as a string from terraform cloud in the terraform.auto.tfvars and extracted using locals."

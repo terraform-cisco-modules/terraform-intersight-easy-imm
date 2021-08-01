@@ -128,6 +128,11 @@ variable "snmp_user_2_privacy_password" {
 }
 
 
+#__________________________________________________________
+#
+# Intersight UCS Domain Profile Variables
+#__________________________________________________________
+
 variable "ucs_domain_profile" {
   description = "Please Refer to the ucs_domain_profile variable information in the tfe module.  In the domains module the variable is accepted as a string from terraform cloud in the terraform.auto.tfvars and extracted using locals."
   type        = string

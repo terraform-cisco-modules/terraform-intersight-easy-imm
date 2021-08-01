@@ -1,136 +1,3 @@
-#____________________________________________________________
-#
-# BIOS Policies
-# GUI Location: Policies > Create Policy
-#____________________________________________________________
-
-module "bios_blade_virtualization" {
-  depends_on = [
-    data.intersight_organization_organization.org_moid
-  ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
-  description = local.bios_policy != "" ? "${local.bios_policy} BIOS Policy." : "${local.org_name} BIOS Policy."
-  name        = local.bios_policy != "" ? local.bios_policy : local.org_name
-  org_moid    = local.org_moid
-  profiles    = []
-  tags        = var.tags
-  #+++++++++++++++++++++++++++++++
-  # Boot Options Section
-  #+++++++++++++++++++++++++++++++
-  # vmd_enable = "enabled"          # VMD Enablement
-  #+++++++++++++++++++++++++++++++
-  # Intel Directed IO Section
-  #+++++++++++++++++++++++++++++++
-  # intel_vt_for_directed_io      = "enabled" # Intel VT for Directed IO
-  # intel_vtd_coherency_support   = "enabled" # Intel(R) VT-d Coherency Support
-  # intel_vtd_interrupt_remapping = "enabled" # Intel(R) VT-d interrupt Remapping
-  #+++++++++++++++++++++++++++++++
-  # LOM and PCIe Slots Section
-  #+++++++++++++++++++++++++++++++
-  cdn_support = "enabled" # CDN Support for LOM
-  # lom_ports_all_state = "disabled" # All Onboard LOM Ports
-  #+++++++++++++++++++++++++++++++
-  # Memory Section
-  #+++++++++++++++++++++++++++++++
-  # select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
-  #+++++++++++++++++++++++++++++++
-  # PCI Section
-  #+++++++++++++++++++++++++++++++
-  # memory_mapped_io_above4gb = "enabled" # Memory Mapped IO Above 4GiB
-  #+++++++++++++++++++++++++++++++
-  # Processor Section
-  #+++++++++++++++++++++++++++++++
-  # altitude                        = "auto"        # Altitude
-  # cpu_energy_performance          = "performance" # Energy Performance
-  # cpu_performance                 = "hpc"         # CPU Performance
-  # cpu_frequency_floor             = "enabled"     # Frequency Floor Override
-  cpu_power_management = "Custom" # Power Technology
-  # direct_cache_access             = "enabled"     # Direct Cache Access Support
-  # dram_clock_throttling           = "Performance" # DRAM Clock Throttling
-  # imc_interleave                  = "Auto"        # IMC Interleaving
-  # intel_virtualization_technology = "enabled"     # Intel(R) VT
-  # llc_prefetch                    = "disabled"    # LLC Prefetch
-  processor_c1e      = "disabled" # Processor C1E
-  processor_c3report = "disabled" # Processor C3 Report
-  processor_c6report = "disabled" # Processor C6 Report
-  processor_cstate   = "disabled" # CPU C State
-  # snc                             = "disabled"    # Sub Numa Clustering
-  # xpt_prefetch                    = "disabled"    # XPT Prefetch
-  #+++++++++++++++++++++++++++++++
-  # Serial Port Section
-  #+++++++++++++++++++++++++++++++
-  # serial_port_aenable = "enabled" # Serial A Enable
-  #+++++++++++++++++++++++++++++++
-  # Server Management Section
-  #+++++++++++++++++++++++++++++++
-  cdn_enable = "enabled" # Consistent Device Naming
-  # console_redirection   = "serial-port-a" # Console Redirection
-  # out_of_band_mgmt_port = "enabled"       # Out-of-Band Mgmt Port
-  #+++++++++++++++++++++++++++++++
-  # Trusted Platform Section
-  #+++++++++++++++++++++++++++++++
-  txt_support = "enabled" # Intel Trusted Execution Technology Support
-}
-
-module "bios_nvmeof" {
-  depends_on = [
-    data.intersight_organization_organization.org_moid
-  ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
-  description = local.bios_policy != "" ? "${local.bios_policy} M4 BIOS Policy." : "${local.org_name} M4 BIOS Policy."
-  name        = local.bios_policy != "" ? "${local.bios_policy}_m4" : "${local.org_name}_m4"
-  org_moid    = local.org_moid
-  profiles    = []
-  tags        = var.tags
-  #+++++++++++++++++++++++++++++++
-  # Intel Directed IO Section
-  #+++++++++++++++++++++++++++++++
-  intel_vt_for_directed_io      = "enabled" # Intel VT for Directed IO
-  intel_vtd_coherency_support   = "enabled" # Intel(R) VT-d Coherency Support
-  intel_vtd_interrupt_remapping = "enabled" # Intel(R) VT-d interrupt Remapping
-  #+++++++++++++++++++++++++++++++
-  # LOM and PCIe Slots Section
-  #+++++++++++++++++++++++++++++++
-  cdn_support         = "enabled"  # CDN Support for LOM
-  lom_ports_all_state = "disabled" # All Onboard LOM Ports
-  #+++++++++++++++++++++++++++++++
-  # Memory Section
-  #+++++++++++++++++++++++++++++++
-  select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
-  #+++++++++++++++++++++++++++++++
-  # PCI Section
-  #+++++++++++++++++++++++++++++++
-  memory_mapped_io_above4gb = "enabled" # Memory Mapped IO Above 4GiB
-  #+++++++++++++++++++++++++++++++
-  # Processor Section
-  #+++++++++++++++++++++++++++++++
-  altitude                        = "auto"        # Altitude
-  cpu_energy_performance          = "performance" # Energy Performance
-  cpu_frequency_floor             = "enabled"     # Frequency Floor Override
-  cpu_power_management            = "performance" # Power Technology
-  direct_cache_access             = "enabled"     # Direct Cache Access Support
-  dram_clock_throttling           = "Performance" # DRAM Clock Throttling
-  intel_virtualization_technology = "enabled"     # Intel(R) VT
-  processor_c1e                   = "disabled"    # Processor C1E
-  processor_c3report              = "disabled"    # Processor C3 Report
-  processor_c6report              = "disabled"    # Processor C6 Report
-  processor_cstate                = "disabled"    # CPU C State
-  #+++++++++++++++++++++++++++++++
-  # Serial Port Section
-  #+++++++++++++++++++++++++++++++
-  serial_port_aenable = "enabled" # Serial A Enable
-  #+++++++++++++++++++++++++++++++
-  # Server Management Section
-  #+++++++++++++++++++++++++++++++
-  cdn_enable            = "enabled"       # Consistent Device Naming
-  console_redirection   = "serial-port-a" # Console Redirection
-  out_of_band_mgmt_port = "enabled"       # Out-of-Band Mgmt Port
-  #+++++++++++++++++++++++++++++++
-  # Trusted Platform Section
-  #+++++++++++++++++++++++++++++++
-  txt_support = "enabled" # Intel Trusted Execution Technology Support
-}
-
 
 #____________________________________________________________
 #
@@ -143,11 +10,12 @@ module "boot_uefi_m2pch" {
     data.intersight_organization_organization.org_moid
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_boot_order"
+  for_each    = var.assign_best_practice_boot == true ? local.best_practice_policies : {}
   boot_secure = local.boot_secure
   description = local.boot_policy != "" ? "${local.boot_policy} UEFI M.2 PCH Boot Policy." : "${local.org_name} UEFI M.2 PCH Boot Policy."
-  name        = local.boot_policy != "" ? "${local.boot_policy}_uefi_m2pch" : "${local.org_name}_uefi_m2pch"
-  org_moid    = local.org_moid
-  profiles    = []
+  name        = "${each.key}_boot_uefi_m2pch"
+  org_moid    = local.org_moids[each.value.organization].moid
+  profiles    = each.value.profiles
   tags        = var.tags
   boot_devices = [
     {
@@ -177,7 +45,7 @@ module "boot_uefi_m2pch" {
         }
       )
       enabled     = true,
-      name        = "M2",
+      name        = "M2-PCH",
       object_type = "boot.PchStorage",
     },
   ]
@@ -222,7 +90,7 @@ module "boot_uefi_m2raid" {
         }
       )
       enabled     = true,
-      name        = "LocalDisk",
+      name        = "M2_RAID",
       object_type = "boot.LocalDisk",
     },
   ]
@@ -1355,4 +1223,3 @@ module "vnic_loop" {
     }
   }
 }
-

@@ -191,36 +191,6 @@ module "workspaces_domain_variables" {
     #-----------------------------------------
     # Intersight UCS Domain Profile Variables
     #-----------------------------------------
-    assign_domain = {
-      description = "Flag to Assign Policies to Domain or not."
-      key         = "assign_domain"
-      value       = var.assign_domain
-    },
-    assign_switches = {
-      description = "Setting this Flag to True will Assign Switches to Profile."
-      key         = "assign_switches"
-      value       = var.assign_switches
-    },
-    configure_fibre_channel = {
-      description = "Flag to Specify if Fibre-Channel should be configured."
-      key         = "configure_fibre_channel"
-      value       = var.configure_fibre_channel
-    },
-    configure_snmp = {
-      description = "Flag to Specify if SNMP Policy should be configured."
-      key         = "configure_snmp"
-      value       = var.configure_snmp
-    },
-    configure_snmp_type = {
-      description = "When configuring SNMP, should the script use snmp communities or users.  Options are {snmp_community|snmp_1_user|snmp_2_user}."
-      key         = "configure_snmp_type"
-      value       = var.configure_snmp_type
-    },
-    configure_syslog = {
-      description = "Flag to Specify if Syslog Policy should be configured."
-      key         = "configure_syslog"
-      value       = var.configure_syslog
-    },
     snmp_community = {
       description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
       key         = "snmp_community"

@@ -17,7 +17,7 @@ variable "fc_pools_map" {
       organization     = "default"
       pool_purpose     = "WWPN" # WWPN or WWNN
       tags             = []
-      id_blocks = [
+      id_blocks        = [
         {
           from = "20:00:00:25:B5:0a:00:00"
           to   = "20:00:00:25:B5:0a:00:ff"
@@ -25,7 +25,13 @@ variable "fc_pools_map" {
       ]
     }
   }
-  description = "Intersight Fibre-Channel Pool Variable Map.\r\n1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ \r\n2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_fc"
+  description = <<-EOT
+  Intersight Fibre-Channel Pool Variable Map.
+  1. organization - Name of the Intersight Organization to assign this pool to:
+    * https://intersight.com/an/settings/organizations/
+  2. For the remainder of the option documentation refer to the source here:
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_fc
+  EOT
   type = map(object(
     {
       assignment_order = optional(string)
@@ -65,7 +71,13 @@ variable "ip_pools_map" {
       tags             = []
     }
   }
-  description = "Intersight IP Pool Variable Map.\r\n1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ \r\n2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_ip"
+  description = <<-EOT
+  Intersight IP Pool Variable Map.
+  1. organization - Name of the Intersight Organization to assign this pool to:
+    * https://intersight.com/an/settings/organizations/
+  2. For the remainder of the option documentation refer to the source here:
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_ip"
+  EOT
   type = map(object(
     {
       assignment_order = optional(string)
@@ -97,11 +109,11 @@ variable "iqn_pools_create" {
 variable "iqn_pools_map" {
   default = {
     default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
-      assignment_order = "default"
-      description      = ""
-      iqn_prefix       = "iqn.2021-11.com.cisco"
-      organization     = "default"
-      tags             = []
+      assignment_order  = "default"
+      description       = ""
+      iqn_prefix        = "iqn.2021-11.com.cisco"
+      organization      = "default"
+      tags              = []
       iqn_suffix_blocks = [
         {
           pool_size    = 255
@@ -111,7 +123,13 @@ variable "iqn_pools_map" {
       ]
     }
   }
-  description = "Intersight IQN Pool Variable Map.\r\n1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ \r\n2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_iqn"
+  description = <<-EOT
+  Intersight IQN Pool Variable Map.
+  1. organization - Name of the Intersight Organization to assign this pool to
+    * https://intersight.com/an/settings/organizations/
+  2. For the remainder of the option documentation refer to the source here:
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_iqn"
+  EOT
   type = map(object(
     {
       assignment_order  = optional(string)
@@ -143,7 +161,7 @@ variable "mac_pools_map" {
       description      = ""
       organization     = "default"
       tags             = []
-      mac_blocks = [
+      mac_blocks       = [
         {
           from = "00:25:B5:0a:00:00"
           to   = "00:25:B5:0a:00:ff"
@@ -151,7 +169,13 @@ variable "mac_pools_map" {
       ]
     }
   }
-  description = "Intersight MAC Pool Variable Map.\r\n1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ \r\n2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_mac"
+  description = <<-EOT
+  Intersight MAC Pool Variable Map.
+  1. organization - Name of the Intersight Organization to assign this pool to:
+    * https://intersight.com/an/settings/organizations/
+  2. For the remainder of the option documentation refer to the source here:
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_mac"
+  EOT
   type = map(object(
     {
       assignment_order = optional(string)
@@ -178,11 +202,11 @@ variable "uuid_pools_create" {
 variable "uuid_pools_map" {
   default = {
     default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
-      assignment_order = "default"
-      description      = ""
-      organization     = "default"
-      prefix           = "000025B5-0000-0000"
-      tags             = []
+      assignment_order   = "default"
+      description        = ""
+      organization       = "default"
+      prefix             = "000025B5-0000-0000"
+      tags               = []
       uuid_suffix_blocks = [
         {
           from = "0000-000000000000"
@@ -191,7 +215,13 @@ variable "uuid_pools_map" {
       ]
     }
   }
-  description = "Intersight UUID Pool Variable Map.\r\n1. organization - Name of the Intersight Organization to assign this pool to.  https://intersight.com/an/settings/organizations/ \r\n2. For the remainder of the option documentation refer to the source here: https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_uuid"
+  description = <<-EOT
+  Intersight UUID Pool Variable Map.
+  1. organization - Name of the Intersight Organization to assign this pool to:
+    * https://intersight.com/an/settings/organizations/
+  2. For the remainder of the option documentation refer to the source here:
+    * https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/pools_uuid"
+  EOT
   type = map(object(
     {
       assignment_order   = optional(string)

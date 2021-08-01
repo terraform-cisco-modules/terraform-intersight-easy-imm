@@ -35,7 +35,7 @@ module "ucs_domain_profile_a" {
   source          = "terraform-cisco-modules/imm/intersight//modules/domain_profile_switch"
   for_each        = local.ucs_domain_profile
   action          = each.value.domain_action
-  assigned_switch = var.assign_switches == true ? [data.intersight_network_element_summary.fi_a[each.key].results.0.moid] : []
+  assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fi_a[each.key].results.0.moid] : []
   cluster_moid    = module.ucs_domain_profile[each.key].moid
   description     = each.value.domain_descr_fi_a != "" ? each.value.domain_descr_fi_a : "${each.value.organization} ${each.key} Fabric Interconnect A Profile."
   name            = "${each.key}-a"
@@ -58,7 +58,7 @@ module "ucs_domain_profile_b" {
   source          = "terraform-cisco-modules/imm/intersight//modules/domain_profile_switch"
   for_each        = local.ucs_domain_profile
   action          = each.value.domain_action
-  assigned_switch = var.assign_switches == true ? [data.intersight_network_element_summary.fi_b[each.key].results.0.moid] : []
+  assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fi_b[each.key].results.0.moid] : []
   cluster_moid    = module.ucs_domain_profile[each.key].moid
   description     = each.value.domain_descr_fi_b != "" ? each.value.domain_descr_fi_b : "${each.value.organization} ${each.key} Fabric Interconnect B Profile."
   name            = "${each.key}-b"
@@ -85,10 +85,10 @@ module "vlan_policy" {
   name        = "${each.key}_vlan"
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
 }
 
 #____________________________________________________________
@@ -104,7 +104,10 @@ module "vsan_policy_a" {
     module.ucs_domain_profile_b
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
-  for_each        = var.configure_fibre_channel == true ? local.ucs_domain_profile : {}
+  for_each        = {
+    for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
+    if fibre_channel.config_fibre_channel == true
+  }
   description     = each.value.vsan_a_description != "" ? each.value.vsan_a_description : "${each.value.organization} ${each.key} VSAN Policy Fabric A."
   enable_trunking = each.value.vsan_enable_trunking
   name            = "${each.key}_vsan_a"
@@ -120,7 +123,10 @@ module "vsan_policy_b" {
     module.ucs_domain_profile_b
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
-  for_each        = var.configure_fibre_channel == true ? local.ucs_domain_profile : {}
+  for_each        = {
+    for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
+    if fibre_channel.config_fibre_channel == true
+  }
   description     = each.value.vsan_b_description != "" ? each.value.vsan_b_description : "${each.value.organization} ${each.key} VSAN Policy Fabric B."
   enable_trunking = each.value.vsan_enable_trunking
   name            = "${each.key}_vsan_b"
@@ -140,7 +146,10 @@ module "vsan_a" {
     module.vsan_policy_a
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
-  for_each         = var.configure_fibre_channel == true ? local.ucs_domain_profile : {}
+  for_each         = {
+    for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
+    if fibre_channel.config_fibre_channel == true
+  }
   vsan_policy_moid = module.vsan_policy_a[each.key].moid
   vsan_prefix      = each.value.organization
   vsan_list = {
@@ -163,7 +172,10 @@ module "vsan_b" {
     module.vsan_policy_b
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
-  for_each         = var.configure_fibre_channel == true ? local.ucs_domain_profile : {}
+  for_each         = {
+    for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
+    if fibre_channel.config_fibre_channel == true
+  }
   vsan_policy_moid = module.vsan_policy_b[each.key].moid
   vsan_prefix      = each.value.organization
   vsan_list = {
@@ -420,7 +432,10 @@ module "san_uplink_port_channel_a" {
     module.port_policy_a
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
-  for_each            = var.configure_fibre_channel == true ? local.ucs_domain_profile : {}
+  for_each            = {
+    for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
+    if fibre_channel.config_fibre_channel == true
+  }
   breakout_sw_port    = each.value.ports_san_pc_breakoutswport
   fill_pattern        = each.value.ports_san_fill_pattern
   san_uplink_pc_id    = element(each.value.ports_san_pc_ports, 0)
@@ -444,7 +459,10 @@ module "san_uplink_port_channel_b" {
     module.port_policy_b
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
-  for_each            = var.configure_fibre_channel == true ? local.ucs_domain_profile : {}
+  for_each            = {
+    for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
+    if fibre_channel.config_fibre_channel == true
+  }
   breakout_sw_port    = each.value.ports_san_pc_breakoutswport
   fill_pattern        = each.value.ports_san_fill_pattern
   san_uplink_pc_id    = element(each.value.ports_san_pc_ports, 0)
@@ -474,10 +492,10 @@ module "system_qos_1" {
   name        = "${each.key}_qos"
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
   classes = []
 }
 
@@ -493,10 +511,10 @@ module "system_qos_2" {
   name        = "${each.key}_qos"
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
   classes = [
     {
       admin_state        = each.value.qos_bronze_admin_state
@@ -584,10 +602,10 @@ module "switch_control" {
   vlan_optimization     = each.value.sw_ctrl_vlan_optimization
   org_moid              = local.org_moids[each.value.organization].moid
   tags                  = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
 }
 
 
@@ -615,10 +633,10 @@ module "dns" {
   tags           = each.value.tags != [] ? each.value.tags : local.tags
   profile_type   = "domain"
   update_domain  = each.value.dns_update_domain
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
 }
 
 
@@ -643,10 +661,10 @@ module "ntp" {
   profile_type = "domain"
   tags         = each.value.tags != [] ? each.value.tags : local.tags
   timezone     = each.value.ntp_timezone
-  profiles = var.assign_domain == true ? [
+  profiles     = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
 }
 
 
@@ -663,7 +681,10 @@ module "snmp_community" {
     module.ucs_domain_profile_b
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
-  for_each        = var.configure_snmp == true && var.configure_snmp_type == "snmp_community" ? local.ucs_domain_profile : {}
+  for_each            = {
+    for configure, snmp in local.ucs_domain_profile : configure => snmp
+    if snmp.snmp_config_type == "snmp_community"
+  }
   description     = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
   name            = "${each.key}_snmp"
   org_moid        = local.org_moids[each.value.organization].moid
@@ -674,10 +695,10 @@ module "snmp_community" {
   system_location = each.value.snmp_system_location
   tags            = each.value.tags != [] ? each.value.tags : local.tags
   trap_community  = var.snmp_trap_community
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
 }
 
 module "snmp_1_user" {
@@ -687,7 +708,10 @@ module "snmp_1_user" {
     module.ucs_domain_profile_b
   ]
   source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user"
-  for_each                = var.configure_snmp == true && var.configure_snmp_type == "snmp_1_user" ? local.ucs_domain_profile : {}
+  for_each                = {
+    for configure, snmp in local.ucs_domain_profile : configure => snmp
+    if snmp.snmp_config_type == "snmp_1_user"
+  }
   description             = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
   name                    = "${each.key}_snmp"
   org_moid                = local.org_moids[each.value.organization].moid
@@ -701,10 +725,10 @@ module "snmp_1_user" {
   user_1_name             = each.value.snmp_user_1_name
   user_1_privacy_password = var.snmp_user_1_privacy_password
   user_1_security_level   = each.value.snmp_user_1_security_level
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
 }
 
 module "snmp_2_users" {
@@ -714,7 +738,10 @@ module "snmp_2_users" {
     module.ucs_domain_profile_b
   ]
   source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users"
-  for_each                = var.configure_snmp == true && var.configure_snmp_type == "snmp_2_users" ? local.ucs_domain_profile : {}
+  for_each                = {
+    for configure, snmp in local.ucs_domain_profile : configure => snmp
+    if snmp.snmp_config_type == "snmp_2_users"
+  }
   description             = each.value.snmp_description != "" ? each.value.snmp_description : "${each.value.organization} ${each.key} SNMP Policy."
   name                    = "${each.key}_snmp"
   org_moid                = local.org_moids[each.value.organization].moid
@@ -733,10 +760,10 @@ module "snmp_2_users" {
   user_2_name             = each.value.snmp_user_2_name
   user_2_privacy_password = var.snmp_user_2_privacy_password
   user_2_security_level   = each.value.snmp_user_2_security_level
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
 }
 
 
@@ -761,8 +788,8 @@ module "syslog" {
   remote_clients  = each.value.syslog_destinations
   syslog_severity = each.value.syslog_severity
   tags            = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = var.assign_domain == true ? [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
-  ] : []
+  ]
 }
