@@ -22,7 +22,7 @@ data "intersight_network_element_summary" "fi_a" {
     for assign, serial in local.ucs_domain_profile : assign => serial
     if serial.assign_switches == true
   }
-  serial   = each.value.fabric_a_serial
+  serial = each.value.fabric_a_serial
 }
 
 data "intersight_network_element_summary" "fi_b" {
@@ -30,5 +30,5 @@ data "intersight_network_element_summary" "fi_b" {
     for assign, serial in local.ucs_domain_profile : assign => serial
     if serial.assign_switches == true
   }
-  serial   = each.value.fabric_b_serial
+  serial = each.value.fabric_b_serial
 }

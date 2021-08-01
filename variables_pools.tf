@@ -17,7 +17,7 @@ variable "fc_pools_map" {
       organization     = "default"
       pool_purpose     = "WWPN" # WWPN or WWNN
       tags             = []
-      id_blocks        = [
+      id_blocks = [
         {
           from = "20:00:00:25:B5:0a:00:00"
           to   = "20:00:00:25:B5:0a:00:ff"
@@ -109,11 +109,11 @@ variable "iqn_pools_create" {
 variable "iqn_pools_map" {
   default = {
     default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
-      assignment_order  = "default"
-      description       = ""
-      iqn_prefix        = "iqn.2021-11.com.cisco"
-      organization      = "default"
-      tags              = []
+      assignment_order = "default"
+      description      = ""
+      iqn_prefix       = "iqn.2021-11.com.cisco"
+      organization     = "default"
+      tags             = []
       iqn_suffix_blocks = [
         {
           pool_size    = 255
@@ -161,7 +161,7 @@ variable "mac_pools_map" {
       description      = ""
       organization     = "default"
       tags             = []
-      mac_blocks       = [
+      mac_blocks = [
         {
           from = "00:25:B5:0a:00:00"
           to   = "00:25:B5:0a:00:ff"
@@ -202,11 +202,11 @@ variable "uuid_pools_create" {
 variable "uuid_pools_map" {
   default = {
     default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
-      assignment_order   = "default"
-      description        = ""
-      organization       = "default"
-      prefix             = "000025B5-0000-0000"
-      tags               = []
+      assignment_order = "default"
+      description      = ""
+      organization     = "default"
+      prefix           = "000025B5-0000-0000"
+      tags             = []
       uuid_suffix_blocks = [
         {
           from = "0000-000000000000"

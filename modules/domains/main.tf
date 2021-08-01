@@ -103,8 +103,8 @@ module "vsan_policy_a" {
     module.ucs_domain_profile_a,
     module.ucs_domain_profile_b
   ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
-  for_each        = {
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
+  for_each = {
     for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
     if fibre_channel.config_fibre_channel == true
   }
@@ -122,8 +122,8 @@ module "vsan_policy_b" {
     module.ucs_domain_profile_a,
     module.ucs_domain_profile_b
   ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
-  for_each        = {
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
+  for_each = {
     for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
     if fibre_channel.config_fibre_channel == true
   }
@@ -145,8 +145,8 @@ module "vsan_a" {
     local.org_moids,
     module.vsan_policy_a
   ]
-  source           = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
-  for_each         = {
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
+  for_each = {
     for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
     if fibre_channel.config_fibre_channel == true
   }
@@ -171,8 +171,8 @@ module "vsan_b" {
     local.org_moids,
     module.vsan_policy_b
   ]
-  source           = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
-  for_each         = {
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
+  for_each = {
     for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
     if fibre_channel.config_fibre_channel == true
   }
@@ -431,8 +431,8 @@ module "san_uplink_port_channel_a" {
     module.port_mode_a,
     module.port_policy_a
   ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
-  for_each            = {
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
+  for_each = {
     for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
     if fibre_channel.config_fibre_channel == true
   }
@@ -458,8 +458,8 @@ module "san_uplink_port_channel_b" {
     module.port_mode_b,
     module.port_policy_b
   ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
-  for_each            = {
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
+  for_each = {
     for configure, fibre_channel in local.ucs_domain_profile : configure => fibre_channel
     if fibre_channel.config_fibre_channel == true
   }
@@ -661,7 +661,7 @@ module "ntp" {
   profile_type = "domain"
   tags         = each.value.tags != [] ? each.value.tags : local.tags
   timezone     = each.value.ntp_timezone
-  profiles     = [
+  profiles = [
     module.ucs_domain_profile_a[each.key].moid,
     module.ucs_domain_profile_b[each.key].moid
   ]
@@ -680,8 +680,8 @@ module "snmp_community" {
     module.ucs_domain_profile_a,
     module.ucs_domain_profile_b
   ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
-  for_each            = {
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  for_each = {
     for configure, snmp in local.ucs_domain_profile : configure => snmp
     if snmp.snmp_config_type == "snmp_community"
   }
@@ -707,8 +707,8 @@ module "snmp_1_user" {
     module.ucs_domain_profile_a,
     module.ucs_domain_profile_b
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user"
-  for_each                = {
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user"
+  for_each = {
     for configure, snmp in local.ucs_domain_profile : configure => snmp
     if snmp.snmp_config_type == "snmp_1_user"
   }
@@ -737,8 +737,8 @@ module "snmp_2_users" {
     module.ucs_domain_profile_a,
     module.ucs_domain_profile_b
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users"
-  for_each                = {
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users"
+  for_each = {
     for configure, snmp in local.ucs_domain_profile : configure => snmp
     if snmp.snmp_config_type == "snmp_2_users"
   }

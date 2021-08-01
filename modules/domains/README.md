@@ -76,12 +76,6 @@ This module will create UCS Domain Profile in Intersight.  These Profiles can be
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apikey"></a> [apikey](#input\_apikey) | Intersight API Key. | `string` | n/a | yes |
-| <a name="input_assign_domain"></a> [assign\_domain](#input\_assign\_domain) | Flag to Assign Policies to Domain or not. | `bool` | `false` | no |
-| <a name="input_assign_switches"></a> [assign\_switches](#input\_assign\_switches) | Setting this Flag to True will Assign Switches to Profile. | `bool` | `false` | no |
-| <a name="input_configure_fibre_channel"></a> [configure\_fibre\_channel](#input\_configure\_fibre\_channel) | Flag to Specify if Fibre-Channel should be configured. | `bool` | `false` | no |
-| <a name="input_configure_snmp"></a> [configure\_snmp](#input\_configure\_snmp) | Flag to Specify if the SNMP Policy should be configured. | `bool` | `false` | no |
-| <a name="input_configure_snmp_type"></a> [configure\_snmp\_type](#input\_configure\_snmp\_type) | When configuring SNMP, should the script use snmp communities or users.  Options are {snmp\_community\|snmp\_1\_user\|snmp\_2\_users} | `string` | `"snmp_community"` | no |
-| <a name="input_configure_syslog"></a> [configure\_syslog](#input\_configure\_syslog) | Flag to Specify if the Syslog Policy should be configured. | `bool` | `false` | no |
 | <a name="input_endpoint"></a> [endpoint](#input\_endpoint) | Intersight URL. | `string` | `"https://intersight.com"` | no |
 | <a name="input_organizations"></a> [organizations](#input\_organizations) | Intersight Organization Names to Apply Policy to.  https://intersight.com/an/settings/organizations/. | `string` | `"[\"default\"]"` | no |
 | <a name="input_secretkey"></a> [secretkey](#input\_secretkey) | Intersight Secret Key. | `string` | n/a | yes |

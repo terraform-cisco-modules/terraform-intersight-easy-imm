@@ -5,10 +5,10 @@
 
 output "ucs_server_profiles" {
   description = "moid of the UCS Server Profiles."
-  value       = {
+  value = {
     for v in sort(keys(module.ucs_server_profile)) : v => {
-      moid        = module.ucs_server_profile[v].moid
-      name        = module.ucs_server_profile[v].name
+      moid = module.ucs_server_profile[v].moid
+      name = module.ucs_server_profile[v].name
     }
   }
 }
@@ -21,7 +21,7 @@ output "ucs_server_profiles" {
 
 output "physical_servers" {
   description = "Moid of the Physical Servers in the Account."
-  value       = {
+  value = {
     for v in sort(keys(data.intersight_compute_physical_summary.server)) : v => {
       moid        = data.intersight_compute_physical_summary.server[v].results[0].moid
       name        = data.intersight_compute_physical_summary.server[v].results[0].name
