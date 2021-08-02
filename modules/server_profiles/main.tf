@@ -10,7 +10,7 @@ module "ucs_server_profile" {
   ]
   source = "../../../terraform-intersight-imm/modules/server_profile"
   # source              = "terraform-cisco-modules/imm/intersight//modules/server_profile"
-  for_each            = local.ucs_server_profile
+  for_each            = local.ucs_server_profiles
   action              = each.value.action
   description         = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.value.name} Server Profile."
   name                = each.value.name != "" ? each.value.name : each.key

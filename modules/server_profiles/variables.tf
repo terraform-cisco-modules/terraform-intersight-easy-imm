@@ -50,11 +50,12 @@ variable "tags" {
 # GUI Location: Profiles > UCS Server Profile > Create UCS Server Profile
 #_________________________________________________________________________
 
-variable "ucs_server_profile" {
+variable "ucs_server_profiles" {
   default = {
     default = {
       action              = "No-op"
       assign_server       = false
+      bios_policy         = "vmware_node"
       description         = ""
       name                = "" # If Name is not specified the Serial Will be assigned as the Hostname
       operating_system    = "vmware"
@@ -78,6 +79,7 @@ variable "ucs_server_profile" {
     {
       action              = optional(string)
       assign_server       = optional(bool)
+      bios_policy         = optional(string)
       description         = optional(string)
       name                = optional(string)
       operating_system    = optional(string)
