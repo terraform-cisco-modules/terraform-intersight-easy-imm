@@ -153,16 +153,17 @@ locals {
   # Power Policy Section Locals
   #__________________________________________________________
 
-#  policy_power = {
-#    for k, v in var.policy_power : k => {
-#      description  = (v.description != null ? v.description : "")
-#      enabled      = (v.dns_servers_v4 != null ? v.dns_servers_v4 : true)
-#      ntp_servers  = (v.dns_servers_v6 != null ? v.dns_servers_v6 : ["time-a-g.nist.gov", "time-b-g.nist.gov"])
-#      organization = (v.organization != null ? v.organization : "default")
-#      tags         = (v.tags != null ? v.tags : [])
-#      timezone     = (v.update_domain != null ? v.update_domain : "Etc/GMT")
-#    }
-#  }
+  policy_power = {
+    for k, v in var.policy_power : k => {
+      allocated_budget    = (v.allocated_budget != null ? v.allocated_budget : 0)
+      description         = (v.description != null ? v.description : "")
+      organization        = (v.organization != null ? v.organization : "default")
+      power_profiling     = (v.power_profiling != null ? v.power_profiling : "Enabled")
+      power_restore_state = (v.power_restore_state != null ? v.power_restore_state : "LastState")
+      tags                = (v.tags != null ? v.tags : [])
+      redundancy_mode     = (v.redundancy_mode != null ? v.redundancy_mode : "Grid")
+    }
+  }
 
 
   #__________________________________________________________

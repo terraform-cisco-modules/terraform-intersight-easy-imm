@@ -16,7 +16,7 @@ variable "policy_ntp" {
     }
   }
   description = <<-EOT
-  key - Name of NTP Policy.
+  key - Name of the NTP Policy.
   1. description - Description to Assign to the Policy.
   2. enabled - Flag to Enable or Disable the Policy.
   3. ntp_servers - List of NTP Servers to Assign to the Policy.
@@ -60,5 +60,3 @@ module "policy_ntp" {
   tags        = each.value.tags != [] ? each.value.tags : local.tags
   timezone    = each.value.timezone
 }
-
-
