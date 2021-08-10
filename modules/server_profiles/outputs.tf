@@ -30,13 +30,15 @@ output "physical_servers" {
   }
 }
 
-output "bios_nvmeof_orgs" {
-  value = local.bios_nvmeof_orgs
-}
-output "bios_vmware_node_orgs" {
-  value = local.bios_vmware_node_orgs
+
+output "policy_bios_nvmeof_profiles" {
+  value = {
+    for k, v in local.policy_boot_order : k => v
+    if local.policy_boot_order[k].boot_policy == "uefi_m2_pch"
+  }
 }
 
-# output "testing" {
-#   value = [ for s in sort(keys(local.bios_nvmeof_profiles)) : module.ucs_server_profile[s].moid ]
+# output "policy_bios_virtual_node_profiles" {
+#   value = local.policy_bios_virtual_node_profiles
 # }
+

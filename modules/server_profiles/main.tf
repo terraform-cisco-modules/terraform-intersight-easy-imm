@@ -15,7 +15,6 @@ module "ucs_server_profile" {
   description         = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.value.name} Server Profile."
   name                = each.value.name != "" ? each.value.name : each.key
   org_moid            = local.org_moids[each.value.organization].moid
-  policy_bucket       = each.value.policy_bucket
   src_template        = each.value.src_template
   tags                = each.value.tags != "" ? each.value.tags : local.tags
   target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
