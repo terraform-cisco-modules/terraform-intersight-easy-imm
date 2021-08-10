@@ -11,8 +11,8 @@ variable "policy_storage" {
       access_policy = "Default"
       boot_drive    = true
       description   = ""
-      disks_group_0  = [1, 2]
-      disks_group_1  = []
+      disks_group_0 = [1, 2]
+      disks_group_1 = []
       drive_cache   = "Default"
       drive_name    = "vd0"
       io_policy     = "Default"
@@ -125,10 +125,10 @@ module "disk_groups" {
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
   span_groups = length(regexall("Raid(10|50|60)", each.value.raid_level)) > 0 ? {
-    span_0 = [ for s in each.value.disks_group_0 : { disk = s } ]
-    span_1 = [ for s in each.value.disks_group_1 : { disk = s } ]
-  } : {
-    span_0 = [ for s in each.value.disks_group_0 : { disk = s } ]
+    span_0 = [for s in each.value.disks_group_0 : { disk = s }]
+    span_1 = [for s in each.value.disks_group_1 : { disk = s }]
+    } : {
+    span_0 = [for s in each.value.disks_group_0 : { disk = s }]
   }
 }
 
@@ -148,7 +148,7 @@ module "policy_storage" {
   description   = each.value.description != "" ? each.value.description : "${each.key} Storage Policy."
   name          = each.key
   org_moid      = local.org_moids[each.value.organization].moid
-  profiles      = [ for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_storage == each.key ]
+  profiles      = [for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_storage == each.key]
   retain_policy = each.value.retain_policy
   tags          = each.value.tags != [] ? each.value.tags : local.tags
   unused_disks  = each.value.unused_disks

@@ -69,7 +69,7 @@ module "policy_power" {
   org_moid            = local.org_moids[each.value.organization].moid
   power_profiling     = each.value.power_profiling
   power_restore_state = each.value.power_restore_state
-  profiles            = [ for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_power == each.key ]
+  profiles            = [for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_power == each.key]
   redundancy_mode     = each.value.redundancy_mode
   tags                = each.value.tags != [] ? each.value.tags : local.tags
 }

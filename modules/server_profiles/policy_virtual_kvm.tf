@@ -63,7 +63,7 @@ module "policy_virtual_kvm" {
   maximum_sessions          = each.value.maximum_sessions
   name                      = each.key
   org_moid                  = local.org_moids[each.value.organization].moid
-  profiles                  = [ for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_virtual_kvm == each.key ]
+  profiles                  = [for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_virtual_kvm == each.key]
   remote_port               = each.value.remote_port
   tags                      = each.value.tags != [] ? each.value.tags : local.tags
 }

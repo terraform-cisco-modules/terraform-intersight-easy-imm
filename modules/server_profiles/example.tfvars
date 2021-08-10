@@ -204,7 +204,7 @@ policy_device_connector = {
     description  = ""
     lockout      = false
     organization = "Asgard"
-    tags        = []
+    tags         = []
   }
 }
 
@@ -232,11 +232,11 @@ policy_imc_access = {
 
 policy_ipmi_over_lan = {
   "Asgard_ipmi" = {
-    description = ""
-    enabled     = true
-    privilege   = "admin"
+    description  = ""
+    enabled      = true
+    privilege    = "admin"
     organization = "Asgard"
-    tags        = []
+    tags         = []
   }
 }
 
@@ -264,7 +264,7 @@ policy_local_users = {
     password_expiry          = false
     password_expiry_duration = 90
     password_history         = 5
-    tags = []
+    tags                     = []
   }
 }
 
@@ -330,13 +330,13 @@ policy_power = {
 
 policy_serial_over_lan = {
   "Asgard_sol" = {
-    baud_rate = 115200
-    com_port = "com0"
-    description = ""
-    enabled = true
+    baud_rate    = 115200
+    com_port     = "com0"
+    description  = ""
+    enabled      = true
     organization = "Asgard"
-    ssh_port = 2400
-    tags = []
+    ssh_port     = 2400
+    tags         = []
   }
 }
 
@@ -346,7 +346,7 @@ policy_serial_over_lan = {
 #______________________________________________
 
 policy_storage = {
-  "Asgard_Raid0"  = {
+  "Asgard_Raid0" = {
     description   = ""
     disks_group_0 = [1, 2]
     organization  = "Asgard"
@@ -354,7 +354,7 @@ policy_storage = {
     retain_policy = true
     tags          = []
   }
-  "Asgard_Raid1"  = {
+  "Asgard_Raid1" = {
     description   = ""
     disks_group_0 = [1, 2]
     organization  = "Asgard"
@@ -362,7 +362,7 @@ policy_storage = {
     retain_policy = true
     tags          = []
   }
-  "Asgard_Raid5"  = {
+  "Asgard_Raid5" = {
     description   = ""
     disks_group_0 = [1, 2, 3]
     organization  = "Asgard"
@@ -370,7 +370,7 @@ policy_storage = {
     retain_policy = true
     tags          = []
   }
-  "Asgard_Raid6"  = {
+  "Asgard_Raid6" = {
     description   = ""
     disks_group_0 = [1, 2, 3, 4]
     organization  = "Asgard"
@@ -378,7 +378,7 @@ policy_storage = {
     retain_policy = true
     tags          = []
   }
-  "Asgard_Raid10"  = {
+  "Asgard_Raid10" = {
     description   = ""
     disks_group_0 = [1, 2]
     disks_group_1 = [3, 4]
@@ -397,9 +397,9 @@ policy_storage = {
 
 policy_syslog = {
   "Asgard_syslog" = {
-    description         = ""
-    local_min_severity  = "warning"
-    organization        = "Asgard"
+    description        = ""
+    local_min_severity = "warning"
+    organization       = "Asgard"
     syslog_destinations = [
       {
         enabled      = true
@@ -447,12 +447,12 @@ policy_virtual_kvm = {
 
 policy_virtual_media = {
   "Asgard_vmedia_usb" = {
-    description = ""
-    enabled = true
-    encryption = false
-    low_power_usb = true
-    organization = "Asgard"
-    tags = []
+    description     = ""
+    enabled         = true
+    encryption      = false
+    low_power_usb   = true
+    organization    = "Asgard"
+    tags            = []
     vmedia_mappings = []
   }
 }

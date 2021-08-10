@@ -40,16 +40,16 @@ module "policy_bios_nvmeof" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source       = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
     for k, v in local.policy_bios : k => v
     if local.policy_bios[k].bios_policy == "nvmeof"
   }
-  description  = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
-  name         = each.key
-  org_moid     = local.org_moids[each.value.organization].moid
-  profiles     = [ for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key ]
-  tags         = each.value.tags != [] ? each.value.tags : local.tags
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  profiles    = [for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key]
+  tags        = each.value.tags != [] ? each.value.tags : local.tags
   #+++++++++++++++++++++++++++++++
   # Intel Directed IO Section
   #+++++++++++++++++++++++++++++++
@@ -104,16 +104,16 @@ module "policy_bios_virtual_node" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source       = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
     for k, v in local.policy_bios : k => v
     if local.policy_bios[k].bios_policy == "virtual_node"
   }
-  description  = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
-  name         = each.key
-  org_moid     = local.org_moids[each.value.organization].moid
-  profiles     = [ for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key ]
-  tags         = each.value.tags != [] ? each.value.tags : local.tags
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  profiles    = [for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key]
+  tags        = each.value.tags != [] ? each.value.tags : local.tags
   #+++++++++++++++++++++++++++++++
   # Boot Options Section
   #+++++++++++++++++++++++++++++++
@@ -171,16 +171,16 @@ module "policy_bios_virtual_rack" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source       = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
     for k, v in local.policy_bios : k => v
     if local.policy_bios[k].bios_policy == "virtual_rack"
   }
-  description  = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
-  name         = each.key
-  org_moid     = local.org_moids[each.value.organization].moid
-  profiles     = [ for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key ]
-  tags         = each.value.tags != [] ? each.value.tags : local.tags
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  profiles    = [for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key]
+  tags        = each.value.tags != [] ? each.value.tags : local.tags
   #+++++++++++++++++++++++++++++++
   # Boot Options Section
   #+++++++++++++++++++++++++++++++

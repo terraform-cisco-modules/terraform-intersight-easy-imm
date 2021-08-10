@@ -8,10 +8,10 @@ variable "policy_ssh" {
   default = {
     default = {
       ssh = {
-          create      = true
-          description = ""
-          lockout     = false
-          tags        = []
+        create      = true
+        description = ""
+        lockout     = false
+        tags        = []
       }
     }
   }
@@ -49,7 +49,7 @@ module "policy_ssh" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_ssh"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_ssh"
   for_each = {
     for assign, policy_ssh in local.policy_ssh : assign => policy_ssh
     if policy_ssh.ssh.create == true
@@ -60,7 +60,7 @@ module "policy_ssh" {
   port        = each.value.ssh.port
   name        = "${each.key}_ssh"
   org_moid    = local.org_moids[each.key].moid
-  profiles    = [ for s in sort(keys(local.policy_ssh_profiles)) : module.ucs_server_profile[s].moid if local.policy_ssh_profiles[s].organization == each.key ]
+  profiles    = [for s in sort(keys(local.policy_ssh_profiles)) : module.ucs_server_profile[s].moid if local.policy_ssh_profiles[s].organization == each.key]
   tags        = each.value.ssh.tags != [] ? each.value.ssh.tags : local.tags
   timeout     = each.value.ssh.timeout
 }
