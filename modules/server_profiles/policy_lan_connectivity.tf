@@ -1,3 +1,63 @@
+#_________________________________________________________________________
+#
+# Intersight Local User Policies Variables
+# GUI Location: Configure > Policies > Create Policy > Local User > Start
+#_________________________________________________________________________
+
+variable "policy_local_users" {
+  default = {
+    default = {
+      description              = ""
+      enforce_strong_password  = true
+      force_send_password      = false
+      grace_period             = 0
+      local_users              = []
+      notification_period      = 15
+      organization             = "default"
+      password_expiry          = false
+      password_expiry_duration = 90
+      password_history         = 5
+      tags                     = []
+    }
+  }
+  description = <<-EOT
+  key - Name of the Local User Policy.
+  1. description - Description to Assign to the Policy.
+  2. force_send_password - User password will always be sent to endpoint device. If the option is not selected, then user password will be sent to endpoint device for new users and if user password is changed for existing users.
+  3. grace_period - Time period until when you can use the existing password, after it expires.
+  4. local_users -
+  5. notification_period - The duration after which the password will expire.
+  6. organization - Name of the Intersight Organization to assign this Policy to.
+    - https://intersight.com/an/settings/organizations/
+  7. password_expiry - Enables password expiry on the endpoint.
+  7. password_expiry_duration - Set time period for password expiration. Value should be greater than notification period and grace period.
+  8. password_history - Tracks password change history. Specifies in number of instances, that the new password was already used.
+  9. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  EOT
+  type = map(object(
+    {
+      description              = optional(string)
+      enforce_strong_password  = optional(bool)
+      force_send_password      = optional(bool)
+      grace_period             = optional(number)
+      local_users              = optional(list(map(string)))
+      notification_period      = optional(number)
+      organization             = optional(string)
+      password_expiry          = optional(bool)
+      password_expiry_duration = optional(number)
+      password_history         = optional(number)
+      tags                     = optional(list(map(string)))
+    }
+  ))
+}
+
+
+#_________________________________________________________________________
+#
+# Local User Policies
+# GUI Location: Configure > Policies > Create Policy > Local User > Start
+#_________________________________________________________________________
+
 #____________________________________________________________
 #
 # Ethernet (vNIC) Adapter Policies

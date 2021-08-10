@@ -99,18 +99,21 @@ locals {
   # Local User Policy Section Locals
   #__________________________________________________________
 
-#  policy_local_users = {
-#    for k, v in var.policy_local_users : k => {
-#      description    = (v.description != null ? v.description : "")
-#      dns_servers_v4 = (v.dns_servers_v4 != null ? v.dns_servers_v4 : ["208.67.220.220", "208.67.222.222"])
-#      dns_servers_v6 = (v.dns_servers_v6 != null ? v.dns_servers_v6 : [])
-#      dynamic_dns    = (v.dynamic_dns != null ? v.dynamic_dns : false)
-#      ipv6_enable    = (v.ipv6_enable != null ? v.ipv6_enable : false)
-#      organization   = (v.organization != null ? v.organization : "default")
-#      tags           = (v.tags != null ? v.tags : [])
-#      update_domain  = (v.update_domain != null ? v.update_domain : "")
-#    }
-#  }
+  policy_local_users = {
+    for k, v in var.policy_local_users : k => {
+      description              = (v.description != null ? v.description : "")
+      enforce_strong_password  = (v.enforce_strong_password != null ? v.enforce_strong_password : true)
+      force_send_password      = (v.force_send_password != null ? v.force_send_password : false)
+      grace_period             = (v.grace_period != null ? v.grace_period : 0)
+      local_users              = (v.local_users != null ? v.local_users : [])
+      notification_period      = (v.notification_period != null ? v.notification_period : 15)
+      organization             = (v.organization != null ? v.organization : "default")
+      password_expiry          = (v.password_expiry != null ? v.password_expiry : false)
+      password_expiry_duration = (v.password_expiry_duration != null ? v.password_expiry_duration : 90)
+      password_history         = (v.password_history != null ? v.password_history : 5)
+      tags                     = (v.tags != null ? v.tags : [])
+    }
+  }
 
   #__________________________________________________________
   #
