@@ -1,46 +1,102 @@
-#______________________________________________
+#_________________________________________________________________________
 #
-# Local User Policy
-#______________________________________________
+# Intersight Local User Policies Variables
+# GUI Location: Configure > Policies > Create Policy > Local User > Start
+#_________________________________________________________________________
 
-module "local_user_policy" {
-  depends_on = [
-    data.intersight_organization_organization.org_moid
-  ]
-  source                   = "terraform-cisco-modules/imm/intersight//modules/policies_local_user_policy"
-  description              = local.local_user_policy != "" ? "${var.local_user_policy} Local User Policy." : "${local.org_name} Local User Policy."
-  enable_password_expiry   = local.local_user_password_expiry
-  enforce_strong_password  = local.local_user_enforce_strong_password
-  force_send_password      = local.local_user_force_send_password
-  grace_period             = local.local_user_grace_period
-  name                     = local.local_user_policy != "" ? var.local_user_policy : local.org_name
-  notification_period      = local.local_notification_period
-  org_moid                 = local.org_moid
-  password_expiry_duration = local.local_password_expiry_duration
-  password_history         = local.local_password_history
-  tags                     = var.tags
+variable "policy_local_users" {
+  default = {
+    default = {
+      description              = ""
+      enforce_strong_password  = true
+      force_send_password      = false
+      grace_period             = 0
+      local_users              = []
+      notification_period      = 15
+      organization             = "default"
+      password_expiry          = false
+      password_expiry_duration = 90
+      password_history         = 5
+      tags                     = []
+    }
+  }
+  description = <<-EOT
+  key - Name of the Local User Policy.
+  1. description - Description to Assign to the Policy.
+  2. force_send_password - User password will always be sent to endpoint device. If the option is not selected, then user password will be sent to endpoint device for new users and if user password is changed for existing users.
+  3. grace_period - Time period until when you can use the existing password, after it expires.
+  4. local_users - List of users to add to the local user policy.
+    a.
+  5. notification_period - The duration after which the password will expire.
+  6. organization - Name of the Intersight Organization to assign this Policy to.
+    - https://intersight.com/an/settings/organizations/
+  7. password_expiry - Enables password expiry on the endpoint.
+  7. password_expiry_duration - Set time period for password expiration. Value should be greater than notification period and grace period.
+  8. password_history - Tracks password change history. Specifies in number of instances, that the new password was already used.
+  9. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  EOT
+  type = map(object(
+    {
+      description              = optional(string)
+      enforce_strong_password  = optional(bool)
+      force_send_password      = optional(bool)
+      grace_period             = optional(number)
+      local_users              = optional(list(map(string)))
+      notification_period      = optional(number)
+      organization             = optional(string)
+      password_expiry          = optional(bool)
+      password_expiry_duration = optional(number)
+      password_history         = optional(number)
+      tags                     = optional(list(map(string)))
+    }
+  ))
 }
 
 
-#______________________________________________
+#_________________________________________________________________________
+#
+# Local User Policies
+# GUI Location: Configure > Policies > Create Policy > Local User > Start
+#_________________________________________________________________________
+
+module "policy_local_users" {
+  depends_on = [
+    local.org_moids
+  ]
+  source                   = "terraform-cisco-modules/imm/intersight//modules/policies_local_user_policy"
+  for_each                 = local.policy_local_users
+  description              = each.value.description != "" ? each.value.description : "${each.key} Local User Policy."
+  enable_password_expiry   = each.value.password_expiry
+  enforce_strong_password  = each.value.enforce_strong_password
+  force_send_password      = each.value.force_send_password
+  grace_period             = each.value.grace_period
+  name                     = each.key
+  notification_period      = each.value.notification_period
+  org_moid                 = local.org_moids[each.value.organization].moid
+  password_expiry_duration = each.value.password_expiry_duration
+  password_history         = each.value.password_history
+  profiles                 = [ for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_local_users == each.key ]
+  tags                     = each.value.tags != [] ? each.value.tags : local.tags
+}
+
+
+#_________________________________________________________________________
 #
 # Local Users
-#______________________________________________
+# GUI Location: Configure > Policies > Create Policy > Local User > Start
+#_________________________________________________________________________
 
 module "local_users" {
   depends_on = [
-    data.intersight_organization_organization.org_moid,
-    module.local_user
+    local.org_moids,
+    module.policy_local_user
   ]
-  for_each         = local.local_users
+  for_each         = local.policy_local_users.local_users
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_local_user"
-  org_moid         = local.org_moid
+  org_moid         = local.org_moids[each.value.organization].moid
   user_enabled     = each.value.enabled
-  user_password    = join(".", var, join("_", password_user, each.value.user_count))
-  user_policy_moid = module.local_user.moid
+  user_password    = each.value.password == 1 ? var.user_password_1 : each.value.password == 2 ? var.user_password_2 : each.value.password == 3 ? var.user_password_3 : each.value.password == 4 ? var.user_password_4 : var.user_password_5
+  user_policy_moid = module.policy_local_users[each.key].moid
   user_role        = each.value.role
   username         = each.value.username
 }
-
-
-
