@@ -15,6 +15,12 @@ locals {
   # Tags for Deployment
   tags = var.tags
 
+  # Terraform Cloud Remote Resources
+  ip_pools   = data.terraform_remote_state.pools.outputs.ip_pools
+  iqn_pools  = data.terraform_remote_state.pools.outputs.iqn_pools
+  mac_pools  = data.terraform_remote_state.pools.outputs.mac_pools
+  fc_pools   = data.terraform_remote_state.pools.outputs.fc_pools
+  uuid_pools = data.terraform_remote_state.pools.outputs.uuid_pools
   #__________________________________________________________
   #
   # BIOS Policy Section Locals
@@ -49,12 +55,11 @@ locals {
   # Device Connector Policy Section Locals
   #__________________________________________________________
 
-  policy_device_connector = {
-    for k, v in var.policy_device_connector : k => {
-      description  = (v.description != null ? v.description : "")
-      lockout      = (v.lockout != null ? v.lockout : false)
-      organization = (v.organization != null ? v.organization : "default")
-      tags         = (v.tags != null ? v.tags : [])
+  policy_device_connector = { for k, v in var.policy_device_connector : k => {
+    description  = (v.description != null ? v.description : "")
+    lockout      = (v.lockout != null ? v.lockout : false)
+    organization = (v.organization != null ? v.organization : "default")
+    tags         = (v.tags != null ? v.tags : [])
     }
   }
 
@@ -64,15 +69,14 @@ locals {
   # IMC Access Policy Section Locals
   #__________________________________________________________
 
-  policy_imc_access = {
-    for k, v in var.policy_imc_access : k => {
-      description  = (v.description != null ? v.description : "")
-      inband_vlan  = (v.inband_vlan != null ? v.inband_vlan : 1)
-      imc_ip_pool  = (v.imc_ip_pool != null ? v.imc_ip_pool : "")
-      ipv4_enable  = (v.ipv4_enable != null ? v.ipv4_enable : true)
-      ipv6_enable  = (v.ipv6_enable != null ? v.ipv6_enable : false)
-      organization = (v.organization != null ? v.organization : "default")
-      tags         = (v.tags != null ? v.tags : [])
+  policy_imc_access = { for k, v in var.policy_imc_access : k => {
+    description  = (v.description != null ? v.description : "")
+    inband_vlan  = (v.inband_vlan != null ? v.inband_vlan : 1)
+    imc_ip_pool  = (v.imc_ip_pool != null ? v.imc_ip_pool : "")
+    ipv4_enable  = (v.ipv4_enable != null ? v.ipv4_enable : true)
+    ipv6_enable  = (v.ipv6_enable != null ? v.ipv6_enable : false)
+    organization = (v.organization != null ? v.organization : "default")
+    tags         = (v.tags != null ? v.tags : [])
     }
   }
 
@@ -82,14 +86,13 @@ locals {
   # IMC Access Policy Section Locals
   #__________________________________________________________
 
-  policy_ipmi_over_lan = {
-    for k, v in var.policy_ipmi_over_lan : k => {
-      description  = (v.description != null ? v.description : "")
-      enabled      = (v.enabled != null ? v.enabled : true)
-      ipmi_key     = (v.ipmi_key != null ? v.ipmi_key : null)
-      organization = (v.organization != null ? v.organization : "default")
-      privilege    = (v.privilege != null ? v.privilege : "admin")
-      tags         = (v.tags != null ? v.tags : [])
+  policy_ipmi_over_lan = { for k, v in var.policy_ipmi_over_lan : k => {
+    description  = (v.description != null ? v.description : "")
+    enabled      = (v.enabled != null ? v.enabled : true)
+    ipmi_key     = (v.ipmi_key != null ? v.ipmi_key : null)
+    organization = (v.organization != null ? v.organization : "default")
+    privilege    = (v.privilege != null ? v.privilege : "admin")
+    tags         = (v.tags != null ? v.tags : [])
     }
   }
 
@@ -105,15 +108,31 @@ locals {
       enforce_strong_password  = (v.enforce_strong_password != null ? v.enforce_strong_password : true)
       force_send_password      = (v.force_send_password != null ? v.force_send_password : false)
       grace_period             = (v.grace_period != null ? v.grace_period : 0)
-      local_users              = (v.local_users != null ? v.local_users : [])
       notification_period      = (v.notification_period != null ? v.notification_period : 15)
       organization             = (v.organization != null ? v.organization : "default")
       password_expiry          = (v.password_expiry != null ? v.password_expiry : false)
       password_expiry_duration = (v.password_expiry_duration != null ? v.password_expiry_duration : 90)
       password_history         = (v.password_history != null ? v.password_history : 5)
       tags                     = (v.tags != null ? v.tags : [])
+      users                    = (v.users != null ? v.users : {})
     }
   }
+
+  local_users = {
+    for k, v in var.policy_local_users : "users" =>
+    {
+      for key, value in v.users : "${k}_${key}" =>
+      {
+        enabled      = (value.enabled != null ? value.enabled : true)
+        password     = (value.password != null ? value.password : 1)
+        role         = (value.role != null ? value.role : "admin")
+        policy       = k
+        organization = (v.organization != null ? v.organization : "default")
+        username     = key
+      }
+    }
+  }
+
 
   #__________________________________________________________
   #
@@ -233,6 +252,51 @@ locals {
 
   #__________________________________________________________
   #
+  # vHBA SAN Connectivity Section Locals
+  #__________________________________________________________
+
+  policy_vhba_san_connectivity = {
+    for k, v in var.policy_vhba_san_connectivity : k => {
+      adapter_template             = (v.adapter_template != null ? v.adapter_template : "VMware")
+      description                  = (v.description != null ? v.description : "")
+      organization                 = (v.organization != null ? v.organization : "default")
+      placement_mode               = (v.placement_mode != null ? v.placement_mode : "custom")
+      target_platform              = (v.target_platform != null ? v.target_platform : "FIAttached")
+      qos_burst                    = (v.qos_burst != null ? v.qos_burst : 1024)
+      qos_cos                      = (v.qos_cos != null ? v.qos_cos : 3)
+      qos_max_data_field_size      = (v.qos_max_data_field_size != null ? v.qos_max_data_field_size : 2112)
+      qos_rate_limit               = (v.qos_rate_limit != null ? v.qos_rate_limit : 0)
+      tags                         = (v.tags != null ? v.tags : [])
+      vsan_a                       = (v.vsan_a != null ? v.vsan_a : 100)
+      vsan_a_default_vlan_id       = (v.vsan_a_default_vlan_id != null ? v.vsan_a_default_vlan_id : 0)
+      vsan_b                       = (v.vsan_b != null ? v.vsan_b : 200)
+      vsan_b_default_vlan_id       = (v.vsan_b_default_vlan_id != null ? v.vsan_b_default_vlan_id : 0)
+      vhba_name_a                  = (v.vhba_name_a != null ? v.vhba_name_a : "vhba-a")
+      vhba_name_b                  = (v.vhba_name_b != null ? v.vhba_name_b : "vhba-b")
+      vhba_order_a                 = (v.vhba_order_a != null ? v.vhba_order_a : 2)
+      vhba_order_b                 = (v.vhba_order_b != null ? v.vhba_order_b : 3)
+      vhba_persistent_lun_bindings = (v.vhba_persistent_lun_bindings != null ? v.vhba_persistent_lun_bindings : false)
+      vhba_placement_pci_link_a    = (v.vhba_placement_pci_link_a != null ? v.vhba_placement_pci_link_a : 0)
+      vhba_placement_pci_link_b    = (v.vhba_placement_pci_link_b != null ? v.vhba_placement_pci_link_b : 0)
+      vhba_placement_slot_id       = (v.vhba_placement_slot_id != null ? v.vhba_placement_slot_id : "MLOM")
+      vhba_placement_switch_a      = (v.vhba_placement_switch_a != null ? v.vhba_placement_switch_a : "A")
+      vhba_placement_switch_b      = (v.vhba_placement_switch_b != null ? v.vhba_placement_switch_b : "B")
+      vhba_placement_uplink        = (v.vhba_placement_uplink != null ? v.vhba_placement_uplink : 0)
+      vhba_type                    = (v.vhba_type != null ? v.vhba_type : "fc-initiator")
+      wwnn_address_static          = (v.wwnn_address_static != null ? v.wwnn_address_static : "")
+      wwnn_address_type            = (v.wwnn_address_type != null ? v.wwnn_address_type : "POOL")
+      wwnn_pool                    = (v.wwnn_pool != null ? v.wwnn_pool : "")
+      wwpn_address_a_static        = (v.wwpn_address_a_static != null ? v.wwpn_address_a_static : "")
+      wwpn_address_b_static        = (v.wwpn_address_b_static != null ? v.wwpn_address_b_static : "")
+      wwpn_address_type            = (v.wwpn_address_type != null ? v.wwpn_address_type : "POOL")
+      wwpn_pool_a_name             = (v.wwpn_pool_a_name != null ? v.wwpn_pool_a_name : "")
+      wwpn_pool_b_name             = (v.wwpn_pool_b_name != null ? v.wwpn_pool_b_name : "")
+    }
+  }
+
+
+  #__________________________________________________________
+  #
   # Virtual KVM Policy Section Locals
   #__________________________________________________________
 
@@ -268,6 +332,81 @@ locals {
   }
 
 
+  #__________________________________________________________
+  #
+  # vNIC LAN Connectivity Section Locals
+  #__________________________________________________________
+
+  policy_vnic_lan_connectivity = {
+    for k, v in var.policy_vnic_lan_connectivity : k => {
+      description         = (v.description != null ? v.description : "")
+      iqn_allocation_type = (v.iqn_allocation_type != null ? v.iqn_allocation_type : "None")
+      iqn_static_name     = (v.iqn_static_name != null ? v.iqn_static_name : "")
+      iqn_pool            = (v.iqn_pool != null ? v.iqn_pool : [])
+      organization        = (v.organization != null ? v.organization : "default")
+      placement_mode      = (v.placement_mode != null ? v.placement_mode : "custom")
+      tags                = (v.tags != null ? v.tags : [])
+      target_platform     = (v.target_platform != null ? v.target_platform : "FIAttached")
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # vNIC Template Section Locals
+  #__________________________________________________________
+
+  policy_vnic_templates = {
+    for k, v in var.policy_vnic_templates : k => {
+      adapter_template          = (v.adapter_template != null ? v.adapter_template : "VMware")
+      description               = (v.description != null ? v.description : "")
+      lan_connectivity          = (v.lan_connectivity != null ? v.lan_connectivity : "default")
+      mac_address_a_static      = (v.mac_address_a_static != null ? v.mac_address_a_static : "")
+      mac_address_b_static      = (v.mac_address_b_static != null ? v.mac_address_b_static : "")
+      mac_address_type          = (v.mac_address_type != null ? v.mac_address_type : "POOL")
+      mac_forge                 = (v.mac_forge != null ? v.mac_forge : "allow")
+      mac_pool_a_name           = (v.mac_pool_a_name != null ? v.mac_pool_a_name : "")
+      mac_pool_b_name           = (v.mac_pool_b_name != null ? v.mac_pool_b_name : "")
+      mac_registration_mode     = (v.mac_registration_mode != null ? v.mac_registration_mode : "nativeVlanOnly")
+      neighbor_discovery        = (v.neighbor_discovery != null ? v.neighbor_discovery : "none")
+      organization              = (v.organization != null ? v.organization : "default")
+      qos_burst                 = (v.qos_burst != null ? v.qos_burst : 1024)
+      qos_cos                   = (v.qos_cos != null ? v.qos_cos : 0)
+      qos_mtu                   = (v.qos_mtu != null ? v.qos_mtu : 1500)
+      qos_priority              = (v.qos_priority != null ? v.qos_priority : "")
+      qos_rate_limit            = (v.qos_rate_limit != null ? v.qos_rate_limit : 0)
+      qos_trust_host_cos        = (v.qos_trust_host_cos != null ? v.qos_trust_host_cos : false)
+      tags                      = (v.tags != null ? v.tags : [])
+      uplink_fail_action        = (v.uplink_fail_action != null ? v.uplink_fail_action : "linkDown")
+      usnic_cos                 = (v.usnic_cos != null ? v.usnic_cos : 5)
+      usnic_count               = (v.usnic_count != null ? v.usnic_count : 0)
+      usnic_adapter_policy_moid = (v.usnic_adapter_policy_moid != null ? v.usnic_adapter_policy_moid : "")
+      vlan_native_vlan          = (v.vlan_native_vlan != null ? v.vlan_native_vlan : null)
+      vlan_list                 = (v.vlan_list != null ? v.vlan_list : "2-10,30-40")
+      vmq_enabled               = (v.vmq_enabled != null ? v.vmq_enabled : false)
+      vmq_multi_queue_support   = (v.vmq_multi_queue_support != null ? v.vmq_multi_queue_support : false)
+      vmq_interrupts            = (v.vmq_interrupts != null ? v.vmq_interrupts : 16)
+      vmq_number_queues         = (v.vmq_number_queues != null ? v.vmq_number_queues : 4)
+      vmq_number_sub_vnics      = (v.vmq_number_sub_vnics != null ? v.vmq_number_sub_vnics : 64)
+      vmq_adapter_policy_moid   = (v.vmq_adapter_policy_moid != null ? v.vmq_adapter_policy_moid : "")
+      vnic_cdn_a_name           = (v.vnic_cdn_a_name != null ? v.vnic_cdn_a_name : "")
+      vnic_cdn_b_name           = (v.vnic_cdn_b_name != null ? v.vnic_cdn_b_name : "")
+      vnic_cdn_source           = (v.vnic_cdn_source != null ? v.vnic_cdn_source : "vnic")
+      vnic_failover_enabled     = (v.vnic_failover_enabled != null ? v.vnic_failover_enabled : false)
+      vnic_name_a               = (v.vnic_name_a != null ? v.vnic_name_a : "vnic-a")
+      vnic_name_b               = (v.vnic_name_b != null ? v.vnic_name_b : "vnic-b")
+      vnic_order_a              = (v.vnic_order_a != null ? v.vnic_order_a : 0)
+      vnic_order_b              = (v.vnic_order_b != null ? v.vnic_order_b : 0)
+      vnic_placement_pci_link_a = (v.vnic_placement_pci_link_a != null ? v.vnic_placement_pci_link_a : 0)
+      vnic_placement_pci_link_b = (v.vnic_placement_pci_link_b != null ? v.vnic_placement_pci_link_b : 0)
+      vnic_placement_slot_id    = (v.vnic_placement_slot_id != null ? v.vnic_placement_slot_id : "MLOM")
+      vnic_placement_switch_a   = (v.vnic_placement_switch_a != null ? v.vnic_placement_switch_a : "A")
+      vnic_placement_switch_b   = (v.vnic_placement_switch_b != null ? v.vnic_placement_switch_b : "B")
+      vnic_placement_uplink     = (v.vnic_placement_uplink != null ? v.vnic_placement_uplink : 0)
+    }
+  }
+
+
   #______________________________________________
   #
   # UCS Domain Variables
@@ -287,7 +426,7 @@ locals {
       policy_ipmi_over_lan        = (v.policy_ipmi_over_lan != null ? v.policy_ipmi_over_lan : "")
       policy_lan_connectivity     = (v.policy_lan_connectivity != null ? v.policy_lan_connectivity : "")
       policy_ldap_group           = (v.policy_ldap_group != null ? v.policy_ldap_group : "")
-      policy_local_user           = (v.policy_local_user != null ? v.policy_local_user : "")
+      policy_local_users          = (v.policy_local_users != null ? v.policy_local_users : "")
       policy_network_connectivity = (v.policy_network_connectivity != null ? v.policy_network_connectivity : "")
       policy_ntp                  = (v.policy_ntp != null ? v.policy_ntp : "")
       policy_persistent_memory    = (v.policy_persistent_memory != null ? v.policy_persistent_memory : "")

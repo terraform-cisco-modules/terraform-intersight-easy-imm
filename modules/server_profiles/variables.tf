@@ -4,6 +4,28 @@ terraform {
 
 #__________________________________________________________
 #
+# Terraform Cloud Organization
+#__________________________________________________________
+
+variable "tfc_organization" {
+  description = "Terraform Cloud Organization."
+  type        = string
+}
+
+
+#______________________________________________
+#
+# Terraform Cloud domain_workspace Workspace
+#______________________________________________
+
+variable "ws_pools" {
+  description = "Pools Workspace Name."
+  type        = string
+}
+
+
+#__________________________________________________________
+#
 # Intersight Provider Variables
 #__________________________________________________________
 
@@ -66,7 +88,7 @@ variable "ucs_server_profiles" {
       policy_ipmi_over_lan        = ""
       policy_lan_connectivity     = ""
       policy_ldap_group           = ""
-      policy_local_user           = ""
+      policy_local_users          = ""
       policy_network_connectivity = ""
       policy_ntp                  = ""
       policy_persistent_memory    = ""
@@ -111,7 +133,7 @@ variable "ucs_server_profiles" {
       policy_ipmi_over_lan        = optional(string)
       policy_lan_connectivity     = optional(string)
       policy_ldap_group           = optional(string)
-      policy_local_user           = optional(string)
+      policy_local_users          = optional(string)
       policy_network_connectivity = optional(string)
       policy_ntp                  = optional(string)
       policy_persistent_memory    = optional(string)

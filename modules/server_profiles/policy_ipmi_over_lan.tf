@@ -58,9 +58,9 @@ variable "policy_ipmi_over_lan" {
   4. organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
   5. privilege - The highest privilege level that can be assigned to an IPMI session on a server.
-      * admin - Privilege to perform all actions available through IPMI.
-      * user - Privilege to perform some functions through IPMI but restriction on performing administrative tasks.
-      * read-only - Privilege to view information throught IPMI but restriction on making any changes.
+    * admin - Privilege to perform all actions available through IPMI.
+    * user - Privilege to perform some functions through IPMI but restriction on performing administrative tasks.
+    * read-only - Privilege to view information throught IPMI but restriction on making any changes.
   6. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(

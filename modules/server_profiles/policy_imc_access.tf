@@ -55,7 +55,7 @@ module "policy_imc_access" {
   source      = "../../../terraform-intersight-imm/modules/policies_imc_access"
   for_each    = local.policy_imc_access
   description = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
-  # imc_ip_pool = each.value.imc_ip_pool != "" ? local.ip_pools[each.value.imc_ip_pool].moid : null
+  imc_ip_pool = each.value.imc_ip_pool != "" ? local.ip_pools[each.value.imc_ip_pool] : null
   inband_vlan = each.value.inband_vlan
   ipv4_enable = each.value.ipv4_enable
   ipv6_enable = each.value.ipv6_enable

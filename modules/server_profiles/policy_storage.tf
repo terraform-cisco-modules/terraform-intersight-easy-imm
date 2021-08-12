@@ -30,57 +30,57 @@ variable "policy_storage" {
   description = <<-EOT
   key - Name of the Storage Policy.
   1. access_policy - Access policy that host has on this virtual drive.
-  * Default - Use platform default access mode.
-  * Blocked - Host can neither read nor write to the VD.
-  * ReadOnly - Host can only read from the VD.
-  * ReadWrite - Enables host to perform read-write on the VD.
+    * Default - Use platform default access mode.
+    * Blocked - Host can neither read nor write to the VD.
+    * ReadOnly - Host can only read from the VD.
+    * ReadWrite - Enables host to perform read-write on the VD.
   2. boot_drive - The flag enables the use of this virtual drive as a boot drive.
   3. description - Description to Assign to the Policy.
   4. disks_group_0 - List of Disks to assign to the first span group.
   5. disks_group_1 - List of Disks to assign to the second span group.  Only use with Raid10, Raid50, and Raid60.
   6. drive_cache - Drive Cache property expect disk cache policy.
-  * Default - Use platform default drive cache mode.
-  * Disable - Disables IO caching on the drive.
-  * Enable - Enables IO caching on the drive.
-  * NoChange - Drive cache policy is unchanged.
+    * Default - Use platform default drive cache mode.
+    * Disable - Disables IO caching on the drive.
+    * Enable - Enables IO caching on the drive.
+    * NoChange - Drive cache policy is unchanged.
   7. drive_name - The name of the virtual drive. The name can be between 1 and 15 alphanumeric characters. Spaces or any special characters other than - (hyphen), _ (underscore), : (colon), and . (period) are not allowed.
   8. io_policy - Desired IO mode - direct IO or cached IO.
-  * Cached - Use cached IO for writing into cache and then to disk.
-  * Default - Use platform default IO mode.
-  * Direct - Use direct IO for writing directly into the disk.
+    * Cached - Use cached IO for writing into cache and then to disk.
+    * Default - Use platform default IO mode.
+    * Direct - Use direct IO for writing directly into the disk.
   9. organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
   10. raid_level - The supported RAID level for the disk group.
-  * Raid0 - RAID 0 Stripe Raid Level.
-  * Raid1 - RAID 1 Mirror Raid Level.
-  * Raid5 - RAID 5 Mirror Raid Level.
-  * Raid6 - RAID 6 Mirror Raid Level.
-  * Raid10 - RAID 10 Mirror Raid Level.
-  * Raid50 - RAID 50 Mirror Raid Level.
-  * Raid60 - RAID 60 Mirror Raid Level.
+    * Raid0 - RAID 0 Stripe Raid Level.
+    * Raid1 - RAID 1 Mirror Raid Level.
+    * Raid5 - RAID 5 Mirror Raid Level.
+    * Raid6 - RAID 6 Mirror Raid Level.
+    * Raid10 - RAID 10 Mirror Raid Level.
+    * Raid50 - RAID 50 Mirror Raid Level.
+    * Raid60 - RAID 60 Mirror Raid Level.
   11. read_policy - Read ahead mode to be used to read data from this virtual drive.
-  * Default - Use platform default read ahead mode.
-  * NoReadAhead - Do not use read ahead mode for the policy.
-  * ReadAhead - Use read ahead mode for the policy.
+    * Default - Use platform default read ahead mode.
+    * NoReadAhead - Do not use read ahead mode for the policy.
+    * ReadAhead - Use read ahead mode for the policy.
   12. retain_policy - Retains the virtual drives defined in policy if they exist already. If this flag is false, the existing virtual drives are removed and created again based on virtual drives in the policy.
   13. stripe_size - The strip size is the portion of a stripe that resides on a single drive in the drive group. The stripe consists of the data segments that the RAID controller writes across multiple drives, not including parity drives.
-  * Default - Use platform default strip size for a virtual drive.
-  * 32k - Enables a strip size of 32k for a virtual drive.
-  * 64k - Enables a strip size of 64k for a virtual drive.
-  * 128k - Enables a strip size of 128k for a virtual drive.
-  * 256k - Enables a strip size of 256k for a virtual drive.
-  * 512k - Enables a strip size of 512k for a virtual drive.
-  * 1024k - Enables a strip size of 1024k for a virtual drive.
+    * Default - Use platform default strip size for a virtual drive.
+    * 32k - Enables a strip size of 32k for a virtual drive.
+    * 64k - Enables a strip size of 64k for a virtual drive.
+    * 128k - Enables a strip size of 128k for a virtual drive.
+    * 256k - Enables a strip size of 256k for a virtual drive.
+    * 512k - Enables a strip size of 512k for a virtual drive.
+    * 1024k - Enables a strip size of 1024k for a virtual drive.
   14. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   15. unused_disks - Unused Disks State is used to specify the state, unconfigured good or jbod, in which the disks that are not used in this policy should be moved.
-  * Jbod - JBOD state where the disks start showing up to host os.
-  * UnconfiguredGood - Unconfigured good state, ready to be added in a RAID group.
+    * Jbod - JBOD state where the disks start showing up to host os.
+    * UnconfiguredGood - Unconfigured good state, ready to be added in a RAID group.
   16. use_jbods - Selected disks in the disk group in JBOD state will be set to Unconfigured Good state before they are used in virtual drive creation.
   17. write_policy - Write mode to be used to write data to this virtual drive.
-  * Default - Use platform default write mode.
-  * WriteThrough - Data is written through the cache and to the physical drives. Performance is improved, because subsequent reads of that data can be satisfied from the cache.
-  * WriteBackGoodBbu - Data is stored in the cache, and is only written to the physical drives when space in the cache is needed. Virtual drives requesting this policy fall back to Write Through caching when the battery backup unit (BBU) cannot guarantee the safety of the cache in the event of a power failure.
-  * AlwaysWriteBack - With this policy, write caching remains Write Back even if the battery backup unit is defective or discharged.
+    * Default - Use platform default write mode.
+    * WriteThrough - Data is written through the cache and to the physical drives. Performance is improved, because subsequent reads of that data can be satisfied from the cache.
+    * WriteBackGoodBbu - Data is stored in the cache, and is only written to the physical drives when space in the cache is needed. Virtual drives requesting this policy fall back to Write Through caching when the battery backup unit (BBU) cannot guarantee the safety of the cache in the event of a power failure.
+    * AlwaysWriteBack - With this policy, write caching remains Write Back even if the battery backup unit is defective or discharged.
   EOT
   type = map(object(
     {
