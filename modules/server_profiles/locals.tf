@@ -175,6 +175,25 @@ locals {
   # Power Policy Section Locals
   #__________________________________________________________
 
+  policy_persistent_memory = {
+    for k, v in var.policy_persistent_memory : k => {
+      description                  = (v.description != null ? v.description : "")
+      goals_memory_percentage      = (v.goals_memory_percentage != null ? v.goals_memory_percentage : 0)
+      goals_persistent_memory_type = (v.goals_persistent_memory_type != null ? v.goals_persistent_memory_type : "app-direct")
+      logical_namespaces           = (v.logical_namespaces != null ? v.logical_namespaces : [])
+      management_mode              = (v.management_mode != null ? v.management_mode : "configured-from-intersight")
+      organization                 = (v.organization != null ? v.organization : "default")
+      retain_namespaces            = (v.retain_namespaces != null ? v.retain_namespaces : true)
+      tags                         = (v.tags != null ? v.tags : [])
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # Power Policy Section Locals
+  #__________________________________________________________
+
   policy_power = {
     for k, v in var.policy_power : k => {
       allocated_budget    = (v.allocated_budget != null ? v.allocated_budget : 0)

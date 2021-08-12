@@ -70,7 +70,8 @@ module "smtp" {
   min_severity    = each.value.min_severity
   name            = each.key
   org_moid        = local.org_moids[each.value.organization].moid
-  profiles        = [for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_smtp == each.key]
+  profiles        = [for s in sort(keys(
+    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_smtp == each.key]
   sender_email    = each.value.sender_email != "" ? each.value.sender_email : each.value.smtp_server
   smtp_recipients = each.value.smtp_recepients
   smtp_server     = each.value.smtp_server

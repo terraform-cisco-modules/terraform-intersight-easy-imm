@@ -165,7 +165,8 @@ module "vhba_san_connectivity" {
   description         = each.value.description != "" ? each.value.description : "${each.key} vHBA SAN Connectivity Policy."
   name                = each.key
   org_moid            = local.org_moids[each.value.organization].moid
-  profiles            = [for s in sort(keys(local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_san_connectivity == each.key]
+  profiles            = [for s in sort(keys(
+    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_san_connectivity == each.key]
   placement_mode      = each.value.placement_mode
   static_wwnn_address = each.value.wwnn_address_type == "STATIC" ? each.value.wwnn_address_static : ""
   tags                = each.value.tags != [] ? each.value.tags : local.tags

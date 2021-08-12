@@ -1,0 +1,78 @@
+#_________________________________________________________________________
+#
+# Intersight Persistent Memory Policies Variables
+# GUI Location: Configure > Policies > Create Policy > Persistent Memory
+#_________________________________________________________________________
+
+variable "policy_persistent_memory" {
+  default = {
+    default = {
+      description                  = ""
+      goals_memory_percentage      = 0
+      goals_persistent_memory_type = "app-direct"
+      logical_namespaces           = []
+      management_mode              = "configured-from-intersight"
+      organization                 = "default"
+      retain_namespaces            = true
+      tags                         = []
+    }
+  }
+  description = <<-EOT
+  key - Name of the Persistent Memory Policy.
+  1. description - Description to Assign to the Policy.
+  2. goals_memory_percentage - Volatile memory percentage.  Range is 0-100.
+  3. goals_persistent_memory_type - Type of the Persistent Memory configuration where the Persistent Memory Modules are combined in an interleaved set or not.
+    * app-direct - The App Direct interleaved Persistent Memory type.
+    * app-direct-non-interleaved - The App Direct non-interleaved Persistent Memory type.
+  2. logical_namespaces - List of Profiles to Assign to the Policy.
+  3. management_mode - Management Mode of the policy. This can be either Configured from Intersight or Configured from Operating System.
+    * configured-from-intersight - The Persistent Memory Modules are configured from Intersight thorugh Persistent Memory policy.
+    * configured-from-operating-system - The Persistent Memory Modules are configured from operating system thorugh OS tools.
+  4. organization - Name of the Intersight Organization to assign this Policy to.
+    - https://intersight.com/an/settings/organizations/
+  6. retain_namespaces - Persistent Memory Namespaces to be retained or not.
+  5. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  EOT
+  type = map(object(
+    {
+      description                  = optional(string)
+      goals_memory_percentage      = optional(number)
+      goals_persistent_memory_type = optional(string)
+      logical_namespaces           = optional(list(map(string)))
+      management_mode              = optional(string)
+      organization                 = optional(string)
+      retain_namespaces            = optional(bool)
+      tags                         = optional(list(map(string)))
+    }
+  ))
+}
+
+
+#_________________________________________________________________________
+#
+# Persistent Memory Policies
+# GUI Location: Configure > Policies > Create Policy > Persistent Memory
+#_________________________________________________________________________
+
+module "policy_persistent_memory" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_server_profile
+  ]
+  source                       = "terraform-cisco-modules/imm/intersight//modules/policies_persistent_memory"
+  for_each                     = local.policy_persistent_memory
+  description                  = each.value.description != "" ? each.value.description : "${each.key} Persistent Memory Policy."
+  goals_memory_percentage      = each.value.goals_memory_percentage
+  goals_persistent_memory_type = each.value.goals_persistent_memory_type
+  logical_namespaces           = each.value.logical_namespaces
+  management_mode              = each.value.management_mode
+  name                         = each.key
+  org_moid                     = local.org_moids[each.value.organization].moid
+  profiles                     = [for s in sort(keys(
+    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_persistent_memory == each.key]
+  retain_namespaces            = each.value.retain_namespaces
+  secure_passphrase            = var.persistent_passphrase
+  tags                         = each.value.tags != [] ? each.value.tags : local.tags
+}
+
+
