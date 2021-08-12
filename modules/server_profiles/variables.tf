@@ -96,6 +96,7 @@ variable "ucs_server_profiles" {
       policy_san_connectivity     = ""
       policy_sdcard               = ""
       policy_serial_over_lan      = ""
+      policy_smtp                 = ""
       policy_snmp                 = ""
       policy_snmp_1_user          = ""
       policy_snmp_2_users         = ""
@@ -141,6 +142,7 @@ variable "ucs_server_profiles" {
       policy_san_connectivity     = optional(string)
       policy_sdcard               = optional(string)
       policy_serial_over_lan      = optional(string)
+      policy_smtp                 = optional(string)
       policy_snmp                 = optional(string)
       policy_snmp_1_user          = optional(string)
       policy_snmp_2_users         = optional(string)

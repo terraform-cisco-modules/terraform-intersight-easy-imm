@@ -4,6 +4,13 @@
 # GUI Location: Configure > Policies > Create Policy > Persistent Memory
 #_________________________________________________________________________
 
+variable "persistent_passphrase" {
+  default     = ""
+  description = "Secure passphrase to be applied on the Persistent Memory Modules on the server. The allowed characters are a-z, A to Z, 0-9, and special characters =, \u0021, &, #, $, %, +, ^, @, _, *, -."
+  sensitive   = true
+  type        = string
+}
+
 variable "policy_persistent_memory" {
   default = {
     default = {
@@ -68,11 +75,11 @@ module "policy_persistent_memory" {
   management_mode              = each.value.management_mode
   name                         = each.key
   org_moid                     = local.org_moids[each.value.organization].moid
-  profiles                     = [for s in sort(keys(
-    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_persistent_memory == each.key]
-  retain_namespaces            = each.value.retain_namespaces
-  secure_passphrase            = var.persistent_passphrase
-  tags                         = each.value.tags != [] ? each.value.tags : local.tags
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_persistent_memory == each.key]
+  retain_namespaces = each.value.retain_namespaces
+  secure_passphrase = var.persistent_passphrase
+  tags              = each.value.tags != [] ? each.value.tags : local.tags
 }
 
 

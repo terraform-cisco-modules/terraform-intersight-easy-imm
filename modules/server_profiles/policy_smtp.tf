@@ -63,17 +63,17 @@ module "smtp" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/policies_smtp"
-  for_each        = local.policy_smtp
-  description     = each.value.description != "" ? each.value.description : "${each.key} SMTP Policy."
-  enabled         = each.value.enabled
-  min_severity    = each.value.min_severity
-  name            = each.key
-  org_moid        = local.org_moids[each.value.organization].moid
-  profiles        = [for s in sort(keys(
-    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_smtp == each.key]
+  source       = "terraform-cisco-modules/imm/intersight//modules/policies_smtp"
+  for_each     = local.policy_smtp
+  description  = each.value.description != "" ? each.value.description : "${each.key} SMTP Policy."
+  enabled      = each.value.enabled
+  min_severity = each.value.min_severity
+  name         = each.key
+  org_moid     = local.org_moids[each.value.organization].moid
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_smtp == each.key]
   sender_email    = each.value.sender_email != "" ? each.value.sender_email : each.value.smtp_server
-  smtp_recipients = each.value.smtp_recepients
+  smtp_recipients = each.value.smtp_recipients
   smtp_server     = each.value.smtp_server
   tags            = each.value.tags != [] ? each.value.tags : local.tags
 }

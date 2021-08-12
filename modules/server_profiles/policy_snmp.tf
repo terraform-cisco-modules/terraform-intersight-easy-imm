@@ -21,19 +21,19 @@ variable "snmp_trap_community" {
 variable "policy_snmp" {
   default = {
     default = {
-      description     = ""
-      enabled         = true
-      organization    = "default"
-      snmp_access     = "Full"
-      snmp_engine_id  = ""
-      snmp_port       = 161
-      snmp_traps      = []
-      snmp_users      = []
-      system_contact  = ""
-      system_location = ""
-      tags            = []
-      v2_enabled      = true
-      v3_enabled      = true
+      description            = ""
+      enabled                = true
+      organization           = "default"
+      snmp_access            = "Full"
+      snmp_engine_id         = ""
+      snmp_port              = 161
+      snmp_trap_destinations = []
+      snmp_users             = []
+      system_contact         = ""
+      system_location        = ""
+      tags                   = []
+      v2_enabled             = true
+      v3_enabled             = true
     }
   }
   description = <<-EOT
@@ -48,7 +48,7 @@ variable "policy_snmp" {
     * Limited - Partial access to read the information in the inventory tables.
   5. snmp_engine_id - Unique string to identify the device for administration purpose. This is generated from the SNMP Input Engine ID if it is already defined, else it is derived from the BMC serial number.
   6. snmp_port - Port on which Cisco IMC SNMP agent runs. Enter a value between 1-65535. Reserved ports not allowed (22, 23, 80, 123, 389, 443, 623, 636, 2068, 3268, 3269).  Default is 161.
-  7. snmp_traps - List of SNMP Trap Destinations to Assign to the Policy.
+  7. snmp_trap_destinations - List of SNMP Trap Destinations to Assign to the Policy.
   8. snmp_users - List of SNMP Users to Assign to the Policy.
   9. system_contact - Contact person responsible for the SNMP implementation. Enter a string up to 64 characters, such as an email address or a name and telephone number.
   10. system_location - Location of host on which the SNMP agent (server) runs.
@@ -58,19 +58,19 @@ variable "policy_snmp" {
   EOT
   type = map(object(
     {
-      description     = optional(string)
-      enabled         = optional(bool)
-      organization    = optional(string)
-      snmp_access     = optional(string)
-      snmp_engine_id  = optional(string)
-      snmp_port       = optional(number)
-      snmp_traps      = optional(list(map(string)))
-      snmp_users      = optional(list(map(string)))
-      system_contact  = optional(string)
-      system_location = optional(string)
-      tags            = optional(list(map(string)))
-      v2_enabled      = optional(bool)
-      v3_enabled      = optional(bool)
+      description            = optional(string)
+      enabled                = optional(bool)
+      organization           = optional(string)
+      snmp_access            = optional(string)
+      snmp_engine_id         = optional(string)
+      snmp_port              = optional(number)
+      snmp_trap_destinations = optional(list(map(string)))
+      snmp_users             = optional(list(map(string)))
+      system_contact         = optional(string)
+      system_location        = optional(string)
+      tags                   = optional(list(map(string)))
+      v2_enabled             = optional(bool)
+      v3_enabled             = optional(bool)
     }
   ))
 }
@@ -87,14 +87,14 @@ module "snmp" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
-  for_each        = local.policy_snmp
-  description     = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
-  enabled         = each.value.enabled
-  name            = each.key
-  org_moid        = local.org_moids[each.value.organization].moid
-  profiles        = [for s in sort(keys(
-    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_snmp == each.key]
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  for_each    = local.policy_snmp
+  description = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
+  enabled     = each.value.enabled
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_snmp == each.key]
   snmp_access     = each.value.snmp_access
   snmp_community  = var.snmp_community
   snmp_engine_id  = each.value.snmp_engine_id

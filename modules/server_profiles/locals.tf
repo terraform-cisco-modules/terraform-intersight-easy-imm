@@ -55,11 +55,12 @@ locals {
   # Device Connector Policy Section Locals
   #__________________________________________________________
 
-  policy_device_connector = { for k, v in var.policy_device_connector : k => {
-    description  = (v.description != null ? v.description : "")
-    lockout      = (v.lockout != null ? v.lockout : false)
-    organization = (v.organization != null ? v.organization : "default")
-    tags         = (v.tags != null ? v.tags : [])
+  policy_device_connector = {
+    for k, v in var.policy_device_connector : k => {
+      description  = (v.description != null ? v.description : "")
+      lockout      = (v.lockout != null ? v.lockout : false)
+      organization = (v.organization != null ? v.organization : "default")
+      tags         = (v.tags != null ? v.tags : [])
     }
   }
 
@@ -69,14 +70,15 @@ locals {
   # IMC Access Policy Section Locals
   #__________________________________________________________
 
-  policy_imc_access = { for k, v in var.policy_imc_access : k => {
-    description  = (v.description != null ? v.description : "")
-    inband_vlan  = (v.inband_vlan != null ? v.inband_vlan : 1)
-    imc_ip_pool  = (v.imc_ip_pool != null ? v.imc_ip_pool : "")
-    ipv4_enable  = (v.ipv4_enable != null ? v.ipv4_enable : true)
-    ipv6_enable  = (v.ipv6_enable != null ? v.ipv6_enable : false)
-    organization = (v.organization != null ? v.organization : "default")
-    tags         = (v.tags != null ? v.tags : [])
+  policy_imc_access = {
+    for k, v in var.policy_imc_access : k => {
+      description  = (v.description != null ? v.description : "")
+      inband_vlan  = (v.inband_vlan != null ? v.inband_vlan : 1)
+      imc_ip_pool  = (v.imc_ip_pool != null ? v.imc_ip_pool : "")
+      ipv4_enable  = (v.ipv4_enable != null ? v.ipv4_enable : true)
+      ipv6_enable  = (v.ipv6_enable != null ? v.ipv6_enable : false)
+      organization = (v.organization != null ? v.organization : "default")
+      tags         = (v.tags != null ? v.tags : [])
     }
   }
 
@@ -86,16 +88,72 @@ locals {
   # IMC Access Policy Section Locals
   #__________________________________________________________
 
-  policy_ipmi_over_lan = { for k, v in var.policy_ipmi_over_lan : k => {
-    description  = (v.description != null ? v.description : "")
-    enabled      = (v.enabled != null ? v.enabled : true)
-    ipmi_key     = (v.ipmi_key != null ? v.ipmi_key : null)
-    organization = (v.organization != null ? v.organization : "default")
-    privilege    = (v.privilege != null ? v.privilege : "admin")
-    tags         = (v.tags != null ? v.tags : [])
+  policy_ipmi_over_lan = {
+    for k, v in var.policy_ipmi_over_lan : k => {
+      description  = (v.description != null ? v.description : "")
+      enabled      = (v.enabled != null ? v.enabled : true)
+      ipmi_key     = (v.ipmi_key != null ? v.ipmi_key : null)
+      organization = (v.organization != null ? v.organization : "default")
+      privilege    = (v.privilege != null ? v.privilege : "admin")
+      tags         = (v.tags != null ? v.tags : [])
     }
   }
 
+
+  #__________________________________________________________
+  #
+  # LDAP Policy Section Locals
+  #__________________________________________________________
+
+  policy_ldap = {
+    for k, v in var.policy_ldap : k => {
+      description                     = (v.description != null ? v.description : "")
+      ldap_attribute                  = (v.ldap_attribute != null ? v.ldap_attribute : "CiscoAvPair")
+      ldap_base_dn                    = (v.ldap_base_dn != null ? v.ldap_base_dn : "dc=example,dc=com")
+      ldap_bind_dn                    = (v.ldap_bind_dn != null ? v.ldap_bind_dn : "")
+      ldap_bind_method                = (v.ldap_bind_method != null ? v.ldap_bind_method : "LoginCredentials")
+      ldap_domain                     = (v.ldap_domain != null ? v.ldap_domain : "example.com")
+      ldap_enable_dns                 = (v.ldap_enable_dns != null ? v.ldap_enable_dns : false)
+      ldap_enable_encryption          = (v.ldap_enable_encryption != null ? v.ldap_enable_encryption : false)
+      ldap_enable_group_authorization = (v.ldap_enable_group_authorization != null ? v.ldap_enable_group_authorization : false)
+      ldap_enabled                    = (v.ldap_enabled != null ? v.ldap_enabled : true)
+      ldap_filter                     = (v.ldap_filter != null ? v.ldap_filter : "samAccountName")
+      ldap_group_attribute            = (v.ldap_group_attribute != null ? v.ldap_group_attribute : "memberOf")
+      ldap_nested_group_search_depth  = (v.ldap_nested_group_search_depth != null ? v.ldap_nested_group_search_depth : 128)
+      ldap_nr_source                  = (v.ldap_nr_source != null ? v.ldap_nr_source : "Extracted")
+      ldap_search_domain              = (v.ldap_search_domain != null ? v.ldap_search_domain : "")
+      ldap_search_forest              = (v.ldap_search_forest != null ? v.ldap_search_forest : "")
+      ldap_timeout                    = (v.ldap_timeout != null ? v.ldap_timeout : 0)
+      ldap_user_search_precedence     = (v.ldap_user_search_precedence != null ? v.ldap_user_search_precedence : "LocalUserDb")
+      organization                    = (v.organization != null ? v.organization : "default")
+      tags                            = (v.tags != null ? v.tags : [])
+    }
+  }
+
+  ldap_servers = {
+    for k, v in var.policy_ldap : "ldap_servers" =>
+    {
+      for key, value in v.ldap_servers : "${k}_${key}" =>
+      {
+        ldap_port   = (value.ldap_port != null ? value.ldap_port : 389)
+        ldap_server = (value.ldap_server != null ? value.ldap_server : 1)
+        policy      = k
+      }
+    }
+  }
+
+  ldap_groups = {
+    for k, v in var.policy_ldap : "ldap_groups" =>
+    {
+      for key, value in v.ldap_groups : "${k}_${key}" =>
+      {
+        group_role  = (value.group_role != null ? value.group_role : "admin")
+        ldap_domain = (v.ldap_domain != null ? v.ldap_domain : "example.com")
+        ldap_group  = key
+        policy      = k
+      }
+    }
+  }
 
   #__________________________________________________________
   #
@@ -252,19 +310,19 @@ locals {
 
   policy_snmp = {
     for k, v in var.policy_snmp : k => {
-      description     = (v.description != null ? v.description : "")
-      enabled         = (v.enabled != null ? v.enabled : true)
-      organization    = (v.organization != null ? v.organization : "default")
-      snmp_access     = (v.snmp_access != null ? v.snmp_access : "Full")
-      snmp_engine_id  = (v.snmp_engine_id != null ? v.snmp_engine_id : "")
-      snmp_port       = (v.snmp_port != null ? v.snmp_port : 161)
-      snmp_traps      = (v.snmp_traps != null ? v.snmp_traps : [])
-      snmp_users      = (v.snmp_users != null ? v.snmp_users : [])
-      system_contact  = (v.system_contact != null ? v.system_contact : "")
-      system_location = (v.system_location != null ? v.system_location : "")
-      tags            = (v.tags != null ? v.tags : [])
-      v2_enabled      = (v.v2_enabled != null ? v.v2_enabled : true)
-      v3_enabled      = (v.v3_enabled != null ? v.v3_enabled : true)
+      description            = (v.description != null ? v.description : "")
+      enabled                = (v.enabled != null ? v.enabled : true)
+      organization           = (v.organization != null ? v.organization : "default")
+      snmp_access            = (v.snmp_access != null ? v.snmp_access : "Full")
+      snmp_engine_id         = (v.snmp_engine_id != null ? v.snmp_engine_id : "")
+      snmp_port              = (v.snmp_port != null ? v.snmp_port : 161)
+      snmp_trap_destinations = (v.snmp_trap_destinations != null ? v.snmp_trap_destinations : [])
+      snmp_users             = (v.snmp_users != null ? v.snmp_users : [])
+      system_contact         = (v.system_contact != null ? v.system_contact : "")
+      system_location        = (v.system_location != null ? v.system_location : "")
+      tags                   = (v.tags != null ? v.tags : [])
+      v2_enabled             = (v.v2_enabled != null ? v.v2_enabled : true)
+      v3_enabled             = (v.v3_enabled != null ? v.v3_enabled : true)
     }
   }
 
@@ -514,6 +572,7 @@ locals {
       policy_san_connectivity     = (v.policy_san_connectivity != null ? v.policy_san_connectivity : "")
       policy_sdcard               = (v.policy_sdcard != null ? v.policy_sdcard : "")
       policy_serial_over_lan      = (v.policy_serial_over_lan != null ? v.policy_serial_over_lan : "")
+      policy_smtp                 = (v.policy_smtp != null ? v.policy_smtp : "")
       policy_snmp                 = (v.policy_snmp != null ? v.policy_snmp : "")
       policy_snmp_1_user          = (v.policy_snmp_1_user != null ? v.policy_snmp_1_user : "")
       policy_snmp_2_users         = (v.policy_snmp_2_users != null ? v.policy_snmp_2_users : "")

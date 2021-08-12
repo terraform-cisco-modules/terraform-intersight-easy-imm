@@ -268,11 +268,11 @@ module "vnic_lan_connectivity" {
   iqn_pool            = each.value.iqn_allocation_type == "Pool" ? local.iqn_pools[each.value.iqn_pool] : []
   name                = each.key
   org_moid            = local.org_moids[each.value.organization].moid
-  profiles            = [for s in sort(keys(
-    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_lan_connectivity == each.key]
-  placement_mode      = each.value.placement_mode
-  tags                = each.value.tags != [] ? each.value.tags : local.tags
-  target_platform     = each.value.target_platform
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_lan_connectivity == each.key]
+  placement_mode  = each.value.placement_mode
+  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  target_platform = each.value.target_platform
 }
 
 

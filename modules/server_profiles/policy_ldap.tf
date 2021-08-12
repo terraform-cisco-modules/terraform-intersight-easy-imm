@@ -4,7 +4,14 @@
 # GUI Location: Configure > Policies > Create Policy > LDAP > Start
 #_________________________________________________________________________
 
-variable "policy_persistent_memory" {
+variable "ldap_password" {
+  default     = ""
+  description = "The password of the user for initial bind process. It can be any string that adheres to the following constraints. It can have character except spaces, tabs, line breaks. It cannot be more than 254 characters."
+  sensitive   = true
+  type        = string
+}
+
+variable "policy_ldap" {
   default = {
     default = {
       description                     = ""
@@ -19,19 +26,19 @@ variable "policy_persistent_memory" {
       ldap_enabled                    = true
       ldap_filter                     = "samAccountName"
       ldap_group_attribute            = "memberOf"
-      ldap_groups                     = {
+      ldap_groups = {
         "group1" = {
-          group_role  = "admin"
-          ldap_domain = "example.com"
+          group_role = "admin"
         }
         "group2" = {
-          group_role  = "read-only"
-          ldap_domain = "example.com"
+          group_role = "read-only"
         }
       }
-      ldap_nested_group_search_depth  = 128
-      ldap_nr_source                  = "Extracted"
-      ldap_servers                    = {
+      ldap_nested_group_search_depth = 128
+      ldap_nr_source                 = "Extracted"
+      ldap_search_domain             = ""
+      ldap_search_forest             = ""
+      ldap_servers = {
         "server1" = {
           ldap_port   = 389
           ldap_server = "server1.example.com"
@@ -41,12 +48,10 @@ variable "policy_persistent_memory" {
           ldap_server = "server2.example.com"
         }
       }
-      ldap_search_domain              = ""
-      ldap_search_forest              = ""
-      ldap_timeout                    = 0
-      ldap_user_search_precedence     = "LocalUserDb"
-      organization                    = "default"
-      tags                            = []
+      ldap_timeout                = 0
+      ldap_user_search_precedence = "LocalUserDb"
+      organization                = "default"
+      tags                        = []
     }
   }
   description = <<-EOT
@@ -72,13 +77,14 @@ variable "policy_persistent_memory" {
       - admin
       - readonly
       - user
-    * ldap_domain = LDAP domain name.
   ldap_nested_group_search_depth - Search depth to look for a nested LDAP group in an LDAP group map.  Range is 1 to 128.
   ldap_nr_source - Source of the domain name used for the DNS SRV request.
     * Configured - The configured-search domain.
     * ConfiguredExtracted - The domain name extracted from the login ID than the configured-search domain.
     * Extracted - The domain name extracted-domain from the login ID."
-  ldap_servers -
+  ldap_servers - Map of LDAP Servers.
+    * ldap_port - Port to Assign to the LDAP Server.  Range is 1-65535.
+    * ldap_server - Hostname or IP address of an LDAP Server.
   ldap_search_domain - Domain name that acts as a source for a DNS query.
   ldap_search_forest - Forest name that acts as a source for a DNS query.
   ldap_timeout - LDAP authentication timeout duration, in seconds.  Range is 0 to 180.
@@ -103,16 +109,25 @@ variable "policy_persistent_memory" {
       ldap_enabled                    = optional(bool)
       ldap_filter                     = optional(string)
       ldap_group_attribute            = optional(string)
-      ldap_groups                     = optional(map(object))
-      ldap_nested_group_search_depth  = optional(number)
-      ldap_nr_source                  = optional(string)
-      ldap_servers                    = optional(map(object))
-      ldap_search_domain              = optional(string)
-      ldap_search_forest              = optional(string)
-      ldap_timeout                    = optional(number)
-      ldap_user_search_precedence     = optional(string)
-      organization                    = optional(string)
-      tags                            = optional(list(map(string)))
+      ldap_groups = optional(map(object(
+        {
+          group_role = optional(string)
+        }
+      )))
+      ldap_nested_group_search_depth = optional(number)
+      ldap_nr_source                 = optional(string)
+      ldap_servers = optional(map(object(
+        {
+          ldap_port   = optional(number)
+          ldap_server = optional(string)
+        }
+      )))
+      ldap_search_domain          = optional(string)
+      ldap_search_forest          = optional(string)
+      ldap_timeout                = optional(number)
+      ldap_user_search_precedence = optional(string)
+      organization                = optional(string)
+      tags                        = optional(list(map(string)))
     }
   ))
 }
@@ -135,7 +150,7 @@ module "ldap_policy" {
     module.ucs_server_profile
   ]
   source                     = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_policy"
-  for_each                   = local.ldap_policy
+  for_each                   = local.policy_ldap
   attribute                  = each.value.ldap_attribute
   base_dn                    = each.value.ldap_base_dn
   bind_dn                    = each.value.ldap_bind_dn
@@ -170,9 +185,10 @@ module "ldap_provider" {
     local.org_moids,
     module.ldap_policy
   ]
-  for_each         = local.ldap_servers
+  for_each         = local.ldap_servers.ldap_servers
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_provider"
   ldap_policy_moid = module.ldap_policy[each.value.policy].moid
+  ldap_port        = each.value.ldap_port
   ldap_server      = each.value.ldap_server
 }
 
@@ -187,7 +203,7 @@ module "ldap_groups" {
     module.ldap_policy
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_group"
-  for_each         = local.ldap_groups
+  for_each         = local.ldap_groups.ldap_groups
   group_role       = each.value.group_role
   ldap_domain      = each.value.ldap_domain
   ldap_group       = each.value.ldap_group

@@ -60,9 +60,9 @@ module "policy_boot_uefi_m2_pch" {
   description = each.value.description != "" ? each.value.description : "${each.key} Boot Order Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  profiles    = [for s in sort(keys(
-    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
+  tags = each.value.tags != [] ? each.value.tags : local.tags
   boot_devices = [
     {
       additional_properties = jsonencode({ Subtype = "cimc-mapped-dvd" })
@@ -112,9 +112,9 @@ module "policy_boot_uefi_m2_raid" {
   description = each.value.description != "" ? each.value.description : "${each.key} Boot Order Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  profiles    = [for s in sort(keys(
-    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
+  tags = each.value.tags != [] ? each.value.tags : local.tags
   boot_devices = [
     {
       additional_properties = jsonencode({ Subtype = "cimc-mapped-dvd" })
@@ -164,9 +164,9 @@ module "policy_boot_uefi_sdcard" {
   description = each.value.description != "" ? each.value.description : "${each.key} Boot Order Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  profiles    = [for s in sort(keys(
-    local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
+  tags = each.value.tags != [] ? each.value.tags : local.tags
   boot_devices = [
     {
       additional_properties = jsonencode({ Subtype = "cimc-mapped-dvd" })
