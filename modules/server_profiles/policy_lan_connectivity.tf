@@ -110,10 +110,10 @@ variable "policy_vnic_templates" {
   key - Name of the vNIC Template Policy.
   1. description - Description to Assign to the Policy.
   2. adapter_template - The Type of vNIC Adapter Policy to assign to the vNIC Template.  Options are:
-    * Linux
-    * Linux-NVMe-ROCE
-    * VMware
-    * Windows
+    a. Linux
+    b. Linux-NVMe-ROCE
+    c. VMware
+    d. Windows
   3. description - Description to Assign to the Policy.
   4. lan_connectivity - Name of the LAN Connectivity Policy to assign to the vNIC Template.
   5. mac_address_a_static - The MAC address must be in hexadecimal format xx:xx:xx:xx:xx:xx.To ensure uniqueness of MACs in the LAN fabric, you are strongly encouraged to use thefollowing MAC prefix 00:25:B5:xx:xx:xx.
