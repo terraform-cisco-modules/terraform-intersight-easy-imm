@@ -111,7 +111,8 @@ variable "policy_local_users" {
 
 module "policy_local_users" {
   depends_on = [
-    local.org_moids
+    local.org_moids,
+    module.ucs_server_profile
   ]
   source                   = "terraform-cisco-modules/imm/intersight//modules/policies_local_user_policy"
   for_each                 = local.policy_local_users

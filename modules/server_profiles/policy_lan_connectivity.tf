@@ -257,7 +257,8 @@ variable "policy_vnic_templates" {
 
 module "vnic_lan_connectivity" {
   depends_on = [
-    local.org_moids
+    local.org_moids,
+    module.ucs_server_profile
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_lan_connectivity"
   for_each            = local.policy_vnic_lan_connectivity

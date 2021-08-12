@@ -157,7 +157,8 @@ variable "policy_vhba_san_connectivity" {
 
 module "vhba_san_connectivity" {
   depends_on = [
-    local.org_moids
+    local.org_moids,
+    module.ucs_server_profile
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_san_connectivity"
   for_each            = local.policy_vhba_san_connectivity

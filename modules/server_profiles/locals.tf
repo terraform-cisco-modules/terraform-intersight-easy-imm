@@ -208,6 +208,67 @@ locals {
 
   #__________________________________________________________
   #
+  # SMTP Policy Section Locals
+  #__________________________________________________________
+
+  policy_smtp = {
+    for k, v in var.policy_smtp : k => {
+      description     = (v.description != null ? v.description : "")
+      enabled         = (v.enabled != null ? v.enabled : true)
+      min_severity    = (v.min_severity != null ? v.min_severity : "critical")
+      organization    = (v.organization != null ? v.organization : "default")
+      sender_email    = (v.sender_email != null ? v.sender_email : "")
+      smtp_port       = (v.smtp_port != null ? v.smtp_port : 25)
+      smtp_recipients = (v.smtp_recipients != null ? v.smtp_recipients : [])
+      smtp_server     = (v.smtp_server != null ? v.smtp_server : "")
+      tags            = (v.tags != null ? v.tags : [])
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # SNMP Policy Section Locals
+  #__________________________________________________________
+
+  policy_snmp = {
+    for k, v in var.policy_snmp : k => {
+      description     = (v.description != null ? v.description : "")
+      enabled         = (v.enabled != null ? v.enabled : true)
+      organization    = (v.organization != null ? v.organization : "default")
+      snmp_access     = (v.snmp_access != null ? v.snmp_access : "Full")
+      snmp_engine_id  = (v.snmp_engine_id != null ? v.snmp_engine_id : "")
+      snmp_port       = (v.snmp_port != null ? v.snmp_port : 161)
+      snmp_traps      = (v.snmp_traps != null ? v.snmp_traps : [])
+      snmp_users      = (v.snmp_users != null ? v.snmp_users : [])
+      system_contact  = (v.system_contact != null ? v.system_contact : "")
+      system_location = (v.system_location != null ? v.system_location : "")
+      tags            = (v.tags != null ? v.tags : [])
+      v2_enabled      = (v.v2_enabled != null ? v.v2_enabled : true)
+      v3_enabled      = (v.v3_enabled != null ? v.v3_enabled : true)
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # SSH Policy Section Locals
+  #__________________________________________________________
+
+  policy_ssh = {
+    for k, v in var.policy_ssh : k => {
+      description  = (v.description != null ? v.description : "")
+      enabled      = (v.enabled != null ? v.enabled : true)
+      organization = (v.organization != null ? v.organization : "default")
+      ssh_port     = (v.ssh_port != null ? v.ssh_port : 22)
+      tags         = (v.tags != null ? v.tags : [])
+      timeout      = (v.timeout != null ? v.timeout : 1800)
+    }
+  }
+
+
+  #__________________________________________________________
+  #
   # Storage Policy Section Locals
   #__________________________________________________________
 
