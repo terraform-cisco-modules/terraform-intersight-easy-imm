@@ -9,7 +9,7 @@ variable "policy_imc_access" {
     default = {
       description  = ""
       imc_ip_pool  = ""
-      inband_vlan  = 1
+      inband_vlan  = 4
       ipv4_enable  = true
       ipv6_enable  = false
       organization = "default"

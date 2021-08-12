@@ -189,10 +189,8 @@ variable "policy_vnic_templates" {
     * MLOM
   37. vnic_placement_switch_a -The fabric port to which the vNICs will be associated.
     * A - Fabric A of the FI cluster.
-    * B - Fabric B of the FI cluster.
     * None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
   37. vnic_placement_switch_b -The fabric port to which the vNICs will be associated.
-    * A - Fabric A of the FI cluster.
     * B - Fabric B of the FI cluster.
     * None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
   38. vnic_placement_uplink - Adapter port on which the virtual interface will be created.
@@ -472,10 +470,9 @@ module "vnic_templates_a" {
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_vnic"
   for_each         = local.policy_vnic_templates
-  cdn_name         = each.value.vnic_cdn_a_name
+  cdn_name         = each.value.vnic_cdn_source == "user" ? each.value.vnic_cdn_a_name : each.value.vnic_name_a
   cdn_source       = each.value.vnic_cdn_source
   failover_enabled = each.value.vnic_failover_enabled
-  # iscsi_boot_policy         = module.policy_iscsi_boot[each.key].moid
   lan_connectivity_moid     = module.vnic_lan_connectivity[each.value.lan_connectivity].moid
   mac_address_type          = each.value.mac_address_type
   mac_pool_moid             = each.value.mac_address_type == "POOL" ? [local.mac_pools[each.value.mac_pool_a_name]] : []
@@ -496,10 +493,11 @@ module "vnic_templates_a" {
   vnic_adapter_moid         = each.value.adapter_template == "Linux" ? module.vnic_adapter_linux[each.key].moid : each.value.adapter_template == "Linux-NVMe-ROCE" ? module.vnic_adapter_linux_nvmeof[each.key].moid : each.value.adapter_template == "VMware" ? module.vnic_adapter_vmware[each.key].moid : each.value.adapter_template == "Windows" ? module.vnic_adapter_windows[each.key].moid : null
   vnic_control_moid         = module.vnic_network_control_policy[each.key].moid
   vnic_name                 = each.value.vnic_name_a
-  # vnic_network_moid         = module.vnic_network[each.key].moid
   vnic_order              = each.value.vnic_order_a
   vnic_qos_moid           = module.vnic_qos[each.key].moid
   vnic_network_group_moid = module.vnic_vlan_group[each.key].moid
+  # iscsi_boot_policy         = module.policy_iscsi_boot[each.key].moid
+  # vnic_network_moid         = module.vnic_network[each.key].moid
 }
 
 module "vnic_templates_b" {
@@ -516,10 +514,9 @@ module "vnic_templates_b" {
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_vnic"
   for_each         = local.policy_vnic_templates
-  cdn_name         = each.value.vnic_cdn_b_name
+  cdn_name         = each.value.vnic_cdn_source == "user" ? each.value.vnic_cdn_b_name : each.value.vnic_name_b
   cdn_source       = each.value.vnic_cdn_source
   failover_enabled = each.value.vnic_failover_enabled
-  # iscsi_boot_policy         = module.policy_iscsi_boot[each.key].moid
   lan_connectivity_moid     = module.vnic_lan_connectivity[each.value.lan_connectivity].moid
   mac_address_type          = each.value.mac_address_type
   mac_pool_moid             = each.value.mac_address_type == "POOL" ? [local.mac_pools[each.value.mac_pool_b_name]] : []
@@ -540,8 +537,9 @@ module "vnic_templates_b" {
   vnic_adapter_moid         = each.value.adapter_template == "Linux" ? module.vnic_adapter_linux[each.key].moid : each.value.adapter_template == "Linux-NVMe-ROCE" ? module.vnic_adapter_linux_nvmeof[each.key].moid : each.value.adapter_template == "VMware" ? module.vnic_adapter_vmware[each.key].moid : each.value.adapter_template == "Windows" ? module.vnic_adapter_windows[each.key].moid : null
   vnic_control_moid         = module.vnic_network_control_policy[each.key].moid
   vnic_name                 = each.value.vnic_name_b
-  # vnic_network_moid         = module.vnic_network[each.key].moid
   vnic_order              = each.value.vnic_order_b
   vnic_qos_moid           = module.vnic_qos[each.key].moid
   vnic_network_group_moid = module.vnic_vlan_group[each.key].moid
+  # iscsi_boot_policy         = module.policy_iscsi_boot[each.key].moid
+  # vnic_network_moid         = module.vnic_network[each.key].moid
 }

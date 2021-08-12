@@ -146,7 +146,7 @@ module "policy_bios_virtual_node" {
   cpu_energy_performance          = "performance" # Energy Performance
   cpu_performance                 = "hpc"         # CPU Performance
   cpu_frequency_floor             = "enabled"     # Frequency Floor Override
-  cpu_power_management            = "Custom"      # Power Technology
+  cpu_power_management            = "custom"      # Power Technology
   direct_cache_access             = "enabled"     # Direct Cache Access Support
   dram_clock_throttling           = "Performance" # DRAM Clock Throttling
   imc_interleave                  = "Auto"        # IMC Interleaving
@@ -214,7 +214,7 @@ module "policy_bios_virtual_rack" {
   cpu_energy_performance          = "performance" # Energy Performance
   cpu_performance                 = "hpc"         # CPU Performance
   cpu_frequency_floor             = "enabled"     # Frequency Floor Override
-  cpu_power_management            = "Custom"      # Power Technology
+  cpu_power_management            = "custom"      # Power Technology
   direct_cache_access             = "enabled"     # Direct Cache Access Support
   dram_clock_throttling           = "Performance" # DRAM Clock Throttling
   imc_interleave                  = "Auto"        # IMC Interleaving

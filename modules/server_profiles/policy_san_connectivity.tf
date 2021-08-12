@@ -172,7 +172,7 @@ module "vhba_san_connectivity" {
   tags                = each.value.tags != [] ? each.value.tags : local.tags
   target_platform     = each.value.target_platform
   wwnn_pool           = each.value.wwnn_address_type == "POOL" ? [local.fc_pools[each.value.wwnn_pool]] : []
-  wwnn_address_type   = each.value.wwnn_address_type == "STATIC"
+  wwnn_address_type   = each.value.wwnn_address_type
 }
 
 

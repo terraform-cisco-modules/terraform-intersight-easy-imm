@@ -569,7 +569,7 @@ policy_syslog = {
 #______________________________________________
 
 policy_vhba_san_connectivity = {
-  "key" = {
+  "Asgard_san" = {
     adapter_template             = "VMware"
     description                  = ""
     organization                 = "Asgard"
