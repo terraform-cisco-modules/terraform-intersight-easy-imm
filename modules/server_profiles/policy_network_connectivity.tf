@@ -19,15 +19,15 @@ variable "policy_network_connectivity" {
   }
   description = <<-EOT
   key - Name of the Network Connectivity Policy.
-  1. description - Description to Assign to the Policy.
-  2. dns_servers_v4 - List of IPv4 DNS Servers for this DNS Policy.
-  3. dns_servers_v6 - List of IPv6 DNS Servers for this DNS Policy.
-  4. dynamic_dns - Flag to Enable or Disable Dynamic DNS on the Policy.  Meaning obtain DNS Servers from DHCP Service.
-  5. ipv6_enable - Flag to Enable or Disable IPv6 on the Policy.
-  6. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * dns_servers_v4 - List of IPv4 DNS Servers for this DNS Policy.
+  * dns_servers_v6 - List of IPv6 DNS Servers for this DNS Policy.
+  * dynamic_dns - Flag to Enable or Disable Dynamic DNS on the Policy.  Meaning obtain DNS Servers from DHCP Service.
+  * ipv6_enable - Flag to Enable or Disable IPv6 on the Policy.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  7. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  8. update_domain - Name of the Domain to Update when using Dynamic DNS for the Policy.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * update_domain - Name of the Domain to Update when using Dynamic DNS for the Policy.
   EOT
   type = map(object(
     {
@@ -69,5 +69,3 @@ module "policy_network_connectivity" {
   tags          = each.value.tags != [] ? each.value.tags : local.tags
   update_domain = each.value.update_domain
 }
-
-

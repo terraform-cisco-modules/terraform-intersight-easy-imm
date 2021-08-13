@@ -38,23 +38,23 @@ variable "policy_snmp" {
   }
   description = <<-EOT
   key - Name of the SSH Policy.
-  1. description - Description to Assign to the Policy.
-  2. enabled - State of SSH service on the endpoint.
-  3. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * enabled - State of SSH service on the endpoint.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  4. snmp_access - Controls access to the information in the inventory tables. Applicable only for SNMPv1 and SNMPv2c users.
-    * Disabled - Blocks access to the information in the inventory tables.
-    * Full - Full access to read the information in the inventory tables.
-    * Limited - Partial access to read the information in the inventory tables.
-  5. snmp_engine_id - Unique string to identify the device for administration purpose. This is generated from the SNMP Input Engine ID if it is already defined, else it is derived from the BMC serial number.
-  6. snmp_port - Port on which Cisco IMC SNMP agent runs. Enter a value between 1-65535. Reserved ports not allowed (22, 23, 80, 123, 389, 443, 623, 636, 2068, 3268, 3269).  Default is 161.
-  7. snmp_trap_destinations - List of SNMP Trap Destinations to Assign to the Policy.
-  8. snmp_users - List of SNMP Users to Assign to the Policy.
-  9. system_contact - Contact person responsible for the SNMP implementation. Enter a string up to 64 characters, such as an email address or a name and telephone number.
-  10. system_location - Location of host on which the SNMP agent (server) runs.
-  11. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  12. v2_enabled - State of the SNMPv2c on the endpoint. If enabled, the endpoint sends SNMPv2c properties to the designated host.
-  13. v3_enabled - State of the SNMPv3 on the endpoint. If enabled, the endpoint sends SNMPv3 properties to the designated host.
+  * snmp_access - Controls access to the information in the inventory tables. Applicable only for SNMPv1 and SNMPv2c users.
+    - Disabled - Blocks access to the information in the inventory tables.
+    - Full - Full access to read the information in the inventory tables.
+    - Limited - Partial access to read the information in the inventory tables.
+  * snmp_engine_id - Unique string to identify the device for administration purpose. This is generated from the SNMP Input Engine ID if it is already defined, else it is derived from the BMC serial number.
+  * snmp_port - Port on which Cisco IMC SNMP agent runs. Enter a value between 1-65535. Reserved ports not allowed (22, 23, 80, 123, 389, 443, 623, 636, 2068, 3268, 3269).  Default is 161.
+  * snmp_trap_destinations - List of SNMP Trap Destinations to Assign to the Policy.
+  * snmp_users - List of SNMP Users to Assign to the Policy.
+  * system_contact - Contact person responsible for the SNMP implementation. Enter a string up to 64 characters, such as an email address or a name and telephone number.
+  * system_location - Location of host on which the SNMP agent (server) runs.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * v2_enabled - State of the SNMPv2c on the endpoint. If enabled, the endpoint sends SNMPv2c properties to the designated host.
+  * v3_enabled - State of the SNMPv3 on the endpoint. If enabled, the endpoint sends SNMPv3 properties to the designated host.
   EOT
   type = map(object(
     {

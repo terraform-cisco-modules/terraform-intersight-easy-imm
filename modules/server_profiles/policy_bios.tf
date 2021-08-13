@@ -15,14 +15,14 @@ variable "policy_bios" {
   }
   description = <<-EOT
   key - Name of the BIOS Policy
-  1. bios_policy - Name of the Best Practice BIOS Policy to Assign.
-    a. nvmeof
-    b. virtual_node
-    c. virtual_rack
-  2. description - Description to Assign to the Policy.
-  3. organization - Name of the Intersight Organization to assign this Policy to.
+  * bios_policy - Name of the Best Practice BIOS Policy to Assign.
+    - nvmeof
+    - virtual_node
+    - virtual_rack
+  * description - Description to Assign to the Policy.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  4. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

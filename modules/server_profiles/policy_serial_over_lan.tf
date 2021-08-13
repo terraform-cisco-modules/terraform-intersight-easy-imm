@@ -18,14 +18,21 @@ variable "policy_serial_over_lan" {
   }
   description = <<-EOT
   key - Name of the Serial over LAN Policy.
-  1. baud_rate - Baud Rate to Assign to the Policy.  Options are {9600|19200|38400|57600|115200}.
-  2. com_port - Communications Port to Assign to the Policy.  Options are {com0|com1}.
-  3. description - Description to Assign to the Policy.
-  4. enabled - Flag to Enable or Disable the Policy.
-  5. organization - Name of the Intersight Organization to assign this Policy to.
+  * baud_rate - Baud Rate to Assign to the Policy.  Options are:
+    - 9600
+    - 19200
+    - 38400
+    - 57600
+    - 115200
+  * com_port - Communications Port to Assign to the Policy.  Options are:
+    - com0
+    - com1
+  * description - Description to Assign to the Policy.
+  * enabled - Flag to Enable or Disable the Policy.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  6. ssh_port - SSH Port to Assign to the Policy.  Range is between 1024-65535.
-  7. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * ssh_port - SSH Port to Assign to the Policy.  Range is between 1024-65535.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

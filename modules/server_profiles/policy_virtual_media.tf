@@ -17,15 +17,15 @@ variable "policy_virtual_media" {
     }
   }
   description = <<-EOT
-  key - Name of the Syslog Policy.
-  1. description - Description to Assign to the Policy.
-  2. enabled - Flag to Enable or Disable the Policy.
-  3. encryption - If enabled, allows encryption of all Virtual Media communications.
-  4. low_power_usb - If enabled, the virtual drives appear on the boot selection menu after mapping the image and rebooting the host.
-  5. organization - Name of the Intersight Organization to assign this Policy to.
+  key - Name of the Virtual Media Policy.
+  * description - Description to Assign to the Policy.
+  * enabled - Flag to Enable or Disable the Policy.
+  * encryption - If enabled, allows encryption of all Virtual Media communications.
+  * low_power_usb - If enabled, the virtual drives appear on the boot selection menu after mapping the image and rebooting the host.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  5. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  5. vmedia_mappings - List of Properties to Assign to the Policy.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * vmedia_mappings - List of Properties to Assign to the Policy.
   EOT
   type = map(object(
     {

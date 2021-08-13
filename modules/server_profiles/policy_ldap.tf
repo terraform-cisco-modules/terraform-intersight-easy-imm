@@ -56,44 +56,44 @@ variable "policy_ldap" {
   }
   description = <<-EOT
   key - Name of the Persistent Memory Policy.
-  1. description - Description to Assign to the Policy.
-  ldap_attribute - Role and locale information of the user.
-  ldap_base_dn - Base Distinguished Name (DN). Starting point from where server will search for users and groups.
-  ldap_bind_dn - Distinguished Name (DN) of the user, that is used to authenticate against LDAP servers.
-  ldap_bind_method - Authentication method to access LDAP servers.
-    * Anonymous - Requires no username and password. If this option is selected and the LDAP server is configured for Anonymous logins, then the user gains access.
-    * ConfiguredCredentials - Requires a known set of credentials to be specified for the initial bind process. If the initial bind process succeeds, then the distinguished name (DN) of the user name is queried and re-used for the re-binding process. If the re-binding process fails, then the user is denied access.
-    * LoginCredentials - Requires the user credentials. If the bind process fails, then user is denied access.
-  ldap_domain - The LDAP Base domain that all users must be in.
-  ldap_enable_dns - Enables DNS to access LDAP servers.
-  ldap_enable_encryption - If enabled, the endpoint encrypts all information it sends to the LDAP server.
-  ldap_enable_group_authorization - If enabled, user authorization is also done at the group level for LDAP users not in the local user database.
-  ldap_enabled - Flag to Enable or Disable the Policy.
-  ldap_filter - Criteria to identify entries in search requests.
-  ldap_group_attribute - Groups to which an LDAP user belongs.
-  ldap_groups - Map of Groups and Attributes.
-    * key - Name of the Group
-    * group_role - Role to assign to the group.
-      - admin
-      - readonly
-      - user
-  ldap_nested_group_search_depth - Search depth to look for a nested LDAP group in an LDAP group map.  Range is 1 to 128.
-  ldap_nr_source - Source of the domain name used for the DNS SRV request.
-    * Configured - The configured-search domain.
-    * ConfiguredExtracted - The domain name extracted from the login ID than the configured-search domain.
-    * Extracted - The domain name extracted-domain from the login ID."
-  ldap_servers - Map of LDAP Servers.
-    * ldap_port - Port to Assign to the LDAP Server.  Range is 1-65535.
-    * ldap_server - Hostname or IP address of an LDAP Server.
-  ldap_search_domain - Domain name that acts as a source for a DNS query.
-  ldap_search_forest - Forest name that acts as a source for a DNS query.
-  ldap_timeout - LDAP authentication timeout duration, in seconds.  Range is 0 to 180.
-  ldap_user_search_precedence - Search precedence between local user database and LDAP user database.
-    * LocalUserDb - Precedence is given to local user database while searching.
-    * LDAPUserDb - Precedence is given to LADP user database while searching.
-  4. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * ldap_attribute - Role and locale information of the user.
+  * ldap_base_dn - Base Distinguished Name (DN). Starting point from where server will search for users and groups.
+  * ldap_bind_dn - Distinguished Name (DN) of the user, that is used to authenticate against LDAP servers.
+  * ldap_bind_method - Authentication method to access LDAP servers.
+    - Anonymous - Requires no username and password. If this option is selected and the LDAP server is configured for Anonymous logins, then the user gains access.
+    - ConfiguredCredentials - Requires a known set of credentials to be specified for the initial bind process. If the initial bind process succeeds, then the distinguished name (DN) of the user name is queried and re-used for the re-binding process. If the re-binding process fails, then the user is denied access.
+    - LoginCredentials - Requires the user credentials. If the bind process fails, then user is denied access.
+  * ldap_domain - The LDAP Base domain that all users must be in.
+  * ldap_enable_dns - Enables DNS to access LDAP servers.
+  * ldap_enable_encryption - If enabled, the endpoint encrypts all information it sends to the LDAP server.
+  * ldap_enable_group_authorization - If enabled, user authorization is also done at the group level for LDAP users not in the local user database.
+  * ldap_enabled - Flag to Enable or Disable the Policy.
+  * ldap_filter - Criteria to identify entries in search requests.
+  * ldap_group_attribute - Groups to which an LDAP user belongs.
+  * ldap_groups - Map of Groups and Attributes.
+    - key - Name of the Group
+    - group_role - Role to assign to the group.
+      1. admin
+      2. readonly
+      3. user
+  * ldap_nested_group_search_depth - Search depth to look for a nested LDAP group in an LDAP group map.  Range is 1 to 128.
+  * ldap_nr_source - Source of the domain name used for the DNS SRV request.
+    - Configured - The configured-search domain.
+    - ConfiguredExtracted - The domain name extracted from the login ID than the configured-search domain.
+    - Extracted - The domain name extracted-domain from the login ID."
+  * ldap_servers - Map of LDAP Servers.
+    - ldap_port - Port to Assign to the LDAP Server.  Range is 1-65535.
+    - ldap_server - Hostname or IP address of an LDAP Server.
+  * ldap_search_domain - Domain name that acts as a source for a DNS query.
+  * ldap_search_forest - Forest name that acts as a source for a DNS query.
+  * ldap_timeout - LDAP authentication timeout duration, in seconds.  Range is 0 to 180.
+  * ldap_user_search_precedence - Search precedence between local user database and LDAP user database.
+    - LocalUserDb - Precedence is given to local user database while searching.
+    - LDAPUserDb - Precedence is given to LADP user database while searching.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  5. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

@@ -15,11 +15,11 @@ variable "policy_device_connector" {
   }
   description = <<-EOT
   key - Name of the Device Connector Policy.
-  1. description - Description to Assign to the Policy.
-  2. lockout - Enables configuration lockout on the endpoint.
-  3. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * lockout - Enables configuration lockout on the endpoint.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  4. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

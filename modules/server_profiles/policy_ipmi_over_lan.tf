@@ -52,16 +52,16 @@ variable "policy_ipmi_over_lan" {
   }
   description = <<-EOT
   key - Name of the IPMI over LAN Policy.
-  1. description - Description to Assign to the Policy.
-  2. enabled - Flag to Enable or Disable the Policy.
-  3. encryption_key - number to indicate the variable being set to 'ipmi_encryption_key_[value]'.
-  4. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * enabled - Flag to Enable or Disable the Policy.
+  * encryption_key - This is a key to signify the variable "ipmi_encryption_key_[key]" to be used.  i.e. 1 for variable "ipmi_encryption_key_1".
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  5. privilege - The highest privilege level that can be assigned to an IPMI session on a server.
-    * admin - Privilege to perform all actions available through IPMI.
-    * user - Privilege to perform some functions through IPMI but restriction on performing administrative tasks.
-    * read-only - Privilege to view information throught IPMI but restriction on making any changes.
-  6. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * privilege - The highest privilege level that can be assigned to an IPMI session on a server.
+    - admin - Privilege to perform all actions available through IPMI.
+    - user - Privilege to perform some functions through IPMI but restriction on performing administrative tasks.
+    - read-only - Privilege to view information throught IPMI but restriction on making any changes.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

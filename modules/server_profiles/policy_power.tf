@@ -18,23 +18,23 @@ variable "policy_power" {
   }
   description = <<-EOT
   key - Name of the Power Policy.
-  1. allocated_budget - Sets the Allocated Power Budget of the System (in Watts). This field is only supported for Cisco UCS X series Chassis.
-  2. description - Description to Assign to the Policy.
-  3. power_profiling - Sets the Power Profiling of the Server. This field is only supported for Cisco UCS X series servers.
-    * Enabled - Set the value to Enabled.
-    * Disabled - Set the value to Disabled.
-  4. power_restore_state - Sets the Power Restore State of the Server.
-    * AlwaysOff - Set the Power Restore Mode to Off.
-    * AlwaysOn - Set the Power Restore Mode to On.
-    * LastState - Set the Power Restore Mode to LastState.
-  5. organization - Name of the Intersight Organization to assign this Policy to.
+  * allocated_budget - Sets the Allocated Power Budget of the System (in Watts). This field is only supported for Cisco UCS X series Chassis.
+  * description - Description to Assign to the Policy.
+  * power_profiling - Sets the Power Profiling of the Server. This field is only supported for Cisco UCS X series servers.
+    - Enabled - Set the value to Enabled.
+    - Disabled - Set the value to Disabled.
+  * power_restore_state - Sets the Power Restore State of the Server.
+    - AlwaysOff - Set the Power Restore Mode to Off.
+    - AlwaysOn - Set the Power Restore Mode to On.
+    - LastState - Set the Power Restore Mode to LastState.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  6. redundancy_mode - Sets the Power Redundancy of the System. N+2 mode is only supported for Cisco UCS X series Chassis.
-    * Grid - Grid Mode requires two power sources. If one source fails, the surviving PSUs connected to the other source provides power to the chassis.
-    * NotRedundant - Power Manager turns on the minimum number of PSUs required to support chassis power requirements. No Redundant PSUs are maintained.
-    * N+1 - Power Manager turns on the minimum number of PSUs required to support chassis power requirements plus one additional PSU for redundancy.
-    * N+2 - Power Manager turns on the minimum number of PSUs required to support chassis power requirements plus two additional PSU for redundancy. This Mode is only supported for UCS X series Chassis.
-  7. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * redundancy_mode - Sets the Power Redundancy of the System. N+2 mode is only supported for Cisco UCS X series Chassis.
+    - Grid - Grid Mode requires two power sources. If one source fails, the surviving PSUs connected to the other source provides power to the chassis.
+    - NotRedundant - Power Manager turns on the minimum number of PSUs required to support chassis power requirements. No Redundant PSUs are maintained.
+    - N+1 - Power Manager turns on the minimum number of PSUs required to support chassis power requirements plus one additional PSU for redundancy.
+    - N+2 - Power Manager turns on the minimum number of PSUs required to support chassis power requirements plus two additional PSU for redundancy. This Mode is only supported for UCS X series Chassis.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

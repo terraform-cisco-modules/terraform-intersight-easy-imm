@@ -18,14 +18,14 @@ variable "policy_imc_access" {
   }
   description = <<-EOT
   key - Name of the IMC Access Policy
-  1. description - Description to Assign to the Policy.
-  2. imc_ip_pool - Name of the IP Pool to Assign to the IMC Access Policy.
-  3. inband_vlan - VLAN ID to Assign as the Inband Management VLAN for IMC Access.
-  4. ipv4_enable - Flag to Enable or Disable the IPv4 Address Family for Poliices.
-  5. ipv6_enable - Flag to Enable or Disable the IPv6 Address Family for Poliices.
-  6. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * imc_ip_pool - Name of the IP Pool to Assign to the IMC Access Policy.
+  * inband_vlan - VLAN ID to Assign as the Inband Management VLAN for IMC Access.
+  * ipv4_enable - Flag to Enable or Disable the IPv4 Address Family for Poliices.
+  * ipv6_enable - Flag to Enable or Disable the IPv6 Address Family for Poliices.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  7. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

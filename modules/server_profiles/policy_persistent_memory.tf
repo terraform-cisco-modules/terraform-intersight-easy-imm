@@ -26,19 +26,19 @@ variable "policy_persistent_memory" {
   }
   description = <<-EOT
   key - Name of the Persistent Memory Policy.
-  1. description - Description to Assign to the Policy.
-  2. goals_memory_percentage - Volatile memory percentage.  Range is 0-100.
-  3. goals_persistent_memory_type - Type of the Persistent Memory configuration where the Persistent Memory Modules are combined in an interleaved set or not.
-    * app-direct - The App Direct interleaved Persistent Memory type.
-    * app-direct-non-interleaved - The App Direct non-interleaved Persistent Memory type.
-  2. logical_namespaces - List of Profiles to Assign to the Policy.
-  3. management_mode - Management Mode of the policy. This can be either Configured from Intersight or Configured from Operating System.
-    * configured-from-intersight - The Persistent Memory Modules are configured from Intersight thorugh Persistent Memory policy.
-    * configured-from-operating-system - The Persistent Memory Modules are configured from operating system thorugh OS tools.
-  4. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * goals_memory_percentage - Volatile memory percentage.  Range is 0-100.
+  * goals_persistent_memory_type - Type of the Persistent Memory configuration where the Persistent Memory Modules are combined in an interleaved set or not.
+    - app-direct - The App Direct interleaved Persistent Memory type.
+    - app-direct-non-interleaved - The App Direct non-interleaved Persistent Memory type.
+  * logical_namespaces - List of Profiles to Assign to the Policy.
+  * management_mode - Management Mode of the policy. This can be either Configured from Intersight or Configured from Operating System.
+    - configured-from-intersight - The Persistent Memory Modules are configured from Intersight thorugh Persistent Memory policy.
+    - configured-from-operating-system - The Persistent Memory Modules are configured from operating system thorugh OS tools.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  6. retain_namespaces - Persistent Memory Namespaces to be retained or not.
-  5. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * retain_namespaces - Persistent Memory Namespaces to be retained or not.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

@@ -17,13 +17,13 @@ variable "policy_ssh" {
   }
   description = <<-EOT
   key - Name of the SSH Policy.
-  1. description - Description to Assign to the Policy.
-  2. enabled - State of SSH service on the endpoint.
-  3. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * enabled - State of SSH service on the endpoint.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  4. ssh_port - Port used for secure shell access.  Valid range is between 1-65535.
-  5. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  6. timeout - Number of seconds to wait before the system considers a SSH request to have timed out.  Valid range is between 60-10800.
+  * ssh_port - Port used for secure shell access.  Valid range is between 1-65535.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * timeout - Number of seconds to wait before the system considers a SSH request to have timed out.  Valid range is between 60-10800.
   EOT
   type = map(object(
     {

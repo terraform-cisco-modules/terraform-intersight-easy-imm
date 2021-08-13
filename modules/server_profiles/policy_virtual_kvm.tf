@@ -18,16 +18,16 @@ variable "policy_virtual_kvm" {
     }
   }
   description = <<-EOT
-  key - Name of the Syslog Policy.
-  1. description - Description to Assign to the Policy.
-  2. enabled - Flag to Enable or Disable the Policy.
-  3. local_server_video - If enabled, displays KVM session on any monitor attached to the server.
-  4. maximum_sessions - The maximum number of concurrent KVM sessions allowed. Range is 1 to 4.
-  5. organization - Name of the Intersight Organization to assign this Policy to.
+  key - Name of the Virtual KVM Policy.
+  * description - Description to Assign to the Policy.
+  * enabled - Flag to Enable or Disable the Policy.
+  * local_server_video - If enabled, displays KVM session on any monitor attached to the server.
+  * maximum_sessions - The maximum number of concurrent KVM sessions allowed. Range is 1 to 4.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  4. remote_port - The port used for KVM communication. Range is 1 to 65535.
-  5. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  5. video_encryption - If enabled, encrypts all video information sent through KVM.
+  * remote_port - The port used for KVM communication. Range is 1 to 65535.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * video_encryption - If enabled, encrypts all video information sent through KVM.
   EOT
   type = map(object(
     {

@@ -48,70 +48,68 @@ variable "policy_vhba_san_connectivity" {
   }
   description = <<-EOT
   key - Name of the vHBA Template Policy.
-  1. adapter_template - The Type of vhba Adapter Policy to assign to the vhba Template.  Options are:
-    * FCNVMeTarget
-    * FCNVMeInitiator
-    * Initiator
-    * Linux
-    * Solaris
-    * Target
-    * VMware
-    * Windows
-    * WindowBoot
-  2. description - Description to Assign to the Policy.
-  3. organization - Name of the Intersight Organization to assign this Policy to.
+  * adapter_template - The Type of vhba Adapter Policy to assign to the vhba Template.  Options are:
+    - FCNVMeTarget
+    - FCNVMeInitiator
+    - Initiator
+    - Linux
+    - Solaris
+    - Target
+    - VMware
+    - Windows
+    - WindowBoot
+  * description - Description to Assign to the Policy.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  4. placement_mode - The mode used for placement of vhbas on network adapters. Options are:
-    * auto
-    * custom
-  5. qos_burst - The burst traffic, in bytes, allowed on the vHBA.  Value can be between 1024-1000000.
-  6. qos_cos - Class of Service to be associated to the traffic on the virtual interface.  Value can be between 0-6. For FIAttached this should always be 0.
-  7. qos_max_data_field_size - The maximum size of the Fibre Channel frame payload bytes that the virtual interface supports.
-  8. qos_rate_limit - The value in Mbps (0-10G/40G/100G depending on Adapter Model) to use for limiting the data rate on the virtual interface. Setting this to zero will turn rate limiting off.  Range is between 0-100000.
-  9. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  10. target_platform - The platform for which the server profile is applicable. It can either be:
-    * Standalone - a server that is operating independently
-    * FIAttached - A Server attached to a Intersight Managed Domain.
-  11. vsan_a - VSAN ID for the vHBA on Fabric A.
-  12. vsan_a_default_vlan_id - Only required for Standalone Servers.  Default VLAN of the virtual interface in Standalone Rack server. Setting the value to 0 is equivalent to None and will not associate any Default VLAN to the traffic on the virtual interface (0-4094).
-  13. vsan_b - VSAN ID for the vHBA on Fabric B.
-  14. vsan_b_default_vlan_id - Only required for Standalone Servers.  Default VLAN of the virtual interface in Standalone Rack server. Setting the value to 0 is equivalent to None and will not associate any Default VLAN to the traffic on the virtual interface (0-4094).
-  15. vhba_name_a - Name of the virtual fibre-channel interface.
-  16. vhba_name_b - Name of the virtual fibre-channel interface.
-  17. vhba_order_a - The order in which the virtual interface is brought up. The order assigned to an interface should be unique for all the Ethernet and Fibre-Channel interfaces on each PCI link on a VIC adapter. The maximum value of PCI order is limited by the number of virtual interfaces (Ethernet and Fibre-Channel) on each PCI link on a VIC adapter. All VIC adapters have a single PCI link except VIC 1385 which has two.
-  18. vhba_order_b - The order in which the virtual interface is brought up. The order assigned to an interface should be unique for all the Ethernet and Fibre-Channel interfaces on each PCI link on a VIC adapter. The maximum value of PCI order is limited by the number of virtual interfaces (Ethernet and Fibre-Channel) on each PCI link on a VIC adapter. All VIC adapters have a single PCI link except VIC 1385 which has two.
-  19. vhba_persistent_lun_bindings - Enables retention of LUN ID associations in memory until they are manually cleared.
-  20. vhba_placement_pci_link_a - The PCI Link used as transport for the virtual interface. All VIC adapters have a single PCI link except VIC 1385 which has two.
-  21. vhba_placement_pci_link_b - The PCI Link used as transport for the virtual interface. All VIC adapters have a single PCI link except VIC 1385 which has two.
-  22. vhba_placement_slot_id - PCIe Slot where the VIC adapter is installed. Supported values are:
-    * 1-15
-    * MLOM
-  23. vhba_placement_switch_a - The fabric port to which the vhbas will be associated.
-    * A - Fabric A of the FI cluster.
-    * B - Fabric B of the FI cluster.
-    * None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
-  24. vhba_placement_switch_b -The fabric port to which the vhbas will be associated.
-    * A - Fabric A of the FI cluster.
-    * B - Fabric B of the FI cluster.
-    * None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
-  25. vhba_placement_uplink - Adapter port on which the virtual interface will be created.
-  26. vhba_type - VHBA Type configuration for SAN Connectivity Policy. This configuration is supported only on Cisco VIC 14XX series and higher series of adapters.
-    * fc-initiator - The default value set for vHBA Type Configuration. Fc-initiator specifies vHBA as a consumer of storage. Enables SCSI commands to transfer data and status information between host and target storage systems.\
-    * fc-nvme-initiator - Fc-nvme-initiator specifies vHBA as a consumer of storage. Enables NVMe-based message commands to transfer data and status information between host and target storage systems.
-    * fc-nvme-target - Fc-nvme-target specifies vHBA as a provider of storage volumes to initiators. Enables NVMe-based message commands to transfer data and status information between host and target storage systems. Currently tech-preview, only enabled with an asynchronous driver.
-    * fc-target - Fc-target specifies vHBA as a provider of storage volumes to initiators. Enables SCSI commands to transfer data and status information between host and target storage systems. fc-target is enabled only with an asynchronous driver.
-  27. wwnn_address_static - The WWNN address for the server node must be in hexadecimal format xx:xx:xx:xx:xx:xx:xx:xx.  Allowed ranges are 20:00:00:00:00:00:00:00 to 20:FF:FF:FF:FF:FF:FF:FF or from 50:00:00:00:00:00:00:00 to 5F:FF:FF:FF:FF:FF:FF:FF.  To ensure uniqueness of WWN's in the SAN fabric, you are strongly encouraged to use the WWN prefix - 20:00:00:25:B5:xx:xx:xx.
-  28. wwnn_address_type - Type of allocation selected to assign a WWNN address for the server node.
-    * POOL - The user selects a pool from which the mac/wwn address will be leased for the Virtual Interface.
-    * STATIC - The user assigns a static mac/wwn address for the Virtual Interface.
-  29. wwnn_pool - WWNN Pool Name to Assign to the Policy.
-  30. wwpn_address_a_static - The WWPN address must be in hexadecimal format xx:xx:xx:xx:xx:xx:xx:xx. Allowed ranges are 20:00:00:00:00:00:00:00 to 20:FF:FF:FF:FF:FF:FF:FF or from 50:00:00:00:00:00:00:00 to 5F:FF:FF:FF:FF:FF:FF:FF.  To ensure uniqueness of WWN's in the SAN fabric, you are strongly encouraged to use the WWN prefix - 20:00:00:25:B5:xx:xx:xx.
-  31. wwpn_address_b_static - The WWPN address must be in hexadecimal format xx:xx:xx:xx:xx:xx:xx:xx. Allowed ranges are 20:00:00:00:00:00:00:00 to 20:FF:FF:FF:FF:FF:FF:FF or from 50:00:00:00:00:00:00:00 to 5F:FF:FF:FF:FF:FF:FF:FF.  To ensure uniqueness of WWN's in the SAN fabric, you are strongly encouraged to use the WWN prefix - 20:00:00:25:B5:xx:xx:xx.
-  32. wwpn_address_type - Type of allocation selected to assign a WWPN address to the vhba.
-    * POOL - The user selects a pool from which the WWPN address will be leased for the Virtual Interface.
-    * STATIC - The user assigns a static WWPN address for the Virtual Interface.
-  33. wwpn_pool_a_name - Name of the WWPN Pool to assign to the vhba Template.
-  34. wwpn_pool_b_name - Name of the WWPN Pool to assign to the vhba Template.
+  * placement_mode - The mode used for placement of vhbas on network adapters. Options are:
+    - auto
+    - custom
+  * qos_burst - The burst traffic, in bytes, allowed on the vHBA.  Value can be between 1024-1000000.
+  * qos_cos - Class of Service to be associated to the traffic on the virtual interface.  Value can be between 0-6. For FIAttached this should always be 0.
+  * qos_max_data_field_size - The maximum size of the Fibre Channel frame payload bytes that the virtual interface supports.
+  * qos_rate_limit - The value in Mbps (0-10G/40G/100G depending on Adapter Model) to use for limiting the data rate on the virtual interface. Setting this to zero will turn rate limiting off.  Range is between 0-100000.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * target_platform - The platform for which the server profile is applicable. It can either be:
+    - Standalone - a server that is operating independently
+    - FIAttached - A Server attached to a Intersight Managed Domain.
+  * vsan_a - VSAN ID for the vHBA on Fabric A.
+  * vsan_a_default_vlan_id - Only required for Standalone Servers.  Default VLAN of the virtual interface in Standalone Rack server. Setting the value to 0 is equivalent to None and will not associate any Default VLAN to the traffic on the virtual interface (0-4094).
+  * vsan_b - VSAN ID for the vHBA on Fabric B.
+  * vsan_b_default_vlan_id - Only required for Standalone Servers.  Default VLAN of the virtual interface in Standalone Rack server. Setting the value to 0 is equivalent to None and will not associate any Default VLAN to the traffic on the virtual interface (0-4094).
+  * vhba_name_a - Name of the virtual fibre-channel interface.
+  * vhba_name_b - Name of the virtual fibre-channel interface.
+  * vhba_order_a - The order in which the virtual interface is brought up. The order assigned to an interface should be unique for all the Ethernet and Fibre-Channel interfaces on each PCI link on a VIC adapter. The maximum value of PCI order is limited by the number of virtual interfaces (Ethernet and Fibre-Channel) on each PCI link on a VIC adapter. All VIC adapters have a single PCI link except VIC 1385 which has two.
+  * vhba_order_b - The order in which the virtual interface is brought up. The order assigned to an interface should be unique for all the Ethernet and Fibre-Channel interfaces on each PCI link on a VIC adapter. The maximum value of PCI order is limited by the number of virtual interfaces (Ethernet and Fibre-Channel) on each PCI link on a VIC adapter. All VIC adapters have a single PCI link except VIC 1385 which has two.
+  * vhba_persistent_lun_bindings - Enables retention of LUN ID associations in memory until they are manually cleared.
+  * vhba_placement_pci_link_a - The PCI Link used as transport for the virtual interface. All VIC adapters have a single PCI link except VIC 1385 which has two.
+  * vhba_placement_pci_link_b - The PCI Link used as transport for the virtual interface. All VIC adapters have a single PCI link except VIC 1385 which has two.
+  * vhba_placement_slot_id - PCIe Slot where the VIC adapter is installed. Supported values are:
+    - 1-15
+    - MLOM
+  * vhba_placement_switch_a - The fabric port to which the vhbas will be associated.
+    - A - Fabric A of the FI cluster.
+    - None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
+  * vhba_placement_switch_b -The fabric port to which the vhbas will be associated.
+    - B - Fabric B of the FI cluster.
+    - None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
+  * vhba_placement_uplink - Adapter port on which the virtual interface will be created.
+  * vhba_type - VHBA Type configuration for SAN Connectivity Policy. This configuration is supported only on Cisco VIC 14XX series and higher series of adapters.
+    - fc-initiator - The default value set for vHBA Type Configuration. Fc-initiator specifies vHBA as a consumer of storage. Enables SCSI commands to transfer data and status information between host and target storage systems.\
+    - fc-nvme-initiator - Fc-nvme-initiator specifies vHBA as a consumer of storage. Enables NVMe-based message commands to transfer data and status information between host and target storage systems.
+    - fc-nvme-target - Fc-nvme-target specifies vHBA as a provider of storage volumes to initiators. Enables NVMe-based message commands to transfer data and status information between host and target storage systems. Currently tech-preview, only enabled with an asynchronous driver.
+    - fc-target - Fc-target specifies vHBA as a provider of storage volumes to initiators. Enables SCSI commands to transfer data and status information between host and target storage systems. fc-target is enabled only with an asynchronous driver.
+  * wwnn_address_static - The WWNN address for the server node must be in hexadecimal format xx:xx:xx:xx:xx:xx:xx:xx.  Allowed ranges are 20:00:00:00:00:00:00:00 to 20:FF:FF:FF:FF:FF:FF:FF or from 50:00:00:00:00:00:00:00 to 5F:FF:FF:FF:FF:FF:FF:FF.  To ensure uniqueness of WWN's in the SAN fabric, you are strongly encouraged to use the WWN prefix - 20:00:00:25:B5:xx:xx:xx.
+  * wwnn_address_type - Type of allocation selected to assign a WWNN address for the server node.
+    - POOL - The user selects a pool from which the mac/wwn address will be leased for the Virtual Interface.
+    - STATIC - The user assigns a static mac/wwn address for the Virtual Interface.
+  * wwnn_pool - WWNN Pool Name to Assign to the Policy.
+  * wwpn_address_a_static - The WWPN address must be in hexadecimal format xx:xx:xx:xx:xx:xx:xx:xx. Allowed ranges are 20:00:00:00:00:00:00:00 to 20:FF:FF:FF:FF:FF:FF:FF or from 50:00:00:00:00:00:00:00 to 5F:FF:FF:FF:FF:FF:FF:FF.  To ensure uniqueness of WWN's in the SAN fabric, you are strongly encouraged to use the WWN prefix - 20:00:00:25:B5:xx:xx:xx.
+  * wwpn_address_b_static - The WWPN address must be in hexadecimal format xx:xx:xx:xx:xx:xx:xx:xx. Allowed ranges are 20:00:00:00:00:00:00:00 to 20:FF:FF:FF:FF:FF:FF:FF or from 50:00:00:00:00:00:00:00 to 5F:FF:FF:FF:FF:FF:FF:FF.  To ensure uniqueness of WWN's in the SAN fabric, you are strongly encouraged to use the WWN prefix - 20:00:00:25:B5:xx:xx:xx.
+  * wwpn_address_type - Type of allocation selected to assign a WWPN address to the vhba.
+    - POOL - The user selects a pool from which the WWPN address will be leased for the Virtual Interface.
+    - STATIC - The user assigns a static WWPN address for the Virtual Interface.
+  * wwpn_pool_a_name - Name of the WWPN Pool to assign to the vhba Template.
+  * wwpn_pool_b_name - Name of the WWPN Pool to assign to the vhba Template.
   EOT
   type = map(object(
     {

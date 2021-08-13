@@ -20,21 +20,21 @@ variable "policy_smtp" {
   }
   description = <<-EOT
   key - Name of the SMTP Policy.
-  1. description - Description to Assign to the Policy.
-  2. enabled - If enabled, controls the state of the SMTP client service on the managed device.
-  3. min_severity - Minimum fault severity level to receive email notifications. Email notifications are sent for all faults whose severity is equal to or greater than the chosen level.
-    * critical - Minimum severity to report is critical.
-    * condition - Minimum severity to report is informational.
-    * warning - Minimum severity to report is warning.
-    * minor - Minimum severity to report is minor.
-    * major - Minimum severity to report is major.
-  4. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * enabled - If enabled, controls the state of the SMTP client service on the managed device.
+  * min_severity - Minimum fault severity level to receive email notifications. Email notifications are sent for all faults whose severity is equal to or greater than the chosen level.
+    - critical - Minimum severity to report is critical.
+    - condition - Minimum severity to report is informational.
+    - warning - Minimum severity to report is warning.
+    - minor - Minimum severity to report is minor.
+    - major - Minimum severity to report is major.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  5. sender_email - The email address entered here will be displayed as the from address (mail received from address) of all the SMTP mail alerts that are received. If not configured, the hostname of the server is used in the from address field.
-  6. smtp_port - Port number used by the SMTP server for outgoing SMTP communication.  Valid range is between 1-65535.
-  7. smtp_recipients - List of Emails to send alerts to.
-  8. smtp_server - IP address or hostname of the SMTP server. The SMTP server is used by the managed device to send email notifications.
-  9. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * sender_email - The email address entered here will be displayed as the from address (mail received from address) of all the SMTP mail alerts that are received. If not configured, the hostname of the server is used in the from address field.
+  * smtp_port - Port number used by the SMTP server for outgoing SMTP communication.  Valid range is between 1-65535.
+  * smtp_recipients - List of Emails to send alerts to.
+  * smtp_server - IP address or hostname of the SMTP server. The SMTP server is used by the managed device to send email notifications.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

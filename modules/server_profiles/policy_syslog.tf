@@ -16,20 +16,20 @@ variable "policy_syslog" {
   }
   description = <<-EOT
   key - Name of the Syslog Policy.
-  1. description - Description to Assign to the Policy.
-  2. local_min_severity - Lowest level of messages to be included in the local log.
-    * warning - Use logging level warning for logs classified as warning.
-    * emergency - Use logging level emergency for logs classified as emergency.
-    * alert - Use logging level alert for logs classified as alert.
-    * critical - Use logging level critical for logs classified as critical.
-    * error - Use logging level error for logs classified as error.
-    * notice - Use logging level notice for logs classified as notice.
-    * informational - Use logging level informational for logs classified as informational.
-    * debug - Use logging level debug for logs classified as debug.
-  3. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * local_min_severity - Lowest level of messages to be included in the local log.
+    - warning - Use logging level warning for logs classified as warning.
+    - emergency - Use logging level emergency for logs classified as emergency.
+    - alert - Use logging level alert for logs classified as alert.
+    - critical - Use logging level critical for logs classified as critical.
+    - error - Use logging level error for logs classified as error.
+    - notice - Use logging level notice for logs classified as notice.
+    - informational - Use logging level informational for logs classified as informational.
+    - debug - Use logging level debug for logs classified as debug.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  4. syslog_destinations - Enables configuration lockout on the endpoint.
-  5. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * syslog_destinations - Enables configuration lockout on the endpoint.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

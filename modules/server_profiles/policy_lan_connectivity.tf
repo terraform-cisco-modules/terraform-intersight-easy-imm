@@ -19,22 +19,22 @@ variable "policy_vnic_lan_connectivity" {
   }
   description = <<-EOT
   key - Name of the LAN Connectivity Policy.
-  1. description - Description to Assign to the Policy.
-  2. iqn_allocation_type - Allocation Type of iSCSI Qualified Name.  Options are:
-    * None
-    * Pool
-    * Static
-  3. iqn_pool - IQN Pool to Assign to the Policy.
-  4. iqn_static_name - User provided static iSCSI Qualified Name (IQN) for use as initiator identifiers by iSCSI vNICs.
-  5. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * iqn_allocation_type - Allocation Type of iSCSI Qualified Name.  Options are:
+    - None
+    - Pool
+    - Static
+  * iqn_pool - IQN Pool to Assign to the Policy.
+  * iqn_static_name - User provided static iSCSI Qualified Name (IQN) for use as initiator identifiers by iSCSI vNICs.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  6. placement_mode - The mode used for placement of vNICs on network adapters. Options are:
-    * auto
-    * custom
-  7. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  8. target_platform - The platform for which the server profile is applicable. It can either be:
-    * Standalone - a server that is operating independently
-    * FIAttached - A Server attached to a Intersight Managed Domain.
+  * placement_mode - The mode used for placement of vNICs on network adapters. Options are:
+    - auto
+    - custom
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * target_platform - The platform for which the server profile is applicable. It can either be:
+    - Standalone - a server that is operating independently
+    - FIAttached - A Server attached to a Intersight Managed Domain.
   EOT
   type = map(object(
     {
@@ -108,104 +108,128 @@ variable "policy_vnic_templates" {
   }
   description = <<-EOT
   key - Name of the vNIC Template Policy.
-  1. description - Description to Assign to the Policy.
-  2. adapter_template - The Type of vNIC Adapter Policy to assign to the vNIC Template.  Options are:
-    * Linux
-    * Linux-NVMe-RoCE
-    * MQ
-    * MQ-SMBd
-    * SMBServer
-    * SMBClient
-    * Solaris
-    * SRIOV
-    * usNIC
-    * usNICOracleRAC
-    * VMware
-    * VMwarePassThru
-    * Win-AzureStack
-    * Win-HPN
-    * Win-HPN-SMBd
-    * Windows
-  3. description - Description to Assign to the Policy.
-  4. lan_connectivity - Name of the LAN Connectivity Policy to assign to the vNIC Template.
-  5. mac_address_a_static - The MAC address must be in hexadecimal format xx:xx:xx:xx:xx:xx.To ensure uniqueness of MACs in the LAN fabric, you are strongly encouraged to use thefollowing MAC prefix 00:25:B5:xx:xx:xx.
-  5. mac_address_b_static - The MAC address must be in hexadecimal format xx:xx:xx:xx:xx:xx.To ensure uniqueness of MACs in the LAN fabric, you are strongly encouraged to use thefollowing MAC prefix 00:25:B5:xx:xx:xx.
-  6. mac_address_type - Type of allocation selected to assign a MAC address for the vnic.
-    * POOL - The user selects a pool from which the mac/wwn address will be leased for the Virtual Interface.
-    * STATIC - The user assigns a static mac/wwn address for the Virtual Interface.
-  7. mac_forge - Determines if the MAC forging is allowed or denied on an interface.  Options are:
-    * allow
-    * deny
-  8. mac_pool_a_name - Name of the Mac Pool to assign to the vNIC Template.
-  8. mac_pool_b_name - Name of the Mac Pool to assign to the vNIC Template.
-  9. mac_registration_mode - Determines the MAC addresses that have to be registered with the switch.  Options are:
-    * allVlans
-    * nativeVlanOnly
-  10. neighbor_discovery - Define if a Neighbor Discovery protocol should be assigned to the interface. Options are:
-    * both
-    * cdp
-    * lldp
-    * none
-  11. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * adapter_template - The Type of vNIC Adapter Policy to assign to the vNIC Template.  Options are:
+    - Linux
+    - Linux-NVMe-RoCE
+    - MQ
+    - MQ-SMBd
+    - SMBServer
+    - SMBClient
+    - Solaris
+    - SRIOV
+    - usNIC
+    - usNICOracleRAC
+    - VMware
+    - VMwarePassThru
+    - Win-AzureStack
+    - Win-HPN
+    - Win-HPN-SMBd
+    - Windows
+  * description - Description to Assign to the Policy.
+  * lan_connectivity - Name of the LAN Connectivity Policy to assign to the vNIC Template.
+  * mac_address_a_static - The MAC address must be in hexadecimal format xx:xx:xx:xx:xx:xx.To ensure uniqueness of MACs in the LAN fabric, you are strongly encouraged to use thefollowing MAC prefix 00:25:B5:xx:xx:xx.
+  * mac_address_b_static - The MAC address must be in hexadecimal format xx:xx:xx:xx:xx:xx.To ensure uniqueness of MACs in the LAN fabric, you are strongly encouraged to use thefollowing MAC prefix 00:25:B5:xx:xx:xx.
+  * mac_address_type - Type of allocation selected to assign a MAC address for the vnic.
+    - POOL - The user selects a pool from which the mac/wwn address will be leased for the Virtual Interface.
+    - STATIC - The user assigns a static mac/wwn address for the Virtual Interface.
+  * mac_forge - Determines if the MAC forging is allowed or denied on an interface.  Options are:
+    - allow
+    - deny
+  * mac_pool_a_name - Name of the Mac Pool to assign to the vNIC Template.
+  * mac_pool_b_name - Name of the Mac Pool to assign to the vNIC Template.
+  * mac_registration_mode - Determines the MAC addresses that have to be registered with the switch.  Options are:
+    - allVlans
+    - nativeVlanOnly
+  * neighbor_discovery - Define if a Neighbor Discovery protocol should be assigned to the interface. Options are:
+    - both
+    - cdp
+    - lldp
+    - none
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  12. qos_burst - The burst traffic, in bytes, allowed on the vNIC.  Value can be between 1024-1000000.
-  13. qos_cos - Class of Service to be associated to the traffic on the virtual interface.  Value can be between 0-6. For FIAttached this should always be 0.
-  13. qos_mtu - The Maximum Transmission Unit (MTU) or packet size that the virtual interface accepts.  Value can be between 1500-9000.
-  14. qos_priority - The priortity matching the System QoS specified in the fabric profile.  Options are:
-    * Platinum
-    * Gold
-    * Silver
-    * Bronze
-    * Best Effort
-    * FC
-    * For Standalone Servers leave this blank
-  15. qos_rate_limit - The value in Mbps (0-10G/40G/100G depending on Adapter Model) to use for limiting the data rate on the virtual interface. Setting this to zero will turn rate limiting off.  Range is between 0-100000.
-  16. qos_trust_host_cos - Enables usage of the Class of Service provided by the operating system.
-  17. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  18. uplink_fail_action - Determines the state of the virtual interface (vethernet / vfc) on the switch when a suitable uplink is not pinned.  Important! If the Action on Uplink is set to Warning, the switch will not fail over if uplink connectivity is lost.  Options are:
-    * linkDown
-    * warning
-  19. usnic_cos - Class of Service to be used for traffic on the usNIC.  Valid Range is 0-6.
-  20. usnic_count - Number of usNIC interfaces to be created.  Range is 0-255.
-  21. usnic_adapter_policy_moid - The Type of vNIC Adapter Policy to assign to the vNIC Template.  Options are:
-    * Linux
-    * Linux-NVMe-ROCE
-    * VMware
-    * Windows
-  22. vlan_list - List of VLAN's to Add to the VLAN Group Policy.
-  23. vlan_native_vlan - VLAN to Assign as the Native VLAN.
-  24. vmq_enabled - Enables VMQ feature on the virtual interface.
-  25. vmq_multi_queue_support - Enables Virtual Machine Multi-Queue feature on the virtual interface. VMMQ allows configuration of multiple I/O queues for a single VM and thus distributes traffic across multiple CPU cores in a VM.
-  26. vmq_interrupts - The number of interrupt resources to be allocated. Recommended value is the number of CPU threads or logical processors available in the server.  Range is 1-514.
-  27. vmq_number_queues - The number of hardware Virtual Machine Queues to be allocated. The number of VMQs per adapter must be one more than the maximum number of VM NICs.  Range is 1-128.
-  28. vmq_number_sub_vnics - The number of sub vNICs to be created.  Range is 0-64.
-  29. vmq_adapter_policy_moid - The Type of vNIC Adapter Policy to assign to the vNIC Template.  Options are:
-    * Linux
-    * Linux-NVMe-ROCE
-    * VMware
-    * Windows
-  30. vnic_cdn_a_name - The CDN value entered in case of user defined mode.
-  30. vnic_cdn_b_name - The CDN value entered in case of user defined mode.
-  31. vnic_cdn_source - Source of the CDN. It can either be user specified or be the same as the vNIC name.
-    * user - Source of the CDN is specified by the user.
-    * vnic - Source of the CDN is the same as the vNIC name.
-  32. vnic_failover_enabled - Setting this to true ensures that the traffic failover from one uplink to another auotmatically in case of an uplink failure. It is applicable for Cisco VIC adapters only which are connected to Fabric Interconnect cluster. The uplink if specified determines the primary uplink in case of a failover.
-  33. vnic_name_a - Name of the virtual ethernet interface.
-  33. vnic_name_b - Name of the virtual ethernet interface.
-  34. vnic_order_a - The order in which the virtual interface is brought up. The order assigned to an interface should be unique for all the Ethernet and Fibre-Channel interfaces on each PCI link on a VIC adapter. The maximum value of PCI order is limited by the number of virtual interfaces (Ethernet and Fibre-Channel) on each PCI link on a VIC adapter. All VIC adapters have a single PCI link except VIC 1385 which has two.
-  34. vnic_order_b - The order in which the virtual interface is brought up. The order assigned to an interface should be unique for all the Ethernet and Fibre-Channel interfaces on each PCI link on a VIC adapter. The maximum value of PCI order is limited by the number of virtual interfaces (Ethernet and Fibre-Channel) on each PCI link on a VIC adapter. All VIC adapters have a single PCI link except VIC 1385 which has two.
-  35. vnic_placement_pci_link_a - The PCI Link used as transport for the virtual interface. All VIC adapters have a single PCI link except VIC 1385 which has two.
-  35. vnic_placement_pci_link_b - The PCI Link used as transport for the virtual interface. All VIC adapters have a single PCI link except VIC 1385 which has two.
-  36. vnic_placement_slot_id - PCIe Slot where the VIC adapter is installed. Supported values are:
-    * 1-15
-    * MLOM
-  37. vnic_placement_switch_a -The fabric port to which the vNICs will be associated.
-    * A - Fabric A of the FI cluster.
-    * None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
-  37. vnic_placement_switch_b -The fabric port to which the vNICs will be associated.
-    * B - Fabric B of the FI cluster.
-    * None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
-  38. vnic_placement_uplink - Adapter port on which the virtual interface will be created.
+  * qos_burst - The burst traffic, in bytes, allowed on the vNIC.  Value can be between 1024-1000000.
+  * qos_cos - Class of Service to be associated to the traffic on the virtual interface.  Value can be between 0-6. For FIAttached this should always be 0.
+  * qos_mtu - The Maximum Transmission Unit (MTU) or packet size that the virtual interface accepts.  Value can be between 1500-9000.
+  * qos_priority - The priortity matching the System QoS specified in the fabric profile.  Options are:
+    - Platinum
+    - Gold
+    - Silver
+    - Bronze
+    - Best Effort
+    - FC
+    - For Standalone Servers leave this blank
+  * qos_rate_limit - The value in Mbps (0-10G/40G/100G depending on Adapter Model) to use for limiting the data rate on the virtual interface. Setting this to zero will turn rate limiting off.  Range is between 0-100000.
+  * qos_trust_host_cos - Enables usage of the Class of Service provided by the operating system.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * uplink_fail_action - Determines the state of the virtual interface (vethernet / vfc) on the switch when a suitable uplink is not pinned.  Important! If the Action on Uplink is set to Warning, the switch will not fail over if uplink connectivity is lost.  Options are:
+    - linkDown
+    - warning
+  * usnic_cos - Class of Service to be used for traffic on the usNIC.  Valid Range is 0-6.
+  * usnic_count - Number of usNIC interfaces to be created.  Range is 0-255.
+  * usnic_adapter_policy_moid - The Type of vNIC Adapter Policy to assign to the vNIC Template.  Options are:
+    - Linux
+    - Linux-NVMe-RoCE
+    - MQ
+    - MQ-SMBd
+    - SMBServer
+    - SMBClient
+    - Solaris
+    - SRIOV
+    - usNIC
+    - usNICOracleRAC
+    - VMware
+    - VMwarePassThru
+    - Win-AzureStack
+    - Win-HPN
+    - Win-HPN-SMBd
+    - Windows
+  * vlan_list - List of VLAN's to Add to the VLAN Group Policy.
+  * vlan_native_vlan - VLAN to Assign as the Native VLAN.
+  * vmq_enabled - Enables VMQ feature on the virtual interface.
+  * vmq_multi_queue_support - Enables Virtual Machine Multi-Queue feature on the virtual interface. VMMQ allows configuration of multiple I/O queues for a single VM and thus distributes traffic across multiple CPU cores in a VM.
+  * vmq_interrupts - The number of interrupt resources to be allocated. Recommended value is the number of CPU threads or logical processors available in the server.  Range is 1-514.
+  * vmq_number_queues - The number of hardware Virtual Machine Queues to be allocated. The number of VMQs per adapter must be one more than the maximum number of VM NICs.  Range is 1-128.
+  * vmq_number_sub_vnics - The number of sub vNICs to be created.  Range is 0-64.
+  * vmq_adapter_policy_moid - The Type of vNIC Adapter Policy to assign to the vNIC Template.  Options are:
+    - Linux
+    - Linux-NVMe-RoCE
+    - MQ
+    - MQ-SMBd
+    - SMBServer
+    - SMBClient
+    - Solaris
+    - SRIOV
+    - usNIC
+    - usNICOracleRAC
+    - VMware
+    - VMwarePassThru
+    - Win-AzureStack
+    - Win-HPN
+    - Win-HPN-SMBd
+    - Windows
+  * vnic_cdn_a_name - The CDN value entered in case of user defined mode.
+  * vnic_cdn_b_name - The CDN value entered in case of user defined mode.
+  * vnic_cdn_source - Source of the CDN. It can either be user specified or be the same as the vNIC name.
+    - user - Source of the CDN is specified by the user.
+    - vnic - Source of the CDN is the same as the vNIC name.
+  * vnic_failover_enabled - Setting this to true ensures that the traffic failover from one uplink to another auotmatically in case of an uplink failure. It is applicable for Cisco VIC adapters only which are connected to Fabric Interconnect cluster. The uplink if specified determines the primary uplink in case of a failover.
+  * vnic_name_a - Name of the virtual ethernet interface.
+  * vnic_name_b - Name of the virtual ethernet interface.
+  * vnic_order_a - The order in which the virtual interface is brought up. The order assigned to an interface should be unique for all the Ethernet and Fibre-Channel interfaces on each PCI link on a VIC adapter. The maximum value of PCI order is limited by the number of virtual interfaces (Ethernet and Fibre-Channel) on each PCI link on a VIC adapter. All VIC adapters have a single PCI link except VIC 1385 which has two.
+  * vnic_order_b - The order in which the virtual interface is brought up. The order assigned to an interface should be unique for all the Ethernet and Fibre-Channel interfaces on each PCI link on a VIC adapter. The maximum value of PCI order is limited by the number of virtual interfaces (Ethernet and Fibre-Channel) on each PCI link on a VIC adapter. All VIC adapters have a single PCI link except VIC 1385 which has two.
+  * vnic_placement_pci_link_a - The PCI Link used as transport for the virtual interface. All VIC adapters have a single PCI link except VIC 1385 which has two.
+  * vnic_placement_pci_link_b - The PCI Link used as transport for the virtual interface. All VIC adapters have a single PCI link except VIC 1385 which has two.
+  * vnic_placement_slot_id - PCIe Slot where the VIC adapter is installed. Supported values are:
+    - 1-15
+    - MLOM
+  * vnic_placement_switch_a -The fabric port to which the vNICs will be associated.
+    - A - Fabric A of the FI cluster.
+    - None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
+  * vnic_placement_switch_b -The fabric port to which the vNICs will be associated.
+    - B - Fabric B of the FI cluster.
+    - None - Fabric Id is not set to either A or B for the standalone case where the server is not connected to Fabric Interconnects.
+  * vnic_placement_uplink - Adapter port on which the virtual interface will be created.
   EOT
   type = map(object(
     {

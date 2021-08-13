@@ -17,13 +17,14 @@ variable "policy_ntp" {
   }
   description = <<-EOT
   key - Name of the NTP Policy.
-  1. description - Description to Assign to the Policy.
-  2. enabled - Flag to Enable or Disable the Policy.
-  3. ntp_servers - List of NTP Servers to Assign to the Policy.
-  4. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * enabled - Flag to Enable or Disable the Policy.
+  * ntp_servers - List of NTP Servers to Assign to the Policy.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  5. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  6. timezone - Timezone to Assign to the Policy.  For a List of supported timezones see the following URL. https://github.com/terraform-cisco-modules/terraform-intersight-imm/blob/master/modules/policies_ntp/README.md.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * timezone - Timezone to Assign to the Policy.  For a List of supported timezones see the following URL.
+    - https://github.com/terraform-cisco-modules/terraform-intersight-imm/blob/master/modules/policies_ntp/README.md.
   EOT
   type = map(object(
     {

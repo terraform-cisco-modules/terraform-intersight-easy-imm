@@ -63,21 +63,21 @@ variable "policy_local_users" {
   }
   description = <<-EOT
   key - Name of the Local User Policy.
-  1. description - Description to Assign to the Policy.
-  2. force_send_password - User password will always be sent to endpoint device. If the option is not selected, then user password will be sent to endpoint device for new users and if user password is changed for existing users.
-  3. grace_period - Time period until when you can use the existing password, after it expires.
-  4. users - Map of users to add to the local user policy.
-    key - Username
-    a. enabled - Enables the user account on the endpoint.
-    b. password - This is a key to signify the variable "local_user_password_[key]" to be used.  i.e. 1 for variable "local_user_password_1".
-    d. role - The Role to Assign to the User.  Valid Options are {admin|readonly|user}.
-  5. notification_period - The duration after which the password will expire.
-  6. organization - Name of the Intersight Organization to assign this Policy to.
+  * description - Description to Assign to the Policy.
+  * force_send_password - User password will always be sent to endpoint device. If the option is not selected, then user password will be sent to endpoint device for new users and if user password is changed for existing users.
+  * grace_period - Time period until when you can use the existing password, after it expires.
+  * users - Map of users to add to the local user policy.
+    - key - Username
+    - enabled - Enables the user account on the endpoint.
+    - password - This is a key to signify the variable "local_user_password_[key]" to be used.  i.e. 1 for variable "local_user_password_1".
+    - role - The Role to Assign to the User.  Valid Options are {admin|readonly|user}.
+  * notification_period - The duration after which the password will expire.
+  * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  7. password_expiry - Enables password expiry on the endpoint.
-  7. password_expiry_duration - Set time period for password expiration. Value should be greater than notification period and grace period.
-  8. password_history - Tracks password change history. Specifies in number of instances, that the new password was already used.
-  9. tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * password_expiry - Enables password expiry on the endpoint.
+  * password_expiry_duration - Set time period for password expiration. Value should be greater than notification period and grace period.
+  * password_history - Tracks password change history. Specifies in number of instances, that the new password was already used.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
