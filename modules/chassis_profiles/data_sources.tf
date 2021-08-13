@@ -29,13 +29,13 @@ data "intersight_organization_organization" "org_moid" {
 #
 # Server Moid Data Source
 # GUI Location:
-#   Operate > Servers > Copy the Serial from the Column.
+#   Operate > Chassis > Copy the Serial from the Column.
 #____________________________________________________________
 
-data "intersight_compute_physical_summary" "server" {
+data "intersight_equipment_chassis" "chassis" {
   for_each = {
-    for k, v in local.ucs_server_profiles : k => v
-    if v.profile.assign_server == true
+    for k, v in local.ucs_chassis_profiles : k => v
+    if v.profile.assign_chassis == true
   }
   serial = each.key
 }

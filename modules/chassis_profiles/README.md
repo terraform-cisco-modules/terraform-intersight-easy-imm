@@ -1,6 +1,6 @@
-# Intersight Management Mode Deployment Module
+# Intersight Management Mode Deployment Module - UCS Chassis Profiles
 
-## Use this module to create IMM Domain Profiles in Intersight
+## Use this module to create UCS Chassis Profiles in Intersight
 
 Run the plan from the Terraform cloud Workspace.
 

@@ -59,7 +59,7 @@ variable "policy_power" {
 module "policy_power" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source              = "../../../terraform-intersight-imm/modules/policies_power"
   for_each            = local.policy_power
@@ -72,5 +72,5 @@ module "policy_power" {
   redundancy_mode     = each.value.redundancy_mode
   tags                = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_power == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_power == each.key]
 }

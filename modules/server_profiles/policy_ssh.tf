@@ -47,7 +47,7 @@ variable "policy_ssh" {
 module "policy_ssh" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_ssh"
   for_each    = local.policy_ssh
@@ -59,5 +59,5 @@ module "policy_ssh" {
   tags        = each.value.tags != [] ? each.value.tags : local.tags
   timeout     = each.value.timeout
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_ssh == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_ssh == each.key]
 }

@@ -114,7 +114,7 @@ variable "policy_storage" {
 
 module "disk_groups" {
   depends_on = [
-    data.intersight_organization_organization.org_moid
+    local.org_moids,
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_disk_group"
   for_each    = local.policy_storage
@@ -140,7 +140,8 @@ module "disk_groups" {
 
 module "policy_storage" {
   depends_on = [
-    data.intersight_organization_organization.org_moid,
+    local.org_moids,
+    module.ucs_server_profiles,
     module.disk_groups,
   ]
   source        = "../../../terraform-intersight-imm/modules/policies_storage"
@@ -152,7 +153,7 @@ module "policy_storage" {
   tags          = each.value.tags != [] ? each.value.tags : local.tags
   unused_disks  = each.value.unused_disks
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_storage == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_storage == each.key]
   virtual_drives = [
     {
       access_policy         = each.value.access_policy

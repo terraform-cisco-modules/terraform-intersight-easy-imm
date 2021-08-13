@@ -49,7 +49,8 @@ variable "policy_virtual_media" {
 
 module "virtual_media" {
   depends_on = [
-    data.intersight_organization_organization.org_moid
+    local.org_moids,
+    module.ucs_server_profiles
   ]
   source        = "terraform-cisco-modules/imm/intersight//modules/policies_virtual_media"
   for_each      = local.policy_virtual_media
@@ -62,6 +63,6 @@ module "virtual_media" {
   org_moid      = local.org_moids[each.value.organization].moid
   tags          = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_virtual_media == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_virtual_media == each.key]
 }
 

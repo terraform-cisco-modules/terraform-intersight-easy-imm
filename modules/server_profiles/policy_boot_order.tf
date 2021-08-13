@@ -49,7 +49,7 @@ variable "policy_boot_order" {
 module "policy_boot_order" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_boot_order"
   for_each    = local.policy_boot_order
@@ -60,7 +60,7 @@ module "policy_boot_order" {
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_boot_order == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_boot_order == each.key]
   boot_devices = length(regexall("(uefi_m2_pch)", each.value.boot_policy)) > 0 ? [
     {
       additional_properties = jsonencode({ Subtype = "cimc-mapped-dvd" })
@@ -160,7 +160,7 @@ module "policy_boot_order" {
 # module "policy_boot_uefi_m2_pch" {
 #   depends_on = [
 #     local.org_moids,
-#     module.ucs_server_profile
+#     module.ucs_server_profiles
 #   ]
 #   source = "terraform-cisco-modules/imm/intersight//modules/policies_boot_order"
 #   for_each = {
@@ -173,7 +173,7 @@ module "policy_boot_order" {
 #   name        = each.key
 #   org_moid    = local.org_moids[each.value.organization].moid
 #   profiles = [for s in sort(keys(
-#   local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
+#   local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
 #   tags = each.value.tags != [] ? each.value.tags : local.tags
 #   boot_devices = [
 #     {
@@ -212,7 +212,7 @@ module "policy_boot_order" {
 # module "policy_boot_uefi_m2_raid" {
 #   depends_on = [
 #     local.org_moids,
-#     module.ucs_server_profile
+#     module.ucs_server_profiles
 #   ]
 #   source = "terraform-cisco-modules/imm/intersight//modules/policies_boot_order"
 #   for_each = {
@@ -225,7 +225,7 @@ module "policy_boot_order" {
 #   name        = each.key
 #   org_moid    = local.org_moids[each.value.organization].moid
 #   profiles = [for s in sort(keys(
-#   local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
+#   local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
 #   tags = each.value.tags != [] ? each.value.tags : local.tags
 #   boot_devices = [
 #     {
@@ -264,7 +264,7 @@ module "policy_boot_order" {
 # module "policy_boot_uefi_sdcard" {
 #   depends_on = [
 #     local.org_moids,
-#     module.ucs_server_profile
+#     module.ucs_server_profiles
 #   ]
 #   source = "terraform-cisco-modules/imm/intersight//modules/policies_boot_order"
 #   for_each = {
@@ -277,7 +277,7 @@ module "policy_boot_order" {
 #   name        = each.key
 #   org_moid    = local.org_moids[each.value.organization].moid
 #   profiles = [for s in sort(keys(
-#   local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
+#   local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].policy_boot_order == each.key]
 #   tags = each.value.tags != [] ? each.value.tags : local.tags
 #   boot_devices = [
 #     {

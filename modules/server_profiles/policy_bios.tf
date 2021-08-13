@@ -38,7 +38,7 @@ variable "policy_bios" {
 module "policy_bios_nvmeof" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
@@ -50,7 +50,7 @@ module "policy_bios_nvmeof" {
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   #+++++++++++++++++++++++++++++++
   # Intel Directed IO Section
   #+++++++++++++++++++++++++++++++
@@ -103,7 +103,7 @@ module "policy_bios_nvmeof" {
 module "policy_bios_virtual_node" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
@@ -115,7 +115,7 @@ module "policy_bios_virtual_node" {
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   #+++++++++++++++++++++++++++++++
   # Boot Options Section
   #+++++++++++++++++++++++++++++++
@@ -171,7 +171,7 @@ module "policy_bios_virtual_node" {
 module "policy_bios_virtual_rack" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
@@ -183,7 +183,7 @@ module "policy_bios_virtual_rack" {
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   #+++++++++++++++++++++++++++++++
   # Boot Options Section
   #+++++++++++++++++++++++++++++++
@@ -1038,7 +1038,7 @@ variable "bios_policy_custom" {
 # module "bios_custom" {
 #   depends_on = [
 #     local.org_moids,
-#     module.ucs_server_profile
+#     module.ucs_server_profiles
 #   ]
 #   source      = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
 #   for_each = {
@@ -1048,7 +1048,7 @@ variable "bios_policy_custom" {
 #   description = each.value.description
 #   name        = each.value.name
 #   org_moid    = local.org_moids[organization].moid
-#   profiles     = [ for s in sort(keys(local.bios_custom_profiles)) : module.ucs_server_profile[s].moid ]
+#   profiles     = [ for s in sort(keys(local.bios_custom_profiles)) : module.ucs_server_profiles[s].moid ]
 #   tags        = each.value.tags != [] ? each.value.tags : local.tags
 #   #+++++++++++++++++++++++++++++++
 #   # Boot Options Section

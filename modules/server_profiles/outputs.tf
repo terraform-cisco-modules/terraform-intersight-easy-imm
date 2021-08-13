@@ -6,9 +6,9 @@
 output "ucs_server_profiles" {
   description = "moid of the UCS Server Profiles."
   value = {
-    for v in sort(keys(module.ucs_server_profile)) : v => {
-      moid = module.ucs_server_profile[v].moid
-      name = module.ucs_server_profile[v].name
+    for v in sort(keys(module.ucs_server_profiles)) : v => {
+      moid = module.ucs_server_profiles[v].moid
+      name = module.ucs_server_profiles[v].name
     }
   }
 }

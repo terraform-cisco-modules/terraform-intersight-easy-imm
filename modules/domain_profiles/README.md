@@ -1,6 +1,6 @@
-# domains - Intersight Management Mode UCS Domain Profile Deployment Module
+# Intersight Management Mode UCS Domain Profile Deployment Module
 
-## Use this module to create IMM Domain Profiles in Intersight
+## Use this module to create UCS Domain Profiles in Intersight
 
 ## Usage
 

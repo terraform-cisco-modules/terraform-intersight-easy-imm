@@ -61,7 +61,7 @@ variable "policy_smtp" {
 module "smtp" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_smtp"
   for_each        = local.policy_smtp
@@ -75,7 +75,7 @@ module "smtp" {
   smtp_server     = each.value.smtp_server
   tags            = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_smtp == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_smtp == each.key]
 }
 
 

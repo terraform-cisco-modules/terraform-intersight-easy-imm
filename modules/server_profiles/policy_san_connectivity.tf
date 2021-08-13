@@ -161,7 +161,7 @@ variable "policy_vhba_san_connectivity" {
 module "vhba_san_connectivity" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_san_connectivity"
   for_each            = local.policy_vhba_san_connectivity
@@ -175,7 +175,7 @@ module "vhba_san_connectivity" {
   wwnn_pool           = each.value.wwnn_address_type == "POOL" ? [local.fc_pools[each.value.wwnn_pool]] : []
   wwnn_address_type   = each.value.wwnn_address_type
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_san_connectivity == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_san_connectivity == each.key]
 }
 
 

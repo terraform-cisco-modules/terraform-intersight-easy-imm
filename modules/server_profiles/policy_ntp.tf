@@ -48,7 +48,7 @@ variable "policy_ntp" {
 module "policy_ntp" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_server_profiles
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
   for_each    = local.policy_ntp
@@ -60,5 +60,5 @@ module "policy_ntp" {
   tags        = each.value.tags != [] ? each.value.tags : local.tags
   timezone    = each.value.timezone
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_ntp == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_ntp == each.key]
 }

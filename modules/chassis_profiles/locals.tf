@@ -25,8 +25,8 @@ locals {
   #
   # UCS Domain Variables
   #______________________________________________
-  ucs_server_profiles = {
-    for k, v in var.ucs_server_profiles : k =>
+  ucs_chassis_profiles = {
+    for k, v in var.ucs_chassis_profiles : k =>
     {
       for key, value in var.ucs_server_templates : "profile" =>
       {

@@ -85,7 +85,7 @@ variable "policy_snmp" {
 module "snmp" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_chassis_profiles
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
   for_each        = local.policy_snmp
@@ -106,7 +106,7 @@ module "snmp" {
   v2_enabled      = each.value.v2_enabled
   v3_enabled      = each.value.v3_enabled
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_snmp == each.key]
+  local.ucs_chassis_profiles)) : module.ucs_chassis_profiles[s].moid if local.ucs_chassis_profiles[s].profile.policy_snmp == each.key]
 }
 
 
