@@ -95,13 +95,13 @@
 variable "ucs_server_profiles" {
   default = {
     default = {
-      action                      = "No-op"
-      assign_server               = false
-      description                 = ""
-      name                        = "" # If Name is not specified the Serial Will be assigned as the Hostname
-      src_template                = ""
-      tags                        = []
-      wait_for_completion         = false
+      action              = "No-op"
+      assign_server       = false
+      description         = ""
+      name                = "" # If Name is not specified the Serial Will be assigned as the Hostname
+      src_template        = ""
+      tags                = []
+      wait_for_completion = false
     }
   }
   description = <<-EOT
@@ -113,13 +113,13 @@ variable "ucs_server_profiles" {
   EOT
   type = map(object(
     {
-      action                      = optional(string)
-      assign_server               = optional(bool)
-      description                 = optional(string)
-      name                        = optional(string)
-      src_template                = optional(string)
-      tags                        = optional(list(map(string)))
-      wait_for_completion         = optional(bool)
+      action              = optional(string)
+      assign_server       = optional(bool)
+      description         = optional(string)
+      name                = optional(string)
+      src_template        = optional(string)
+      tags                = optional(list(map(string)))
+      wait_for_completion = optional(bool)
     }
   ))
 }
@@ -213,7 +213,6 @@ module "ucs_server_profile" {
   description         = each.value.profile.description != "" ? each.value.profile.description : "${each.value.profile.organization} ${each.value.profile.name} Server Profile."
   name                = each.value.profile.name != "" ? each.value.profile.name : each.key
   org_moid            = local.org_moids[each.value.profile.organization].moid
-  # src_template        = each.value.src_template
   tags                = each.value.profile.tags != "" ? each.value.profile.tags : local.tags
   target_platform     = each.value.profile.target_platform == "Standalone" ? "Standalone" : "FIAttached"
   wait_for_completion = each.value.profile.wait_for_completion
@@ -223,4 +222,5 @@ module "ucs_server_profile" {
       object_type = data.intersight_compute_physical_summary.server[each.key].results[0].source_object_type
     }
   ] : []
+  # src_template        = each.value.src_template
 }

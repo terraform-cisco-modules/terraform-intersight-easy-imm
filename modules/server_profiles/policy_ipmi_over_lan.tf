@@ -95,7 +95,7 @@ module "policy_ipmi_over_lan" {
   privilege      = each.value.privilege
   name           = each.key
   org_moid       = local.org_moids[each.value.organization].moid
+  tags           = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
   local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_ipmi_over_lan == each.key]
-  tags = each.value.tags != [] ? each.value.tags : local.tags
 }

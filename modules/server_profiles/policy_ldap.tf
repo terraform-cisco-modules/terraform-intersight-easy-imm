@@ -168,13 +168,13 @@ module "policy_ldap" {
   nr_source                  = each.value.ldap_nr_source
   org_moid                   = local.org_moids[each.value.organization].moid
   password                   = var.ldap_password
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_ldap == each.key]
   search_domain              = each.value.ldap_search_domain
   search_forest              = each.value.ldap_search_forest
   tags                       = each.value.tags != [] ? each.value.tags : local.tags
   timeout                    = each.value.ldap_timeout
   user_search_precedence     = each.value.ldap_user_search_precedence
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_ldap == each.key]
 }
 
 #______________________________________________

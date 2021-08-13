@@ -143,16 +143,16 @@ module "policy_storage" {
     data.intersight_organization_organization.org_moid,
     module.disk_groups,
   ]
-  source      = "../../../terraform-intersight-imm/modules/policies_storage"
-  for_each    = local.policy_storage
-  description = each.value.description != "" ? each.value.description : "${each.key} Storage Policy."
-  name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_storage == each.key]
+  source        = "../../../terraform-intersight-imm/modules/policies_storage"
+  for_each      = local.policy_storage
+  description   = each.value.description != "" ? each.value.description : "${each.key} Storage Policy."
+  name          = each.key
+  org_moid      = local.org_moids[each.value.organization].moid
   retain_policy = each.value.retain_policy
   tags          = each.value.tags != [] ? each.value.tags : local.tags
   unused_disks  = each.value.unused_disks
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_storage == each.key]
   virtual_drives = [
     {
       access_policy         = each.value.access_policy

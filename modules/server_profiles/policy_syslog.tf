@@ -54,16 +54,16 @@ module "syslog" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source      = "../../../terraform-intersight-imm/modules/policies_syslog"
-  for_each    = local.policy_syslog
-  description = each.value.description != "" ? each.value.description : "${each.key} Syslog Policy."
-  name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_syslog == each.key]
+  source             = "../../../terraform-intersight-imm/modules/policies_syslog"
+  for_each           = local.policy_syslog
+  description        = each.value.description != "" ? each.value.description : "${each.key} Syslog Policy."
+  name               = each.key
+  org_moid           = local.org_moids[each.value.organization].moid
   remote_clients     = each.value.syslog_destinations
   local_min_severity = each.value.local_min_severity
   tags               = each.value.tags != [] ? each.value.tags : local.tags
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_syslog == each.key]
 }
 
 

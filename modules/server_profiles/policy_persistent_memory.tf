@@ -75,11 +75,11 @@ module "policy_persistent_memory" {
   management_mode              = each.value.management_mode
   name                         = each.key
   org_moid                     = local.org_moids[each.value.organization].moid
+  retain_namespaces            = each.value.retain_namespaces
+  secure_passphrase            = var.persistent_passphrase
+  tags                         = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
   local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_persistent_memory == each.key]
-  retain_namespaces = each.value.retain_namespaces
-  secure_passphrase = var.persistent_passphrase
-  tags              = each.value.tags != [] ? each.value.tags : local.tags
 }
 
 

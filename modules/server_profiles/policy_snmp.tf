@@ -87,14 +87,12 @@ module "snmp" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
-  for_each    = local.policy_snmp
-  description = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
-  enabled     = each.value.enabled
-  name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_snmp == each.key]
+  source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  for_each        = local.policy_snmp
+  description     = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
+  enabled         = each.value.enabled
+  name            = each.key
+  org_moid        = local.org_moids[each.value.organization].moid
   snmp_access     = each.value.snmp_access
   snmp_community  = var.snmp_community
   snmp_engine_id  = each.value.snmp_engine_id
@@ -107,6 +105,8 @@ module "snmp" {
   trap_community  = var.snmp_trap_community
   v2_enabled      = each.value.v2_enabled
   v3_enabled      = each.value.v3_enabled
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_snmp == each.key]
 }
 
 

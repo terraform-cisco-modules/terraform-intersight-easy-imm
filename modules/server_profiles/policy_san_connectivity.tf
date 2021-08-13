@@ -163,19 +163,19 @@ module "vhba_san_connectivity" {
     local.org_moids,
     module.ucs_server_profile
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_san_connectivity"
-  for_each    = local.policy_vhba_san_connectivity
-  description = each.value.description != "" ? each.value.description : "${each.key} vHBA SAN Connectivity Policy."
-  name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_san_connectivity == each.key]
+  source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_san_connectivity"
+  for_each            = local.policy_vhba_san_connectivity
+  description         = each.value.description != "" ? each.value.description : "${each.key} vHBA SAN Connectivity Policy."
+  name                = each.key
+  org_moid            = local.org_moids[each.value.organization].moid
   placement_mode      = each.value.placement_mode
   static_wwnn_address = each.value.wwnn_address_type == "STATIC" ? each.value.wwnn_address_static : ""
   tags                = each.value.tags != [] ? each.value.tags : local.tags
   target_platform     = each.value.target_platform
   wwnn_pool           = each.value.wwnn_address_type == "POOL" ? [local.fc_pools[each.value.wwnn_pool]] : []
   wwnn_address_type   = each.value.wwnn_address_type
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_san_connectivity == each.key]
 }
 
 
