@@ -49,10 +49,15 @@ variable "policy_vhba_san_connectivity" {
   description = <<-EOT
   key - Name of the vHBA Template Policy.
   1. adapter_template - The Type of vhba Adapter Policy to assign to the vhba Template.  Options are:
+    * FCNVMeTarget
+    * FCNVMeInitiator
+    * Initiator
     * Linux
-    * Linux-NVMe-ROCE
+    * Solaris
+    * Target
     * VMware
     * Windows
+    * WindowBoot
   2. description - Description to Assign to the Policy.
   3. organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
@@ -182,51 +187,37 @@ module "vhba_san_connectivity" {
 # GUI Location: Configure > Policies > Create Policy > Fibre Channel Adapter
 #_________________________________________________________________________
 
-/*
-FCNVMeTarget
-FCNVMeInitiator
-Initiator
-Linux
-Solaris
-Target
-VMware
-Windows
-WindowBoot
-*/
 module "vhba_adapter" {
   depends_on = [
     local.org_moids
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter"
-  # for_each = {
-  #   for k, v in local.policy_vhba_san_connectivity : k => v
-  #   if local.policy_vhba_san_connectivity[k].adapter_template == "VMware"
-  # }
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter"
   for_each    = local.policy_vhba_san_connectivity
-  description = each.value.description != "" ? each.value.description : "${each.key} vHBA Adapter Policy."
-  name        = each.key
+  description = each.value.description != "" ? each.value.description : "${each.key} ${each.value.adapter_template} vHBA Adapter Policy."
+  name        = "${each.key}_${each.value.adapter_template}"
   org_moid    = local.org_moids[each.value.organization].moid
-  # vHBA Adapter Customization for VMware Template
-  # error_detection_timeout          = local.vhba_error_detection_timeout
-  # error_recovery_enabled           = local.vhba_error_recovery_enabled
-  # error_recovery_io_retry_count    = local.vhba_error_recovery_io_retry_count
-  # error_recovery_io_retry_timeout  = local.vhba_error_recovery_io_retry_timeout
-  # error_recovery_link_down_timeout = local.vhba_error_recovery_link_down_timeout
-  # error_recovery_port_down_timeout = local.vhba_error_recovery_port_down_timeout
-  # flogi_retries                    = local.vhba_flogi_retries
-  # flogi_timeout                    = local.vhba_flogi_timeout
-  # interrupt_mode                   = local.vhba_interrupt_mode
-  # io_throttle_count                = local.vhba_io_throttle_count
-  # lun_count                        = local.vhba_lun_count
-  # lun_queue_depth                  = local.vhba_lun_queue_depth
-  # plogi_retries                    = local.vhba_plogi_retries
-  # plogi_timeout                    = local.vhba_plogi_timeout
-  # resource_allocation_timeout      = local.vhba_resource_allocation_timeout
-  # rx_ring_size                     = local.vhba_rx_ring_size
-  # scsi_io_queues                   = local.vhba_scsi_io_queues
-  # scsi_io_ring_size                = local.vhba_scsi_io_ring_size
-  # tags                             = local.tags
-  # tx_ring_size                     = local.vhba_tx_ring_size
+  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  # vHBA Adapter Customization for Template
+  error_detection_timeout          = 20000
+  error_recovery_enabled           = false
+  error_recovery_io_retry_count    = each.value.adapter_template != "default" ? 30 : 8
+  error_recovery_io_retry_timeout  = 5
+  error_recovery_link_down_timeout = 30000
+  error_recovery_port_down_timeout = each.value.adapter_template == "WindowsBoot" ? 5000 : length(regexall(
+  "(FCNVMeInitiator|Initiator|Solaris|VMware|Windows)", each.value.adapter_template)) > 0 ? 30000 : 10000
+  flogi_retries               = 8
+  flogi_timeout               = 4000
+  interrupt_mode              = "MSIx"
+  io_throttle_count           = each.value.adapter_template != "default" ? 256 : 512
+  lun_count                   = 1024
+  lun_queue_depth             = 20
+  plogi_retries               = 8
+  plogi_timeout               = each.value.adapter_template == "WindowsBoot" ? 4000 : 20000
+  resource_allocation_timeout = 10000
+  rx_ring_size                = length(regexall("(FCNVMeTarget|Target)", each.value.adapter_template)) > 0 ? 2048 : 64
+  scsi_io_queues              = length(regexall("(FCNVMeTarget|FCNVMeInitiator)", each.value.adapter_template)) > 0 ? 16 : 1
+  scsi_io_ring_size           = 512
+  tx_ring_size                = 64
 }
 
 

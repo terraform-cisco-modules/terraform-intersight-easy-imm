@@ -1,0 +1,108 @@
+{
+  "AccountMoid": "5c4a74693935687776d94f98",
+  "AdvancedFilter": false,
+  "Ancestors": [],
+  "ArfsSettings": {
+    "ClassId": "vnic.ArfsSettings",
+    "Enabled": false,
+    "ObjectType": "vnic.ArfsSettings"
+  },
+  "ClassId": "vnic.EthAdapterPolicy",
+  "CompletionQueueSettings": {
+    "ClassId": "vnic.CompletionQueueSettings",
+    "Count": 11,
+    "ObjectType": "vnic.CompletionQueueSettings",
+    "RingSize": 256
+  },
+  "CreateTime": "2021-02-12T16:59:49.384Z",
+  "Description": "Recommended adapter settings for Azure Stack",
+  "DomainGroupMoid": "5c4a74693935687776d94f99",
+  "GeneveEnabled": false,
+  "InterruptScaling": false,
+  "InterruptSettings": {
+    "ClassId": "vnic.EthInterruptSettings",
+    "CoalescingTime": 125,
+    "CoalescingType": "MIN",
+    "Count": 256,
+    "Mode": "MSIx",
+    "ObjectType": "vnic.EthInterruptSettings"
+  },
+  "ModTime": "2021-03-19T01:32:14.635Z",
+  "Moid": "6026b405443930dadd17f064",
+  "Name": "WIN-AzureStack",
+  "NvgreSettings": {
+    "ClassId": "vnic.NvgreSettings",
+    "Enabled": false,
+    "ObjectType": "vnic.NvgreSettings"
+  },
+  "ObjectType": "vnic.EthAdapterPolicy",
+  "Organization": {
+    "ClassId": "mo.MoRef",
+    "Moid": "5ddfd9ff6972652d31ee6582",
+    "ObjectType": "organization.Organization",
+    "link": "https://www.intersight.com/api/v1/organization/Organizations/5ddfd9ff6972652d31ee6582"
+  },
+  "Owners": [
+    "5c4a74693935687776d94f98",
+    "shared"
+  ],
+  "PermissionResources": [
+    {
+      "ClassId": "mo.MoRef",
+      "Moid": "5ddfd9ff6972652d31ee6582",
+      "ObjectType": "organization.Organization",
+      "link": "https://www.intersight.com/api/v1/organization/Organizations/5ddfd9ff6972652d31ee6582"
+    }
+  ],
+  "RoceSettings": {
+    "ClassId": "vnic.RoceSettings",
+    "ClassOfService": 5,
+    "Enabled": true,
+    "MemoryRegions": 131072,
+    "ObjectType": "vnic.RoceSettings",
+    "QueuePairs": 256,
+    "ResourceGroups": 2,
+    "Version": 2
+  },
+  "RssHashSettings": {
+    "ClassId": "vnic.RssHashSettings",
+    "Ipv4Hash": true,
+    "Ipv6ExtHash": false,
+    "Ipv6Hash": true,
+    "ObjectType": "vnic.RssHashSettings",
+    "TcpIpv4Hash": true,
+    "TcpIpv6ExtHash": false,
+    "TcpIpv6Hash": true,
+    "UdpIpv4Hash": false,
+    "UdpIpv6Hash": false
+  },
+  "RssSettings": true,
+  "RxQueueSettings": {
+    "ClassId": "vnic.EthRxQueueSettings",
+    "Count": 8,
+    "ObjectType": "vnic.EthRxQueueSettings",
+    "RingSize": 4096
+  },
+  "SharedScope": "shared",
+  "Tags": [],
+  "TcpOffloadSettings": {
+    "ClassId": "vnic.TcpOffloadSettings",
+    "LargeReceive": true,
+    "LargeSend": true,
+    "ObjectType": "vnic.TcpOffloadSettings",
+    "RxChecksum": true,
+    "TxChecksum": true
+  },
+  "TxQueueSettings": {
+    "ClassId": "vnic.EthTxQueueSettings",
+    "Count": 3,
+    "ObjectType": "vnic.EthTxQueueSettings",
+    "RingSize": 1024
+  },
+  "UplinkFailbackTimeout": 5,
+  "VxlanSettings": {
+    "ClassId": "vnic.VxlanSettings",
+    "Enabled": true,
+    "ObjectType": "vnic.VxlanSettings"
+  }
+}

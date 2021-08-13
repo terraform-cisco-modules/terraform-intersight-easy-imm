@@ -1,0 +1,81 @@
+{
+  "AccountMoid": "5c4a74693935687776d94f98",
+  "Ancestors": [],
+  "ClassId": "vnic.FcAdapterPolicy",
+  "CreateTime": "2021-02-12T16:59:49.689Z",
+  "Description": "",
+  "DomainGroupMoid": "5c4a74693935687776d94f99",
+  "ErrorDetectionTimeout": 2000,
+  "ErrorRecoverySettings": {
+    "ClassId": "vnic.FcErrorRecoverySettings",
+    "Enabled": false,
+    "IoRetryCount": 30,
+    "IoRetryTimeout": 5,
+    "LinkDownTimeout": 30000,
+    "ObjectType": "vnic.FcErrorRecoverySettings",
+    "PortDownTimeout": 30000
+  },
+  "FlogiSettings": {
+    "ClassId": "vnic.FlogiSettings",
+    "ObjectType": "vnic.FlogiSettings",
+    "Retries": 8,
+    "Timeout": 4000
+  },
+  "InterruptSettings": {
+    "ClassId": "vnic.FcInterruptSettings",
+    "Mode": "MSIx",
+    "ObjectType": "vnic.FcInterruptSettings"
+  },
+  "IoThrottleCount": 256,
+  "LunCount": 1024,
+  "LunQueueDepth": 20,
+  "ModTime": "2021-03-19T01:32:14.766Z",
+  "Moid": "6026b405443930dadd17f09c",
+  "Name": "Windows",
+  "ObjectType": "vnic.FcAdapterPolicy",
+  "Organization": {
+    "ClassId": "mo.MoRef",
+    "Moid": "5ddfd9ff6972652d31ee6582",
+    "ObjectType": "organization.Organization",
+    "link": "https://www.intersight.com/api/v1/organization/Organizations/5ddfd9ff6972652d31ee6582"
+  },
+  "Owners": [
+    "5c4a74693935687776d94f98",
+    "shared"
+  ],
+  "PermissionResources": [
+    {
+      "ClassId": "mo.MoRef",
+      "Moid": "5ddfd9ff6972652d31ee6582",
+      "ObjectType": "organization.Organization",
+      "link": "https://www.intersight.com/api/v1/organization/Organizations/5ddfd9ff6972652d31ee6582"
+    }
+  ],
+  "PlogiSettings": {
+    "ClassId": "vnic.PlogiSettings",
+    "ObjectType": "vnic.PlogiSettings",
+    "Retries": 8,
+    "Timeout": 20000
+  },
+  "ResourceAllocationTimeout": 10000,
+  "RxQueueSettings": {
+    "ClassId": "vnic.FcQueueSettings",
+    "Count": 1,
+    "ObjectType": "vnic.FcQueueSettings",
+    "RingSize": 64
+  },
+  "ScsiQueueSettings": {
+    "ClassId": "vnic.ScsiQueueSettings",
+    "Count": 1,
+    "ObjectType": "vnic.ScsiQueueSettings",
+    "RingSize": 512
+  },
+  "SharedScope": "shared",
+  "Tags": [],
+  "TxQueueSettings": {
+    "ClassId": "vnic.FcQueueSettings",
+    "Count": 1,
+    "ObjectType": "vnic.FcQueueSettings",
+    "RingSize": 64
+  }
+}

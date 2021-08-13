@@ -111,8 +111,20 @@ variable "policy_vnic_templates" {
   1. description - Description to Assign to the Policy.
   2. adapter_template - The Type of vNIC Adapter Policy to assign to the vNIC Template.  Options are:
     * Linux
-    * Linux-NVMe-ROCE
+    * Linux-NVMe-RoCE
+    * MQ
+    * MQ-SMBd
+    * SMBServer
+    * SMBClient
+    * Solaris
+    * SRIOV
+    * usNIC
+    * usNICOracleRAC
     * VMware
+    * VMwarePassThru
+    * Win-AzureStack
+    * Win-HPN
+    * Win-HPN-SMBd
     * Windows
   3. description - Description to Assign to the Policy.
   4. lan_connectivity - Name of the LAN Connectivity Policy to assign to the vNIC Template.
@@ -280,104 +292,107 @@ module "vnic_lan_connectivity" {
 # GUI Location: Configure > Policies > Create Policy > Ethernet Adapter
 #_________________________________________________________________________
 
-/*
-Linux
-Linux-NVMe-RoCE
-MQ
-MQ-SMBd
-SMBServer
-SMBClient
-Solaris
-SRIOV
-usNIC
-usNICOracleRAC
-VMware
-VMwarePassThru
-Win-AzureStack
-Win-HPN
-Win-HPN-SMBd
-Windows
-*/
-
-module "vnic_adapter_linux" {
+module "vnic_adapter" {
   depends_on = [
     local.org_moids
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
-  for_each = {
-    for k, v in local.policy_vnic_templates : k => v
-    if local.policy_vnic_templates[k].adapter_template == "Linux"
-  }
-  description = each.value.description != "" ? each.value.description : "${each.key} vNIC Adapter Policy - Linux."
-  name        = "${each.key}_linux"
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
-  # vNIC Adapter Customization for Linux Template
-  completion_queue_count = 2     # Completion Settings - Reduce Queue Count
-  interrupt_interrupts   = 4     # Interrupt Settings - Reduce Interrupts
-  receive_side_scaling   = false # Disable Receive Side Scaling
-  rx_queue_count         = 1     # Reduce Receive Queues
-}
-
-module "vnic_adapter_linux_nvmeof" {
-  depends_on = [
-    local.org_moids
-  ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
-  for_each = {
-    for k, v in local.policy_vnic_templates : k => v
-    if local.policy_vnic_templates[k].adapter_template == "Linux-NVMe-ROCE"
-  }
-  description = each.value.description != "" ? each.value.description : "${each.key} vNIC Adapter Policy - Linux-NVMe-ROCE."
-  name        = "${each.key}_linux_nvmeof"
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
-  # vNIC Adapter Customization for Linux-NVMe-ROCE Template
-  completion_queue_count = 16     # Completion Settings - Increase Completion Queues
-  interrupt_interrupts   = 256    # Interrupt Settings - Increase Interrupts
-  roce_enable            = true   # Enable RoCE
-  roce_memory_regions    = 131072 #
-  roce_queue_pairs       = 1024
-  roce_resource_groups   = 8
-  rx_queue_count         = 8 # Recieve Settings - Increase Receive Settings
-  rx_ring_size           = 4096
-  tx_queue_count         = 8 # Transmit Settings - Increase Transmit Settings
-  tx_ring_size           = 4096
-}
-
-module "vnic_adapter_vmware" {
-  depends_on = [
-    local.org_moids
-  ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
-  for_each = {
-    for k, v in local.policy_vnic_templates : k => v
-    if local.policy_vnic_templates[k].adapter_template == "VMware"
-  }
-  description = each.value.description != "" ? each.value.description : "${each.key} vNIC Adapter Policy - VMware."
-  name        = "${each.key}_vmware"
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
-  # vNIC Adapter Customization for VMware Template
-  completion_queue_count = 2     # Completion Settings - Reduce Queue Count
-  interrupt_interrupts   = 4     # Interrupt Settings - Reduce Interupts
-  receive_side_scaling   = false # Disable Receive Side Scaling
-  rx_queue_count         = 1     # Reduce Receive Queues
-}
-
-module "vnic_adapter_windows" {
-  depends_on = [
-    local.org_moids
-  ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
-  for_each = {
-    for k, v in local.policy_vnic_templates : k => v
-    if local.policy_vnic_templates[k].adapter_template == "Windows"
-  }
-  description = each.value.description != "" ? each.value.description : "${each.key} vNIC Adapter Policy - Windows."
-  name        = "${each.key}_windows"
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  source   = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
+  for_each = local.policy_vnic_templates
+  description = length(
+    regexall("(Linux-NVMe-RoCE)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for NVMe using RDMA." : length(
+    regexall("(Linux)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for linux." : length(
+    regexall("(MQ-SMBd)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for MultiQueue with RDMA." : length(
+    regexall("(MQ)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for VM Multi Queue Connection with no RDMA." : length(
+    regexall("(SMBClient)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for SMB Client." : length(
+    regexall("(SMBServer)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for SMB server." : length(
+    regexall("(Solaris)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for Solaris." : length(
+    regexall("(SRIOV)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for Win8 SRIOV-VMFEX PF." : length(
+    regexall("(usNICOracleRAC)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for usNIC Oracle RAC Connection." : length(
+    regexall("(usNIC)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for usNIC Connection." : length(
+    regexall("(VMwarePassThru)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for VMWare pass-thru." : length(
+    regexall("(VMware)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for VMWare." : length(
+    regexall("(Win-AzureStack)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for Azure Stack." : length(
+    regexall("(Win-HPN-SMBd)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for Windows high performance and networking with RoCE V2." : length(
+    regexall("(Win-HPN)", each.value.adapter_template
+  )) > 0 ? "Recommended adapter settings for Windows high performance and networking." : "Recommended adapter settings for Windows."
+  name            = "${each.key}_${each.value.adapter_template}"
+  org_moid        = local.org_moids[each.value.organization].moid
+  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  advanced_filter = false # Enable Advanced Filter
+  arfs_enable     = false # Enable Accelerated Receive Flow Steering
+  # Completion Settings
+  completion_queue_count = length(
+    regexall("(Linux-NVMe-RoCE|Linux|Solaris|VMware)", each.value.adapter_template)) > 0 ? 2 : length(
+    regexall("(usNIC)", each.value.adapter_template)) > 0 ? 6 : length(
+    regexall("(VMwarePassThru)", each.value.adapter_template)) > 0 ? 8 : length(
+    regexall("(Win-AzureStack)", each.value.adapter_template)) > 0 ? 11 : length(
+    regexall("(usNIC)", each.value.adapter_template)) > 0 ? 12 : length(
+    regexall("(MQ-SMBd|MQ)", each.value.adapter_template)) > 0 ? 576 : length(
+  regexall("(usNICOracleRAC)", each.value.adapter_template)) > 0 ? 2000 : 5
+  completion_ring_size      = length(regexall("(MQ|usNIC|usNICOracleRAC)", each.value.adapter_template)) > 0 ? 4 : 1
+  geneve_enabled            = false                                                                                # Enable GENEVE
+  interrupt_scaling         = length(regexall("(usNICOracleRAC)", each.value.adapter_template)) > 0 ? true : false # Enable Interrupt Scaling
+  interrupt_coalescing_type = "MIN"                                                                                # Interrupt Settings
+  interrupt_interrupts = length(
+    regexall("(Linux|Solaris|VMware)", each.value.adapter_template)) > 0 ? 4 : length(
+    regexall("(VMwarePassThru)", each.value.adapter_template)) > 0 ? 12 : length(
+    regexall("(SRIOV)", each.value.adapter_template)) > 0 ? 32 : length(
+    regexall("(MQ-SMBd|Win-HPN|Win-HPN-SMBd)", each.value.adapter_template)) > 0 ? 512 : length(
+    regexall("(Linux-NVMe-RoCE|MQ|Win-AzureStack)", each.value.adapter_template)) > 0 ? 256 : length(
+  regexall("(usNICOracleRAC)", each.value.adapter_template)) > 0 ? 1024 : 8
+  interrupt_mode  = length(regexall("(VMwarePassThru)", each.value.adapter_template)) > 0 ? "MSI" : "MSIx"
+  interrupt_timer = 125
+  nvgre_enable    = false # Enable Network Virtualization using Generic Routing Encaplulation
+  # Receive Side Scaling Settings
+  receive_side_scaling       = length(regexall("(Linux|Solaris|VMware)", each.value.adapter_template)) > 0 ? false : true
+  rss_hash_ipv4_hash         = true
+  rss_hash_ipv6_ext_hash     = false
+  rss_hash_ipv6_hash         = true
+  rss_hash_tcp_ipv4_hash     = true
+  rss_hash_tcp_ipv6_ext_hash = false
+  rss_hash_tcp_ipv6_hash     = true
+  rss_hash_udp_ipv4_hash     = false
+  rss_hash_udp_ipv6_hash     = false
+  roce_cos                   = 5 # RoCE Settings - RDMA over Converged Ethernet
+  roce_enable = length(
+  regexall("(Linux-NVMe-RoCE|MQ-SMBd|SMBClient|SMBServer|Win-AzureStack|Win-HPN-SMBd)", each.value.adapter_template)) > 0 ? true : false
+  roce_memory_regions = length(
+    regexall("(MQ-SMBd)", each.value.adapter_template)) > 0 ? 65536 : length(
+  regexall("(Linux-NVMe-RoCE|SMBClient|SMBServer|Win-AzureStack|Win-HPN-SMBd)", each.value.adapter_template)) > 0 ? 131072 : 0
+  roce_queue_pairs = length(
+    regexall("(MQ-SMBd|SMBClient|Win-AzureStack|Win-HPN-SMBd)", each.value.adapter_template)) > 0 ? 256 : length(
+    regexall("(Linux-NVMe-RoCE)", each.value.adapter_template)) > 0 ? 1024 : length(
+  regexall("(SMBServer)", each.value.adapter_template)) > 0 ? 2048 : 0
+  roce_resource_groups = length(
+    regexall("(MQ-SMBd|Win-HPN-SMBd)", each.value.adapter_template)) > 0 ? 2 : length(
+    regexall("(Linux-NVMe-RoCE)", each.value.adapter_template)) > 0 ? 8 : length(
+  regexall("(SMBClient|SMBServer)", each.value.adapter_template)) > 0 ? 32 : 0
+  roce_version = length(
+  regexall("(Linux-NVMe-RoCE|MQ-SMBd|Win-AzureStack|Win-HPN-SMBd)", each.value.adapter_template)) > 0 ? 2 : 1
+  # Recieve Settings
+  rx_queue_count = length(
+    regexall("(Linux|Linux-NVMe-RoCE|Solaris|VMware)", each.value.adapter_template)) > 0 ? 1 : length(
+    regexall("(usNIC)", each.value.adapter_template)) > 0 ? 6 : length(
+    regexall("(Win-AzureStack)", each.value.adapter_template)) > 0 ? 8 : length(
+    regexall("(MQ-SMBd|MQ)", each.value.adapter_template)) > 0 ? 512 : length(
+  regexall("(usNICOracleRAC)", each.value.adapter_template)) > 0 ? 1000 : 4
+  rx_ring_size              = length(regexall("(Win-AzureStack)", each.value.adapter_template)) > 0 ? 4096 : 512
+  tcp_offload_large_recieve = true # TCP Offload Settings
+  tcp_offload_large_send    = true
+  tcp_offload_rx_checksum   = true
+  tcp_offload_tx_checksum   = true
+  # Transmit Settings
+  tx_queue_count = length(
+    regexall("(Win-AzureStack)", each.value.adapter_template)) > 0 ? 3 : length(
+    regexall("(VMwarePassThru)", each.value.adapter_template)) > 0 ? 4 : length(
+    regexall("(usNIC)", each.value.adapter_template)) > 0 ? 6 : length(
+    regexall("(MQ-SMBd|MQ)", each.value.adapter_template)) > 0 ? 64 : length(
+  regexall("(usNICOracleRAC)", each.value.adapter_template)) > 0 ? 1000 : 1
+  tx_ring_size = length(regexall("(Win-AzureStack)", each.value.adapter_template)) > 0 ? 1024 : 256
+  # Uplink Fallback
+  uplink_failback_timeout = length(regexall("(usNIC|usNICOracleRAC)", each.value.adapter_template)) > 0 ? 0 : 5
+  vxlan_enable = length(
+  regexall("(Win-AzureStack|Win-HPN|Win-HPN-SMBd)", each.value.adapter_template)) > 0 ? true : false # Enable VxLAN
 }
 
 
@@ -439,7 +454,7 @@ module "vnic_qos" {
   source         = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_qos"
   for_each       = local.policy_vnic_templates
   description    = each.value.description != "" ? each.value.description : "${each.key} vNIC QoS Policy."
-  name           = each.key
+  name           = "${each.key}_qos"
   mtu            = each.value.qos_mtu
   burst          = each.value.qos_burst
   priority       = each.value.qos_priority
@@ -459,20 +474,17 @@ module "vnic_qos" {
 module "vnic_templates_a" {
   depends_on = [
     local.org_moids,
-    module.vnic_adapter_linux,
-    module.vnic_adapter_linux_nvmeof,
-    module.vnic_adapter_vmware,
-    module.vnic_adapter_windows,
+    module.vnic_adapter,
     module.vnic_network_control_policy,
     module.vnic_vlan_group,
     module.vnic_qos,
     module.vnic_lan_connectivity,
   ]
-  source           = "terraform-cisco-modules/imm/intersight//modules/policies_vnic"
-  for_each         = local.policy_vnic_templates
-  cdn_name         = each.value.vnic_cdn_source == "user" ? each.value.vnic_cdn_a_name : each.value.vnic_name_a
-  cdn_source       = each.value.vnic_cdn_source
-  failover_enabled = each.value.vnic_failover_enabled
+  source                    = "terraform-cisco-modules/imm/intersight//modules/policies_vnic"
+  for_each                  = local.policy_vnic_templates
+  cdn_name                  = each.value.vnic_cdn_source == "user" ? each.value.vnic_cdn_a_name : each.value.vnic_name_a
+  cdn_source                = each.value.vnic_cdn_source
+  failover_enabled          = each.value.vnic_failover_enabled
   lan_connectivity_moid     = module.vnic_lan_connectivity[each.value.lan_connectivity].moid
   mac_address_type          = each.value.mac_address_type
   mac_pool_moid             = each.value.mac_address_type == "POOL" ? [local.mac_pools[each.value.mac_pool_a_name]] : []
@@ -490,12 +502,12 @@ module "vnic_templates_a" {
   vmq_number_queues         = each.value.vmq_number_queues
   vmq_number_sub_vnics      = each.value.vmq_number_sub_vnics
   vmq_adapter_policy_moid   = each.value.vmq_adapter_policy_moid
-  vnic_adapter_moid         = each.value.adapter_template == "Linux" ? module.vnic_adapter_linux[each.key].moid : each.value.adapter_template == "Linux-NVMe-ROCE" ? module.vnic_adapter_linux_nvmeof[each.key].moid : each.value.adapter_template == "VMware" ? module.vnic_adapter_vmware[each.key].moid : each.value.adapter_template == "Windows" ? module.vnic_adapter_windows[each.key].moid : null
+  vnic_adapter_moid         = module.vnic_adapter[each.key].moid
   vnic_control_moid         = module.vnic_network_control_policy[each.key].moid
   vnic_name                 = each.value.vnic_name_a
-  vnic_order              = each.value.vnic_order_a
-  vnic_qos_moid           = module.vnic_qos[each.key].moid
-  vnic_network_group_moid = module.vnic_vlan_group[each.key].moid
+  vnic_order                = each.value.vnic_order_a
+  vnic_qos_moid             = module.vnic_qos[each.key].moid
+  vnic_network_group_moid   = module.vnic_vlan_group[each.key].moid
   # iscsi_boot_policy         = module.policy_iscsi_boot[each.key].moid
   # vnic_network_moid         = module.vnic_network[each.key].moid
 }
@@ -503,20 +515,17 @@ module "vnic_templates_a" {
 module "vnic_templates_b" {
   depends_on = [
     local.org_moids,
-    module.vnic_adapter_linux,
-    module.vnic_adapter_linux_nvmeof,
-    module.vnic_adapter_vmware,
-    module.vnic_adapter_windows,
+    module.vnic_adapter,
     module.vnic_network_control_policy,
     module.vnic_vlan_group,
     module.vnic_qos,
     module.vnic_lan_connectivity,
   ]
-  source           = "terraform-cisco-modules/imm/intersight//modules/policies_vnic"
-  for_each         = local.policy_vnic_templates
-  cdn_name         = each.value.vnic_cdn_source == "user" ? each.value.vnic_cdn_b_name : each.value.vnic_name_b
-  cdn_source       = each.value.vnic_cdn_source
-  failover_enabled = each.value.vnic_failover_enabled
+  source                    = "terraform-cisco-modules/imm/intersight//modules/policies_vnic"
+  for_each                  = local.policy_vnic_templates
+  cdn_name                  = each.value.vnic_cdn_source == "user" ? each.value.vnic_cdn_b_name : each.value.vnic_name_b
+  cdn_source                = each.value.vnic_cdn_source
+  failover_enabled          = each.value.vnic_failover_enabled
   lan_connectivity_moid     = module.vnic_lan_connectivity[each.value.lan_connectivity].moid
   mac_address_type          = each.value.mac_address_type
   mac_pool_moid             = each.value.mac_address_type == "POOL" ? [local.mac_pools[each.value.mac_pool_b_name]] : []
@@ -534,12 +543,12 @@ module "vnic_templates_b" {
   vmq_number_queues         = each.value.vmq_number_queues
   vmq_number_sub_vnics      = each.value.vmq_number_sub_vnics
   vmq_adapter_policy_moid   = each.value.vmq_adapter_policy_moid
-  vnic_adapter_moid         = each.value.adapter_template == "Linux" ? module.vnic_adapter_linux[each.key].moid : each.value.adapter_template == "Linux-NVMe-ROCE" ? module.vnic_adapter_linux_nvmeof[each.key].moid : each.value.adapter_template == "VMware" ? module.vnic_adapter_vmware[each.key].moid : each.value.adapter_template == "Windows" ? module.vnic_adapter_windows[each.key].moid : null
+  vnic_adapter_moid         = module.vnic_adapter[each.key].moid
   vnic_control_moid         = module.vnic_network_control_policy[each.key].moid
   vnic_name                 = each.value.vnic_name_b
-  vnic_order              = each.value.vnic_order_b
-  vnic_qos_moid           = module.vnic_qos[each.key].moid
-  vnic_network_group_moid = module.vnic_vlan_group[each.key].moid
+  vnic_order                = each.value.vnic_order_b
+  vnic_qos_moid             = module.vnic_qos[each.key].moid
+  vnic_network_group_moid   = module.vnic_vlan_group[each.key].moid
   # iscsi_boot_policy         = module.policy_iscsi_boot[each.key].moid
   # vnic_network_moid         = module.vnic_network[each.key].moid
 }

@@ -105,7 +105,7 @@ module "policy_boot_uefi_m2_raid" {
   source = "terraform-cisco-modules/imm/intersight//modules/policies_boot_order"
   for_each = {
     for k, v in local.policy_boot_order : k => v
-    if local.policy_boot_order[k].boot_policy == "uefi_m2_pch"
+    if local.policy_boot_order[k].boot_policy == "uefi_m2_raid"
   }
   boot_mode   = "Uefi"
   boot_secure = each.value.boot_secure
