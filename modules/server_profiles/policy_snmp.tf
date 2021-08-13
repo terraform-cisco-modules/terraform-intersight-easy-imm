@@ -94,7 +94,7 @@ module "snmp" {
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_snmp == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_snmp == each.key]
   snmp_access     = each.value.snmp_access
   snmp_community  = var.snmp_community
   snmp_engine_id  = each.value.snmp_engine_id

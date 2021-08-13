@@ -76,7 +76,7 @@ module "policy_persistent_memory" {
   name                         = each.key
   org_moid                     = local.org_moids[each.value.organization].moid
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_persistent_memory == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_persistent_memory == each.key]
   retain_namespaces = each.value.retain_namespaces
   secure_passphrase = var.persistent_passphrase
   tags              = each.value.tags != [] ? each.value.tags : local.tags

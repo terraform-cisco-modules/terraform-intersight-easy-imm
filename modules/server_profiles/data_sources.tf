@@ -34,8 +34,8 @@ data "intersight_organization_organization" "org_moid" {
 
 data "intersight_compute_physical_summary" "server" {
   for_each = {
-    for assign, serial in local.ucs_server_profiles : assign => serial
-    if serial.assign_server == true
+    for k, v in local.ucs_server_profiles : k => v
+    if v.profile.assign_server == true
   }
   serial = each.key
 }

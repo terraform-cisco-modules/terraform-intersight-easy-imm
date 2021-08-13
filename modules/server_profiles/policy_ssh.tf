@@ -57,7 +57,7 @@ module "policy_ssh" {
   org_moid    = local.org_moids[each.value.organization].moid
   ssh_port    = each.value.ssh_port
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_ssh == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_ssh == each.key]
   tags    = each.value.tags != [] ? each.value.tags : local.tags
   timeout = each.value.timeout
 }

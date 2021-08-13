@@ -49,7 +49,7 @@ module "policy_bios_nvmeof" {
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   tags = each.value.tags != [] ? each.value.tags : local.tags
   #+++++++++++++++++++++++++++++++
   # Intel Directed IO Section
@@ -114,7 +114,7 @@ module "policy_bios_virtual_node" {
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   tags = each.value.tags != [] ? each.value.tags : local.tags
   #+++++++++++++++++++++++++++++++
   # Boot Options Section
@@ -182,7 +182,7 @@ module "policy_bios_virtual_rack" {
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_bios == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   tags = each.value.tags != [] ? each.value.tags : local.tags
   #+++++++++++++++++++++++++++++++
   # Boot Options Section

@@ -144,7 +144,7 @@ variable "policy_ldap" {
 # LDAP Policy
 #______________________________________________
 
-module "ldap_policy" {
+module "policy_ldap" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profile
@@ -168,6 +168,8 @@ module "ldap_policy" {
   nr_source                  = each.value.ldap_nr_source
   org_moid                   = local.org_moids[each.value.organization].moid
   password                   = var.ldap_password
+  profiles = [for s in sort(keys(
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_ldap == each.key]
   search_domain              = each.value.ldap_search_domain
   search_forest              = each.value.ldap_search_forest
   tags                       = each.value.tags != [] ? each.value.tags : local.tags
@@ -183,11 +185,11 @@ module "ldap_policy" {
 module "ldap_provider" {
   depends_on = [
     local.org_moids,
-    module.ldap_policy
+    module.policy_ldap
   ]
   for_each         = local.ldap_servers.ldap_servers
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_provider"
-  ldap_policy_moid = module.ldap_policy[each.value.policy].moid
+  ldap_policy_moid = module.policy_ldap[each.value.policy].moid
   ldap_port        = each.value.ldap_port
   ldap_server      = each.value.ldap_server
 }
@@ -200,12 +202,12 @@ module "ldap_provider" {
 module "ldap_groups" {
   depends_on = [
     local.org_moids,
-    module.ldap_policy
+    module.policy_ldap
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_group"
   for_each         = local.ldap_groups.ldap_groups
   group_role       = each.value.group_role
   ldap_domain      = each.value.ldap_domain
   ldap_group       = each.value.ldap_group
-  ldap_policy_moid = module.ldap_policy[each.value.policy].moid
+  ldap_policy_moid = module.policy_ldap[each.value.policy].moid
 }

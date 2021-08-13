@@ -60,7 +60,7 @@ module "syslog" {
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].policy_syslog == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profile[s].moid if local.ucs_server_profiles[s].profile.policy_syslog == each.key]
   remote_clients     = each.value.syslog_destinations
   local_min_severity = each.value.local_min_severity
   tags               = each.value.tags != [] ? each.value.tags : local.tags
