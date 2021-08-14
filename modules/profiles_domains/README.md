@@ -92,7 +92,6 @@ This module will create UCS Domain Profiles in Intersight.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_assign_switches"></a> [assign\_switches](#output\_assign\_switches) | moid of the UCS Domain Profiles. |
 | <a name="output_ucs_domain_profile"></a> [ucs\_domain\_profile](#output\_ucs\_domain\_profile) | moid of the UCS Domain Profiles. |
 | <a name="output_ucs_domain_profile_a"></a> [ucs\_domain\_profile\_a](#output\_ucs\_domain\_profile\_a) | UCS Domain Profile - Fabric Interconnect A moids. |
 | <a name="output_ucs_domain_profile_a_hardware"></a> [ucs\_domain\_profile\_a\_hardware](#output\_ucs\_domain\_profile\_a\_hardware) | Fabric Interconnect A Hardware Information. |

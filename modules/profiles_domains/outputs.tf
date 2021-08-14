@@ -1,16 +1,5 @@
 #__________________________________________________________
 #
-# Assign Switches Outputs
-#__________________________________________________________
-
-output "assign_switches" {
-  description = "moid of the UCS Domain Profiles."
-  value       = var.assign_switches
-}
-
-
-#__________________________________________________________
-#
 # UCS Domain Profile Outputs
 #__________________________________________________________
 
