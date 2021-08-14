@@ -1,4 +1,4 @@
-# profiles_domains - Intersight UCS Domain Profiles Deployment Module
+# Intersight UCS Domain Profiles Deployment Module
 
 ## Use this module to create UCS Domain Profiles in Intersight
 

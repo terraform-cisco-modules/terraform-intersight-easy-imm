@@ -1,4 +1,4 @@
-# profiles_chassis - Intersight UCS Chassis Profiles Deployment Module
+# Intersight UCS Chassis Profiles Deployment Module
 
 ## Use this module to create UCS Chassis Profiles in Intersight
 

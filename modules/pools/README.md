@@ -1,4 +1,4 @@
-# pools - Intersight Pools Deployment Module
+# Intersight Pools Deployment Module
 
 ## Use this module to create Pools in Intersight
 
