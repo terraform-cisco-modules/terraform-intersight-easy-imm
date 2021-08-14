@@ -1,7 +1,3 @@
-
-# Ignore the Backup directory
-modules/backup
-
 # Local .terraform directories
 **/.terraform/*
 **/.secret
@@ -35,6 +31,4 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
-examples/infrastructure/.secret_old
-.stagingsecret
 *main.plan

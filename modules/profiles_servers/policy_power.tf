@@ -20,6 +20,8 @@ variable "policy_power" {
   key - Name of the Power Policy.
   * allocated_budget - Sets the Allocated Power Budget of the System (in Watts). This field is only supported for Cisco UCS X series Chassis.
   * description - Description to Assign to the Policy.
+  * organization - Name of the Intersight Organization to assign this Policy to.
+    - https://intersight.com/an/settings/organizations/
   * power_profiling - Sets the Power Profiling of the Server. This field is only supported for Cisco UCS X series servers.
     - Enabled - Set the value to Enabled.
     - Disabled - Set the value to Disabled.
@@ -27,8 +29,6 @@ variable "policy_power" {
     - AlwaysOff - Set the Power Restore Mode to Off.
     - AlwaysOn - Set the Power Restore Mode to On.
     - LastState - Set the Power Restore Mode to LastState.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * redundancy_mode - Sets the Power Redundancy of the System. N+2 mode is only supported for Cisco UCS X series Chassis.
     - Grid - Grid Mode requires two power sources. If one source fails, the surviving PSUs connected to the other source provides power to the chassis.
     - NotRedundant - Power Manager turns on the minimum number of PSUs required to support chassis power requirements. No Redundant PSUs are maintained.
@@ -40,9 +40,9 @@ variable "policy_power" {
     {
       allocated_budget    = optional(number)
       description         = optional(string)
+      organization        = optional(string)
       power_profiling     = optional(string)
       power_restore_state = optional(string)
-      organization        = optional(string)
       redundancy_mode     = optional(string)
       tags                = optional(list(map(string)))
     }

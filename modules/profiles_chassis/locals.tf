@@ -16,7 +16,7 @@ locals {
   tags = var.tags
 
   # Terraform Cloud Remote Resources
-  ip_pools   = data.terraform_remote_state.pools.outputs.ip_pools
+  ip_pools = data.terraform_remote_state.pools.outputs.ip_pools
 
   #______________________________________________
   #
@@ -27,20 +27,20 @@ locals {
     {
       for key, value in var.ucs_chassis_templates : "profile" =>
       {
-        action                      = (v.action != null ? v.action : "No-op")
-        assigned_chassis            = (v.assigned_chassis != null ? v.assigned_chassis : false)
-        description                 = (v.description != null ? v.description : "")
-        name                        = (v.name != null ? v.name : "")
-        organization                = (value.organization != null ? value.organization : "default")
-        policy_imc_access           = (value.policy_imc_access != null ? value.policy_imc_access : "")
-        policy_power                = (value.policy_power != null ? value.policy_power : "")
-        policy_snmp                 = (value.policy_snmp != null ? value.policy_snmp : "")
-        policy_snmp_1_user          = (value.policy_snmp_1_user != null ? value.policy_snmp_1_user : "")
-        policy_snmp_2_users         = (value.policy_snmp_2_users != null ? value.policy_snmp_2_users : "")
-        policy_thermal              = (value.policy_thermal != null ? value.policy_thermal : "")
-        tags                        = (v.tags != null ? v.tags : [])
-        target_platform             = (value.target_platform != null ? value.target_platform : "FIAttached")
-        wait_for_completion         = (v.wait_for_completion != null ? v.wait_for_completion : false)
+        action              = (v.action != null ? v.action : "No-op")
+        assigned_chassis    = (v.assigned_chassis != null ? v.assigned_chassis : false)
+        description         = (v.description != null ? v.description : "")
+        name                = (v.name != null ? v.name : "")
+        organization        = (value.organization != null ? value.organization : "default")
+        policy_imc_access   = (value.policy_imc_access != null ? value.policy_imc_access : "")
+        policy_power        = (value.policy_power != null ? value.policy_power : "")
+        policy_snmp         = (value.policy_snmp != null ? value.policy_snmp : "")
+        policy_snmp_1_user  = (value.policy_snmp_1_user != null ? value.policy_snmp_1_user : "")
+        policy_snmp_2_users = (value.policy_snmp_2_users != null ? value.policy_snmp_2_users : "")
+        policy_thermal      = (value.policy_thermal != null ? value.policy_thermal : "")
+        tags                = (v.tags != null ? v.tags : [])
+        target_platform     = (value.target_platform != null ? value.target_platform : "FIAttached")
+        wait_for_completion = (v.wait_for_completion != null ? v.wait_for_completion : false)
       } if v.src_template == key
     }
   }
@@ -113,10 +113,10 @@ locals {
 
   policy_thermal = {
     for k, v in var.policy_thermal : k => {
-      description            = (v.description != null ? v.description : "")
-      fan_control_mode       = (v.fan_control_mode != null ? v.fan_control_mode : "Balanced")
-      organization           = (v.organization != null ? v.organization : "default")
-      tags                   = (v.tags != null ? v.tags : [])
+      description      = (v.description != null ? v.description : "")
+      fan_control_mode = (v.fan_control_mode != null ? v.fan_control_mode : "Balanced")
+      organization     = (v.organization != null ? v.organization : "default")
+      tags             = (v.tags != null ? v.tags : [])
     }
   }
 }

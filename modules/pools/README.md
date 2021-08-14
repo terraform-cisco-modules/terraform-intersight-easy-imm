@@ -1,6 +1,6 @@
-# pools - Intersight Management Mode IP Pool Deployment Module
+# pools - Intersight Pools Deployment Module
 
-## Use this module to create IMM Domain Profiles in Intersight
+## Use this module to create Pools in Intersight
 
 ## Usage
 
