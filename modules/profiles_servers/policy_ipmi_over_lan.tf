@@ -11,34 +11,6 @@ variable "ipmi_key_1" {
   type        = string
 }
 
-variable "ipmi_key_2" {
-  default     = ""
-  description = "Encryption key 2 to use for IPMI communication. It should have an even number of hexadecimal characters and not exceed 40 characters."
-  sensitive   = true
-  type        = string
-}
-
-variable "ipmi_key_3" {
-  default     = ""
-  description = "Encryption key 3 to use for IPMI communication. It should have an even number of hexadecimal characters and not exceed 40 characters."
-  sensitive   = true
-  type        = string
-}
-
-variable "ipmi_key_4" {
-  default     = ""
-  description = "Encryption key 4 to use for IPMI communication. It should have an even number of hexadecimal characters and not exceed 40 characters."
-  sensitive   = true
-  type        = string
-}
-
-variable "ipmi_key_5" {
-  default     = ""
-  description = "Encryption key 5 to use for IPMI communication. It should have an even number of hexadecimal characters and not exceed 40 characters."
-  sensitive   = true
-  type        = string
-}
-
 variable "policy_ipmi_over_lan" {
   default = {
     default = {
@@ -54,7 +26,7 @@ variable "policy_ipmi_over_lan" {
   key - Name of the IPMI over LAN Policy.
   * description - Description to Assign to the Policy.
   * enabled - Flag to Enable or Disable the Policy.
-  * encryption_key - This is a key to signify the variable "ipmi_encryption_key_[key]" to be used.  i.e. 1 for variable "ipmi_encryption_key_1".
+  * encryption_key - If null then encryption will not be applied.  If the value is set to 1 it will apply the ipmi_key_1 value.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
   * privilege - The highest privilege level that can be assigned to an IPMI session on a server.

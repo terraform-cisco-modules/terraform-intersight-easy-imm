@@ -15,7 +15,7 @@ module "fc_pools" {
     local.org_moids
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/pools_fc"
-  for_each         = var.fc_pools_create == true ? local.fc_pools_map : {}
+  for_each         = local.fc_pools
   assignment_order = each.value.assignment_order
   description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} ${each.value.pool_purpose} Pool."
   id_blocks        = each.value.id_blocks
@@ -36,7 +36,7 @@ module "ip_pools" {
     local.org_moids
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/pools_ip"
-  for_each         = var.ip_pools_create == true ? local.ip_pools_map : {}
+  for_each         = local.ip_pools
   assignment_order = each.value.assignment_order
   description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} IP Pool."
   dns_servers_v4   = each.value.dns_servers_v4
@@ -61,7 +61,7 @@ module "iqn_pools" {
     local.org_moids
   ]
   source            = "terraform-cisco-modules/imm/intersight//modules/pools_iqn"
-  for_each          = var.iqn_pools_create == true ? local.iqn_pools_map : {}
+  for_each          = local.iqn_pools
   assignment_order  = each.value.assignment_order
   description       = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} IQN Pool."
   iqn_prefix        = each.value.iqn_prefix
@@ -82,7 +82,7 @@ module "mac_pools" {
     local.org_moids
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/pools_mac"
-  for_each         = var.mac_pools_create == true ? local.mac_pools_map : {}
+  for_each         = local.mac_pools
   assignment_order = each.value.assignment_order
   description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} MAC Pool."
   mac_blocks       = each.value.mac_blocks
@@ -102,7 +102,7 @@ module "uuid_pools" {
     local.org_moids
   ]
   source             = "terraform-cisco-modules/imm/intersight//modules/pools_uuid"
-  for_each           = var.uuid_pools_create == true ? local.uuid_pools_map : {}
+  for_each           = local.uuid_pools
   assignment_order   = each.value.assignment_order
   description        = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} UUID Pool."
   name               = each.key

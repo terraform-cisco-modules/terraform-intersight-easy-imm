@@ -32,15 +32,15 @@ variable "secretkey" {
 #__________________________________________________________
 
 variable "organizations" {
-  default     = "[\"default\"]"
+  default     = ["default"]
   description = "Intersight Organization Names to Apply Policy to.  https://intersight.com/an/settings/organizations/."
-  type        = string
+  type        = set(string)
 }
 
 variable "tags" {
-  default     = "[]"
+  default     = []
   description = "Tags to be Associated with Objects Created in Intersight."
-  type        = string
+  type        = list(map(string))
 }
 
 
@@ -49,15 +49,48 @@ variable "tags" {
 # Fibre-Channel Pool Variables
 #______________________________________________
 
-variable "fc_pools_create" {
-  default     = false
-  description = "Set this to True if you want to Create a Fibre-Channel Pool."
-  type        = bool
-}
-
-variable "fc_pools_map" {
-  description = "Please Refer to the fc_pools_map variable information in the tfe module.  In the pools module the variable is accepted as a string from terraform cloud in the terraform.auto.tfvars and extracted using locals."
-  type        = string
+variable "fc_pools" {
+  default = {
+    default = {
+      assignment_order = "default"
+      description      = ""
+      organization     = "default"
+      pool_purpose     = "WWPN"
+      tags             = []
+      id_blocks = [
+        {
+          from = "20:00:00:25:B5:0a:00:00"
+          to   = "20:00:00:25:B5:0a:00:ff"
+        }
+      ]
+    }
+  }
+  description = <<-EOT
+  key - Name of the Fibre-Channel Pool.
+  * Assignment order decides the order in which the next identifier is allocated.
+    - default - Assignment order is decided by the system - Default value.
+    - sequential - Identifiers are assigned in a sequential order.
+  * description - Description to Assign to the Pool.
+  * id_blocks - Map of Addresses to Assign to the Pool.
+    - from - staring WWxN Address.  Default is "20:00:00:25:B5:0a:00:00".
+    - to - ending WWxN Address.  Default is "20:00:00:25:B5:0a:00:ff".
+  * pool_purpose - What type of Fiber-Channel Pool is this.  Options are:
+    - WWNN
+    - WWPN - (Default).
+  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
+    - https://intersight.com/an/settings/organizations/
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
+  EOT
+  type = map(object(
+    {
+      assignment_order = optional(string)
+      description      = optional(string)
+      id_blocks        = optional(list(map(string)))
+      organization     = optional(string)
+      pool_purpose     = optional(string)
+      tags             = optional(list(map(string)))
+    }
+  ))
 }
 
 
@@ -66,15 +99,59 @@ variable "fc_pools_map" {
 # IP Pool Variables
 #______________________________________________
 
-variable "ip_pools_create" {
-  default     = false
-  description = "Set this to True if you want to Create an IP Pool."
-  type        = bool
-}
-
-variable "ip_pools_map" {
-  description = "Please Refer to the ip_pools_map variable information in the tfe module.  In the pools module the variable is accepted as a string from terraform cloud in the terraform.auto.tfvars and extracted using locals."
-  type        = string
+variable "ip_pools" {
+  default = {
+    default = {
+      assignment_order = "default"
+      description      = ""
+      dns_servers_v4   = ["208.67.220.220", "208.67.222.222"]
+      dns_servers_v6   = []
+      ipv4_block       = []
+      ipv4_config      = []
+      ipv6_block       = []
+      ipv6_config      = []
+      organization     = "default"
+      tags             = []
+    }
+  }
+  description = <<-EOT
+  key - Name of the IP Pool.
+  * Assignment order decides the order in which the next identifier is allocated.
+    - default - (Default) Assignment order is decided by the system.
+    - sequential - Identifiers are assigned in a sequential order.
+  * description - Description to Assign to the Pool.
+  * dns_server_v4 - IPv4 DNS Servers to assign to the IP Pool.  Default is ["208.67.220.220", "208.67.222.222"].
+  * dns_server_v6 - IPv6 DNS Servers to assign to the IP Pool.
+  * ipv4_block - Map of Addresses to Assign to the Pool.
+    - pool_size - Size of the IPv4 Address Block.
+    - starting_ip - Starting IPv4 Address.
+  * ipv4_config - IPv4 Configuration to assign to the ipv4_blocks.
+    - gateway - Gateway to assign to the pool.
+    - netmask - Netmask to assign to the pool.
+  * ipv6_block - Map of Addresses to Assign to the Pool.
+    - pool_size - Size of the IPv6 Address Block.
+    - starting_ip - Starting IPv6 Address.
+  * ipv6_config - IPv4 Configuration to assign to the ipv4_blocks.
+    - gateway - Gateway to assign to the pool.
+    - netmask - Netmask to assign to the pool.
+  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
+    - https://intersight.com/an/settings/organizations/
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
+  EOT
+  type = map(object(
+    {
+      assignment_order = optional(string)
+      description      = optional(string)
+      dns_servers_v4   = optional(set(string))
+      dns_servers_v6   = optional(set(string))
+      ipv4_block       = optional(list(map(string)))
+      ipv4_config      = optional(list(map(string)))
+      ipv6_block       = optional(list(map(string)))
+      ipv6_config      = optional(list(map(string)))
+      organization     = optional(string)
+      tags             = optional(list(map(string)))
+    }
+  ))
 }
 
 
@@ -83,15 +160,51 @@ variable "ip_pools_map" {
 # IQN Pool Variables
 #______________________________________________
 
-variable "iqn_pools_create" {
-  default     = false
-  description = "Set this to True if you want to Create an IQN Pool."
-  type        = bool
-}
-
-variable "iqn_pools_map" {
-  description = "Please Refer to the iqn_pools_map variable information in the tfe module.  In the pools module the variable is accepted as a string from terraform cloud in the terraform.auto.tfvars and extracted using locals."
-  type        = string
+variable "iqn_pools" {
+  default = {
+    default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
+      assignment_order = "default"
+      description      = ""
+      iqn_prefix       = "iqn.2021-11.com.cisco"
+      organization     = "default"
+      tags             = []
+      iqn_suffix_blocks = [
+        {
+          pool_size    = 255
+          starting_iqn = 01
+          suffix       = "ucs-host"
+        }
+      ]
+    }
+  }
+  description = <<-EOT
+  key - Name of the IQN Pool.
+  * Assignment order decides the order in which the next identifier is allocated.
+    - default - (Default) Assignment order is decided by the system.
+    - sequential - Identifiers are assigned in a sequential order.
+  * description - Description to Assign to the Pool.
+  * iqn_prefix - The prefix for IQN blocks created for this pool.  The default is "iqn.2021-11.com.cisco".
+  * iqn_suffix_blocks - Map of Addresses to Assign to the Pool.
+    - pool_size - staring WWxN Address.  Default is 255.
+    - starting_iqn - ending WWxN Address.  Default is 01.
+    - suffix - Suffix to assign to the IQN Pool.  Default is "ucs-host".
+  * pool_purpose - What type of Fiber-Channel Pool is this.  Options are:
+    - WWNN
+    - WWPN -(Default).
+  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
+    - https://intersight.com/an/settings/organizations/
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
+  EOT
+  type = map(object(
+    {
+      assignment_order  = optional(string)
+      description       = optional(string)
+      iqn_prefix        = optional(string)
+      iqn_suffix_blocks = optional(list(map(string)))
+      organization      = optional(string)
+      tags              = optional(list(map(string)))
+    }
+  ))
 }
 
 
@@ -100,15 +213,43 @@ variable "iqn_pools_map" {
 # MAC Pool Variables
 #______________________________________________
 
-variable "mac_pools_create" {
-  default     = false
-  description = "Set this to True if you want to Create an MAC Pool."
-  type        = bool
-}
-
-variable "mac_pools_map" {
-  description = "Please Refer to the mac_pools_map variable information in the tfe module.  In the pools module the variable is accepted as a string from terraform cloud in the terraform.auto.tfvars and extracted using locals."
-  type        = string
+variable "mac_pools" {
+  default = {
+    default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
+      assignment_order = "default"
+      description      = ""
+      organization     = "default"
+      tags             = []
+      mac_blocks = [
+        {
+          from = "00:25:B5:0a:00:00"
+          to   = "00:25:B5:0a:00:ff"
+        }
+      ]
+    }
+  }
+  description = <<-EOT
+  key - Name of the MAC Pool.
+  * Assignment order decides the order in which the next identifier is allocated.
+    - default - (Default) Assignment order is decided by the system.
+    - sequential - Identifiers are assigned in a sequential order.
+  * description - Description to Assign to the Pool.
+  * mac_blocks - Map of Addresses to Assign to the Pool.
+    - from - staring MAC Address.  Default is "00:25:B5:0a:00:00".
+    - to - ending MAC Address.  Default is "00:25:B5:0a:00:ff".
+  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
+    - https://intersight.com/an/settings/organizations/
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
+  EOT
+  type = map(object(
+    {
+      assignment_order = optional(string)
+      description      = optional(string)
+      mac_blocks       = optional(list(map(string)))
+      organization     = optional(string)
+      tags             = optional(list(map(string)))
+    }
+  ))
 }
 
 
@@ -117,13 +258,44 @@ variable "mac_pools_map" {
 # UUID Pool Variables
 #______________________________________________
 
-variable "uuid_pools_create" {
-  default     = false
-  description = "Set this to True if you want to Create an MAC Pool."
-  type        = bool
-}
-
-variable "uuid_pools_map" {
-  description = "Please Refer to the uuid_pools_map variable information in the tfe module.  In the pools module the variable is accepted as a string from terraform cloud in the terraform.auto.tfvars and extracted using locals."
-  type        = string
+variable "uuid_pools" {
+  default = {
+    default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
+      assignment_order = "default"
+      description      = ""
+      organization     = "default"
+      prefix           = "000025B5-0000-0000"
+      tags             = []
+      uuid_suffix_blocks = [
+        {
+          from = "0000-000000000000"
+          size = 32768
+        }
+      ]
+    }
+  }
+  description = <<-EOT
+  key - Name of the UUID Pool.
+  * Assignment order decides the order in which the next identifier is allocated.
+    - default - (Default) Assignment order is decided by the system.
+    - sequential - Identifiers are assigned in a sequential order.
+  * description - Description to Assign to the Pool.
+  * prefix - Prefix to assign to the UUID Pool..  The default is "000025B5-0000-0000".
+  * uuid_suffix_blocks - Map of Addresses to Assign to the Pool.
+    - from - Starting UUID Address.  Default is "0000-000000000000".
+    - size - Size of UUID Pool.  Default is "32768".
+  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
+    - https://intersight.com/an/settings/organizations/
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
+  EOT
+  type = map(object(
+    {
+      assignment_order   = optional(string)
+      description        = optional(string)
+      organization       = optional(string)
+      prefix             = optional(string)
+      tags               = optional(list(map(string)))
+      uuid_suffix_blocks = optional(list(map(string)))
+    }
+  ))
 }

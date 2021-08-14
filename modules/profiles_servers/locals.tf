@@ -25,8 +25,8 @@ locals {
   #
   # UCS Domain Variables
   #______________________________________________
-  ucs_chassis_profiles = {
-    for k, v in var.ucs_chassis_profiles : k =>
+  ucs_server_profiles = {
+    for k, v in var.ucs_server_profiles : k =>
     {
       for key, value in var.ucs_server_templates : "profile" =>
       {
@@ -133,7 +133,7 @@ locals {
 
   #__________________________________________________________
   #
-  # IMC Access Policy Section Locals
+  # IPMI over LAN Policy Section Locals
   #__________________________________________________________
 
   policy_ipmi_over_lan = {
@@ -278,7 +278,7 @@ locals {
 
   #__________________________________________________________
   #
-  # Power Policy Section Locals
+  # Persistent Memory Policy Section Locals
   #__________________________________________________________
 
   policy_persistent_memory = {

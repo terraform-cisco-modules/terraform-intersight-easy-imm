@@ -18,6 +18,34 @@ variable "snmp_trap_community" {
   type        = string
 }
 
+variable "snmp_user_1_auth_password" {
+  default     = ""
+  description = "Authorization password for the user."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_user_1_privacy_password" {
+  default     = ""
+  description = "Privacy password for the user."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_user_2_auth_password" {
+  default     = ""
+  description = "Authorization password for the user."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_user_2_privacy_password" {
+  default     = ""
+  description = "Privacy password for the user."
+  sensitive   = true
+  type        = string
+}
+
 variable "policy_snmp" {
   default = {
     default = {
@@ -93,6 +121,7 @@ module "snmp" {
   enabled         = each.value.enabled
   name            = each.key
   org_moid        = local.org_moids[each.value.organization].moid
+  profile_type    = "chassis"
   snmp_access     = each.value.snmp_access
   snmp_community  = var.snmp_community
   snmp_engine_id  = each.value.snmp_engine_id

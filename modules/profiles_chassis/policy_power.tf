@@ -20,7 +20,7 @@ variable "policy_power" {
   key - Name of the Power Policy.
   * allocated_budget - Sets the Allocated Power Budget of the System (in Watts). This field is only supported for Cisco UCS X series Chassis.
   * description - Description to Assign to the Policy.
-  * power_profiling - Sets the Power Profiling of the Server. This field is only supported for Cisco UCS X series servers.
+  * power_profiling - Sets the Power Profiling of the Chassis. This field is only supported for Cisco UCS X series servers.
     - Enabled - Set the value to Enabled.
     - Disabled - Set the value to Disabled.
   * power_restore_state - Sets the Power Restore State of the Server.
@@ -59,7 +59,7 @@ variable "policy_power" {
 module "policy_power" {
   depends_on = [
     local.org_moids,
-    module.ucs_chassis_profile
+    module.ucs_chassis_profiles
   ]
   source              = "../../../terraform-intersight-imm/modules/policies_power"
   for_each            = local.policy_power
@@ -69,8 +69,9 @@ module "policy_power" {
   org_moid            = local.org_moids[each.value.organization].moid
   power_profiling     = each.value.power_profiling
   power_restore_state = each.value.power_restore_state
+  profile_type        = "chassis"
   redundancy_mode     = each.value.redundancy_mode
   tags                = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_chassis_profile)) : module.ucs_chassis_profile[s].moid if local.ucs_chassis_profile[s].profile.policy_power == each.key]
+  local.ucs_chassis_profiles)) : module.ucs_chassis_profiles[s].moid if local.ucs_chassis_profiles[s].profile.policy_power == each.key]
 }

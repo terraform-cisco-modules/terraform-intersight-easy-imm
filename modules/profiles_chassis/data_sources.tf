@@ -27,7 +27,7 @@ data "intersight_organization_organization" "org_moid" {
 
 #____________________________________________________________
 #
-# Server Moid Data Source
+# Chassis Moid Data Source
 # GUI Location:
 #   Operate > Chassis > Copy the Serial from the Column.
 #____________________________________________________________
@@ -35,7 +35,7 @@ data "intersight_organization_organization" "org_moid" {
 data "intersight_equipment_chassis" "chassis" {
   for_each = {
     for k, v in local.ucs_chassis_profiles : k => v
-    if v.profile.assign_chassis == true
+    if v.profile.assigned_chassis == true
   }
   serial = each.key
 }

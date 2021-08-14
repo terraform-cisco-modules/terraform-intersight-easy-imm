@@ -50,18 +50,19 @@ variable "policy_imc_access" {
 module "policy_imc_access" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile
+    module.ucs_chassis_profiles
   ]
-  source      = "../../../terraform-intersight-imm/modules/policies_imc_access"
-  for_each    = local.policy_imc_access
-  description = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
-  imc_ip_pool = each.value.imc_ip_pool != "" ? local.ip_pools[each.value.imc_ip_pool] : null
-  inband_vlan = each.value.inband_vlan
-  ipv4_enable = each.value.ipv4_enable
-  ipv6_enable = each.value.ipv6_enable
-  name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  source       = "../../../terraform-intersight-imm/modules/policies_imc_access"
+  for_each     = local.policy_imc_access
+  description  = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
+  imc_ip_pool  = each.value.imc_ip_pool != "" ? local.ip_pools[each.value.imc_ip_pool] : null
+  inband_vlan  = each.value.inband_vlan
+  ipv4_enable  = each.value.ipv4_enable
+  ipv6_enable  = each.value.ipv6_enable
+  name         = each.key
+  org_moid     = local.org_moids[each.value.organization].moid
+  profile_type = "chassis"
+  tags         = each.value.tags != [] ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_chassis_profiles)) : module.ucs_server_profile[s].moid if local.ucs_chassis_profiles[s].profile.policy_imc_access == each.key]
+  local.ucs_chassis_profiles)) : module.ucs_chassis_profiles[s].moid if local.ucs_chassis_profiles[s].profile.policy_imc_access == each.key]
 }
