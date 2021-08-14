@@ -71,6 +71,9 @@ module "policy_power" {
   power_restore_state = each.value.power_restore_state
   redundancy_mode     = each.value.redundancy_mode
   tags                = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_power == each.key]
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policy_power == each.key
+  ]
 }

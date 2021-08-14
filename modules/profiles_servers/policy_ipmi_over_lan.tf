@@ -63,11 +63,14 @@ module "policy_ipmi_over_lan" {
   for_each       = local.policy_ipmi_over_lan
   description    = each.value.description != "" ? each.value.description : "${each.key} IPMI over LAN Policy."
   enabled        = each.value.enabled
-  encryption_key = each.value.ipmi_key == 1 ? var.ipmi_key_1 : each.value.ipmi_key == 2 ? var.ipmi_key_2 : each.value.ipmi_key == 3 ? var.ipmi_key_3 : each.value.ipmi_key == 4 ? var.ipmi_key_4 : each.value.ipmi_key == 5 ? var.ipmi_key_5 : null
+  encryption_key = each.value.ipmi_key == 1 ? var.ipmi_key_1 : null
   privilege      = each.value.privilege
   name           = each.key
   org_moid       = local.org_moids[each.value.organization].moid
   tags           = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_ipmi_over_lan == each.key]
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policy_ipmi_over_lan == each.key
+  ]
 }

@@ -144,7 +144,7 @@ variable "policy_snmp" {
 module "policies_snmp" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_domain_profiles
   ]
   for_each                = {
     for k, v in local.policy_snmp : k => v
@@ -167,18 +167,19 @@ module "policies_snmp" {
   trap_community          = var.snmp_trap_community
   v2_enabled              = var.snmp_community != "" ? true : false
   v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
-  profile_type            = "server"
+  profile_type            = "domain"
   profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_snmp == each.key
+    for s in sort(keys(local.ucs_domain_profiles)) :
+    module.ucs_domain_profiles_a[s].moid &&
+    module.ucs_domain_profiles_b[s].moid
+    if local.ucs_domain_profiles[s].profile.policy_snmp == each.key
   ]
 }
 
 module "policies_snmp_1_user" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_domain_profiles
   ]
   for_each                = {
     for k, v in local.policy_snmp : k => v
@@ -206,18 +207,19 @@ module "policies_snmp_1_user" {
   trap_community          = var.snmp_trap_community
   v2_enabled              = var.snmp_community != "" ? true : false
   v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
-  profile_type            = "server"
+  profile_type            = "domain"
   profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_snmp == each.key
+    for s in sort(keys(local.ucs_domain_profiles)) :
+    module.ucs_domain_profiles_a[s].moid &&
+    module.ucs_domain_profiles_b[s].moid
+    if local.ucs_domain_profiles[s].profile.policy_snmp == each.key
   ]
 }
 
 module "policies_snmp_2_users" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_domain_profiles
   ]
   for_each                = {
     for k, v in local.policy_snmp : k => v
@@ -250,10 +252,11 @@ module "policies_snmp_2_users" {
   trap_community          = var.snmp_trap_community
   v2_enabled              = var.snmp_community != "" ? true : false
   v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
-  profile_type            = "server"
+  profile_type            = "domain"
   profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_snmp == each.key
+    for s in sort(keys(local.ucs_domain_profiles)) :
+    module.ucs_domain_profiles_a[s].moid &&
+    module.ucs_domain_profiles_b[s].moid
+    if local.ucs_domain_profiles[s].profile.policy_snmp == each.key
   ]
 }

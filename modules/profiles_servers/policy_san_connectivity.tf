@@ -174,8 +174,11 @@ module "vhba_san_connectivity" {
   target_platform     = each.value.target_platform
   wwnn_pool           = each.value.wwnn_address_type == "POOL" ? [local.fc_pools[each.value.wwnn_pool]] : []
   wwnn_address_type   = each.value.wwnn_address_type
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_san_connectivity == each.key]
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policy_san_connectivity == each.key
+  ]
 }
 
 

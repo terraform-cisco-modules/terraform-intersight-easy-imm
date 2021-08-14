@@ -46,22 +46,26 @@ variable "snmp_user_2_privacy_password" {
   type        = string
 }
 
+
 variable "policy_snmp" {
   default = {
     default = {
-      description            = ""
-      enabled                = true
-      organization           = "default"
-      snmp_access            = "Full"
-      snmp_engine_id         = ""
-      snmp_port              = 161
-      snmp_trap_destinations = []
-      snmp_users             = []
-      system_contact         = ""
-      system_location        = ""
-      tags                   = []
-      v2_enabled             = true
-      v3_enabled             = true
+      description                = ""
+      enabled                    = true
+      organization               = "default"
+      snmp_access                = "Full"
+      snmp_engine_id             = ""
+      snmp_port                  = 161
+      snmp_trap_destinations     = []
+      snmp_user_1_auth_type      = "SHA"
+      snmp_user_1_name           = ""
+      snmp_user_1_security_level = "AuthPriv"
+      snmp_user_2_auth_type      = "SHA"
+      snmp_user_2_name           = ""
+      snmp_user_2_security_level = "AuthPriv"
+      system_contact             = ""
+      system_location            = ""
+      tags                       = []
     }
   }
   description = <<-EOT
@@ -77,32 +81,59 @@ variable "policy_snmp" {
   * snmp_engine_id - Unique string to identify the device for administration purpose. This is generated from the SNMP Input Engine ID if it is already defined, else it is derived from the BMC serial number.
   * snmp_port - Port on which Cisco IMC SNMP agent runs. Enter a value between 1-65535. Reserved ports not allowed (22, 23, 80, 123, 389, 443, 623, 636, 2068, 3268, 3269).  Default is 161.
   * snmp_trap_destinations - List of SNMP Trap Destinations to Assign to the Policy.
-  * snmp_users - List of SNMP Users to Assign to the Policy.
+  * snmp_user_1_auth_type - Authorization protocol for authenticating the user.  Currently Options are:
+    - MD5
+    - SHA
+  * In the future these options will be added.
+    - NA - Authentication protocol is not applicable.
+    - SHA-224 - SHA-224 protocol is used to authenticate SNMP user.
+    - SHA-256 - SHA-256 protocol is used to authenticate SNMP user.
+    - SHA-384 - SHA-384 protocol is used to authenticate SNMP user.
+    - SHA-512 - SHA-512 protocol is used to authenticate SNMP user.
+  * snmp_user_1_name - Username. Must have a minimum of 1 and and a maximum of 31 characters.
+  * snmp_user_1_security_level - Security mechanism used for communication between agent and manager.
+    - AuthNoPriv - The user requires an authorization password but not a privacy password.
+    - AuthPriv - The user requires both an authorization password and a privacy password.
+    - NoAuthNoPriv - The user does not require an authorization or privacy password.
+  * snmp_user_2_auth_type - Authorization protocol for authenticating the user.  Currently Options are:
+    - MD5
+    - SHA
+  * In the future these options will be added.
+    - NA - Authentication protocol is not applicable.
+    - SHA-224 - SHA-224 protocol is used to authenticate SNMP user.
+    - SHA-256 - SHA-256 protocol is used to authenticate SNMP user.
+    - SHA-384 - SHA-384 protocol is used to authenticate SNMP user.
+    - SHA-512 - SHA-512 protocol is used to authenticate SNMP user.
+  * snmp_user_2_name - Username. Must have a minimum of 1 and and a maximum of 31 characters.
+  * snmp_user_2_security_level - Security mechanism used for communication between agent and manager.
+    - AuthNoPriv - The user requires an authorization password but not a privacy password.
+    - AuthPriv - The user requires both an authorization password and a privacy password.
+    - NoAuthNoPriv - The user does not require an authorization or privacy password.
   * system_contact - Contact person responsible for the SNMP implementation. Enter a string up to 64 characters, such as an email address or a name and telephone number.
   * system_location - Location of host on which the SNMP agent (server) runs.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  * v2_enabled - State of the SNMPv2c on the endpoint. If enabled, the endpoint sends SNMPv2c properties to the designated host.
-  * v3_enabled - State of the SNMPv3 on the endpoint. If enabled, the endpoint sends SNMPv3 properties to the designated host.
   EOT
   type = map(object(
     {
-      description            = optional(string)
-      enabled                = optional(bool)
-      organization           = optional(string)
-      snmp_access            = optional(string)
-      snmp_engine_id         = optional(string)
-      snmp_port              = optional(number)
-      snmp_trap_destinations = optional(list(map(string)))
-      snmp_users             = optional(list(map(string)))
-      system_contact         = optional(string)
-      system_location        = optional(string)
-      tags                   = optional(list(map(string)))
-      v2_enabled             = optional(bool)
-      v3_enabled             = optional(bool)
+      description                = optional(string)
+      enabled                    = optional(bool)
+      organization               = optional(string)
+      snmp_access                = optional(string)
+      snmp_engine_id             = optional(string)
+      snmp_port                  = optional(number)
+      snmp_trap_destinations     = optional(list(map(string)))
+      snmp_user_1_auth_type      = optional(string)
+      snmp_user_1_name           = optional(string)
+      snmp_user_1_security_level = optional(string)
+      snmp_user_2_auth_type      = optional(string)
+      snmp_user_2_name           = optional(string)
+      snmp_user_2_security_level = optional(string)
+      system_contact             = optional(string)
+      system_location            = optional(string)
+      tags                       = optional(list(map(string)))
     }
   ))
 }
-
 
 #____________________________________________________________
 #
@@ -110,32 +141,119 @@ variable "policy_snmp" {
 # GUI Location: Policies > Create Policy > SNMP
 #____________________________________________________________
 
-module "snmp" {
+module "policies_snmp" {
   depends_on = [
     local.org_moids,
     module.ucs_chassis_profiles
   ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
-  for_each        = local.policy_snmp
-  description     = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
-  enabled         = each.value.enabled
-  name            = each.key
-  org_moid        = local.org_moids[each.value.organization].moid
-  profile_type    = "chassis"
-  snmp_access     = each.value.snmp_access
-  snmp_community  = var.snmp_community
-  snmp_engine_id  = each.value.snmp_engine_id
-  snmp_port       = each.value.snmp_port
-  snmp_traps      = each.value.snmp_trap_destinations
-  snmp_users      = each.value.snmp_users
-  system_contact  = each.value.system_contact
-  system_location = each.value.system_location
-  tags            = each.value.tags != [] ? each.value.tags : local.tags
-  trap_community  = var.snmp_trap_community
-  v2_enabled      = each.value.v2_enabled
-  v3_enabled      = each.value.v3_enabled
-  profiles = [for s in sort(keys(
-  local.ucs_chassis_profiles)) : module.ucs_chassis_profiles[s].moid if local.ucs_chassis_profiles[s].profile.policy_snmp == each.key]
+  for_each                = {
+    for k, v in local.policy_snmp : k => v
+    if v.snmp_user_1_name == "" && v.snmp_user_2_name == ""
+    }
+  source                  = "../../../terraform-intersight-imm/modules/policies_snmp"
+  # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
+  enabled                 = each.value.enabled
+  name                    = each.key
+  org_moid                = local.org_moids[each.value.organization].moid
+  snmp_access             = each.value.snmp_access
+  snmp_community          = var.snmp_community
+  snmp_engine_id          = each.value.snmp_engine_id
+  snmp_port               = each.value.snmp_port
+  snmp_traps              = each.value.snmp_trap_destinations
+  system_contact          = each.value.system_contact
+  system_location         = each.value.system_location
+  tags                    = each.value.tags != [] ? each.value.tags : local.tags
+  trap_community          = var.snmp_trap_community
+  v2_enabled              = var.snmp_community != "" ? true : false
+  v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
+  profile_type            = "chassis"
+  profiles = [
+    for s in sort(keys(local.ucs_chassis_profiles)) :
+    module.ucs_chassis_profiles[s].moid
+    if local.ucs_chassis_profiles[s].profile.policy_snmp == each.key
+  ]
 }
 
+module "policies_snmp_1_user" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_chassis_profiles
+  ]
+  for_each                = {
+    for k, v in local.policy_snmp : k => v
+    if v.snmp_user_1_name != "" && v.snmp_user_2_name == ""
+    }
+  source                  = "../../../terraform-intersight-imm/modules/policies_snmp_1_user"
+  # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
+  enabled                 = each.value.enabled
+  name                    = each.key
+  org_moid                = local.org_moids[each.value.organization].moid
+  snmp_access             = each.value.snmp_access
+  snmp_community          = var.snmp_community
+  snmp_engine_id          = each.value.snmp_engine_id
+  snmp_port               = each.value.snmp_port
+  snmp_traps              = each.value.snmp_trap_destinations
+  user_1_auth_password    = var.snmp_user_1_auth_password
+  user_1_auth_type        = each.value.snmp_user_1_auth_type
+  user_1_name             = each.value.snmp_user_1_name
+  user_1_privacy_password = var.snmp_user_1_privacy_password
+  user_1_security_level   = each.value.snmp_user_1_security_level
+  system_contact          = each.value.system_contact
+  system_location         = each.value.system_location
+  tags                    = each.value.tags != [] ? each.value.tags : local.tags
+  trap_community          = var.snmp_trap_community
+  v2_enabled              = var.snmp_community != "" ? true : false
+  v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
+  profile_type            = "chassis"
+  profiles = [
+    for s in sort(keys(local.ucs_chassis_profiles)) :
+    module.ucs_chassis_profiles[s].moid
+    if local.ucs_chassis_profiles[s].profile.policy_snmp == each.key
+  ]
+}
 
+module "policies_snmp_2_users" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_chassis_profiles
+  ]
+  for_each                = {
+    for k, v in local.policy_snmp : k => v
+    if v.snmp_user_2_name == ""
+    }
+  source                  = "../../../terraform-intersight-imm/modules/policies_snmp_2_users"
+  # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
+  enabled                 = each.value.enabled
+  name                    = each.key
+  org_moid                = local.org_moids[each.value.organization].moid
+  snmp_access             = each.value.snmp_access
+  snmp_community          = var.snmp_community
+  snmp_engine_id          = each.value.snmp_engine_id
+  snmp_port               = each.value.snmp_port
+  snmp_traps              = each.value.snmp_trap_destinations
+  user_1_auth_password    = var.snmp_user_1_auth_password
+  user_1_auth_type        = each.value.snmp_user_1_auth_type
+  user_1_name             = each.value.snmp_user_1_name
+  user_1_privacy_password = var.snmp_user_1_privacy_password
+  user_1_security_level   = each.value.snmp_user_1_security_level
+  user_2_auth_password    = var.snmp_user_2_auth_password
+  user_2_auth_type        = each.value.snmp_user_2_auth_type
+  user_2_name             = each.value.snmp_user_2_name
+  user_2_privacy_password = var.snmp_user_2_privacy_password
+  user_2_security_level   = each.value.snmp_user_2_security_level
+  system_contact          = each.value.system_contact
+  system_location         = each.value.system_location
+  tags                    = each.value.tags != [] ? each.value.tags : local.tags
+  trap_community          = var.snmp_trap_community
+  v2_enabled              = var.snmp_community != "" ? true : false
+  v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
+  profile_type            = "chassis"
+  profiles = [
+    for s in sort(keys(local.ucs_chassis_profiles)) :
+    module.ucs_chassis_profiles[s].moid
+    if local.ucs_chassis_profiles[s].profile.policy_snmp == each.key
+  ]
+}

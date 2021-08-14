@@ -52,7 +52,7 @@ variable "policy_syslog" {
 module "syslog" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_domain_profiles
   ]
   source             = "../../../terraform-intersight-imm/modules/policies_syslog"
   for_each           = local.policy_syslog
@@ -62,6 +62,11 @@ module "syslog" {
   remote_clients     = each.value.syslog_destinations
   local_min_severity = each.value.local_min_severity
   tags               = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_syslog == each.key]
+  profile_type       = "domain"
+  profiles = [
+    for s in sort(keys(local.ucs_domain_profiles)) :
+    module.ucs_domain_profiles_a[s].moid &&
+    module.ucs_domain_profiles_b[s].moid
+    if local.ucs_domain_profiles[s].profile.policy_syslog == each.key
+  ]
 }

@@ -5,7 +5,7 @@
 
 locals {
   # Intersight Organization Variables
-  organizations = toset(jsondecode(var.organizations))
+  organizations = var.organizations
   org_moids = {
     for v in sort(keys(data.intersight_organization_organization.org_moid)) : v => {
       moid = data.intersight_organization_organization.org_moid[v].results[0].moid
@@ -15,130 +15,245 @@ locals {
   # Intersight Provider Variables
   endpoint = var.endpoint
   # Tags for Deployment
-  tags = jsondecode(var.tags)
+  tags     = var.tags
 
   #______________________________________________
   #
   # UCS Domain Variables
   #______________________________________________
   ucs_domain_profile = {
-    for k, v in jsondecode(var.ucs_domain_profile) : k => {
-      assign_switches                    = (v.assign_switches != null ? v.assign_switches : false)
-      config_fibre_channel               = (v.config_fibre_channel != null ? v.config_fibre_channel : false)
-      domain_action                      = (v.domain_action != null ? v.domain_action : "No-op")
-      domain_description                 = (v.domain_description != null ? v.domain_description : "")
-      domain_descr_fi_a                  = (v.domain_descr_fi_a != null ? v.domain_descr_fi_a : "")
-      domain_descr_fi_b                  = (v.domain_descr_fi_b != null ? v.domain_descr_fi_b : "")
-      domain_policy_bucket               = (v.domain_policy_bucket != null ? v.domain_policy_bucket : [])
-      domain_serial_a                    = (v.domain_serial_a != null ? v.domain_serial_a : "")
-      domain_serial_b                    = (v.domain_serial_b != null ? v.domain_serial_b : "")
-      dns_description                    = (v.dns_description != null ? v.dns_description : "")
-      dns_dynamic                        = (v.dns_dynamic != null ? v.dns_dynamic : false)
-      dns_ipv6_enable                    = (v.dns_ipv6_enable != null ? v.dns_ipv6_enable : false)
-      dns_servers_v4                     = (v.dns_servers_v4 != null ? v.dns_servers_v4 : ["208.67.220.220", "208.67.222.222"])
-      dns_servers_v6                     = (v.dns_servers_v6 != null ? v.dns_servers_v6 : [])
-      dns_update_domain                  = (v.dns_update_domain != null ? v.dns_update_domain : "")
-      flow_control_description           = (v.flow_control_description != null ? v.flow_control_description : "")
-      flow_control_mode                  = (v.flow_control_mode != null ? v.flow_control_mode : "auto")
-      flow_control_receive               = (v.flow_control_receive != null ? v.flow_control_receive : "Disabled")
-      flow_control_send                  = (v.flow_control_send != null ? v.flow_control_send : "Disabled")
-      link_agg_description               = (v.link_agg_description != null ? v.link_agg_description : "")
-      link_agg_lacp_rate                 = (v.link_agg_lacp_rate != null ? v.link_agg_lacp_rate : "normal")
-      link_agg_suspend_individual        = (v.link_agg_suspend_individual != null ? v.link_agg_suspend_individual : false)
-      link_ctrl_description              = (v.link_ctrl_description != null ? v.link_ctrl_description : "")
-      link_ctrl_udld_admin_state         = (v.link_ctrl_udld_admin_state != null ? v.link_ctrl_udld_admin_state : "Enabled")
-      link_ctrl_udld_mode                = (v.link_ctrl_udld_mode != null ? v.link_ctrl_udld_mode : "normal")
-      multicast_description              = (v.multicast_description != null ? v.multicast_description : "")
-      multicast_querier_ip               = (v.multicast_querier_ip != null ? v.multicast_querier_ip : "")
-      multicast_querier_state            = (v.multicast_querier_state != null ? v.multicast_querier_state : "Disabled")
-      multicast_snooping_state           = (v.multicast_snooping_state != null ? v.multicast_snooping_state : "Enabled")
-      ntp_description                    = (v.ntp_description != null ? v.ntp_description : "")
-      ntp_servers                        = (v.ntp_servers != null ? v.ntp_servers : ["time-a-g.nist.gov", "time-b-g.nist.gov"])
-      ntp_timezone                       = (v.ntp_timezone != null ? v.ntp_timezone : "Etc/GMT")
-      organization                       = (v.organization != null ? v.organization : "default")
-      port_policy_a_description          = (v.port_policy_a_description != null ? v.port_policy_a_description : "")
-      port_policy_b_description          = (v.port_policy_b_description != null ? v.port_policy_b_description : "")
-      ports_device_model                 = (v.ports_device_model != null ? v.ports_device_model : "UCS-FI-6454")
-      ports_fc_ports                     = (v.ports_fc_ports != null ? v.ports_fc_ports : [1, 4])
-      ports_fc_slot_id                   = (v.ports_fc_slot_id != null ? v.ports_fc_slot_id : 1)
-      ports_lan_pc_breakoutswport        = (v.ports_lan_pc_breakoutswport != null ? v.ports_lan_pc_breakoutswport : 0)
-      ports_lan_pc_ports                 = (v.ports_lan_pc_ports != null ? v.ports_lan_pc_ports : [49, 50])
-      ports_lan_pc_speed                 = (v.ports_lan_pc_speed != null ? v.ports_lan_pc_speed : "Auto")
-      ports_lan_pc_slot_id               = (v.ports_lan_pc_slot_id != null ? v.ports_lan_pc_slot_id : 1)
-      ports_san_fill_pattern             = (v.ports_san_fill_pattern != null ? v.ports_san_fill_pattern : "Arbff")
-      ports_san_pc_breakoutswport        = (v.ports_san_pc_breakoutswport != null ? v.ports_san_pc_breakoutswport : 0)
-      ports_san_pc_ports                 = (v.ports_san_pc_ports != null ? v.ports_san_pc_ports : [1, 2])
-      ports_san_pc_speed                 = (v.ports_san_pc_speed != null ? v.ports_san_pc_speed : "16Gbps")
-      ports_san_pc_slot_id               = (v.ports_san_pc_slot_id != null ? v.ports_san_pc_slot_id : 1)
-      ports_servers                      = (v.ports_servers != null ? v.ports_servers : "5-18")
-      qos_best_effort_admin_state        = (v.qos_best_effort_admin_state != null ? v.qos_best_effort_admin_state : "Enabled")
-      qos_best_effort_bandwidth          = (v.qos_best_effort_bandwidth != null ? v.qos_best_effort_bandwidth : 5)
-      qos_best_effort_mtu                = (v.qos_best_effort_mtu != null ? v.qos_best_effort_mtu : 9216)
-      qos_best_effort_multicast_optimize = (v.qos_best_effort_multicast_optimize != null ? v.qos_best_effort_multicast_optimize : false)
-      qos_best_effort_weight             = (v.qos_best_effort_weight != null ? v.qos_best_effort_weight : 1)
-      qos_bronze_admin_state             = (v.qos_bronze_admin_state != null ? v.qos_bronze_admin_state : "Enabled")
-      qos_bronze_bandwidth               = (v.qos_bronze_bandwidth != null ? v.qos_bronze_bandwidth : 5)
-      qos_bronze_cos                     = (v.qos_bronze_cos != null ? v.qos_bronze_cos : 1)
-      qos_bronze_mtu                     = (v.qos_bronze_mtu != null ? v.qos_bronze_mtu : 9216)
-      qos_bronze_multicast_optimize      = (v.qos_bronze_multicast_optimize != null ? v.qos_bronze_multicast_optimize : false)
-      qos_bronze_packet_drop             = (v.qos_bronze_packet_drop != null ? v.qos_bronze_packet_drop : true)
-      qos_bronze_weight                  = (v.qos_bronze_weight != null ? v.qos_bronze_weight : 1)
-      qos_description                    = (v.qos_description != null ? v.qos_description : "")
-      qos_fc_bandwidth                   = (v.qos_fc_bandwidth != null ? v.qos_fc_bandwidth : 39)
-      qos_fc_weight                      = (v.qos_fc_weight != null ? v.qos_fc_weight : 6)
-      qos_gold_admin_state               = (v.qos_gold_admin_state != null ? v.qos_gold_admin_state : "Enabled")
-      qos_gold_bandwidth                 = (v.qos_gold_bandwidth != null ? v.qos_gold_bandwidth : 23)
-      qos_gold_cos                       = (v.qos_gold_cos != null ? v.qos_gold_cos : 4)
-      qos_gold_mtu                       = (v.qos_gold_mtu != null ? v.qos_gold_mtu : 9216)
-      qos_gold_multicast_optimize        = (v.qos_gold_multicast_optimize != null ? v.qos_gold_multicast_optimize : false)
-      qos_gold_packet_drop               = (v.qos_gold_packet_drop != null ? v.qos_gold_packet_drop : true)
-      qos_gold_weight                    = (v.qos_gold_weight != null ? v.qos_gold_weight : 4)
-      qos_platinum_admin_state           = (v.qos_platinum_admin_state != null ? v.qos_platinum_admin_state : "Enabled")
-      qos_platinum_bandwidth             = (v.qos_platinum_bandwidth != null ? v.qos_platinum_bandwidth : 23)
-      qos_platinum_cos                   = (v.qos_platinum_cos != null ? v.qos_platinum_cos : 5)
-      qos_platinum_mtu                   = (v.qos_platinum_mtu != null ? v.qos_platinum_mtu : 9216)
-      qos_platinum_multicast_optimize    = (v.qos_platinum_multicast_optimize != null ? v.qos_platinum_multicast_optimize : false)
-      qos_platinum_packet_drop           = (v.qos_platinum_packet_drop != null ? v.qos_platinum_packet_drop : false)
-      qos_platinum_weight                = (v.qos_platinum_weight != null ? v.qos_platinum_weight : 4)
-      qos_silver_admin_state             = (v.qos_silver_admin_state != null ? v.qos_silver_admin_state : "Enabled")
-      qos_silver_bandwidth               = (v.qos_silver_bandwidth != null ? v.qos_silver_bandwidth : 5)
-      qos_silver_cos                     = (v.qos_silver_cos != null ? v.qos_silver_cos : 2)
-      qos_silver_mtu                     = (v.qos_silver_mtu != null ? v.qos_silver_mtu : 9216)
-      qos_silver_multicast_optimize      = (v.qos_silver_multicast_optimize != null ? v.qos_silver_multicast_optimize : false)
-      qos_silver_packet_drop             = (v.qos_silver_packet_drop != null ? v.qos_silver_packet_drop : true)
-      qos_silver_weight                  = (v.qos_silver_weight != null ? v.qos_silver_weight : 1)
-      snmp_config_type                   = (v.snmp_description != null ? v.snmp_description : "snmp_community")
-      snmp_description                   = (v.snmp_description != null ? v.snmp_description : "")
-      snmp_system_contact                = (v.snmp_system_contact != null ? v.snmp_system_contact : "")
-      snmp_system_location               = (v.snmp_system_location != null ? v.snmp_system_location : "")
-      snmp_trap_destinations             = (v.snmp_trap_destinations != null ? v.snmp_trap_destinations : [])
-      snmp_user_1_auth_type              = (v.snmp_user_1_auth_type != null ? v.snmp_user_1_auth_type : "SHA")
-      snmp_user_1_name                   = (v.snmp_user_1_name != null ? v.snmp_user_1_name : "snmp_user1")
-      snmp_user_1_security_level         = (v.snmp_user_1_security_level != null ? v.snmp_user_1_security_level : "AuthPriv")
-      snmp_user_2_auth_type              = (v.snmp_user_2_auth_type != null ? v.snmp_user_2_auth_type : "SHA")
-      snmp_user_2_name                   = (v.snmp_user_2_name != null ? v.snmp_user_2_name : "snmp_user2")
-      snmp_user_2_security_level         = (v.snmp_user_2_security_level != null ? v.snmp_user_2_security_level : "AuthPriv")
-      sw_ctrl_description                = (v.sw_ctrl_description != null ? v.sw_ctrl_description : "")
-      sw_ctrl_mac_aging_option           = (v.sw_ctrl_mac_aging_option != null ? v.sw_ctrl_mac_aging_option : "Default")
-      sw_ctrl_mac_aging_time             = (v.sw_ctrl_mac_aging_time != null ? v.sw_ctrl_mac_aging_time : 14500)
-      sw_ctrl_udld_message_interval      = (v.sw_ctrl_udld_message_interval != null ? v.sw_ctrl_udld_message_interval : 15)
-      sw_ctrl_udld_recovery_action       = (v.sw_ctrl_udld_recovery_action != null ? v.sw_ctrl_udld_recovery_action : "reset")
-      sw_ctrl_vlan_optimization          = (v.sw_ctrl_vlan_optimization != null ? v.sw_ctrl_vlan_optimization : true)
-      syslog_configure                   = (v.syslog_configure != null ? v.syslog_configure : false)
-      syslog_description                 = (v.syslog_description != null ? v.syslog_description : "")
-      syslog_destinations                = (v.syslog_destinations != null ? v.syslog_destinations : [])
-      syslog_severity                    = (v.syslog_severity != null ? v.syslog_severity : "warning")
-      tags                               = (v.tags != null ? v.tags : [])
-      vlan_description                   = (v.vlan_description != null ? v.vlan_description : "")
-      vlan_native                        = (v.vlan_native != null ? v.vlan_native : 1)
-      vlan_list                          = (v.vlan_list != null ? v.vlan_list : "2-3")
-      vsan_a_description                 = (v.vsan_a_description != null ? v.vsan_a_description : "")
-      vsan_b_description                 = (v.vsan_b_description != null ? v.vsan_b_description : "")
-      vsan_enable_trunking               = (v.vsan_enable_trunking != null ? v.vsan_enable_trunking : false)
-      vsan_fabric_a                      = (v.vsan_fabric_a != null ? v.vsan_fabric_a : 100)
-      vsan_fabric_a_fcoe                 = (v.vsan_fabric_a_fcoe != null ? v.vsan_fabric_a_fcoe : "")
-      vsan_fabric_b                      = (v.vsan_fabric_b != null ? v.vsan_fabric_b : 200)
-      vsan_fabric_b_fcoe                 = (v.vsan_fabric_b_fcoe != null ? v.vsan_fabric_b_fcoe : "")
+    for k, v in var.ucs_domain_profile : k => {
+      assign_fabric_interconnects        = ( v.assign_switches != null ? v.assign_switches : false )
+      domain_action                      = ( v.domain_action != null ? v.domain_action : "No-op" )
+      domain_description                 = ( v.domain_description != null ? v.domain_description : "" )
+      domain_descr_fi_a                  = ( v.domain_descr_fi_a != null ? v.domain_descr_fi_a : "" )
+      domain_descr_fi_b                  = ( v.domain_descr_fi_b != null ? v.domain_descr_fi_b : "" )
+      domain_policy_bucket               = ( v.domain_policy_bucket != null ? v.domain_policy_bucket : [] )
+      domain_serial_a                    = ( v.domain_serial_a != null ? v.domain_serial_a : "" )
+      domain_serial_b                    = ( v.domain_serial_b != null ? v.domain_serial_b : "" )
+      organization                       = ( v.organization != null ? v.organization : "default" )
+      port_policy_a_description          = ( v.port_policy_a_description != null ? v.port_policy_a_description : "" )
+      port_policy_b_description          = ( v.port_policy_b_description != null ? v.port_policy_b_description : "" )
+      ports_device_model                 = ( v.ports_device_model != null ? v.ports_device_model : "UCS-FI-6454" )
+      ports_fc_ports                     = ( v.ports_fc_ports != null ? v.ports_fc_ports : [1, 4] )
+      ports_fc_slot_id                   = ( v.ports_fc_slot_id != null ? v.ports_fc_slot_id : 1 )
+      ports_lan_pc_breakoutswport        = ( v.ports_lan_pc_breakoutswport != null ? v.ports_lan_pc_breakoutswport : 0 )
+      ports_lan_pc_ports                 = ( v.ports_lan_pc_ports != null ? v.ports_lan_pc_ports : [49, 50] )
+      ports_lan_pc_speed                 = ( v.ports_lan_pc_speed != null ? v.ports_lan_pc_speed : "Auto" )
+      ports_lan_pc_slot_id               = ( v.ports_lan_pc_slot_id != null ? v.ports_lan_pc_slot_id : 1 )
+      ports_san_fill_pattern             = ( v.ports_san_fill_pattern != null ? v.ports_san_fill_pattern : "Arbff" )
+      ports_san_pc_breakoutswport        = ( v.ports_san_pc_breakoutswport != null ? v.ports_san_pc_breakoutswport : 0 )
+      ports_san_pc_ports                 = ( v.ports_san_pc_ports != null ? v.ports_san_pc_ports : [1, 2] )
+      ports_san_pc_speed                 = ( v.ports_san_pc_speed != null ? v.ports_san_pc_speed : "16Gbps" )
+      ports_san_pc_slot_id               = ( v.ports_san_pc_slot_id != null ? v.ports_san_pc_slot_id : 1 )
+      ports_servers                      = ( v.ports_servers != null ? v.ports_servers : "5-18" )
+      tags                               = ( v.tags != null ? v.tags : [] )
+      vlan_description                   = ( v.vlan_description != null ? v.vlan_description : "" )
+      vlan_native                        = ( v.vlan_native != null ? v.vlan_native : 1 )
+      vlan_list                          = ( v.vlan_list != null ? v.vlan_list : "2-3" )
+      vsan_a_description                 = ( v.vsan_a_description != null ? v.vsan_a_description : "" )
+      vsan_b_description                 = ( v.vsan_b_description != null ? v.vsan_b_description : "" )
+      vsan_enable_trunking               = ( v.vsan_enable_trunking != null ? v.vsan_enable_trunking : false )
+      vsan_fabric_a                      = ( v.vsan_fabric_a != null ? v.vsan_fabric_a : 100 )
+      vsan_fabric_a_fcoe                 = ( v.vsan_fabric_a_fcoe != null ? v.vsan_fabric_a_fcoe : "" )
+      vsan_fabric_b                      = ( v.vsan_fabric_b != null ? v.vsan_fabric_b : 200 )
+      vsan_fabric_b_fcoe                 = ( v.vsan_fabric_b_fcoe != null ? v.vsan_fabric_b_fcoe : "" )
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # Flow Control Policy Section Locals
+  #__________________________________________________________
+
+  policy_flow_control = {
+    for k, v in var.policy_flow_control : k => {
+      description    = (v.description != null ? v.description : "")
+      flow_control_mode = (v.flow_control_mode != null ? v.flow_control_mode : "auto")
+      flow_control_receive          = (v.flow_control_receive != null ? v.flow_control_receive : "Disabled")
+      flow_control_send             = (v.flow_control_send != null ? v.flow_control_send : "Disabled")
+      organization   = (v.organization != null ? v.organization : "default")
+      tags           = (v.tags != null ? v.tags : [])
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # Link Aggregation Policy Section Locals
+  #__________________________________________________________
+
+  policy_link_aggregation = {
+    for k, v in var.policy_link_aggregation : k => {
+      description    = (v.description != null ? v.description : "")
+      lacp_rate = (v.lacp_rate != null ? v.lacp_rate : "normal")
+      organization   = (v.organization != null ? v.organization : "default")
+      suspend_individual          = (v.suspend_individual != null ? v.suspend_individual : false)
+      tags           = (v.tags != null ? v.tags : [])
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # Link Control Policy Section Locals
+  #__________________________________________________________
+
+  policy_link_control = {
+    for k, v in var.policy_link_control : k => {
+      description    = (v.description != null ? v.description : "")
+      organization   = (v.organization != null ? v.organization : "default")
+      tags           = (v.tags != null ? v.tags : [])
+      udld_admin_state = (v.udld_admin_state != null ? v.udld_admin_state : "Enabled")
+      udld_mode          = (v.udld_mode != null ? v.udld_mode : "normal")
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # Network Connectivity (DNS) Policy Section Locals
+  #__________________________________________________________
+
+  policy_network_connectivity = {
+    for k, v in var.policy_network_connectivity : k => {
+      description    = (v.description != null ? v.description : "")
+      dns_servers_v4 = (v.dns_servers_v4 != null ? v.dns_servers_v4 : ["208.67.220.220", "208.67.222.222"])
+      dns_servers_v6 = (v.dns_servers_v6 != null ? v.dns_servers_v6 : [])
+      dynamic_dns    = (v.dynamic_dns != null ? v.dynamic_dns : false)
+      ipv6_enable    = (v.ipv6_enable != null ? v.ipv6_enable : false)
+      organization   = (v.organization != null ? v.organization : "default")
+      tags           = (v.tags != null ? v.tags : [])
+      update_domain  = (v.update_domain != null ? v.update_domain : "")
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # NTP Policy Section Locals
+  #__________________________________________________________
+
+  policy_ntp = {
+    for k, v in var.policy_ntp : k => {
+      description  = (v.description != null ? v.description : "")
+      enabled      = (v.enabled != null ? v.enabled : true)
+      ntp_servers  = (v.ntp_servers != null ? v.ntp_servers : ["time-a-g.nist.gov", "time-b-g.nist.gov"])
+      organization = (v.organization != null ? v.organization : "default")
+      tags         = (v.tags != null ? v.tags : [])
+      timezone     = (v.timezone != null ? v.timezone : "Etc/GMT")
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # SNMP Policy Section Locals
+  #__________________________________________________________
+
+  policy_snmp = {
+    for k, v in var.policy_snmp : k => {
+      description                = (v.description != null ? v.description : "")
+      enabled                    = (v.enabled != null ? v.enabled : true)
+      organization               = (v.organization != null ? v.organization : "default")
+      snmp_access                = (v.snmp_access != null ? v.snmp_access : "Full")
+      snmp_engine_id             = (v.snmp_engine_id != null ? v.snmp_engine_id : "")
+      snmp_port                  = (v.snmp_port != null ? v.snmp_port : 161)
+      snmp_trap_destinations     = (v.snmp_trap_destinations != null ? v.snmp_trap_destinations : [])
+      snmp_user_1_auth_type      = (v.snmp_user_1_auth_type != null ? v.snmp_user_1_auth_type : "SHA")
+      snmp_user_1_name           = (v.snmp_user_1_name != null ? v.snmp_user_1_name : "")
+      snmp_user_1_security_level = (v.snmp_user_1_security_level != null ? v.snmp_user_1_security_level : "AuthPriv")
+      snmp_user_2_auth_type      = (v.snmp_user_2_auth_type != null ? v.snmp_user_2_auth_type : "SHA")
+      snmp_user_2_name           = (v.snmp_user_2_name != null ? v.snmp_user_2_name : "")
+      snmp_user_2_security_level = (v.snmp_user_2_security_level != null ? v.snmp_user_2_security_level : "AuthPriv")
+      system_contact             = (v.system_contact != null ? v.system_contact : "")
+      system_location            = (v.system_location != null ? v.system_location : "")
+      tags                       = (v.tags != null ? v.tags : [])
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # Switch Control Policy Section Locals
+  #__________________________________________________________
+
+  policy_switch_control = {
+    for k, v in var.policy_switch_control : k => {
+      description    = (v.description != null ? v.description : "")
+      mac_aging_option  = (v.mac_aging_option != null ? v.mac_aging_option : "Default")
+      mac_aging_time  = (v.mac_aging_time != null ? v.mac_aging_time : 14500)
+      organization   = (v.organization != null ? v.organization : "default")
+      tags           = (v.tags != null ? v.tags : [])
+      udld_message_interval  = (v.udld_admin_state != null ? v.udld_admin_state : 15)
+      udld_recovery_action  = (v.udld_recovery_action != null ? v.udld_recovery_action : "none")
+      vlan_optimization  = (v.vlan_optimization != null ? v.vlan_optimization : false)
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # Syslog Policy Section Locals
+  #__________________________________________________________
+
+  policy_syslog = {
+    for k, v in var.policy_syslog : k => {
+      description         = (v.description != null ? v.description : "")
+      local_min_severity  = (v.local_min_severity != null ? v.local_min_severity : "warning")
+      organization        = (v.organization != null ? v.organization : "default")
+      syslog_destinations = (v.syslog_destinations != null ? v.syslog_destinations : [])
+      tags                = (v.tags != null ? v.tags : [])
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # System QoS Policy Section Locals
+  #__________________________________________________________
+
+  policy_system_qos = {
+    for k, v in var.policy_system_qos : k => {
+      best_effort_admin_state        = ( v.best_effort_admin_state != null ? v.best_effort_admin_state : "Enabled" )
+      best_effort_bandwidth          = ( v.best_effort_bandwidth != null ? v.best_effort_bandwidth : 5 )
+      best_effort_mtu                = ( v.best_effort_mtu != null ? v.best_effort_mtu : 9216 )
+      best_effort_multicast_optimize = ( v.best_effort_multicast_optimize != null ? v.best_effort_multicast_optimize : false )
+      best_effort_weight             = ( v.best_effort_weight != null ? v.best_effort_weight : 1 )
+      bronze_admin_state             = ( v.bronze_admin_state != null ? v.bronze_admin_state : "Enabled" )
+      bronze_bandwidth               = ( v.bronze_bandwidth != null ? v.bronze_bandwidth : 5 )
+      bronze_cos                     = ( v.bronze_cos != null ? v.bronze_cos : 1 )
+      bronze_mtu                     = ( v.bronze_mtu != null ? v.bronze_mtu : 9216 )
+      bronze_multicast_optimize      = ( v.bronze_multicast_optimize != null ? v.bronze_multicast_optimize : false )
+      bronze_packet_drop             = ( v.bronze_packet_drop != null ? v.bronze_packet_drop : true )
+      bronze_weight                  = ( v.bronze_weight != null ? v.bronze_weight : 1 )
+      description                    = ( v.description != null ? v.description : "" )
+      fc_bandwidth                   = ( v.fc_bandwidth != null ? v.fc_bandwidth : 39 )
+      fc_weight                      = ( v.fc_weight != null ? v.fc_weight : 6 )
+      gold_admin_state               = ( v.gold_admin_state != null ? v.gold_admin_state : "Enabled" )
+      gold_bandwidth                 = ( v.gold_bandwidth != null ? v.gold_bandwidth : 23 )
+      gold_cos                       = ( v.gold_cos != null ? v.gold_cos : 4 )
+      gold_mtu                       = ( v.gold_mtu != null ? v.gold_mtu : 9216 )
+      gold_multicast_optimize        = ( v.gold_multicast_optimize != null ? v.gold_multicast_optimize : false )
+      gold_packet_drop               = ( v.gold_packet_drop != null ? v.gold_packet_drop : true )
+      gold_weight                    = ( v.gold_weight != null ? v.gold_weight : 4 )
+      organization   = (v.organization != null ? v.organization : "default")
+      platinum_admin_state           = ( v.platinum_admin_state != null ? v.platinum_admin_state : "Enabled" )
+      platinum_bandwidth             = ( v.platinum_bandwidth != null ? v.platinum_bandwidth : 23 )
+      platinum_cos                   = ( v.platinum_cos != null ? v.platinum_cos : 5 )
+      platinum_mtu                   = ( v.platinum_mtu != null ? v.platinum_mtu : 9216 )
+      platinum_multicast_optimize    = ( v.platinum_multicast_optimize != null ? v.platinum_multicast_optimize : false )
+      platinum_packet_drop           = ( v.platinum_packet_drop != null ? v.platinum_packet_drop : false )
+      platinum_weight                = ( v.platinum_weight != null ? v.platinum_weight : 4 )
+      silver_admin_state             = ( v.silver_admin_state != null ? v.silver_admin_state : "Enabled")
+      silver_bandwidth               = ( v.silver_bandwidth != null ? v.silver_bandwidth : 5 )
+      silver_cos                     = ( v.silver_cos != null ? v.silver_cos : 2 )
+      silver_mtu                     = ( v.silver_mtu != null ? v.silver_mtu : 9216 )
+      silver_multicast_optimize      = ( v.silver_multicast_optimize != null ? v.silver_multicast_optimize : false )
+      silver_packet_drop             = ( v.silver_packet_drop != null ? v.silver_packet_drop : true )
+      silver_weight                  = ( v.silver_weight != null ? v.silver_weight : 1 )
+      tags           = (v.tags != null ? v.tags : [])
     }
   }
 }

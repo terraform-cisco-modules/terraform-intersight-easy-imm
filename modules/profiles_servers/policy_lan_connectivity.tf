@@ -305,8 +305,11 @@ module "vnic_lan_connectivity" {
   placement_mode      = each.value.placement_mode
   tags                = each.value.tags != [] ? each.value.tags : local.tags
   target_platform     = each.value.target_platform
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_lan_connectivity == each.key]
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policy_lan_connectivity == each.key
+  ]
 }
 
 

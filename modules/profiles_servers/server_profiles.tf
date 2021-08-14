@@ -18,10 +18,17 @@ variable "ucs_server_profiles" {
   }
   description = <<-EOT
   Intersight UCS Server Profile Variable Map.
-  * organization - Name of the Intersight Organization to assign this pool to:
-    -  https://intersight.com/an/settings/organizations/
-  * For the remainder of the option documentation refer to these sources:
-    - https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/server_profile
+  key - Serial Number for a/the physical server.
+  * action - Action to Perform on the Chassis Profile Assignment.  Options are:
+    - Deploy
+    - No-op
+    - Unassign
+  * assign_server - Flag to determine if a physical server should be assigned to the server profile or not.  Default is false.
+  * description - Description to Assign to the Profile.
+  * name - Name to assign to the server profile.
+  * src_template - Name of the server template to apply to the server profile.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * wait_for_completion - This model object can trigger workflows. Use this option to wait for all running workflows to reach a complete state.
   EOT
   type = map(object(
     {
@@ -39,7 +46,7 @@ variable "ucs_server_profiles" {
 variable "ucs_server_templates" {
   default = {
     default = {
-      operating_system            = "vmware"
+      operating_system            = "VMware"
       organization                = "default"
       policy_bios                 = ""
       policy_boot_order           = ""
@@ -70,10 +77,39 @@ variable "ucs_server_templates" {
   }
   description = <<-EOT
   Intersight UCS Server Profile Variable Map.
-  * organization - Name of the Intersight Organization to assign this pool to:
+  * operating_system - Operating System to Install on the Server.  Options are:
+    - Linux
+    - VMware - (Default)
+    - Windows
+  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
     -  https://intersight.com/an/settings/organizations/
-  * For the remainder of the option documentation refer to these sources:
-    - https://github.com/terraform-cisco-modules/terraform-intersight-imm/tree/master/modules/server_profile
+  policy_bios - Name of the BIOS Policy to assign to the Template.
+  policy_boot_order - Name of the Boot Order Policy to assign to the Template.
+  policy_device_connector - Name of the Device Connector Policy to assign to the Template.
+  policy_imc_access - Name of the IMC Access Policy to assign to the Template.
+  policy_ipmi_over_lan - Name of the IPMI over LAN Policy to assign to the Template.
+  policy_lan_connectivity - Name of the LAN Connectivity Policy to assign to the Template.
+  policy_ldap - Name of the LDAP Policy to assign to the Template.
+  policy_local_users - Name of the Local Users Policy to assign to the Template.
+  policy_network_connectivity - Name of the Network Connectivity Policy to assign to the Template.
+  policy_ntp - Name of the NTP Policy to assign to the Template.
+  policy_persistent_memory - Name of the Persistent Memory Policy to assign to the Template.
+  policy_power - Name of the Power Policy to assign to the Template.
+  policy_san_connectivity - Name of the SAN Connectivity Policy to assign to the Template.
+  policy_sdcard - Name of the SD Card Policy to assign to the Template.
+  policy_serial_over_lan - Name of the Serial over LAN Policy to assign to the Template.
+  policy_smtp - Name of the SMTP Policy to assign to the Template.
+  policy_snmp - Name of the SNMP Policy to assign to the Template.
+  policy_snmp_1_user - Name of the SNMP single user Policy to assign to the Template.
+  policy_snmp_2_users - Name of the SNMP two user Policy to assign to the Template.
+  policy_ssh - Name of the SSH Policy to assign to the Template.
+  policy_storage - Name of the Storage Policy to assign to the Template.
+  policy_syslog - Name of the Syslog Policy to assign to the Template.
+  policy_virtual_kvm - Name of the Virtual KVM Policy to assign to the Template.
+  policy_virtual_media - Name of the Virtual Media Policy to assign to the Template.
+  target_platform - The platform for which the server profile is applicable. It can either be a server that is operating in standalone mode or which is attached to a Fabric Interconnect managed by Intersight.
+    - FIAttached - (Default) - Servers which are connected to a Fabric Interconnect that is managed by Intersight.
+    - Standalone - Servers which are operating in standalone mode i.e. not connected to a Fabric Interconnected.
   EOT
   type = map(object(
     {

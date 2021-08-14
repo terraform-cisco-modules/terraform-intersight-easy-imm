@@ -53,7 +53,7 @@ variable "policy_network_connectivity" {
 module "policy_network_connectivity" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_domain_profiles
   ]
   source         = "terraform-cisco-modules/imm/intersight//modules/policies_network_connectivity"
   for_each       = local.policy_network_connectivity
@@ -66,9 +66,11 @@ module "policy_network_connectivity" {
   org_moid       = local.org_moids[each.value.organization].moid
   tags           = each.value.tags != [] ? each.value.tags : local.tags
   update_domain  = each.value.update_domain
+  profile_type   = "domain"
   profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_network_connectivity == each.key
+    for s in sort(keys(local.ucs_domain_profiles)) :
+    module.ucs_domain_profiles_a[s].moid &&
+    module.ucs_domain_profiles_b[s].moid
+    if local.ucs_domain_profiles[s].profile.policy_syslog == each.key
   ]
 }

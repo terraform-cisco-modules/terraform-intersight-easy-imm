@@ -89,19 +89,22 @@ locals {
 
   policy_snmp = {
     for k, v in var.policy_snmp : k => {
-      description            = (v.description != null ? v.description : "")
-      enabled                = (v.enabled != null ? v.enabled : true)
-      organization           = (v.organization != null ? v.organization : "default")
-      snmp_access            = (v.snmp_access != null ? v.snmp_access : "Full")
-      snmp_engine_id         = (v.snmp_engine_id != null ? v.snmp_engine_id : "")
-      snmp_port              = (v.snmp_port != null ? v.snmp_port : 161)
-      snmp_trap_destinations = (v.snmp_trap_destinations != null ? v.snmp_trap_destinations : [])
-      snmp_users             = (v.snmp_users != null ? v.snmp_users : [])
-      system_contact         = (v.system_contact != null ? v.system_contact : "")
-      system_location        = (v.system_location != null ? v.system_location : "")
-      tags                   = (v.tags != null ? v.tags : [])
-      v2_enabled             = (v.v2_enabled != null ? v.v2_enabled : true)
-      v3_enabled             = (v.v3_enabled != null ? v.v3_enabled : true)
+      description                = (v.description != null ? v.description : "")
+      enabled                    = (v.enabled != null ? v.enabled : true)
+      organization               = (v.organization != null ? v.organization : "default")
+      snmp_access                = (v.snmp_access != null ? v.snmp_access : "Full")
+      snmp_engine_id             = (v.snmp_engine_id != null ? v.snmp_engine_id : "")
+      snmp_port                  = (v.snmp_port != null ? v.snmp_port : 161)
+      snmp_trap_destinations     = (v.snmp_trap_destinations != null ? v.snmp_trap_destinations : [])
+      snmp_user_1_auth_type      = (v.snmp_user_1_auth_type != null ? v.snmp_user_1_auth_type : "SHA")
+      snmp_user_1_name           = (v.snmp_user_1_name != null ? v.snmp_user_1_name : "")
+      snmp_user_1_security_level = (v.snmp_user_1_security_level != null ? v.snmp_user_1_security_level : "AuthPriv")
+      snmp_user_2_auth_type      = (v.snmp_user_2_auth_type != null ? v.snmp_user_2_auth_type : "SHA")
+      snmp_user_2_name           = (v.snmp_user_2_name != null ? v.snmp_user_2_name : "")
+      snmp_user_2_security_level = (v.snmp_user_2_security_level != null ? v.snmp_user_2_security_level : "AuthPriv")
+      system_contact             = (v.system_contact != null ? v.system_contact : "")
+      system_location            = (v.system_location != null ? v.system_location : "")
+      tags                       = (v.tags != null ? v.tags : [])
     }
   }
 

@@ -152,8 +152,11 @@ module "policy_storage" {
   retain_policy = each.value.retain_policy
   tags          = each.value.tags != [] ? each.value.tags : local.tags
   unused_disks  = each.value.unused_disks
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_storage == each.key]
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policy_storage == each.key
+  ]
   virtual_drives = [
     {
       access_policy         = each.value.access_policy
