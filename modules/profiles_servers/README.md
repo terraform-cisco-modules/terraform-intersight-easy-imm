@@ -1,4 +1,4 @@
-# profiles_servers - Intersight UCS Server Profiles Deployment Module
+# Intersight UCS Server Profiles Deployment Module
 
 ## Use this module to create UCS Server Profiles in Intersight
 
