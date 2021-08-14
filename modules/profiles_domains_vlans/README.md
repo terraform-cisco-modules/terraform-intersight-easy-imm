@@ -34,8 +34,8 @@ This module will Create a Multicast Policy and assign it to VLANs in a VLAN poli
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_multicast_policy"></a> [multicast\_policy](#module\_multicast\_policy) | terraform-cisco-modules/imm/intersight//modules/domain_multicast | n/a |
-| <a name="module_vlan_native"></a> [vlan\_native](#module\_vlan\_native) | terraform-cisco-modules/imm/intersight//modules/domain_vlan | n/a |
 | <a name="module_vlan_policy"></a> [vlan\_policy](#module\_vlan\_policy) | terraform-cisco-modules/imm/intersight//modules/domain_vlan_list | n/a |
+| <a name="module_vlan_policy_native"></a> [vlan\_policy\_native](#module\_vlan\_policy\_native) | terraform-cisco-modules/imm/intersight//modules/domain_vlan | n/a |
 
 ## Resources
 
@@ -55,7 +55,7 @@ This module will Create a Multicast Policy and assign it to VLANs in a VLAN poli
 | <a name="input_secretkey"></a> [secretkey](#input\_secretkey) | Intersight Secret Key. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of Key/Value Pairs to Assign as Attributes to the Policy. | `list(map(string))` | `[]` | no |
 | <a name="input_tfc_organization"></a> [tfc\_organization](#input\_tfc\_organization) | Terraform Cloud Organization Name. | `string` | n/a | yes |
-| <a name="input_vlan_policy"></a> [vlan\_policy](#input\_vlan\_policy) | key - Name of the Power Policy.<br>* multicast\_policy - Name of the Multicast Policy to Assign to the VLAN Group.<br>* vlan\_list - List of VLANs to assign to the VLAN Policy.<br>* vlan\_policy - Name of the VLAN Policy<br>* vlan\_prefix - Prefix to Assign to the VLANs in the VLAN Map. | <pre>map(object(<br>    {<br>      multicast_policy = string<br>      vlan_native      = optional(number)<br>      vlan_list        = string<br>      vlan_policy      = string<br>      vlan_prefix      = optional(string)<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "multicast_policy": "",<br>    "vlan_list": null,<br>    "vlan_native": null,<br>    "vlan_policy": null,<br>    "vlan_prefix": ""<br>  }<br>}</pre> | no |
+| <a name="input_vlan_lists"></a> [vlan\_lists](#input\_vlan\_lists) | key - Name of the Power Policy.<br>* multicast\_policy - Name of the Multicast Policy to Assign to the VLAN Group.<br>* vlan\_list - List of VLANs to assign to the VLAN Policy.<br>* vlan\_native - The Native VLAN to assign to the policy.<br>* vlan\_policy - Name of the VLAN Policy<br>* vlan\_prefix - Prefix to Assign to the VLANs in the VLAN Map. | <pre>map(object(<br>    {<br>      multicast_policy = string<br>      vlan_list        = string<br>      vlan_native      = optional(number)<br>      vlan_policy      = string<br>      vlan_prefix      = optional(string)<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "multicast_policy": "",<br>    "vlan_list": null,<br>    "vlan_native": null,<br>    "vlan_policy": null,<br>    "vlan_prefix": ""<br>  }<br>}</pre> | no |
 | <a name="input_ws_domain"></a> [ws\_domain](#input\_ws\_domain) | Name of the domain workspace. | `string` | `"Kubernetes_Policies"` | no |
 
 ## Outputs

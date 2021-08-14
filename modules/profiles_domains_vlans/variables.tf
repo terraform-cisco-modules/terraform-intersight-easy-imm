@@ -114,8 +114,8 @@ variable "vlan_lists" {
   default = {
     default = {
       multicast_policy = ""
-      vlan_native      = null
       vlan_list        = null
+      vlan_native      = null
       vlan_policy      = null
       vlan_prefix      = ""
     }
@@ -124,14 +124,15 @@ variable "vlan_lists" {
   key - Name of the Power Policy.
   * multicast_policy - Name of the Multicast Policy to Assign to the VLAN Group.
   * vlan_list - List of VLANs to assign to the VLAN Policy.
+  * vlan_native - The Native VLAN to assign to the policy.
   * vlan_policy - Name of the VLAN Policy
   * vlan_prefix - Prefix to Assign to the VLANs in the VLAN Map.
   EOT
   type = map(object(
     {
       multicast_policy = string
-      vlan_native      = optional(number)
       vlan_list        = string
+      vlan_native      = optional(number)
       vlan_policy      = string
       vlan_prefix      = optional(string)
     }
