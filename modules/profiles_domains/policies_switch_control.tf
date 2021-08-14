@@ -7,14 +7,14 @@
 variable "policy_switch_control" {
   default = {
     default = {
-      description                = ""
-      mac_aging_option  = "Default"
-      mac_aging_time  = 14500
-      organization               = "default"
-      tags                       = []
-      udld_message_interval  = 15
+      description           = ""
+      mac_aging_option      = "Default"
+      mac_aging_time        = 14500
+      organization          = "default"
+      tags                  = []
+      udld_message_interval = 15
       udld_recovery_action  = "none"
-      vlan_optimization  = false
+      vlan_optimization     = false
     }
   }
   description = <<-EOT
@@ -36,14 +36,14 @@ variable "policy_switch_control" {
   EOT
   type = map(object(
     {
-      description                = optional(string)
-      mac_aging_option  = optional(string)
-      mac_aging_time  = optional(number)
-      organization               = optional(string)
-      tags                       = optional(list(map(string)))
-      udld_message_interval  = optional(number)
+      description           = optional(string)
+      mac_aging_option      = optional(string)
+      mac_aging_time        = optional(number)
+      organization          = optional(string)
+      tags                  = optional(list(map(string)))
+      udld_message_interval = optional(number)
       udld_recovery_action  = optional(string)
-      vlan_optimization  = optional(bool)
+      vlan_optimization     = optional(bool)
     }
   ))
 }
@@ -58,8 +58,8 @@ variable "policy_switch_control" {
 module "policy_switch_control" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_profile_a,
-    module.ucs_domain_profile_b
+    module.ucs_domain_profiles_a,
+    module.ucs_domain_profiles_b
   ]
   source                = "terraform-cisco-modules/imm/intersight//modules/domain_switch_control"
   for_each              = local.policy_switch_control
@@ -72,12 +72,11 @@ module "policy_switch_control" {
   vlan_optimization     = each.value.vlan_optimization
   org_moid              = local.org_moids[each.value.organization].moid
   tags                  = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = [
+  profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    module.ucs_domain_profiles_a[s].moid &&
-    module.ucs_domain_profiles_b[s].moid
-    if local.ucs_domain_profiles[s].profile.policy_switch_control == each.key
-  ]
+    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    if local.ucs_domain_profiles[s].policy_switch_control == each.key
+  ])
 }
 
 

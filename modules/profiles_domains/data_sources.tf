@@ -19,16 +19,16 @@ data "intersight_organization_organization" "org_moid" {
 
 data "intersight_network_element_summary" "fi_a" {
   for_each = {
-    for assign, serial in local.ucs_domain_profile : assign => serial
+    for assign, serial in local.ucs_domain_profiles : assign => serial
     if serial.assign_switches == true
   }
-  serial = each.value.fabric_a_serial
+  serial = each.value.serial_a
 }
 
 data "intersight_network_element_summary" "fi_b" {
   for_each = {
-    for assign, serial in local.ucs_domain_profile : assign => serial
+    for assign, serial in local.ucs_domain_profiles : assign => serial
     if serial.assign_switches == true
   }
-  serial = each.value.fabric_b_serial
+  serial = each.value.serial_b
 }

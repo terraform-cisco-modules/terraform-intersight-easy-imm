@@ -57,7 +57,7 @@ variable "ucs_chassis_templates" {
   }
   description = <<-EOT
   key - Name of the UCS Chassis Template.
-  * organization - Name of the Intersight Organization to assign this pool to:
+  * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
     -  https://intersight.com/an/settings/organizations/
   * policy_imc_access - Name of the IMC Access Policy Created.
   * policy_power - Name of the Power Policy Created.

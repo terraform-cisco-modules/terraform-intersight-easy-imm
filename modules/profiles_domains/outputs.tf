@@ -3,9 +3,9 @@
 # UCS Domain Profile Outputs
 #__________________________________________________________
 
-output "ucs_domain_profile" {
+output "ucs_domain_profiles" {
   description = "moid of the UCS Domain Profiles."
-  value       = { for v in sort(keys(module.ucs_domain_profile)) : v => module.ucs_domain_profile[v].moid }
+  value       = { for v in sort(keys(module.ucs_domain_profiles)) : v => module.ucs_domain_profiles[v].moid }
 }
 
 
@@ -14,19 +14,19 @@ output "ucs_domain_profile" {
 # UCS Domain Profile - Fabric A Outputs
 #__________________________________________________________
 
-output "ucs_domain_profile_a" {
+output "ucs_domain_profiles_a" {
   description = "UCS Domain Profile - Fabric Interconnect A moids."
-  value       = { for v in sort(keys(module.ucs_domain_profile_a)) : v => module.ucs_domain_profile_a[v].moid }
+  value       = { for v in sort(keys(module.ucs_domain_profiles_a)) : v => module.ucs_domain_profiles_a[v].moid }
 }
 
-output "ucs_domain_profile_a_hardware" {
+output "ucs_domain_profiles_a_hardware" {
   description = "Fabric Interconnect A Hardware Information."
-  value = var.assign_switches == true ? {
+  value = {
     for v in sort(keys(data.intersight_network_element_summary.fi_a)) : v => {
       model  = data.intersight_network_element_summary.fi_a[v].results.0.model
       serial = data.intersight_network_element_summary.fi_a[v].results.0.serial
-    }
-  } : {}
+    } if local.ucs_domain_profiles[v].assign_switches != false
+  }
 }
 
 
@@ -35,19 +35,19 @@ output "ucs_domain_profile_a_hardware" {
 # UCS Domain Profile - Fabric B Outputs
 #__________________________________________________________
 
-output "ucs_domain_profile_b" {
+output "ucs_domain_profiles_b" {
   description = "UCS Domain Profile - Fabric Interconnect B moids."
-  value       = { for v in sort(keys(module.ucs_domain_profile_b)) : v => module.ucs_domain_profile_b[v].moid }
+  value       = { for v in sort(keys(module.ucs_domain_profiles_b)) : v => module.ucs_domain_profiles_b[v].moid }
 }
 
-output "ucs_domain_profile_b_hardware" {
+output "ucs_domain_profiles_b_hardware" {
   description = "Fabric Interconnect B Hardware Information."
-  value = var.assign_switches == true ? {
+  value = {
     for v in sort(keys(data.intersight_network_element_summary.fi_b)) : v => {
       model  = data.intersight_network_element_summary.fi_b[v].results.0.model
       serial = data.intersight_network_element_summary.fi_b[v].results.0.serial
-    }
-  } : {}
+    } if local.ucs_domain_profiles[v].assign_switches != false
+  }
 }
 
 #__________________________________________________________
@@ -55,9 +55,7 @@ output "ucs_domain_profile_b_hardware" {
 # UCS Domain VLAN Policy Outputs
 #__________________________________________________________
 
-output "vlan_policy" {
+output "vlan_policies" {
   description = "moid of the UCS Domain VLAN Policies."
-  value       = { for v in sort(keys(module.vlan_policy)) : v => module.vlan_policy[v].moid }
+  value       = { for v in sort(keys(module.policies_vlan)) : v => module.policies_vlan[v].moid }
 }
-
-

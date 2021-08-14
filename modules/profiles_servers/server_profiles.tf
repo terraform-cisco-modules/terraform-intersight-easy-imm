@@ -81,7 +81,7 @@ variable "ucs_server_templates" {
     - Linux
     - VMware - (Default)
     - Windows
-  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
+  * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
     -  https://intersight.com/an/settings/organizations/
   policy_bios - Name of the BIOS Policy to assign to the Template.
   policy_boot_order - Name of the Boot Order Policy to assign to the Template.

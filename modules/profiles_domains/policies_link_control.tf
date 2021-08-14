@@ -7,11 +7,11 @@
 variable "policy_link_control" {
   default = {
     default = {
-      description                = ""
-      organization               = "default"
-      tags                       = []
+      description      = ""
+      organization     = "default"
+      tags             = []
       udld_admin_state = "Enabled"
-      udld_mode             = "normal"
+      udld_mode        = "normal"
     }
   }
   description = <<-EOT
@@ -29,11 +29,11 @@ variable "policy_link_control" {
   EOT
   type = map(object(
     {
-      description                = optional(string)
-      organization               = optional(string)
-      tags                       = optional(list(map(string)))
+      description      = optional(string)
+      organization     = optional(string)
+      tags             = optional(list(map(string)))
       udld_admin_state = optional(string)
-      udld_mode             = optional(string)
+      udld_mode        = optional(string)
     }
   ))
 }

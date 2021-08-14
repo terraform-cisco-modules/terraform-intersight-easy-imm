@@ -67,10 +67,9 @@ module "policy_network_connectivity" {
   tags           = each.value.tags != [] ? each.value.tags : local.tags
   update_domain  = each.value.update_domain
   profile_type   = "domain"
-  profiles = [
+  profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    module.ucs_domain_profiles_a[s].moid &&
-    module.ucs_domain_profiles_b[s].moid
-    if local.ucs_domain_profiles[s].profile.policy_syslog == each.key
-  ]
+    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    if local.ucs_domain_profiles[s].policy_network_connectivity == each.key
+  ])
 }

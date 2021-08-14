@@ -19,7 +19,7 @@ variable "policy_system_qos" {
       bronze_multicast_optimize      = false
       bronze_packet_drop             = true
       bronze_weight                  = 1
-      description                = ""
+      description                    = ""
       fc_bandwidth                   = 39
       fc_weight                      = 6
       gold_admin_state               = "Enabled"
@@ -29,7 +29,7 @@ variable "policy_system_qos" {
       gold_multicast_optimize        = false
       gold_packet_drop               = true
       gold_weight                    = 4
-      organization               = "default"
+      organization                   = "default"
       platinum_admin_state           = "Enabled"
       platinum_bandwidth             = 23
       platinum_cos                   = 5
@@ -44,7 +44,7 @@ variable "policy_system_qos" {
       silver_multicast_optimize      = false
       silver_packet_drop             = true
       silver_weight                  = 1
-      tags                       = []
+      tags                           = []
     }
   }
   description = <<-EOT
@@ -153,8 +153,8 @@ variable "policy_system_qos" {
 module "policy_system_qos_1" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_profile_a,
-    module.ucs_domain_profile_b
+    module.ucs_domain_profiles_a,
+    module.ucs_domain_profiles_b
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
   for_each    = local.policy_system_qos
@@ -162,33 +162,31 @@ module "policy_system_qos_1" {
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = [
+  profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    module.ucs_domain_profiles_a[s].moid &&
-    module.ucs_domain_profiles_b[s].moid
-    if local.ucs_domain_profiles[s].profile.policy_system_qos == each.key
-  ]
+    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    if local.ucs_domain_profiles[s].policy_system_qos == each.key
+  ])
   classes = []
 }
 
 module "policy_system_qos_2" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_profile_a,
-    module.ucs_domain_profile_b
+    module.ucs_domain_profiles_a,
+    module.ucs_domain_profiles_b
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
-  for_each    = local.ucs_domain_profile
+  for_each    = local.policy_system_qos
   description = each.value.description != "" ? each.value.description : "${each.key} System QoS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = [
+  profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    module.ucs_domain_profiles_a[s].moid &&
-    module.ucs_domain_profiles_b[s].moid
-    if local.ucs_domain_profiles[s].profile.policy_system_qos == each.key
-  ]
+    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    if local.ucs_domain_profiles[s].policy_system_qos == each.key
+  ])
   classes = [
     {
       admin_state        = each.value.bronze_admin_state

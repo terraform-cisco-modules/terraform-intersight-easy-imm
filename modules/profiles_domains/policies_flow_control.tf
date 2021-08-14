@@ -7,12 +7,12 @@
 variable "policy_flow_control" {
   default = {
     default = {
-      description       = ""
-      flow_control_mode = "auto"
+      description          = ""
+      flow_control_mode    = "auto"
       flow_control_receive = "Disabled"
       flow_control_send    = "Disabled"
-      organization      = "default"
-      tags              = []
+      organization         = "default"
+      tags                 = []
     }
   }
   description = <<-EOT
@@ -33,12 +33,12 @@ variable "policy_flow_control" {
   EOT
   type = map(object(
     {
-      description       = optional(string)
-      flow_control_mode = optional(string)
+      description          = optional(string)
+      flow_control_mode    = optional(string)
       flow_control_receive = optional(string)
       flow_control_send    = optional(string)
-      organization      = optional(string)
-      tags              = optional(list(map(string)))
+      organization         = optional(string)
+      tags                 = optional(list(map(string)))
     }
   ))
 }

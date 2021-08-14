@@ -7,11 +7,11 @@
 variable "policy_link_aggregation" {
   default = {
     default = {
-      description                = ""
-      lacp_rate = "normal"
-      organization               = "default"
-      suspend_individual             = false
-      tags                       = []
+      description        = ""
+      lacp_rate          = "normal"
+      organization       = "default"
+      suspend_individual = false
+      tags               = []
     }
   }
   description = <<-EOT
@@ -27,11 +27,11 @@ variable "policy_link_aggregation" {
   EOT
   type = map(object(
     {
-      description                = optional(string)
-      lacp_rate = optional(string)
-      organization               = optional(string)
-      suspend_individual          = optional(string)
-      tags                       = optional(list(map(string)))
+      description        = optional(string)
+      lacp_rate          = optional(string)
+      organization       = optional(string)
+      suspend_individual = optional(string)
+      tags               = optional(list(map(string)))
     }
   ))
 }

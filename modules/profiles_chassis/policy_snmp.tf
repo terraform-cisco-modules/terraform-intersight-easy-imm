@@ -146,28 +146,28 @@ module "policies_snmp" {
     local.org_moids,
     module.ucs_chassis_profiles
   ]
-  for_each                = {
+  for_each = {
     for k, v in local.policy_snmp : k => v
     if v.snmp_user_1_name == "" && v.snmp_user_2_name == ""
-    }
-  source                  = "../../../terraform-intersight-imm/modules/policies_snmp"
+  }
+  source = "../../../terraform-intersight-imm/modules/policies_snmp"
   # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
-  description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
-  enabled                 = each.value.enabled
-  name                    = each.key
-  org_moid                = local.org_moids[each.value.organization].moid
-  snmp_access             = each.value.snmp_access
-  snmp_community          = var.snmp_community
-  snmp_engine_id          = each.value.snmp_engine_id
-  snmp_port               = each.value.snmp_port
-  snmp_traps              = each.value.snmp_trap_destinations
-  system_contact          = each.value.system_contact
-  system_location         = each.value.system_location
-  tags                    = each.value.tags != [] ? each.value.tags : local.tags
-  trap_community          = var.snmp_trap_community
-  v2_enabled              = var.snmp_community != "" ? true : false
-  v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
-  profile_type            = "chassis"
+  description     = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
+  enabled         = each.value.enabled
+  name            = each.key
+  org_moid        = local.org_moids[each.value.organization].moid
+  snmp_access     = each.value.snmp_access
+  snmp_community  = var.snmp_community
+  snmp_engine_id  = each.value.snmp_engine_id
+  snmp_port       = each.value.snmp_port
+  snmp_traps      = each.value.snmp_trap_destinations
+  system_contact  = each.value.system_contact
+  system_location = each.value.system_location
+  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  trap_community  = var.snmp_trap_community
+  v2_enabled      = var.snmp_community != "" ? true : false
+  v3_enabled      = each.value.snmp_user_1_name != "" ? true : false
+  profile_type    = "chassis"
   profiles = [
     for s in sort(keys(local.ucs_chassis_profiles)) :
     module.ucs_chassis_profiles[s].moid
@@ -180,11 +180,11 @@ module "policies_snmp_1_user" {
     local.org_moids,
     module.ucs_chassis_profiles
   ]
-  for_each                = {
+  for_each = {
     for k, v in local.policy_snmp : k => v
     if v.snmp_user_1_name != "" && v.snmp_user_2_name == ""
-    }
-  source                  = "../../../terraform-intersight-imm/modules/policies_snmp_1_user"
+  }
+  source = "../../../terraform-intersight-imm/modules/policies_snmp_1_user"
   # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
   description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled                 = each.value.enabled
@@ -219,11 +219,11 @@ module "policies_snmp_2_users" {
     local.org_moids,
     module.ucs_chassis_profiles
   ]
-  for_each                = {
+  for_each = {
     for k, v in local.policy_snmp : k => v
     if v.snmp_user_2_name == ""
-    }
-  source                  = "../../../terraform-intersight-imm/modules/policies_snmp_2_users"
+  }
+  source = "../../../terraform-intersight-imm/modules/policies_snmp_2_users"
   # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
   description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled                 = each.value.enabled
