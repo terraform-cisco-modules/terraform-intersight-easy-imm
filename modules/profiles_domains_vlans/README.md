@@ -1,6 +1,6 @@
 # profiles_domains_vlans - Intersight UCS Domain Profiles Deployment Module
 
-## Use this module to create UCS Domain Profiles in Intersight
+## Use this module to Assign VLANs to a VLAN Policy in Intersight
 
 ## Usage
 
