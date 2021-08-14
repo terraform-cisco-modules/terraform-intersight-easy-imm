@@ -11,31 +11,6 @@ output "assign_switches" {
 
 #__________________________________________________________
 #
-# Intersight endpoint ouptuts
-#__________________________________________________________
-
-output "endpoint" {
-  description = "Intersight URL."
-  value       = var.endpoint
-}
-
-
-#__________________________________________________________
-#
-# Intersight Organization Ouptuts
-#__________________________________________________________
-
-output "org_moids" {
-  value = {
-    for v in sort(keys(data.intersight_organization_organization.org_moid)) : v => {
-      moid = data.intersight_organization_organization.org_moid[v].results[0].moid
-    }
-  }
-}
-
-
-#__________________________________________________________
-#
 # UCS Domain Profile Outputs
 #__________________________________________________________
 
