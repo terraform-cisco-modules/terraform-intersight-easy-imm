@@ -61,7 +61,7 @@ module "policy_power" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source              = "../../../terraform-intersight-imm/modules/policies_power"
+  source              = "terraform-cisco-modules/imm/intersight//modules/policies_power"
   for_each            = local.policy_power
   allocated_budget    = each.value.allocated_budget
   description         = each.value.description != "" ? each.value.description : "${each.key} Power Policy."

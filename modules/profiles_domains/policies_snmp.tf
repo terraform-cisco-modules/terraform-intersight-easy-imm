@@ -151,7 +151,7 @@ module "policies_snmp" {
     for k, v in local.policy_snmp : k => v
     if v.snmp_user_1_name == "" && v.snmp_user_2_name == ""
   }
-  source = "../../../terraform-intersight-imm/modules/policies_snmp"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
   # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
   description     = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled         = each.value.enabled
@@ -186,7 +186,7 @@ module "policies_snmp_1_user" {
     for k, v in local.policy_snmp : k => v
     if v.snmp_user_1_name != "" && v.snmp_user_2_name == ""
   }
-  source = "../../../terraform-intersight-imm/modules/policies_snmp_1_user"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user"
   # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
   description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled                 = each.value.enabled
@@ -226,7 +226,7 @@ module "policies_snmp_2_users" {
     for k, v in local.policy_snmp : k => v
     if v.snmp_user_2_name != ""
   }
-  source = "../../../terraform-intersight-imm/modules/policies_snmp_2_users"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users"
   # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
   description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled                 = each.value.enabled

@@ -32,9 +32,9 @@ This module will create UCS Domain Profiles in Intersight.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_policies_snmp"></a> [policies\_snmp](#module\_policies\_snmp) | ../../../terraform-intersight-imm/modules/policies_snmp | n/a |
-| <a name="module_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#module\_policies\_snmp\_1\_user) | ../../../terraform-intersight-imm/modules/policies_snmp_1_user | n/a |
-| <a name="module_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#module\_policies\_snmp\_2\_users) | ../../../terraform-intersight-imm/modules/policies_snmp_2_users | n/a |
+| <a name="module_policies_snmp"></a> [policies\_snmp](#module\_policies\_snmp) | terraform-cisco-modules/imm/intersight//modules/policies_snmp | n/a |
+| <a name="module_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#module\_policies\_snmp\_1\_user) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user | n/a |
+| <a name="module_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#module\_policies\_snmp\_2\_users) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users | n/a |
 | <a name="module_policies_vlan"></a> [policies\_vlan](#module\_policies\_vlan) | terraform-cisco-modules/imm/intersight//modules/domain_vlan_policy | n/a |
 | <a name="module_policy_flow_control"></a> [policy\_flow\_control](#module\_policy\_flow\_control) | terraform-cisco-modules/imm/intersight//modules/domain_flow_control | n/a |
 | <a name="module_policy_link_aggregation"></a> [policy\_link\_aggregation](#module\_policy\_link\_aggregation) | terraform-cisco-modules/imm/intersight//modules/domain_link_aggregation | n/a |
@@ -56,7 +56,7 @@ This module will create UCS Domain Profiles in Intersight.
 | <a name="module_san_uplink_port_channel_b"></a> [san\_uplink\_port\_channel\_b](#module\_san\_uplink\_port\_channel\_b) | terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel | n/a |
 | <a name="module_server_ports_a"></a> [server\_ports\_a](#module\_server\_ports\_a) | terraform-cisco-modules/imm/intersight//modules/domain_port_server | n/a |
 | <a name="module_server_ports_b"></a> [server\_ports\_b](#module\_server\_ports\_b) | terraform-cisco-modules/imm/intersight//modules/domain_port_server | n/a |
-| <a name="module_syslog"></a> [syslog](#module\_syslog) | ../../../terraform-intersight-imm/modules/policies_syslog | n/a |
+| <a name="module_syslog"></a> [syslog](#module\_syslog) | terraform-cisco-modules/imm/intersight//modules/policies_syslog | n/a |
 | <a name="module_ucs_domain_profiles"></a> [ucs\_domain\_profiles](#module\_ucs\_domain\_profiles) | terraform-cisco-modules/imm/intersight//modules/domain_profile_cluster | n/a |
 | <a name="module_ucs_domain_profiles_a"></a> [ucs\_domain\_profiles\_a](#module\_ucs\_domain\_profiles\_a) | terraform-cisco-modules/imm/intersight//modules/domain_profile_switch | n/a |
 | <a name="module_ucs_domain_profiles_b"></a> [ucs\_domain\_profiles\_b](#module\_ucs\_domain\_profiles\_b) | terraform-cisco-modules/imm/intersight//modules/domain_profile_switch | n/a |

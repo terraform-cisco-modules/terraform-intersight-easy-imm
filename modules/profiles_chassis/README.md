@@ -33,13 +33,13 @@ This module will create UCS Chassis Profiles in Intersight.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_policies_snmp"></a> [policies\_snmp](#module\_policies\_snmp) | ../../../terraform-intersight-imm/modules/policies_snmp | n/a |
-| <a name="module_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#module\_policies\_snmp\_1\_user) | ../../../terraform-intersight-imm/modules/policies_snmp_1_user | n/a |
-| <a name="module_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#module\_policies\_snmp\_2\_users) | ../../../terraform-intersight-imm/modules/policies_snmp_2_users | n/a |
-| <a name="module_policy_imc_access"></a> [policy\_imc\_access](#module\_policy\_imc\_access) | ../../../terraform-intersight-imm/modules/policies_imc_access | n/a |
-| <a name="module_policy_power"></a> [policy\_power](#module\_policy\_power) | ../../../terraform-intersight-imm/modules/policies_power | n/a |
-| <a name="module_policy_thermal"></a> [policy\_thermal](#module\_policy\_thermal) | ../../../terraform-intersight-imm/modules/policies_thermal | n/a |
-| <a name="module_ucs_chassis_profiles"></a> [ucs\_chassis\_profiles](#module\_ucs\_chassis\_profiles) | ../../../terraform-intersight-imm/modules/chassis_profile | n/a |
+| <a name="module_policies_snmp"></a> [policies\_snmp](#module\_policies\_snmp) | terraform-cisco-modules/imm/intersight//modules/policies_snmp | n/a |
+| <a name="module_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#module\_policies\_snmp\_1\_user) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user | n/a |
+| <a name="module_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#module\_policies\_snmp\_2\_users) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users | n/a |
+| <a name="module_policy_imc_access"></a> [policy\_imc\_access](#module\_policy\_imc\_access) | terraform-cisco-modules/imm/intersight//modules/policies_imc_access | n/a |
+| <a name="module_policy_power"></a> [policy\_power](#module\_policy\_power) | terraform-cisco-modules/imm/intersight//modules/policies_power | n/a |
+| <a name="module_policy_thermal"></a> [policy\_thermal](#module\_policy\_thermal) | terraform-cisco-modules/imm/intersight//modules/policies_thermal | n/a |
+| <a name="module_ucs_chassis_profiles"></a> [ucs\_chassis\_profiles](#module\_ucs\_chassis\_profiles) | terraform-cisco-modules/imm/intersight//modules/chassis_profile | n/a |
 
 ## Resources
 

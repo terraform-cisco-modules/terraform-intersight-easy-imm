@@ -458,7 +458,7 @@ module "vnic_vlan_group" {
   depends_on = [
     local.org_moids
   ]
-  source      = "../../../terraform-intersight-imm/modules/policies_vnic_network_group"
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_network_group"
   for_each    = local.policy_vnic_templates
   description = each.value.description != "" ? each.value.description : "${each.key} vNIC Network Group (VLAN Group) Policy."
   name        = "${each.key}_vlan_group"

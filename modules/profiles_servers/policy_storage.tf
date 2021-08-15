@@ -144,7 +144,7 @@ module "policy_storage" {
     module.ucs_server_profiles,
     module.disk_groups,
   ]
-  source        = "../../../terraform-intersight-imm/modules/policies_storage"
+  source        = "terraform-cisco-modules/imm/intersight//modules/policies_storage"
   for_each      = local.policy_storage
   description   = each.value.description != "" ? each.value.description : "${each.key} Storage Policy."
   name          = each.key

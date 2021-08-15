@@ -37,29 +37,29 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="module_ldap_groups"></a> [ldap\_groups](#module\_ldap\_groups) | terraform-cisco-modules/imm/intersight//modules/policies_ldap_group | n/a |
 | <a name="module_ldap_provider"></a> [ldap\_provider](#module\_ldap\_provider) | terraform-cisco-modules/imm/intersight//modules/policies_ldap_provider | n/a |
 | <a name="module_local_users"></a> [local\_users](#module\_local\_users) | terraform-cisco-modules/imm/intersight//modules/policies_local_user | n/a |
-| <a name="module_policies_snmp"></a> [policies\_snmp](#module\_policies\_snmp) | ../../../terraform-intersight-imm/modules/policies_snmp | n/a |
-| <a name="module_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#module\_policies\_snmp\_1\_user) | ../../../terraform-intersight-imm/modules/policies_snmp_1_user | n/a |
-| <a name="module_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#module\_policies\_snmp\_2\_users) | ../../../terraform-intersight-imm/modules/policies_snmp_2_users | n/a |
+| <a name="module_policies_snmp"></a> [policies\_snmp](#module\_policies\_snmp) | terraform-cisco-modules/imm/intersight//modules/policies_snmp | n/a |
+| <a name="module_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#module\_policies\_snmp\_1\_user) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user | n/a |
+| <a name="module_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#module\_policies\_snmp\_2\_users) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users | n/a |
 | <a name="module_policy_bios_nvmeof"></a> [policy\_bios\_nvmeof](#module\_policy\_bios\_nvmeof) | terraform-cisco-modules/imm/intersight//modules/policies_bios | n/a |
 | <a name="module_policy_bios_virtual_node"></a> [policy\_bios\_virtual\_node](#module\_policy\_bios\_virtual\_node) | terraform-cisco-modules/imm/intersight//modules/policies_bios | n/a |
 | <a name="module_policy_bios_virtual_rack"></a> [policy\_bios\_virtual\_rack](#module\_policy\_bios\_virtual\_rack) | terraform-cisco-modules/imm/intersight//modules/policies_bios | n/a |
 | <a name="module_policy_boot_order"></a> [policy\_boot\_order](#module\_policy\_boot\_order) | terraform-cisco-modules/imm/intersight//modules/policies_boot_order | n/a |
 | <a name="module_policy_device_connector"></a> [policy\_device\_connector](#module\_policy\_device\_connector) | terraform-cisco-modules/imm/intersight//modules/policies_device_connector | n/a |
-| <a name="module_policy_imc_access"></a> [policy\_imc\_access](#module\_policy\_imc\_access) | ../../../terraform-intersight-imm/modules/policies_imc_access | n/a |
+| <a name="module_policy_imc_access"></a> [policy\_imc\_access](#module\_policy\_imc\_access) | terraform-cisco-modules/imm/intersight//modules/policies_imc_access | n/a |
 | <a name="module_policy_ipmi_over_lan"></a> [policy\_ipmi\_over\_lan](#module\_policy\_ipmi\_over\_lan) | terraform-cisco-modules/imm/intersight//modules/policies_ipmi_over_lan | n/a |
 | <a name="module_policy_ldap"></a> [policy\_ldap](#module\_policy\_ldap) | terraform-cisco-modules/imm/intersight//modules/policies_ldap_policy | n/a |
 | <a name="module_policy_local_users"></a> [policy\_local\_users](#module\_policy\_local\_users) | terraform-cisco-modules/imm/intersight//modules/policies_local_user_policy | n/a |
 | <a name="module_policy_network_connectivity"></a> [policy\_network\_connectivity](#module\_policy\_network\_connectivity) | terraform-cisco-modules/imm/intersight//modules/policies_network_connectivity | n/a |
 | <a name="module_policy_ntp"></a> [policy\_ntp](#module\_policy\_ntp) | terraform-cisco-modules/imm/intersight//modules/policies_ntp | n/a |
 | <a name="module_policy_persistent_memory"></a> [policy\_persistent\_memory](#module\_policy\_persistent\_memory) | terraform-cisco-modules/imm/intersight//modules/policies_persistent_memory | n/a |
-| <a name="module_policy_power"></a> [policy\_power](#module\_policy\_power) | ../../../terraform-intersight-imm/modules/policies_power | n/a |
+| <a name="module_policy_power"></a> [policy\_power](#module\_policy\_power) | terraform-cisco-modules/imm/intersight//modules/policies_power | n/a |
 | <a name="module_policy_serial_over_lan"></a> [policy\_serial\_over\_lan](#module\_policy\_serial\_over\_lan) | terraform-cisco-modules/imm/intersight//modules/policies_serial_over_lan | n/a |
 | <a name="module_policy_ssh"></a> [policy\_ssh](#module\_policy\_ssh) | terraform-cisco-modules/imm/intersight//modules/policies_ssh | n/a |
-| <a name="module_policy_storage"></a> [policy\_storage](#module\_policy\_storage) | ../../../terraform-intersight-imm/modules/policies_storage | n/a |
+| <a name="module_policy_storage"></a> [policy\_storage](#module\_policy\_storage) | terraform-cisco-modules/imm/intersight//modules/policies_storage | n/a |
 | <a name="module_policy_virtual_kvm"></a> [policy\_virtual\_kvm](#module\_policy\_virtual\_kvm) | terraform-cisco-modules/imm/intersight//modules/policies_virtual_kvm | n/a |
 | <a name="module_smtp"></a> [smtp](#module\_smtp) | terraform-cisco-modules/imm/intersight//modules/policies_smtp | n/a |
-| <a name="module_syslog"></a> [syslog](#module\_syslog) | ../../../terraform-intersight-imm/modules/policies_syslog | n/a |
-| <a name="module_ucs_server_profiles"></a> [ucs\_server\_profiles](#module\_ucs\_server\_profiles) | ../../../terraform-intersight-imm/modules/server_profile | n/a |
+| <a name="module_syslog"></a> [syslog](#module\_syslog) | terraform-cisco-modules/imm/intersight//modules/policies_syslog | n/a |
+| <a name="module_ucs_server_profiles"></a> [ucs\_server\_profiles](#module\_ucs\_server\_profiles) | terraform-cisco-modules/imm/intersight//modules/server_profile | n/a |
 | <a name="module_vhba_adapter"></a> [vhba\_adapter](#module\_vhba\_adapter) | terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter | n/a |
 | <a name="module_vhba_network_a"></a> [vhba\_network\_a](#module\_vhba\_network\_a) | terraform-cisco-modules/imm/intersight//modules/policies_vhba_network | n/a |
 | <a name="module_vhba_network_b"></a> [vhba\_network\_b](#module\_vhba\_network\_b) | terraform-cisco-modules/imm/intersight//modules/policies_vhba_network | n/a |
@@ -74,7 +74,7 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="module_vnic_qos"></a> [vnic\_qos](#module\_vnic\_qos) | terraform-cisco-modules/imm/intersight//modules/policies_vnic_qos | n/a |
 | <a name="module_vnic_templates_a"></a> [vnic\_templates\_a](#module\_vnic\_templates\_a) | terraform-cisco-modules/imm/intersight//modules/policies_vnic | n/a |
 | <a name="module_vnic_templates_b"></a> [vnic\_templates\_b](#module\_vnic\_templates\_b) | terraform-cisco-modules/imm/intersight//modules/policies_vnic | n/a |
-| <a name="module_vnic_vlan_group"></a> [vnic\_vlan\_group](#module\_vnic\_vlan\_group) | ../../../terraform-intersight-imm/modules/policies_vnic_network_group | n/a |
+| <a name="module_vnic_vlan_group"></a> [vnic\_vlan\_group](#module\_vnic\_vlan\_group) | terraform-cisco-modules/imm/intersight//modules/policies_vnic_network_group | n/a |
 
 ## Resources
 
