@@ -303,7 +303,7 @@ module "vnic_lan_connectivity" {
   name                = each.key
   org_moid            = local.org_moids[each.value.organization].moid
   placement_mode      = each.value.placement_mode
-  tags                = each.value.tags != [] ? each.value.tags : local.tags
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform     = each.value.target_platform
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
@@ -344,7 +344,7 @@ module "vnic_adapter" {
   )) > 0 ? "Recommended adapter settings for Windows high performance and networking." : "Recommended adapter settings for Windows."
   name            = "${each.key}_${each.value.adapter_template}"
   org_moid        = local.org_moids[each.value.organization].moid
-  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
   advanced_filter = false # Enable Advanced Filter
   arfs_enable     = false # Enable Accelerated Receive Flow Steering
   # Completion Settings
@@ -443,7 +443,7 @@ module "vnic_network_control_policy" {
   lldp_transmit         = each.value.neighbor_discovery == "lldp" || each.value.neighbor_discovery == "both" ? true : false
   name                  = "${each.key}_netwkctrl"
   org_moid              = local.org_moids[each.value.organization].moid
-  tags                  = each.value.tags != [] ? each.value.tags : local.tags
+  tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
   uplink_fail_action    = each.value.uplink_fail_action
 }
 
@@ -464,7 +464,7 @@ module "vnic_vlan_group" {
   name        = "${each.key}_vlan_group"
   native_vlan = each.value.vlan_native_vlan
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   vlan_list   = each.value.vlan_list
 }
 
@@ -488,7 +488,7 @@ module "vnic_qos" {
   rate_limit     = each.value.qos_rate_limit
   trust_host_cos = each.value.qos_trust_host_cos
   org_moid       = local.org_moids[each.value.organization].moid
-  tags           = each.value.tags != [] ? each.value.tags : local.tags
+  tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
 

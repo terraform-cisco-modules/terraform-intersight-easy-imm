@@ -62,6 +62,6 @@ module "policy_flow_control" {
   priority_flow_control_mode = each.value.flow_control_mode
   receive_direction          = each.value.flow_control_receive
   send_direction             = each.value.flow_control_send
-  tags                       = each.value.tags != [] ? each.value.tags : local.tags
+  tags                       = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 

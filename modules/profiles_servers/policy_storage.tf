@@ -123,7 +123,7 @@ module "disk_groups" {
   raid_level  = each.value.raid_level
   use_jbods   = each.value.use_jbods
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   span_groups = length(regexall("Raid(10|50|60)", each.value.raid_level)) > 0 ? {
     span_0 = [for s in each.value.disks_group_0 : { disk = s }]
     span_1 = [for s in each.value.disks_group_1 : { disk = s }]
@@ -150,7 +150,7 @@ module "policy_storage" {
   name          = each.key
   org_moid      = local.org_moids[each.value.organization].moid
   retain_policy = each.value.retain_policy
-  tags          = each.value.tags != [] ? each.value.tags : local.tags
+  tags          = length(each.value.tags) > 0 ? each.value.tags : local.tags
   unused_disks  = each.value.unused_disks
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :

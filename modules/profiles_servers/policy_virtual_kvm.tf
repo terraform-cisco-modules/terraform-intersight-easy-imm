@@ -65,7 +65,7 @@ module "policy_virtual_kvm" {
   name                      = each.key
   org_moid                  = local.org_moids[each.value.organization].moid
   remote_port               = each.value.remote_port
-  tags                      = each.value.tags != [] ? each.value.tags : local.tags
+  tags                      = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid

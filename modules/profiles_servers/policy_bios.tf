@@ -48,7 +48,7 @@ module "policy_bios_nvmeof" {
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
   local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   #+++++++++++++++++++++++++++++++
@@ -113,7 +113,7 @@ module "policy_bios_virtual_node" {
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
   local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   #+++++++++++++++++++++++++++++++
@@ -181,7 +181,7 @@ module "policy_bios_virtual_rack" {
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
   local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
   #+++++++++++++++++++++++++++++++
@@ -1049,7 +1049,7 @@ variable "bios_policy_custom" {
 #   name        = each.value.name
 #   org_moid    = local.org_moids[organization].moid
 #   profiles     = [ for s in sort(keys(local.bios_custom_profiles)) : module.ucs_server_profiles[s].moid ]
-#   tags        = each.value.tags != [] ? each.value.tags : local.tags
+#   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
 #   #+++++++++++++++++++++++++++++++
 #   # Boot Options Section
 #   #+++++++++++++++++++++++++++++++

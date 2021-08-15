@@ -54,6 +54,6 @@ module "policy_link_aggregation" {
   name               = each.key
   org_moid           = local.org_moids[each.value.organization].moid
   suspend_individual = each.value.suspend_individual
-  tags               = each.value.tags != [] ? each.value.tags : local.tags
+  tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 

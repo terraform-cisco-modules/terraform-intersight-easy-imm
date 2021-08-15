@@ -70,7 +70,7 @@ module "policy_power" {
   power_profiling     = each.value.power_profiling
   power_restore_state = each.value.power_restore_state
   redundancy_mode     = each.value.redundancy_mode
-  tags                = each.value.tags != [] ? each.value.tags : local.tags
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid

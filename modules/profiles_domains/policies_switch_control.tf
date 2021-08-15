@@ -71,10 +71,10 @@ module "policy_switch_control" {
   udld_recovery_action  = each.value.udld_recovery_action
   vlan_optimization     = each.value.vlan_optimization
   org_moid              = local.org_moids[each.value.organization].moid
-  tags                  = each.value.tags != [] ? each.value.tags : local.tags
+  tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
     if local.ucs_domain_profiles[s].policy_switch_control == each.key
   ])
 }

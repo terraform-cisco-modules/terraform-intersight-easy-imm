@@ -54,7 +54,7 @@ module "policy_link_control" {
   description      = each.value.description != "" ? each.value.description : "${each.key} Link Control Policy."
   name             = each.key
   org_moid         = local.org_moids[each.value.organization].moid
-  tags             = each.value.tags != [] ? each.value.tags : local.tags
+  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
   udld_admin_state = each.value.udld_admin_state
   udld_mode        = each.value.udld_mode
 }

@@ -73,7 +73,7 @@ module "smtp" {
   sender_email    = each.value.sender_email != "" ? each.value.sender_email : each.value.smtp_server
   smtp_recipients = each.value.smtp_recipients
   smtp_server     = each.value.smtp_server
-  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid

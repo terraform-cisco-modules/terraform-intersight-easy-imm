@@ -59,3 +59,7 @@ output "vlan_policies" {
   description = "moid of the UCS Domain VLAN Policies."
   value       = { for v in sort(keys(module.policies_vlan)) : v => module.policies_vlan[v].moid }
 }
+
+# output "domain_tags" {
+#   value = local.ucs_domain_profiles
+# }

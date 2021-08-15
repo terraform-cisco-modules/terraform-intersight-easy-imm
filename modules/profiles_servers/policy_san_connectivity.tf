@@ -170,7 +170,7 @@ module "vhba_san_connectivity" {
   org_moid            = local.org_moids[each.value.organization].moid
   placement_mode      = each.value.placement_mode
   static_wwnn_address = each.value.wwnn_address_type == "STATIC" ? each.value.wwnn_address_static : ""
-  tags                = each.value.tags != [] ? each.value.tags : local.tags
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform     = each.value.target_platform
   wwnn_pool           = each.value.wwnn_address_type == "POOL" ? [local.fc_pools[each.value.wwnn_pool]] : []
   wwnn_address_type   = each.value.wwnn_address_type
@@ -197,7 +197,7 @@ module "vhba_adapter" {
   description = each.value.description != "" ? each.value.description : "${each.key} ${each.value.adapter_template} vHBA Adapter Policy."
   name        = "${each.key}_${each.value.adapter_template}"
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   # vHBA Adapter Customization for Template
   error_detection_timeout          = 20000
   error_recovery_enabled           = false
@@ -238,7 +238,7 @@ module "vhba_network_a" {
   description     = each.value.description != "" ? each.value.description : "${each.key} vHBA Network Policy - Fabric A."
   name            = "${each.key}_vsan_a"
   org_moid        = local.org_moids[each.value.organization].moid
-  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
   vsan_id         = each.value.vsan_a
 }
 
@@ -252,7 +252,7 @@ module "vhba_network_b" {
   description     = each.value.description != "" ? each.value.description : "${each.key} vHBA Network Policy - Fabric B."
   name            = "${each.key}_vsan_b"
   org_moid        = local.org_moids[each.value.organization].moid
-  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
   vsan_id         = each.value.vsan_b
 }
 
@@ -276,7 +276,7 @@ module "vhba_qos" {
   name                = "${each.key}_qos"
   org_moid            = local.org_moids[each.value.organization].moid
   rate_limit          = each.value.qos_rate_limit
-  tags                = each.value.tags != [] ? each.value.tags : local.tags
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
 

@@ -164,14 +164,14 @@ module "policies_snmp" {
   snmp_traps      = each.value.snmp_trap_destinations
   system_contact  = each.value.system_contact
   system_location = each.value.system_location
-  tags            = each.value.tags != [] ? each.value.tags : local.tags
+  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
   trap_community  = var.snmp_trap_community
   v2_enabled      = var.snmp_community != "" ? true : false
   v3_enabled      = each.value.snmp_user_1_name != "" ? true : false
   profile_type    = "domain"
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
     if local.ucs_domain_profiles[s].policy_snmp == each.key
   ])
 }
@@ -204,14 +204,14 @@ module "policies_snmp_1_user" {
   user_1_security_level   = each.value.snmp_user_1_security_level
   system_contact          = each.value.system_contact
   system_location         = each.value.system_location
-  tags                    = each.value.tags != [] ? each.value.tags : local.tags
+  tags                    = length(each.value.tags) > 0 ? each.value.tags : local.tags
   trap_community          = var.snmp_trap_community
   v2_enabled              = var.snmp_community != "" ? true : false
   v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
   profile_type            = "domain"
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
     if local.ucs_domain_profiles[s].policy_snmp == each.key
   ])
 }
@@ -249,14 +249,14 @@ module "policies_snmp_2_users" {
   user_2_security_level   = each.value.snmp_user_2_security_level
   system_contact          = each.value.system_contact
   system_location         = each.value.system_location
-  tags                    = each.value.tags != [] ? each.value.tags : local.tags
+  tags                    = length(each.value.tags) > 0 ? each.value.tags : local.tags
   trap_community          = var.snmp_trap_community
   v2_enabled              = var.snmp_community != "" ? true : false
   v3_enabled              = each.value.snmp_user_1_name != "" ? true : false
   profile_type            = "domain"
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
     if local.ucs_domain_profiles[s].policy_snmp == each.key
   ])
 }

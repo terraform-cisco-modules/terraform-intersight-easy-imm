@@ -14,8 +14,8 @@ variable "policy_port_channel_lan" {
       policy_flow_control     = ""
       policy_link_aggregation = ""
       policy_link_control     = ""
-      policy_ports            = ""
       tags                    = []
+      ucs_domain_profile      = ""
     }
   }
   description = <<-EOT
@@ -33,8 +33,8 @@ variable "policy_port_channel_lan" {
   * policy_flow_control - Name of the Flow Control policy.
   * policy_link_aggregation - Name of the Link Aggregation policy.
   * policy_link_control - Name of the Link Control policy.
-  * policy_ports - Name of the Port policy.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * ucs_domain_profile - Name of the UCS Domain Profile to Assign.
   EOT
   type = map(object(
     {
@@ -45,8 +45,8 @@ variable "policy_port_channel_lan" {
       policy_flow_control     = optional(string)
       policy_link_aggregation = optional(string)
       policy_link_control     = optional(string)
-      policy_ports            = optional(string)
       tags                    = optional(list(map(string)))
+      ucs_domain_profile      = string
     }
   ))
 }
@@ -78,9 +78,9 @@ module "policy_port_channel_lan_a" {
   lan_uplink_pc_id    = element(each.value.lan_pc_ports, 0)
   lan_uplink_pc_ports = each.value.lan_pc_ports
   lan_uplink_speed    = each.value.lan_pc_speed
-  port_policy_moid    = module.policy_ports_a[each.value.policy_ports].moid
+  port_policy_moid    = module.policy_ports_a[each.value.ucs_domain_profile].moid
   slot_id             = each.value.lan_pc_slot_id
-  tags                = each.value.tags != [] ? each.value.tags : local.tags
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   flow_control_moid = each.value.policy_flow_control != "" ? [
     module.policy_flow_control[each.value.policy_flow_control].moid
   ] : []
@@ -111,9 +111,9 @@ module "policy_port_channel_lan_b" {
   lan_uplink_pc_id    = element(each.value.lan_pc_ports, 0)
   lan_uplink_pc_ports = each.value.lan_pc_ports
   lan_uplink_speed    = each.value.lan_pc_speed
-  port_policy_moid    = module.policy_ports_b[each.value.policy_ports].moid
+  port_policy_moid    = module.policy_ports_b[each.value.ucs_domain_profile].moid
   slot_id             = each.value.lan_pc_slot_id
-  tags                = each.value.tags != [] ? each.value.tags : local.tags
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   flow_control_moid = each.value.policy_flow_control != "" ? [
     module.policy_flow_control[each.value.policy_flow_control].moid
   ] : []

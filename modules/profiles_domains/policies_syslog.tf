@@ -62,11 +62,11 @@ module "syslog" {
   org_moid           = local.org_moids[each.value.organization].moid
   remote_clients     = each.value.syslog_destinations
   local_min_severity = each.value.local_min_severity
-  tags               = each.value.tags != [] ? each.value.tags : local.tags
+  tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profile_type       = "domain"
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
     if local.ucs_domain_profiles[s].policy_syslog == each.key
   ])
 }

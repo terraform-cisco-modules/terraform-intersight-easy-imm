@@ -170,7 +170,7 @@ module "policy_ldap" {
   password                   = var.ldap_password
   search_domain              = each.value.ldap_search_domain
   search_forest              = each.value.ldap_search_forest
-  tags                       = each.value.tags != [] ? each.value.tags : local.tags
+  tags                       = length(each.value.tags) > 0 ? each.value.tags : local.tags
   timeout                    = each.value.ldap_timeout
   user_search_precedence     = each.value.ldap_user_search_precedence
   profiles = [

@@ -64,7 +64,7 @@ module "policy_network_connectivity" {
   ipv6_enable    = each.value.ipv6_enable
   name           = each.key
   org_moid       = local.org_moids[each.value.organization].moid
-  tags           = each.value.tags != [] ? each.value.tags : local.tags
+  tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
   update_domain  = each.value.update_domain
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :

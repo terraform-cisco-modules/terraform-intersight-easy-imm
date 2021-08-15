@@ -58,7 +58,7 @@ module "policy_boot_order" {
   description = each.value.description != "" ? each.value.description : "${each.key} Boot Order Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid

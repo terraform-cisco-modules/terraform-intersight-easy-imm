@@ -161,10 +161,10 @@ module "policy_system_qos_1" {
   description = each.value.description != "" ? each.value.description : "${each.key} System QoS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
     if local.ucs_domain_profiles[s].policy_system_qos == each.key
   ])
   classes = []
@@ -181,12 +181,12 @@ module "policy_system_qos_2" {
   description = each.value.description != "" ? each.value.description : "${each.key} System QoS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
-  profiles = flatten([
-    for s in sort(keys(local.ucs_domain_profiles)) :
-    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
-    if local.ucs_domain_profiles[s].policy_system_qos == each.key
-  ])
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  # profiles = flatten([
+  #   for s in sort(keys(local.ucs_domain_profiles)) :
+  #   [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
+  #   if local.ucs_domain_profiles[s].policy_system_qos == each.key
+  # ])
   classes = [
     {
       admin_state        = each.value.bronze_admin_state

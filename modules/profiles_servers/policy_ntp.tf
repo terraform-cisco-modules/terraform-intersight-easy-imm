@@ -57,7 +57,7 @@ module "policy_ntp" {
   name        = each.key
   ntp_servers = each.value.ntp_servers
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   timezone    = each.value.timezone
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :

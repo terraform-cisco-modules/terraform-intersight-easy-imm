@@ -9,23 +9,41 @@ variable "ucs_domain_profiles" {
     default = {
       action                      = "No-op"
       assign_switches             = false
-      description                 = ""
-      descr_fi_a                  = ""
-      descr_fi_b                  = ""
+      # device_model                = "UCS-FI-64108"
+      domain_description          = ""
+      domain_descr_fi_a           = ""
+      domain_descr_fi_b           = ""
+      domain_serial_a             = ""
+      domain_serial_b             = ""
+      fc_ports                    = [1, 4]
+      fc_slot_id                  = 1
       organization                = "default"
       policy_network_connectivity = ""
       policy_ntp                  = ""
-      policy_ports                = ""
       policy_snmp                 = ""
       policy_switch_control       = ""
       policy_syslog               = ""
       policy_system_qos           = ""
-      serial_a                    = ""
-      serial_b                    = ""
+      port_policy_descr_a         = ""
+      port_policy_descr_b         = ""
+      san_fill_pattern            = "Arbff"
+      san_pc_breakoutswport       = 0
+      san_pc_ports                = [1, 2]
+      san_pc_slot_id              = 1
+      san_pc_speed                = "16Gbps"
+      server_ports                = "5-18"
       tags                        = []
       vlan_description            = ""
       vlan_native                 = 1
       vlan_list                   = "2-3"
+      vsan_a                      = 100
+      vsan_a_description          = ""
+      vsan_a_fcoe                 = null
+      vsan_b                      = 200
+      vsan_b_description          = ""
+      vsan_b_fcoe                 = null
+      vsan_enable_trunking        = false
+      vsan_prefix                 = ""
     }
   }
   description = <<-EOT
@@ -35,46 +53,113 @@ variable "ucs_domain_profiles" {
     - No-op
     - Unassign
   * assign_switches - Flag to define if the physical FI's should be assigned to the policy.  Default is false.
-  * description - Description to Assign to the Profile.
-  * descr_fi_a - Description to Assign to the Profile Fabric Interconnect A.
-  * descr_fi_b - Description to Assign to the Profile Fabric Interconnect B.
+  * device_model - This field specifies the device model that this Port Policy is being configured for.
+    - UCS-FI-6454 - (Default) - The standard 4th generation UCS Fabric Interconnect with 54 ports.
+    - UCS-FI-64108 - The expanded 4th generation UCS Fabric Interconnect with 108 ports.
+    - unknown - Unknown device type, usage is TBD.
+  * domain_description - Description to Assign to the Profile.
+  * domain_descr_fi_a - Description to Assign to the Profile Fabric Interconnect A.
+  * domain_descr_fi_b - Description to Assign to the Profile Fabric Interconnect B.
+  * domain_serial_a - Serial Number for Fabric Interconnect A.
+
+  * domain_serial_b - Serial Number for Fabric Interconnect B.
+  * fc_ports - This is a the Starting and Ending Ports to assign as Fibre-Channel Uplink Ports.  Default is [1, 4].  To not configure Fibre-Channel set the list to [].
+  * fc_slot_id - Slot Identifier of the switch.  Default is 1.
   * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
     -  https://intersight.com/an/settings/organizations/
   * policy_network_connectivity - Name of the Network Control Policy to assign to the UCS Domain Profile.
   * policy_ntp - Name of the NTP Policy to assign to the UCS Domain Profile.
-  * policy_ports - Name of the Port Policy to assign to the UCS Domain Profile.
   * policy_snmp - Name of the SNMP Policy to assign to the UCS Domain Profile.
   * policy_switch_control - Name of the Switch Control Policy to assign to the UCS Domain Profile.
   * policy_syslog - Name of the Syslog Policy to assign to the UCS Domain Profile.
   * policy_system_qos - Name of the System QoS Policy to assign to the UCS Domain Profile.
-  * serial_a - Serial Number for Fabric Interconnect A.
-  * serial_b - Serial Number for Fabric Interconnect B.
+  * port_policy_descr_a - Description to Assign to Port Policy A.
+  * port_policy_descr_b - Description to Assign to Port Policy B.
+  * san_fill_pattern - Fill pattern to differentiate the configs in NPIV.
+    - Arbff - (Default) Fc Fill Pattern type Arbff.
+    - Idle - Fc Fill Pattern type Idle.
+  * san_pc_breakoutswport - Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.  Default is 0.
+  * san_pc_ports - List of Ports to Assign to the SAN Port-Channel Policy.  Default is [1, 2].
+  * san_pc_slot_id - Slot Identifier of the Switch/FEX/Chassis Interface.  Default is 1.
+  * san_pc_speed - Admin configured speed for the port.
+    - Auto - Admin configurable speed Auto.
+    - 8Gbps - Admin configurable speed 8Gbps.
+    - 16Gbps - (Defualt) Admin configurable speed 16Gbps.
+    - 32Gbps - Admin configurable speed 32Gbps.
+  * server_ports - List of Ports to assign to the Server Port Policy.  Default is "5-18".
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * vlan_description - Description to Assign to the Policy.
   * vlan_native - VLAN ID to Assign as the Native VLAN.  Default is 1.
   * vlan_list - List of VLANs to assign to the Policy.  Default is "2-3"
+  * vsan_a - VSAN ID for Fabric A.  Default is 100.
+  * vsan_a_description - Description to Assign to VSAN Policy A.
+  * vsan_a_fcoe - VLAN ID for the FCOE VLAN.  If using the same ID as the VSAN ID set this to null.
+  * vsan_b - VSAN ID for Fabric B.  Default is 200.
+  * vsan_b_description - Description to Assign to VSAN Policy B.
+  * vsan_b_fcoe - VLAN ID for the FCOE VLAN.  If using the same ID as the VSAN ID set this to null.
+  * vsan_enable_trunking - Enable or Disable Trunking on all of configured FC uplink ports.  Default is false.
+  * vsan_prefix - Prefix Name for VSANs.  Default is none.
   EOT
   type = map(object(
     {
       action                      = optional(string)
       assign_switches             = optional(bool)
-      description                 = optional(string)
-      descr_fi_a                  = optional(string)
-      descr_fi_b                  = optional(string)
+      device_model                = optional(string)
+      domain_description          = optional(string)
+      domain_descr_fi_a           = optional(string)
+      domain_descr_fi_b           = optional(string)
+      domain_serial_a             = optional(string)
+      domain_serial_b             = optional(string)
+      fc_ports                    = optional(list(string))
+      fc_slot_id                  = optional(number)
       organization                = optional(string)
       policy_network_connectivity = optional(string)
       policy_ntp                  = optional(string)
-      policy_ports                = optional(string)
       policy_snmp                 = optional(string)
       policy_switch_control       = optional(string)
       policy_syslog               = optional(string)
       policy_system_qos           = optional(string)
-      serial_a                    = optional(string)
-      serial_b                    = optional(string)
+      port_policy_descr_a         = optional(string)
+      port_policy_descr_b         = optional(string)
+      san_fill_pattern            = optional(string)
+      san_pc_breakoutswport       = optional(number)
+      san_pc_ports                = optional(list(string))
+      san_pc_slot_id              = optional(number)
+      san_pc_speed                = optional(string)
+      server_ports                = optional(string)
       tags                        = optional(list(map(string)))
       vlan_description            = optional(string)
       vlan_native                 = optional(number)
       vlan_list                   = optional(string)
+      vsan_a                      = optional(number)
+      vsan_a_description          = optional(string)
+      vsan_a_fcoe                 = optional(number)
+      vsan_b                      = optional(number)
+      vsan_b_description          = optional(string)
+      vsan_b_fcoe                 = optional(number)
+      vsan_enable_trunking        = optional(bool)
+      vsan_prefix                 = optional(string)
+    }
+  ))
+}
+
+variable "policy_ports" {
+  default = {
+    default = {
+      organization          = "default"
+      tags                  = []
+    }
+  }
+  description = <<-EOT
+  key - Name of the Port Policy.
+  * organization - Name of the Intersight Organization to assign this Policy to.  Default is default.
+    - https://intersight.com/an/settings/organizations/
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  EOT
+  type = map(object(
+    {
+      organization          = optional(string)
+      tags                  = optional(list(map(string)))
     }
   ))
 }
@@ -92,10 +177,10 @@ module "ucs_domain_profiles" {
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_profile_cluster"
   for_each    = local.ucs_domain_profiles
-  description = each.value.description != "" ? each.value.description : "${each.key} UCS Domain."
+  description = each.value.domain_description != "" ? each.value.domain_description : "${each.key} UCS Domain."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
 #______________________________________________
@@ -114,10 +199,10 @@ module "ucs_domain_profiles_a" {
   action          = each.value.action
   assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fi_a[each.key].results.0.moid] : []
   cluster_moid    = module.ucs_domain_profiles[each.key].moid
-  description     = each.value.descr_fi_a != "" ? each.value.descr_fi_a : "${each.key} Fabric Interconnect A Profile."
+  description     = each.value.domain_descr_fi_a != "" ? each.value.domain_descr_fi_a : "${each.key} Fabric Interconnect A Profile."
   name            = "${each.key}-a"
   # policy_bucket   = each.value.policy_bucket
-  tags = each.value.tags != [] ? each.value.tags : local.tags
+  tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
 
@@ -137,10 +222,10 @@ module "ucs_domain_profiles_b" {
   action          = each.value.action
   assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fi_b[each.key].results.0.moid] : []
   cluster_moid    = module.ucs_domain_profiles[each.key].moid
-  description     = each.value.descr_fi_b != "" ? each.value.descr_fi_b : "${each.key} Fabric Interconnect B Profile."
+  description     = each.value.domain_descr_fi_b != "" ? each.value.domain_descr_fi_b : "${each.key} Fabric Interconnect B Profile."
   name            = "${each.key}-b"
   # policy_bucket   = each.value.policy_bucket
-  tags = each.value.tags != [] ? each.value.tags : local.tags
+  tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
 
@@ -161,10 +246,289 @@ module "policies_vlan" {
   description = each.value.vlan_description != "" ? each.value.vlan_description : "${each.value.organization} ${each.key} VLAN Policy."
   name        = "${each.key}_vlan"
   org_moid    = local.org_moids[each.value.organization].moid
-  tags        = each.value.tags != [] ? each.value.tags : local.tags
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
     module.ucs_domain_profiles_a[each.key].moid,
     module.ucs_domain_profiles_b[each.key].moid
   ]
 }
 
+#_________________________________________________________________________
+#
+# Intersight Port Policies Variables
+# GUI Location: Configure > Policies > Create Policy > Port > Start
+#_________________________________________________________________________
+
+
+#____________________________________________________________
+#
+# Intersight VSAN Policies
+# GUI Location: Policies > Create Policy > VSAN
+#____________________________________________________________
+
+module "policy_vsan_a" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_domain_profiles_a,
+    module.ucs_domain_profiles_b
+  ]
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
+  for_each = {
+    for k, v in local.ucs_domain_profiles : k => v
+    if v.san_pc_ports != []
+  }
+  description     = each.value.vsan_a_description != "" ? each.value.vsan_a_description : "${each.key} VSAN Policy Fabric A."
+  enable_trunking = each.value.vsan_enable_trunking
+  name            = "${each.key}_vsan_a"
+  org_moid        = local.org_moids[each.value.organization].moid
+  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  profiles        = [module.ucs_domain_profiles_a[each.key].moid]
+}
+
+module "policy_vsan_b" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_domain_profiles_a,
+    module.ucs_domain_profiles_b
+  ]
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy"
+  for_each = {
+    for k, v in local.ucs_domain_profiles : k => v
+    if v.san_pc_ports != []
+  }
+  description     = each.value.vsan_b_description != "" ? each.value.vsan_b_description : "${each.value.organization} ${each.key} VSAN Policy Fabric B."
+  enable_trunking = each.value.vsan_enable_trunking
+  name            = "${each.key}_vsan_b"
+  org_moid        = local.org_moids[each.value.organization].moid
+  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  profiles        = [module.ucs_domain_profiles_b[each.key].moid]
+}
+
+#______________________________________________
+#
+# Assign VSAN to VSAN Fabric A Policy
+#______________________________________________
+
+module "vsan_a" {
+  depends_on = [
+    local.org_moids,
+    module.policy_vsan_a
+  ]
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
+  for_each = {
+    for k, v in local.ucs_domain_profiles : k => v
+    if v.san_pc_ports != []
+  }
+  vsan_policy_moid = module.policy_vsan_a[each.key].moid
+  vsan_prefix      = each.value.organization
+  vsan_list = {
+    vsan = {
+      fcoe_vlan = each.value.vsan_a_fcoe != null ? each.value.vsan_a_fcoe : each.value.vsan_a
+      vsan_id   = each.value.vsan_a
+    }
+  }
+}
+
+
+#______________________________________________
+#
+# Assign VSAN to VSAN Fabric B Policy
+#______________________________________________
+
+module "vsan_b" {
+  depends_on = [
+    local.org_moids,
+    module.policy_vsan_b
+  ]
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
+  for_each = {
+    for k, v in local.ucs_domain_profiles : k => v
+    if v.san_pc_ports != []
+  }
+  vsan_policy_moid = module.policy_vsan_b[each.key].moid
+  vsan_prefix      = each.value.organization
+  vsan_list = {
+    vsan = {
+      fcoe_vlan = each.value.vsan_b_fcoe != null ? each.value.vsan_b_fcoe : each.value.vsan_b
+      vsan_id   = each.value.vsan_b
+    }
+  }
+}
+#_________________________________________________________________________
+#
+# Port Policies
+# GUI Location: Configure > Policies > Create Policy > Port > Start
+#_________________________________________________________________________
+
+module "policy_ports_a" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_domain_profiles_a,
+    module.ucs_domain_profiles_b
+  ]
+  source       = "terraform-cisco-modules/imm/intersight//modules/domain_port_policy"
+  for_each     = local.ucs_domain_profiles
+  description  = each.value.port_policy_descr_a != "" ? each.value.port_policy_descr_a : "${each.key} Port Policy Fabric A."
+  device_model = each.value.assign_switches == true ? data.intersight_network_element_summary.fi_a[each.key].results.0.model : each.value.device_model
+  name         = "${each.key}_ppa"
+  org_moid     = local.org_moids[each.value.organization].moid
+  tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  profiles     = [
+    module.ucs_domain_profiles_a[each.key].moid,
+    module.ucs_domain_profiles_b[each.key].moid
+  ]
+}
+
+module "policy_ports_b" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_domain_profiles_a,
+    module.ucs_domain_profiles_b
+  ]
+  source       = "terraform-cisco-modules/imm/intersight//modules/domain_port_policy"
+  for_each     = local.ucs_domain_profiles
+  description  = each.value.port_policy_descr_b != "" ? each.value.port_policy_descr_b : "${each.key} Port Policy Fabric A."
+  device_model = each.value.assign_switches == true ? data.intersight_network_element_summary.fi_b[each.key].results.0.model : each.value.device_model
+  name         = "${each.key}_ppb"
+  org_moid     = local.org_moids[each.value.organization].moid
+  tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  profiles     = [
+    module.ucs_domain_profiles_a[each.key].moid,
+    module.ucs_domain_profiles_b[each.key].moid
+  ]
+}
+
+
+#____________________________________________________________
+#
+# Intersight Port Mode Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "policy_port_mode_a" {
+  depends_on = [
+    local.org_moids,
+    module.policy_ports_a
+  ]
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_port_mode"
+  for_each = {
+    for k, v in local.ucs_domain_profiles : k => v
+    if v.fc_ports != []
+  }
+  custom_mode      = "FibreChannel"
+  port_id_end      = element(each.value.fc_ports, 1)
+  port_id_start    = element(each.value.fc_ports, 0)
+  port_policy_moid = module.policy_ports_a[each.key].moid
+  slot_id          = each.value.fc_slot_id
+  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
+}
+
+module "policy_port_mode_b" {
+  depends_on = [
+    local.org_moids,
+    module.policy_ports_b
+  ]
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_port_mode"
+  for_each = {
+    for k, v in local.ucs_domain_profiles : k => v
+    if v.fc_ports != []
+  }
+  custom_mode      = "FibreChannel"
+  port_id_end      = element(each.value.fc_ports, 1)
+  port_id_start    = element(each.value.fc_ports, 0)
+  port_policy_moid = module.policy_ports_b[each.key].moid
+  slot_id          = each.value.fc_slot_id
+  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
+}
+
+
+#____________________________________________________________
+#
+# Intersight Server Port Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+module "server_ports_a" {
+  depends_on = [
+    local.org_moids,
+    module.policy_ports_a
+  ]
+  source           = "terraform-cisco-modules/imm/intersight//modules/domain_port_server"
+  for_each         = local.ucs_domain_profiles
+  port_list        = each.value.server_ports
+  port_policy_moid = module.policy_ports_a[each.key].moid
+  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
+}
+
+module "server_ports_b" {
+  depends_on = [
+    local.org_moids,
+    module.policy_ports_b
+  ]
+  source           = "terraform-cisco-modules/imm/intersight//modules/domain_port_server"
+  for_each         = local.ucs_domain_profiles
+  port_list        = each.value.server_ports
+  port_policy_moid = module.policy_ports_b[each.key].moid
+  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
+}
+
+
+#____________________________________________________________
+#
+# Intersight SAN Port-Channel Policy
+# GUI Location: Policies > Create Policy
+#____________________________________________________________
+
+#______________________________________________
+#
+# Create Fabric A SAN Port-Channel
+#______________________________________________
+
+module "san_uplink_port_channel_a" {
+  depends_on = [
+    local.org_moids,
+    module.policy_ports_a,
+    module.policy_port_mode_a
+  ]
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
+  for_each = {
+    for k, v in local.ucs_domain_profiles : k => v
+    if v.san_pc_ports != []
+  }
+  breakout_sw_port    = each.value.san_pc_breakoutswport
+  fill_pattern        = each.value.san_fill_pattern
+  san_uplink_pc_id    = element(each.value.san_pc_ports, 0)
+  san_uplink_pc_ports = each.value.san_pc_ports
+  san_uplink_speed    = each.value.san_pc_speed
+  port_policy_moid    = module.policy_ports_a[each.key].moid
+  slot_id             = each.value.san_pc_slot_id
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  vsan_id             = each.value.vsan_a
+}
+
+#______________________________________________
+#
+# Create Fabric B SAN Port-Channel
+#______________________________________________
+
+module "san_uplink_port_channel_b" {
+  depends_on = [
+    local.org_moids,
+    module.policy_ports_b,
+    module.policy_port_mode_b
+  ]
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
+  for_each = {
+    for k, v in local.ucs_domain_profiles : k => v
+    if v.san_pc_ports != []
+  }
+  breakout_sw_port    = each.value.san_pc_breakoutswport
+  fill_pattern        = each.value.san_fill_pattern
+  san_uplink_pc_id    = element(each.value.san_pc_ports, 0)
+  san_uplink_pc_ports = each.value.san_pc_ports
+  san_uplink_speed    = each.value.san_pc_speed
+  port_policy_moid    = module.policy_ports_b[each.key].moid
+  slot_id             = each.value.san_pc_slot_id
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  vsan_id             = each.value.vsan_b
+}

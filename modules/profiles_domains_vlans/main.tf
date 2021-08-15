@@ -16,7 +16,7 @@ module "multicast_policy" {
   querier_ip     = each.value.querier_ip
   querier_state  = each.value.querier_state
   snooping_state = each.value.snooping_state
-  tags           = each.value.tags != [] ? each.value.tags : local.tags
+  tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
 #______________________________________________

@@ -161,7 +161,7 @@ module "ucs_server_profiles" {
   description         = each.value.profile.description != "" ? each.value.profile.description : "${each.value.profile.organization} ${each.value.profile.name} Server Profile."
   name                = each.value.profile.name != "" ? each.value.profile.name : each.key
   org_moid            = local.org_moids[each.value.profile.organization].moid
-  tags                = each.value.profile.tags != "" ? each.value.profile.tags : local.tags
+  tags                = length(each.value.profile.tags) > 0 ? each.value.profile.tags : local.tags
   target_platform     = each.value.profile.target_platform == "Standalone" ? "Standalone" : "FIAttached"
   wait_for_completion = each.value.profile.wait_for_completion
   assigned_server = each.value.profile.assign_server == true ? [

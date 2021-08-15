@@ -64,12 +64,12 @@ module "policy_network_connectivity" {
   ipv6_enable    = each.value.ipv6_enable
   name           = each.key
   org_moid       = local.org_moids[each.value.organization].moid
-  tags           = each.value.tags != [] ? each.value.tags : local.tags
+  tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
   update_domain  = each.value.update_domain
   profile_type   = "domain"
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    distinct([module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid])
+    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
     if local.ucs_domain_profiles[s].policy_network_connectivity == each.key
   ])
 }

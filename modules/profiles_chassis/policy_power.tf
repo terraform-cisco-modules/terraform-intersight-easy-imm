@@ -71,7 +71,7 @@ module "policy_power" {
   power_restore_state = each.value.power_restore_state
   profile_type        = "chassis"
   redundancy_mode     = each.value.redundancy_mode
-  tags                = each.value.tags != [] ? each.value.tags : local.tags
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
     for s in sort(keys(local.ucs_chassis_profiles)) :
     module.ucs_chassis_profiles[s].moid
