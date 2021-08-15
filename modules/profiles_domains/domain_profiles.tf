@@ -7,8 +7,8 @@
 variable "ucs_domain_profiles" {
   default = {
     default = {
-      action                      = "No-op"
-      assign_switches             = false
+      action          = "No-op"
+      assign_switches = false
       # device_model                = "UCS-FI-64108"
       domain_description          = ""
       domain_descr_fi_a           = ""
@@ -146,8 +146,8 @@ variable "ucs_domain_profiles" {
 variable "policy_ports" {
   default = {
     default = {
-      organization          = "default"
-      tags                  = []
+      organization = "default"
+      tags         = []
     }
   }
   description = <<-EOT
@@ -158,8 +158,8 @@ variable "policy_ports" {
   EOT
   type = map(object(
     {
-      organization          = optional(string)
-      tags                  = optional(list(map(string)))
+      organization = optional(string)
+      tags         = optional(list(map(string)))
     }
   ))
 }
@@ -373,7 +373,7 @@ module "policy_ports_a" {
   name         = "${each.key}_ppa"
   org_moid     = local.org_moids[each.value.organization].moid
   tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles     = [
+  profiles = [
     module.ucs_domain_profiles_a[each.key].moid,
     module.ucs_domain_profiles_b[each.key].moid
   ]
@@ -392,7 +392,7 @@ module "policy_ports_b" {
   name         = "${each.key}_ppb"
   org_moid     = local.org_moids[each.value.organization].moid
   tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles     = [
+  profiles = [
     module.ucs_domain_profiles_a[each.key].moid,
     module.ucs_domain_profiles_b[each.key].moid
   ]
