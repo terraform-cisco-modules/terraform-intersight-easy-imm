@@ -175,23 +175,5 @@ module "sensitive_server_variables" {
       sensitive   = true
       value       = var.persistent_passphrase
     },
-    snmp_user_1_privacy_password = {
-      description = "Privacy password for the user."
-      key         = "snmp_user_1_privacy_password"
-      sensitive   = true
-      value       = var.snmp_user_1_privacy_password
-    },
-    snmp_user_2_auth_password = {
-      description = "Authorization password for the user."
-      key         = "snmp_user_2_auth_password"
-      sensitive   = true
-      value       = var.snmp_user_2_auth_password
-    },
-    snmp_user_2_privacy_password = {
-      description = "Privacy password for the user."
-      key         = "snmp_user_2_privacy_password"
-      sensitive   = true
-      value       = var.snmp_user_2_privacy_password
-    }
   }
 }
