@@ -1,7 +1,7 @@
 #_________________________________________________________________________
 #
 # Intersight UCS Domain Profile Variables
-# GUI Location: Profiles > UCS Domain Profile > Create UCS Domain Profile
+# GUI Location: Configure > Profiles > UCS Domain Profile > Create UCS Domain Profile
 #_________________________________________________________________________
 
 variable "ucs_domain_profiles" {
@@ -10,40 +10,40 @@ variable "ucs_domain_profiles" {
       action          = "No-op"
       assign_switches = false
       # device_model                = "UCS-FI-64108"
-      domain_description          = ""
-      domain_descr_fi_a           = ""
-      domain_descr_fi_b           = ""
-      domain_serial_a             = ""
-      domain_serial_b             = ""
-      fc_ports                    = [1, 4]
-      fc_slot_id                  = 1
-      organization                = "default"
-      policy_network_connectivity = ""
-      policy_ntp                  = ""
-      policy_snmp                 = ""
-      policy_switch_control       = ""
-      policy_syslog               = ""
-      policy_system_qos           = ""
-      port_policy_descr_a         = ""
-      port_policy_descr_b         = ""
-      san_fill_pattern            = "Arbff"
-      san_pc_breakoutswport       = 0
-      san_pc_ports                = [1, 2]
-      san_pc_slot_id              = 1
-      san_pc_speed                = "16Gbps"
-      server_ports                = "5-18"
-      tags                        = []
-      vlan_description            = ""
-      vlan_native                 = 1
-      vlan_list                   = "2-3"
-      vsan_a                      = 100
-      vsan_a_description          = ""
-      vsan_a_fcoe                 = null
-      vsan_b                      = 200
-      vsan_b_description          = ""
-      vsan_b_fcoe                 = null
-      vsan_enable_trunking        = false
-      vsan_prefix                 = ""
+      domain_description            = ""
+      domain_descr_fi_a             = ""
+      domain_descr_fi_b             = ""
+      domain_serial_a               = ""
+      domain_serial_b               = ""
+      fc_ports                      = [1, 4]
+      fc_slot_id                    = 1
+      organization                  = "default"
+      policies_network_connectivity = ""
+      policies_ntp                  = ""
+      policies_snmp                 = ""
+      policies_switch_control       = ""
+      policies_syslog               = ""
+      policies_system_qos           = ""
+      port_policy_descr_a           = ""
+      port_policy_descr_b           = ""
+      san_fill_pattern              = "Arbff"
+      san_pc_breakoutswport         = 0
+      san_pc_ports                  = [1, 2]
+      san_pc_slot_id                = 1
+      san_pc_speed                  = "16Gbps"
+      server_ports                  = "5-18"
+      tags                          = []
+      vlan_description              = ""
+      vlan_native                   = 1
+      vlan_list                     = "2-3"
+      vsan_a                        = 100
+      vsan_a_description            = ""
+      vsan_a_fcoe                   = null
+      vsan_b                        = 200
+      vsan_b_description            = ""
+      vsan_b_fcoe                   = null
+      vsan_enable_trunking          = false
+      vsan_prefix                   = ""
     }
   }
   description = <<-EOT
@@ -67,12 +67,12 @@ variable "ucs_domain_profiles" {
   * fc_slot_id - Slot Identifier of the switch.  Default is 1.
   * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
     -  https://intersight.com/an/settings/organizations/
-  * policy_network_connectivity - Name of the Network Control Policy to assign to the UCS Domain Profile.
-  * policy_ntp - Name of the NTP Policy to assign to the UCS Domain Profile.
-  * policy_snmp - Name of the SNMP Policy to assign to the UCS Domain Profile.
-  * policy_switch_control - Name of the Switch Control Policy to assign to the UCS Domain Profile.
-  * policy_syslog - Name of the Syslog Policy to assign to the UCS Domain Profile.
-  * policy_system_qos - Name of the System QoS Policy to assign to the UCS Domain Profile.
+  * policies_network_connectivity - Name of the Network Control Policy to assign to the UCS Domain Profile.
+  * policies_ntp - Name of the NTP Policy to assign to the UCS Domain Profile.
+  * policies_snmp - Name of the SNMP Policy to assign to the UCS Domain Profile.
+  * policies_switch_control - Name of the Switch Control Policy to assign to the UCS Domain Profile.
+  * policies_syslog - Name of the Syslog Policy to assign to the UCS Domain Profile.
+  * policies_system_qos - Name of the System QoS Policy to assign to the UCS Domain Profile.
   * port_policy_descr_a - Description to Assign to Port Policy A.
   * port_policy_descr_b - Description to Assign to Port Policy B.
   * san_fill_pattern - Fill pattern to differentiate the configs in NPIV.
@@ -102,48 +102,48 @@ variable "ucs_domain_profiles" {
   EOT
   type = map(object(
     {
-      action                      = optional(string)
-      assign_switches             = optional(bool)
-      device_model                = optional(string)
-      domain_description          = optional(string)
-      domain_descr_fi_a           = optional(string)
-      domain_descr_fi_b           = optional(string)
-      domain_serial_a             = optional(string)
-      domain_serial_b             = optional(string)
-      fc_ports                    = optional(list(string))
-      fc_slot_id                  = optional(number)
-      organization                = optional(string)
-      policy_network_connectivity = optional(string)
-      policy_ntp                  = optional(string)
-      policy_snmp                 = optional(string)
-      policy_switch_control       = optional(string)
-      policy_syslog               = optional(string)
-      policy_system_qos           = optional(string)
-      port_policy_descr_a         = optional(string)
-      port_policy_descr_b         = optional(string)
-      san_fill_pattern            = optional(string)
-      san_pc_breakoutswport       = optional(number)
-      san_pc_ports                = optional(list(string))
-      san_pc_slot_id              = optional(number)
-      san_pc_speed                = optional(string)
-      server_ports                = optional(string)
-      tags                        = optional(list(map(string)))
-      vlan_description            = optional(string)
-      vlan_native                 = optional(number)
-      vlan_list                   = optional(string)
-      vsan_a                      = optional(number)
-      vsan_a_description          = optional(string)
-      vsan_a_fcoe                 = optional(number)
-      vsan_b                      = optional(number)
-      vsan_b_description          = optional(string)
-      vsan_b_fcoe                 = optional(number)
-      vsan_enable_trunking        = optional(bool)
-      vsan_prefix                 = optional(string)
+      action                        = optional(string)
+      assign_switches               = optional(bool)
+      device_model                  = optional(string)
+      domain_description            = optional(string)
+      domain_descr_fi_a             = optional(string)
+      domain_descr_fi_b             = optional(string)
+      domain_serial_a               = optional(string)
+      domain_serial_b               = optional(string)
+      fc_ports                      = optional(list(string))
+      fc_slot_id                    = optional(number)
+      organization                  = optional(string)
+      policies_network_connectivity = optional(string)
+      policies_ntp                  = optional(string)
+      policies_snmp                 = optional(string)
+      policies_switch_control       = optional(string)
+      policies_syslog               = optional(string)
+      policies_system_qos           = optional(string)
+      port_policy_descr_a           = optional(string)
+      port_policy_descr_b           = optional(string)
+      san_fill_pattern              = optional(string)
+      san_pc_breakoutswport         = optional(number)
+      san_pc_ports                  = optional(list(string))
+      san_pc_slot_id                = optional(number)
+      san_pc_speed                  = optional(string)
+      server_ports                  = optional(string)
+      tags                          = optional(list(map(string)))
+      vlan_description              = optional(string)
+      vlan_native                   = optional(number)
+      vlan_list                     = optional(string)
+      vsan_a                        = optional(number)
+      vsan_a_description            = optional(string)
+      vsan_a_fcoe                   = optional(number)
+      vsan_b                        = optional(number)
+      vsan_b_description            = optional(string)
+      vsan_b_fcoe                   = optional(number)
+      vsan_enable_trunking          = optional(bool)
+      vsan_prefix                   = optional(string)
     }
   ))
 }
 
-variable "policy_ports" {
+variable "policies_ports" {
   default = {
     default = {
       organization = "default"
@@ -201,7 +201,7 @@ module "ucs_domain_profiles_a" {
   cluster_moid    = module.ucs_domain_profiles[each.key].moid
   description     = each.value.domain_descr_fi_a != "" ? each.value.domain_descr_fi_a : "${each.key} Fabric Interconnect A Profile."
   name            = "${each.key}-a"
-  # policy_bucket   = each.value.policy_bucket
+  # policies_bucket   = each.value.policies_bucket
   tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
@@ -224,7 +224,7 @@ module "ucs_domain_profiles_b" {
   cluster_moid    = module.ucs_domain_profiles[each.key].moid
   description     = each.value.domain_descr_fi_b != "" ? each.value.domain_descr_fi_b : "${each.key} Fabric Interconnect B Profile."
   name            = "${each.key}-b"
-  # policy_bucket   = each.value.policy_bucket
+  # policies_bucket   = each.value.policies_bucket
   tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
@@ -232,7 +232,7 @@ module "ucs_domain_profiles_b" {
 #____________________________________________________________
 #
 # Intersight UCS Domain VLAN Policy
-# GUI Location: Policies > Create Policy
+# GUI Location: Policy > Create Policy
 #____________________________________________________________
 
 module "policies_vlan" {
@@ -253,20 +253,13 @@ module "policies_vlan" {
   ]
 }
 
-#_________________________________________________________________________
-#
-# Intersight Port Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Port > Start
-#_________________________________________________________________________
-
-
 #____________________________________________________________
 #
 # Intersight VSAN Policies
-# GUI Location: Policies > Create Policy > VSAN
+# GUI Location: Configure > Policy > Create Policy > VSAN
 #____________________________________________________________
 
-module "policy_vsan_a" {
+module "policies_vsan_a" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profiles_a,
@@ -285,7 +278,7 @@ module "policy_vsan_a" {
   profiles        = [module.ucs_domain_profiles_a[each.key].moid]
 }
 
-module "policy_vsan_b" {
+module "policies_vsan_b" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profiles_a,
@@ -312,14 +305,14 @@ module "policy_vsan_b" {
 module "vsan_a" {
   depends_on = [
     local.org_moids,
-    module.policy_vsan_a
+    module.policies_vsan_a
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
   for_each = {
     for k, v in local.ucs_domain_profiles : k => v
     if v.san_pc_ports != []
   }
-  vsan_policy_moid = module.policy_vsan_a[each.key].moid
+  vsan_policy_moid = module.policies_vsan_a[each.key].moid
   vsan_prefix      = each.value.organization
   vsan_list = {
     vsan = {
@@ -338,14 +331,14 @@ module "vsan_a" {
 module "vsan_b" {
   depends_on = [
     local.org_moids,
-    module.policy_vsan_b
+    module.policies_vsan_b
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/domain_vsan"
   for_each = {
     for k, v in local.ucs_domain_profiles : k => v
     if v.san_pc_ports != []
   }
-  vsan_policy_moid = module.policy_vsan_b[each.key].moid
+  vsan_policy_moid = module.policies_vsan_b[each.key].moid
   vsan_prefix      = each.value.organization
   vsan_list = {
     vsan = {
@@ -357,10 +350,10 @@ module "vsan_b" {
 #_________________________________________________________________________
 #
 # Port Policies
-# GUI Location: Configure > Policies > Create Policy > Port > Start
+# GUI Location: Configure > Policy > Create Policy > Port > Start
 #_________________________________________________________________________
 
-module "policy_ports_a" {
+module "policies_ports_a" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profiles_a,
@@ -379,7 +372,7 @@ module "policy_ports_a" {
   ]
 }
 
-module "policy_ports_b" {
+module "policies_ports_b" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profiles_a,
@@ -402,13 +395,13 @@ module "policy_ports_b" {
 #____________________________________________________________
 #
 # Intersight Port Mode Policy
-# GUI Location: Policies > Create Policy
+# GUI Location: Policy > Create Policy
 #____________________________________________________________
 
-module "policy_port_mode_a" {
+module "policies_port_mode_a" {
   depends_on = [
     local.org_moids,
-    module.policy_ports_a
+    module.policies_ports_a
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/domain_port_mode"
   for_each = {
@@ -418,15 +411,15 @@ module "policy_port_mode_a" {
   custom_mode      = "FibreChannel"
   port_id_end      = element(each.value.fc_ports, 1)
   port_id_start    = element(each.value.fc_ports, 0)
-  port_policy_moid = module.policy_ports_a[each.key].moid
+  port_policy_moid = module.policies_ports_a[each.key].moid
   slot_id          = each.value.fc_slot_id
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
-module "policy_port_mode_b" {
+module "policies_port_mode_b" {
   depends_on = [
     local.org_moids,
-    module.policy_ports_b
+    module.policies_ports_b
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/domain_port_mode"
   for_each = {
@@ -436,7 +429,7 @@ module "policy_port_mode_b" {
   custom_mode      = "FibreChannel"
   port_id_end      = element(each.value.fc_ports, 1)
   port_id_start    = element(each.value.fc_ports, 0)
-  port_policy_moid = module.policy_ports_b[each.key].moid
+  port_policy_moid = module.policies_ports_b[each.key].moid
   slot_id          = each.value.fc_slot_id
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
@@ -445,30 +438,30 @@ module "policy_port_mode_b" {
 #____________________________________________________________
 #
 # Intersight Server Port Policy
-# GUI Location: Policies > Create Policy
+# GUI Location: Policy > Create Policy
 #____________________________________________________________
 
 module "server_ports_a" {
   depends_on = [
     local.org_moids,
-    module.policy_ports_a
+    module.policies_ports_a
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_port_server"
   for_each         = local.ucs_domain_profiles
   port_list        = each.value.server_ports
-  port_policy_moid = module.policy_ports_a[each.key].moid
+  port_policy_moid = module.policies_ports_a[each.key].moid
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
 module "server_ports_b" {
   depends_on = [
     local.org_moids,
-    module.policy_ports_b
+    module.policies_ports_b
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_port_server"
   for_each         = local.ucs_domain_profiles
   port_list        = each.value.server_ports
-  port_policy_moid = module.policy_ports_b[each.key].moid
+  port_policy_moid = module.policies_ports_b[each.key].moid
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
@@ -476,7 +469,7 @@ module "server_ports_b" {
 #____________________________________________________________
 #
 # Intersight SAN Port-Channel Policy
-# GUI Location: Policies > Create Policy
+# GUI Location: Policy > Create Policy
 #____________________________________________________________
 
 #______________________________________________
@@ -487,8 +480,8 @@ module "server_ports_b" {
 module "san_uplink_port_channel_a" {
   depends_on = [
     local.org_moids,
-    module.policy_ports_a,
-    module.policy_port_mode_a
+    module.policies_ports_a,
+    module.policies_port_mode_a
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
   for_each = {
@@ -500,7 +493,7 @@ module "san_uplink_port_channel_a" {
   san_uplink_pc_id    = element(each.value.san_pc_ports, 0)
   san_uplink_pc_ports = each.value.san_pc_ports
   san_uplink_speed    = each.value.san_pc_speed
-  port_policy_moid    = module.policy_ports_a[each.key].moid
+  port_policy_moid    = module.policies_ports_a[each.key].moid
   slot_id             = each.value.san_pc_slot_id
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   vsan_id             = each.value.vsan_a
@@ -514,8 +507,8 @@ module "san_uplink_port_channel_a" {
 module "san_uplink_port_channel_b" {
   depends_on = [
     local.org_moids,
-    module.policy_ports_b,
-    module.policy_port_mode_b
+    module.policies_ports_b,
+    module.policies_port_mode_b
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel"
   for_each = {
@@ -527,7 +520,7 @@ module "san_uplink_port_channel_b" {
   san_uplink_pc_id    = element(each.value.san_pc_ports, 0)
   san_uplink_pc_ports = each.value.san_pc_ports
   san_uplink_speed    = each.value.san_pc_speed
-  port_policy_moid    = module.policy_ports_b[each.key].moid
+  port_policy_moid    = module.policies_ports_b[each.key].moid
   slot_id             = each.value.san_pc_slot_id
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   vsan_id             = each.value.vsan_b

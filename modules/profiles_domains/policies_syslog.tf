@@ -1,10 +1,10 @@
 #_________________________________________________________________________
 #
 # Intersight Syslog Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Syslog > Start
+# GUI Location: Configure > Policy > Create Policy > Syslog > Start
 #_________________________________________________________________________
 
-variable "policy_syslog" {
+variable "policies_syslog" {
   default = {
     default = {
       description         = ""
@@ -46,7 +46,7 @@ variable "policy_syslog" {
 #_________________________________________________________________________
 #
 # Syslog Policies
-# GUI Location: Configure > Policies > Create Policy > Syslog > Start
+# GUI Location: Configure > Policy > Create Policy > Syslog > Start
 #_________________________________________________________________________
 
 module "syslog" {
@@ -56,7 +56,7 @@ module "syslog" {
     module.ucs_domain_profiles_b
   ]
   source             = "terraform-cisco-modules/imm/intersight//modules/policies_syslog"
-  for_each           = local.policy_syslog
+  for_each           = local.policies_syslog
   description        = each.value.description != "" ? each.value.description : "${each.key} Syslog Policy."
   name               = each.key
   org_moid           = local.org_moids[each.value.organization].moid
@@ -67,6 +67,6 @@ module "syslog" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policy_syslog == each.key
+    if local.ucs_domain_profiles[s].policies_syslog == each.key
   ])
 }

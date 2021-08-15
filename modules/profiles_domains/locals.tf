@@ -23,43 +23,43 @@ locals {
   #______________________________________________
   ucs_domain_profiles = {
     for k, v in var.ucs_domain_profiles : k => {
-      action                      = (v.action != null ? v.action : "No-op")
-      assign_switches             = (v.assign_switches != null ? v.assign_switches : false)
-      device_model                = (v.device_model != null ? v.device_model : "UCS-FI-6454")
-      domain_description          = (v.domain_description != null ? v.domain_description : "")
-      domain_descr_fi_a           = (v.domain_descr_fi_a != null ? v.domain_descr_fi_a : "")
-      domain_descr_fi_b           = (v.domain_descr_fi_b != null ? v.domain_descr_fi_b : "")
-      domain_serial_a             = (v.domain_serial_a != null ? v.domain_serial_a : "")
-      domain_serial_b             = (v.domain_serial_b != null ? v.domain_serial_b : "")
-      fc_ports                    = (v.fc_ports != null ? v.fc_ports : [1, 4])
-      fc_slot_id                  = (v.fc_slot_id != null ? v.fc_slot_id : 1)
-      organization                = (v.organization != null ? v.organization : "default")
-      policy_network_connectivity = (v.policy_network_connectivity != null ? v.policy_network_connectivity : "")
-      policy_ntp                  = (v.policy_ntp != null ? v.policy_ntp : "")
-      policy_snmp                 = (v.policy_snmp != null ? v.policy_snmp : "")
-      policy_switch_control       = (v.policy_switch_control != null ? v.policy_switch_control : "")
-      policy_syslog               = (v.policy_syslog != null ? v.policy_syslog : "")
-      policy_system_qos           = (v.policy_system_qos != null ? v.policy_system_qos : "")
-      port_policy_descr_a         = (v.port_policy_descr_a != null ? v.port_policy_descr_a : "")
-      port_policy_descr_b         = (v.port_policy_descr_b != null ? v.port_policy_descr_b : "")
-      san_fill_pattern            = (v.san_fill_pattern != null ? v.san_fill_pattern : "Arbff")
-      san_pc_breakoutswport       = (v.san_pc_breakoutswport != null ? v.san_pc_breakoutswport : 0)
-      san_pc_ports                = (v.san_pc_ports != null ? v.san_pc_ports : [1, 2])
-      san_pc_speed                = (v.san_pc_speed != null ? v.san_pc_speed : "16Gbps")
-      san_pc_slot_id              = (v.san_pc_slot_id != null ? v.san_pc_slot_id : 1)
-      server_ports                = (v.server_ports != null ? v.server_ports : "5-18")
-      tags                        = (v.tags != null ? v.tags : [])
-      vlan_description            = (v.vlan_description != null ? v.vlan_description : "")
-      vlan_native                 = (v.vlan_native != null ? v.vlan_native : 1)
-      vlan_list                   = (v.vlan_list != null ? v.vlan_list : "2-3")
-      vsan_a                      = (v.vsan_a != null ? v.vsan_a : 100)
-      vsan_a_description          = (v.vsan_a_description != null ? v.vsan_a_description : "")
-      vsan_a_fcoe                 = (v.vsan_a_fcoe != null ? v.vsan_a_fcoe : null)
-      vsan_b                      = (v.vsan_b != null ? v.vsan_b : 200)
-      vsan_b_description          = (v.vsan_b_description != null ? v.vsan_b_description : "")
-      vsan_b_fcoe                 = (v.vsan_b_fcoe != null ? v.vsan_b_fcoe : null)
-      vsan_enable_trunking        = (v.vsan_enable_trunking != null ? v.vsan_enable_trunking : false)
-      vsan_prefix                 = (v.vsan_prefix != null ? v.vsan_prefix : "")
+      action                        = (v.action != null ? v.action : "No-op")
+      assign_switches               = (v.assign_switches != null ? v.assign_switches : false)
+      device_model                  = (v.device_model != null ? v.device_model : "UCS-FI-6454")
+      domain_description            = (v.domain_description != null ? v.domain_description : "")
+      domain_descr_fi_a             = (v.domain_descr_fi_a != null ? v.domain_descr_fi_a : "")
+      domain_descr_fi_b             = (v.domain_descr_fi_b != null ? v.domain_descr_fi_b : "")
+      domain_serial_a               = (v.domain_serial_a != null ? v.domain_serial_a : "")
+      domain_serial_b               = (v.domain_serial_b != null ? v.domain_serial_b : "")
+      fc_ports                      = (v.fc_ports != null ? v.fc_ports : [1, 4])
+      fc_slot_id                    = (v.fc_slot_id != null ? v.fc_slot_id : 1)
+      organization                  = (v.organization != null ? v.organization : "default")
+      policies_network_connectivity = (v.policies_network_connectivity != null ? v.policies_network_connectivity : "")
+      policies_ntp                  = (v.policies_ntp != null ? v.policies_ntp : "")
+      policies_snmp                 = (v.policies_snmp != null ? v.policies_snmp : "")
+      policies_switch_control       = (v.policies_switch_control != null ? v.policies_switch_control : "")
+      policies_syslog               = (v.policies_syslog != null ? v.policies_syslog : "")
+      policies_system_qos           = (v.policies_system_qos != null ? v.policies_system_qos : "")
+      port_policy_descr_a           = (v.port_policy_descr_a != null ? v.port_policy_descr_a : "")
+      port_policy_descr_b           = (v.port_policy_descr_b != null ? v.port_policy_descr_b : "")
+      san_fill_pattern              = (v.san_fill_pattern != null ? v.san_fill_pattern : "Arbff")
+      san_pc_breakoutswport         = (v.san_pc_breakoutswport != null ? v.san_pc_breakoutswport : 0)
+      san_pc_ports                  = (v.san_pc_ports != null ? v.san_pc_ports : [1, 2])
+      san_pc_speed                  = (v.san_pc_speed != null ? v.san_pc_speed : "16Gbps")
+      san_pc_slot_id                = (v.san_pc_slot_id != null ? v.san_pc_slot_id : 1)
+      server_ports                  = (v.server_ports != null ? v.server_ports : "5-18")
+      tags                          = (v.tags != null ? v.tags : [])
+      vlan_description              = (v.vlan_description != null ? v.vlan_description : "")
+      vlan_native                   = (v.vlan_native != null ? v.vlan_native : 1)
+      vlan_list                     = (v.vlan_list != null ? v.vlan_list : "2-3")
+      vsan_a                        = (v.vsan_a != null ? v.vsan_a : 100)
+      vsan_a_description            = (v.vsan_a_description != null ? v.vsan_a_description : "")
+      vsan_a_fcoe                   = (v.vsan_a_fcoe != null ? v.vsan_a_fcoe : null)
+      vsan_b                        = (v.vsan_b != null ? v.vsan_b : 200)
+      vsan_b_description            = (v.vsan_b_description != null ? v.vsan_b_description : "")
+      vsan_b_fcoe                   = (v.vsan_b_fcoe != null ? v.vsan_b_fcoe : null)
+      vsan_enable_trunking          = (v.vsan_enable_trunking != null ? v.vsan_enable_trunking : false)
+      vsan_prefix                   = (v.vsan_prefix != null ? v.vsan_prefix : "")
     }
   }
 
@@ -69,8 +69,8 @@ locals {
   # Flow Control Policy Section Locals
   #__________________________________________________________
 
-  policy_flow_control = {
-    for k, v in var.policy_flow_control : k => {
+  policies_flow_control = {
+    for k, v in var.policies_flow_control : k => {
       description          = (v.description != null ? v.description : "")
       flow_control_mode    = (v.flow_control_mode != null ? v.flow_control_mode : "auto")
       flow_control_receive = (v.flow_control_receive != null ? v.flow_control_receive : "Disabled")
@@ -85,17 +85,17 @@ locals {
   #
   # LAN Port-Channel Policy Variables
   #______________________________________________
-  policy_port_channel_lan = {
-    for k, v in var.policy_port_channel_lan : k => {
-      lan_pc_breakoutswport   = (v.lan_pc_breakoutswport != null ? v.lan_pc_breakoutswport : 0)
-      lan_pc_ports            = (v.lan_pc_ports != null ? v.lan_pc_ports : [49, 50])
-      lan_pc_speed            = (v.lan_pc_speed != null ? v.lan_pc_speed : "Auto")
-      lan_pc_slot_id          = (v.lan_pc_slot_id != null ? v.lan_pc_slot_id : 1)
-      policy_flow_control     = (v.policy_flow_control != null ? v.policy_flow_control : "")
-      policy_link_aggregation = (v.policy_link_aggregation != null ? v.policy_link_aggregation : "")
-      policy_link_control     = (v.policy_link_control != null ? v.policy_link_control : "")
-      tags                    = (v.tags != null ? v.tags : [])
-      ucs_domain_profile      = (v.ucs_domain_profile != null ? v.ucs_domain_profile : "")
+  policies_port_channel_lan = {
+    for k, v in var.policies_port_channel_lan : k => {
+      lan_pc_breakoutswport     = (v.lan_pc_breakoutswport != null ? v.lan_pc_breakoutswport : 0)
+      lan_pc_ports              = (v.lan_pc_ports != null ? v.lan_pc_ports : [49, 50])
+      lan_pc_speed              = (v.lan_pc_speed != null ? v.lan_pc_speed : "Auto")
+      lan_pc_slot_id            = (v.lan_pc_slot_id != null ? v.lan_pc_slot_id : 1)
+      policies_flow_control     = (v.policies_flow_control != null ? v.policies_flow_control : "")
+      policies_link_aggregation = (v.policies_link_aggregation != null ? v.policies_link_aggregation : "")
+      policies_link_control     = (v.policies_link_control != null ? v.policies_link_control : "")
+      tags                      = (v.tags != null ? v.tags : [])
+      ucs_domain_profile        = (v.ucs_domain_profile != null ? v.ucs_domain_profile : "")
     }
   }
 
@@ -105,8 +105,8 @@ locals {
   # Link Aggregation Policy Section Locals
   #__________________________________________________________
 
-  policy_link_aggregation = {
-    for k, v in var.policy_link_aggregation : k => {
+  policies_link_aggregation = {
+    for k, v in var.policies_link_aggregation : k => {
       description        = (v.description != null ? v.description : "")
       lacp_rate          = (v.lacp_rate != null ? v.lacp_rate : "normal")
       organization       = (v.organization != null ? v.organization : "default")
@@ -121,8 +121,8 @@ locals {
   # Link Control Policy Section Locals
   #__________________________________________________________
 
-  policy_link_control = {
-    for k, v in var.policy_link_control : k => {
+  policies_link_control = {
+    for k, v in var.policies_link_control : k => {
       description      = (v.description != null ? v.description : "")
       organization     = (v.organization != null ? v.organization : "default")
       tags             = (v.tags != null ? v.tags : [])
@@ -137,8 +137,8 @@ locals {
   # Network Connectivity (DNS) Policy Section Locals
   #__________________________________________________________
 
-  policy_network_connectivity = {
-    for k, v in var.policy_network_connectivity : k => {
+  policies_network_connectivity = {
+    for k, v in var.policies_network_connectivity : k => {
       description    = (v.description != null ? v.description : "")
       dns_servers_v4 = (v.dns_servers_v4 != null ? v.dns_servers_v4 : ["208.67.220.220", "208.67.222.222"])
       dns_servers_v6 = (v.dns_servers_v6 != null ? v.dns_servers_v6 : [])
@@ -156,8 +156,8 @@ locals {
   # NTP Policy Section Locals
   #__________________________________________________________
 
-  policy_ntp = {
-    for k, v in var.policy_ntp : k => {
+  policies_ntp = {
+    for k, v in var.policies_ntp : k => {
       description  = (v.description != null ? v.description : "")
       enabled      = (v.enabled != null ? v.enabled : true)
       ntp_servers  = (v.ntp_servers != null ? v.ntp_servers : ["time-a-g.nist.gov", "time-b-g.nist.gov"])
@@ -173,8 +173,8 @@ locals {
   # SNMP Policy Section Locals
   #__________________________________________________________
 
-  policy_snmp = {
-    for k, v in var.policy_snmp : k => {
+  policies_snmp = {
+    for k, v in var.policies_snmp : k => {
       description                = (v.description != null ? v.description : "")
       enabled                    = (v.enabled != null ? v.enabled : true)
       organization               = (v.organization != null ? v.organization : "default")
@@ -200,8 +200,8 @@ locals {
   # Switch Control Policy Section Locals
   #__________________________________________________________
 
-  policy_switch_control = {
-    for k, v in var.policy_switch_control : k => {
+  policies_switch_control = {
+    for k, v in var.policies_switch_control : k => {
       description           = (v.description != null ? v.description : "")
       mac_aging_option      = (v.mac_aging_option != null ? v.mac_aging_option : "Default")
       mac_aging_time        = (v.mac_aging_time != null ? v.mac_aging_time : 14500)
@@ -219,8 +219,8 @@ locals {
   # Syslog Policy Section Locals
   #__________________________________________________________
 
-  policy_syslog = {
-    for k, v in var.policy_syslog : k => {
+  policies_syslog = {
+    for k, v in var.policies_syslog : k => {
       description         = (v.description != null ? v.description : "")
       local_min_severity  = (v.local_min_severity != null ? v.local_min_severity : "warning")
       organization        = (v.organization != null ? v.organization : "default")
@@ -235,8 +235,8 @@ locals {
   # System QoS Policy Section Locals
   #__________________________________________________________
 
-  policy_system_qos = {
-    for k, v in var.policy_system_qos : k => {
+  policies_system_qos = {
+    for k, v in var.policies_system_qos : k => {
       best_effort_admin_state        = (v.best_effort_admin_state != null ? v.best_effort_admin_state : "Enabled")
       best_effort_bandwidth          = (v.best_effort_bandwidth != null ? v.best_effort_bandwidth : 5)
       best_effort_mtu                = (v.best_effort_mtu != null ? v.best_effort_mtu : 9216)

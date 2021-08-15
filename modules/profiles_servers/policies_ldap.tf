@@ -11,7 +11,7 @@ variable "ldap_password" {
   type        = string
 }
 
-variable "policy_ldap" {
+variable "policies_ldap" {
   default = {
     default = {
       description                     = ""
@@ -144,13 +144,13 @@ variable "policy_ldap" {
 # LDAP Policy
 #______________________________________________
 
-module "policy_ldap" {
+module "policies_ldap" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source                     = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_policy"
-  for_each                   = local.policy_ldap
+  for_each                   = local.policies_ldap
   attribute                  = each.value.ldap_attribute
   base_dn                    = each.value.ldap_base_dn
   bind_dn                    = each.value.ldap_bind_dn
@@ -176,7 +176,7 @@ module "policy_ldap" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_ldap == each.key
+    if local.ucs_server_profiles[s].profile.policies_ldap == each.key
   ]
 }
 
@@ -188,11 +188,11 @@ module "policy_ldap" {
 module "ldap_provider" {
   depends_on = [
     local.org_moids,
-    module.policy_ldap
+    module.policies_ldap
   ]
   for_each         = local.ldap_servers.ldap_servers
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_provider"
-  ldap_policy_moid = module.policy_ldap[each.value.policy].moid
+  ldap_policy_moid = module.policies_ldap[each.value.policy].moid
   ldap_port        = each.value.ldap_port
   ldap_server      = each.value.ldap_server
 }
@@ -205,12 +205,12 @@ module "ldap_provider" {
 module "ldap_groups" {
   depends_on = [
     local.org_moids,
-    module.policy_ldap
+    module.policies_ldap
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_group"
   for_each         = local.ldap_groups.ldap_groups
   group_role       = each.value.group_role
   ldap_domain      = each.value.ldap_domain
   ldap_group       = each.value.ldap_group
-  ldap_policy_moid = module.policy_ldap[each.value.policy].moid
+  ldap_policy_moid = module.policies_ldap[each.value.policy].moid
 }

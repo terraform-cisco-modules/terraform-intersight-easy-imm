@@ -1,10 +1,10 @@
 #_________________________________________________________________________
 #
 # Intersight System QoS Policies Variables
-# GUI Location: Configure > Policies > Create Policy > System QoS > Start
+# GUI Location: Configure > Policy > Create Policy > System QoS > Start
 #_________________________________________________________________________
 
-variable "policy_system_qos" {
+variable "policies_system_qos" {
   default = {
     default = {
       best_effort_admin_state        = "Enabled"
@@ -147,17 +147,17 @@ variable "policy_system_qos" {
 #_________________________________________________________________________
 #
 # System QoS Policies
-# GUI Location: Configure > Policies > Create Policy > System QoS > Start
+# GUI Location: Configure > Policy > Create Policy > System QoS > Start
 #_________________________________________________________________________
 
-module "policy_system_qos_1" {
+module "policies_system_qos_1" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profiles_a,
     module.ucs_domain_profiles_b
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
-  for_each    = local.policy_system_qos
+  for_each    = local.policies_system_qos
   description = each.value.description != "" ? each.value.description : "${each.key} System QoS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
@@ -165,19 +165,19 @@ module "policy_system_qos_1" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policy_system_qos == each.key
+    if local.ucs_domain_profiles[s].policies_system_qos == each.key
   ])
   classes = []
 }
 
-module "policy_system_qos_2" {
+module "policies_system_qos_2" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profiles_a,
     module.ucs_domain_profiles_b
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
-  for_each    = local.policy_system_qos
+  for_each    = local.policies_system_qos
   description = each.value.description != "" ? each.value.description : "${each.key} System QoS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
@@ -185,7 +185,7 @@ module "policy_system_qos_2" {
   # profiles = flatten([
   #   for s in sort(keys(local.ucs_domain_profiles)) :
   #   [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-  #   if local.ucs_domain_profiles[s].policy_system_qos == each.key
+  #   if local.ucs_domain_profiles[s].policies_system_qos == each.key
   # ])
   classes = [
     {

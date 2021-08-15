@@ -7,7 +7,7 @@
 # GUI Location: Configure > Policies > Create Policy > SAN Connectivity
 #_________________________________________________________________________
 
-variable "policy_vhba_san_connectivity" {
+variable "policies_vhba_san_connectivity" {
   default = {
     default = {
       adapter_template             = "VMware" # Linux, VMware, Windows
@@ -164,7 +164,7 @@ module "vhba_san_connectivity" {
     module.ucs_server_profiles
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_san_connectivity"
-  for_each            = local.policy_vhba_san_connectivity
+  for_each            = local.policies_vhba_san_connectivity
   description         = each.value.description != "" ? each.value.description : "${each.key} vHBA SAN Connectivity Policy."
   name                = each.key
   org_moid            = local.org_moids[each.value.organization].moid
@@ -177,7 +177,7 @@ module "vhba_san_connectivity" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_san_connectivity == each.key
+    if local.ucs_server_profiles[s].profile.policies_san_connectivity == each.key
   ]
 }
 
@@ -193,7 +193,7 @@ module "vhba_adapter" {
     local.org_moids
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter"
-  for_each    = local.policy_vhba_san_connectivity
+  for_each    = local.policies_vhba_san_connectivity
   description = each.value.description != "" ? each.value.description : "${each.key} ${each.value.adapter_template} vHBA Adapter Policy."
   name        = "${each.key}_${each.value.adapter_template}"
   org_moid    = local.org_moids[each.value.organization].moid
@@ -233,7 +233,7 @@ module "vhba_network_a" {
     local.org_moids
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_network"
-  for_each        = local.policy_vhba_san_connectivity
+  for_each        = local.policies_vhba_san_connectivity
   default_vlan_id = each.value.target_platform == "Standalone" ? each.value.vsan_a_default_vlan_id : 0
   description     = each.value.description != "" ? each.value.description : "${each.key} vHBA Network Policy - Fabric A."
   name            = "${each.key}_vsan_a"
@@ -247,7 +247,7 @@ module "vhba_network_b" {
     local.org_moids
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_network"
-  for_each        = local.policy_vhba_san_connectivity
+  for_each        = local.policies_vhba_san_connectivity
   default_vlan_id = each.value.target_platform == "Standalone" ? each.value.vsan_b_default_vlan_id : 0
   description     = each.value.description != "" ? each.value.description : "${each.key} vHBA Network Policy - Fabric B."
   name            = "${each.key}_vsan_b"
@@ -268,7 +268,7 @@ module "vhba_qos" {
     local.org_moids
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_qos"
-  for_each            = local.policy_vhba_san_connectivity
+  for_each            = local.policies_vhba_san_connectivity
   burst               = each.value.target_platform == "Standalone" ? each.value.qos_burst : 1024
   cos                 = each.value.target_platform == "FIAttached" ? each.value.qos_cos : 3
   description         = each.value.description != "" ? each.value.description : "${each.key} vHBA QoS Policy."
@@ -294,7 +294,7 @@ module "vhba_template_a" {
     module.vhba_san_connectivity,
   ]
   source                  = "terraform-cisco-modules/imm/intersight//modules/policies_vhba"
-  for_each                = local.policy_vhba_san_connectivity
+  for_each                = local.policies_vhba_san_connectivity
   persistent_lun_bindings = each.value.vhba_persistent_lun_bindings
   placement_pci_link      = each.value.vhba_placement_pci_link_a
   placement_slot_id       = each.value.vhba_placement_slot_id
@@ -321,7 +321,7 @@ module "vhba_template_b" {
     module.vhba_san_connectivity,
   ]
   source                  = "terraform-cisco-modules/imm/intersight//modules/policies_vhba"
-  for_each                = local.policy_vhba_san_connectivity
+  for_each                = local.policies_vhba_san_connectivity
   persistent_lun_bindings = each.value.vhba_persistent_lun_bindings
   placement_pci_link      = each.value.vhba_placement_pci_link_b
   placement_slot_id       = each.value.vhba_placement_slot_id

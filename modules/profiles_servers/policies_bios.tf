@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > BIOS > Start
 #_________________________________________________________________________
 
-variable "policy_bios" {
+variable "policies_bios" {
   default = {
     default = {
       bios_policy  = "virtual_node"
@@ -35,22 +35,22 @@ variable "policy_bios" {
 }
 
 
-module "policy_bios_nvmeof" {
+module "policies_bios_nvmeof" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
-    for k, v in local.policy_bios : k => v
-    if local.policy_bios[k].bios_policy == "nvmeof"
+    for k, v in local.policies_bios : k => v
+    if local.policies_bios[k].bios_policy == "nvmeof"
   }
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
+  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policies_bios == each.key]
   #+++++++++++++++++++++++++++++++
   # Intel Directed IO Section
   #+++++++++++++++++++++++++++++++
@@ -100,22 +100,25 @@ module "policy_bios_nvmeof" {
   txt_support = "enabled" # Intel Trusted Execution Technology Support
 }
 
-module "policy_bios_virtual_node" {
+module "policies_bios_virtual_node" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
-    for k, v in local.policy_bios : k => v
-    if local.policy_bios[k].bios_policy == "virtual_node"
+    for k, v in local.policies_bios : k => v
+    if local.policies_bios[k].bios_policy == "virtual_node"
   }
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_bios == each.key
+  ]
   #+++++++++++++++++++++++++++++++
   # Boot Options Section
   #+++++++++++++++++++++++++++++++
@@ -168,22 +171,25 @@ module "policy_bios_virtual_node" {
   txt_support = "enabled" # Intel Trusted Execution Technology Support
 }
 
-module "policy_bios_virtual_rack" {
+module "policies_bios_virtual_rack" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
   for_each = {
-    for k, v in local.policy_bios : k => v
-    if local.policy_bios[k].bios_policy == "virtual_rack"
+    for k, v in local.policies_bios : k => v
+    if local.policies_bios[k].bios_policy == "virtual_rack"
   }
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_bios == each.key]
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_bios == each.key
+  ]
   #+++++++++++++++++++++++++++++++
   # Boot Options Section
   #+++++++++++++++++++++++++++++++
@@ -250,7 +256,7 @@ module "policy_bios_virtual_rack" {
 # GUI Location: Policies > Create Policy: BIOS
 #____________________________________________________________
 
-variable "bios_policy_custom" {
+variable "policies_bios_custom" {
   default = {
     default = {
       description                           = ""

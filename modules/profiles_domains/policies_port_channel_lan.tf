@@ -1,21 +1,21 @@
 #_________________________________________________________________________
 #
 # Intersight Port Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Port > Start
+# GUI Location: Configure > Policy > Create Policy > Port > Start
 #_________________________________________________________________________
 
-variable "policy_port_channel_lan" {
+variable "policies_port_channel_lan" {
   default = {
     default = {
-      lan_pc_breakoutswport   = 0
-      lan_pc_ports            = [49, 50]
-      lan_pc_slot_id          = 1
-      lan_pc_speed            = "Auto"
-      policy_flow_control     = ""
-      policy_link_aggregation = ""
-      policy_link_control     = ""
-      tags                    = []
-      ucs_domain_profile      = ""
+      lan_pc_breakoutswport     = 0
+      lan_pc_ports              = [49, 50]
+      lan_pc_slot_id            = 1
+      lan_pc_speed              = "Auto"
+      policies_flow_control     = ""
+      policies_link_aggregation = ""
+      policies_link_control     = ""
+      tags                      = []
+      ucs_domain_profile        = ""
     }
   }
   description = <<-EOT
@@ -30,23 +30,23 @@ variable "policy_port_channel_lan" {
     - 25Gbps - Admin configurable speed 25Gbps.
     - 40Gbps - Admin configurable speed 40Gbps.
     - 100Gbps - Admin configurable speed 100Gbps.
-  * policy_flow_control - Name of the Flow Control policy.
-  * policy_link_aggregation - Name of the Link Aggregation policy.
-  * policy_link_control - Name of the Link Control policy.
+  * policies_flow_control - Name of the Flow Control policy.
+  * policies_link_aggregation - Name of the Link Aggregation policy.
+  * policies_link_control - Name of the Link Control policy.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * ucs_domain_profile - Name of the UCS Domain Profile to Assign.
   EOT
   type = map(object(
     {
-      lan_pc_breakoutswport   = optional(number)
-      lan_pc_ports            = optional(list(string))
-      lan_pc_slot_id          = optional(number)
-      lan_pc_speed            = optional(string)
-      policy_flow_control     = optional(string)
-      policy_link_aggregation = optional(string)
-      policy_link_control     = optional(string)
-      tags                    = optional(list(map(string)))
-      ucs_domain_profile      = string
+      lan_pc_breakoutswport     = optional(number)
+      lan_pc_ports              = optional(list(string))
+      lan_pc_slot_id            = optional(number)
+      lan_pc_speed              = optional(string)
+      policies_flow_control     = optional(string)
+      policies_link_aggregation = optional(string)
+      policies_link_control     = optional(string)
+      tags                      = optional(list(map(string)))
+      ucs_domain_profile        = string
     }
   ))
 }
@@ -64,31 +64,31 @@ variable "policy_port_channel_lan" {
 # Create Fabric A LAN Port-Channel
 #______________________________________________
 
-module "policy_port_channel_lan_a" {
+module "policies_port_channel_lan_a" {
   depends_on = [
     local.org_moids,
-    module.policy_flow_control,
-    module.policy_link_aggregation,
-    module.policy_link_control,
-    module.policy_ports_a
+    module.policies_flow_control,
+    module.policies_link_aggregation,
+    module.policies_link_control,
+    module.policies_ports_a
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_lan_port_channel"
-  for_each            = local.policy_port_channel_lan
+  for_each            = local.policies_port_channel_lan
   breakout_sw_port    = each.value.lan_pc_breakoutswport
   lan_uplink_pc_id    = element(each.value.lan_pc_ports, 0)
   lan_uplink_pc_ports = each.value.lan_pc_ports
   lan_uplink_speed    = each.value.lan_pc_speed
-  port_policy_moid    = module.policy_ports_a[each.value.ucs_domain_profile].moid
+  port_policy_moid    = module.policies_ports_a[each.value.ucs_domain_profile].moid
   slot_id             = each.value.lan_pc_slot_id
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  flow_control_moid = each.value.policy_flow_control != "" ? [
-    module.policy_flow_control[each.value.policy_flow_control].moid
+  flow_control_moid = each.value.policies_flow_control != "" ? [
+    module.policies_flow_control[each.value.policies_flow_control].moid
   ] : []
-  link_aggregation_moid = each.value.policy_link_aggregation != "" ? [
-    module.policy_link_aggregation[each.value.policy_link_aggregation].moid
+  link_aggregation_moid = each.value.policies_link_aggregation != "" ? [
+    module.policies_link_aggregation[each.value.policies_link_aggregation].moid
   ] : []
-  link_control_moid = each.value.policy_link_control != "" ? [
-    module.policy_link_control[each.value.policy_link_control].moid
+  link_control_moid = each.value.policies_link_control != "" ? [
+    module.policies_link_control[each.value.policies_link_control].moid
   ] : []
 }
 
@@ -97,30 +97,30 @@ module "policy_port_channel_lan_a" {
 # Create Fabric B LAN Port-Channel
 #______________________________________________
 
-module "policy_port_channel_lan_b" {
+module "policies_port_channel_lan_b" {
   depends_on = [
     local.org_moids,
-    module.policy_flow_control,
-    module.policy_link_aggregation,
-    module.policy_link_control,
-    module.policy_ports_b
+    module.policies_flow_control,
+    module.policies_link_aggregation,
+    module.policies_link_control,
+    module.policies_ports_b
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_lan_port_channel"
-  for_each            = local.policy_port_channel_lan
+  for_each            = local.policies_port_channel_lan
   breakout_sw_port    = each.value.lan_pc_breakoutswport
   lan_uplink_pc_id    = element(each.value.lan_pc_ports, 0)
   lan_uplink_pc_ports = each.value.lan_pc_ports
   lan_uplink_speed    = each.value.lan_pc_speed
-  port_policy_moid    = module.policy_ports_b[each.value.ucs_domain_profile].moid
+  port_policy_moid    = module.policies_ports_b[each.value.ucs_domain_profile].moid
   slot_id             = each.value.lan_pc_slot_id
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  flow_control_moid = each.value.policy_flow_control != "" ? [
-    module.policy_flow_control[each.value.policy_flow_control].moid
+  flow_control_moid = each.value.policies_flow_control != "" ? [
+    module.policies_flow_control[each.value.policies_flow_control].moid
   ] : []
-  link_aggregation_moid = each.value.policy_link_aggregation != "" ? [
-    module.policy_link_aggregation[each.value.policy_link_aggregation].moid
+  link_aggregation_moid = each.value.policies_link_aggregation != "" ? [
+    module.policies_link_aggregation[each.value.policies_link_aggregation].moid
   ] : []
-  link_control_moid = each.value.policy_link_control != "" ? [
-    module.policy_link_control[each.value.policy_link_control].moid
+  link_control_moid = each.value.policies_link_control != "" ? [
+    module.policies_link_control[each.value.policies_link_control].moid
   ] : []
 }

@@ -39,7 +39,7 @@ variable "local_user_password_5" {
   type        = string
 }
 
-variable "policy_local_users" {
+variable "policies_local_users" {
   default = {
     default = {
       description             = ""
@@ -109,13 +109,13 @@ variable "policy_local_users" {
 # GUI Location: Configure > Policies > Create Policy > Local User > Start
 #_________________________________________________________________________
 
-module "policy_local_users" {
+module "policies_local_users" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source                   = "terraform-cisco-modules/imm/intersight//modules/policies_local_user_policy"
-  for_each                 = local.policy_local_users
+  for_each                 = local.policies_local_users
   description              = each.value.description != "" ? each.value.description : "${each.key} Local User Policy."
   enable_password_expiry   = each.value.password_expiry
   enforce_strong_password  = each.value.enforce_strong_password
@@ -130,7 +130,7 @@ module "policy_local_users" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_local_users == each.key
+    if local.ucs_server_profiles[s].profile.policies_local_users == each.key
   ]
 }
 
@@ -144,14 +144,14 @@ module "policy_local_users" {
 module "local_users" {
   depends_on = [
     local.org_moids,
-    module.policy_local_users
+    module.policies_local_users
   ]
   for_each         = local.local_users.users
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_local_user"
   org_moid         = local.org_moids[each.value.organization].moid
   user_enabled     = each.value.enabled
   user_password    = each.value.password == 1 ? var.local_user_password_1 : each.value.password == 2 ? var.local_user_password_1 : each.value.password == 3 ? var.local_user_password_1 : each.value.password == 4 ? var.local_user_password_1 : var.local_user_password_1
-  user_policy_moid = module.policy_local_users[each.value.policy].moid
+  user_policy_moid = module.policies_local_users[each.value.policy].moid
   user_role        = each.value.role
   username         = each.value.username
 }

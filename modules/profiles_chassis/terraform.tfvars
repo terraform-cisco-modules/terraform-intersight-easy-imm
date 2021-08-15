@@ -8,7 +8,7 @@
 # tfc_email         = "tyscott@cisco.com"
 tfc_organization = "Cisco-Richfield-Lab"
 # vcs_repo         = "scotttyso/terraform-intersight-easy-imm"
-ws_pools = "Intersight_Pools"
+ws_pools = "Asgard_pools"
 /*
   We highly recommend that for the terraform_cloud_token you use an environment variable for input:
   - export TF_VAR_terraform_cloud_token="abcdefghijklmnopqrstuvwxyz.0123456789"
@@ -64,20 +64,20 @@ tags = [{ key = "Module", value = "terraform-intersight-easy-imm" }, { key = "Ow
 
 ucs_chassis_templates = {
   "Asgard_5108" = {
-    organization      = "Asgard"
-    policy_imc_access = "Asgard_imc_chassis"
-    policy_power      = "Asgard_power_5108"
-    policy_snmp       = "Asgard_snmp_chassis"
-    policy_thermal    = "Asgard_thermal_5108"
-    target_platform   = "FIAttached"
+    organization        = "Asgard"
+    policies_imc_access = "Asgard_imc_chassis"
+    policies_power      = "Asgard_power_5108"
+    policies_snmp       = "Asgard_snmp_chassis"
+    policies_thermal    = "Asgard_thermal_5108"
+    target_platform     = "FIAttached"
   }
   "Asgard_9508" = {
-    organization      = "Asgard"
-    policy_imc_access = "Asgard_imc_chassis"
-    policy_power      = "Asgard_power_9508"
-    policy_snmp       = "Asgard_snmp_chassis"
-    policy_thermal    = "Asgard_thermal_9508"
-    target_platform   = "FIAttached"
+    organization        = "Asgard"
+    policies_imc_access = "Asgard_imc_chassis"
+    policies_power      = "Asgard_power_9508"
+    policies_snmp       = "Asgard_snmp_chassis"
+    policies_thermal    = "Asgard_thermal_9508"
+    target_platform     = "FIAttached"
   }
 }
 
@@ -104,10 +104,10 @@ ucs_chassis_profiles = {
 # IMC Access Policies
 #______________________________________________
 
-policy_imc_access = {
+policies_imc_access = {
   "Asgard_imc_chassis" = {
     description  = ""
-    imc_ip_pool  = "ip_pool_1"
+    imc_ip_pool  = "Asgard_ip_pool_1"
     inband_vlan  = 4
     ipv4_enable  = true
     ipv6_enable  = false
@@ -121,7 +121,7 @@ policy_imc_access = {
 # Power Policies
 #______________________________________________
 
-policy_power = {
+policies_power = {
   "Asgard_power_5108" = {
     allocated_budget    = 0
     description         = "Asgard 5108 Power Policy."
@@ -148,7 +148,7 @@ policy_power = {
 # SNMP Policies
 #______________________________________________
 
-policy_snmp = {
+policies_snmp = {
   "Asgard_snmp" = {
     description                = ""
     enabled                    = true
@@ -194,7 +194,7 @@ policy_snmp = {
 # Thermal Policies
 #______________________________________________
 
-policy_thermal = {
+policies_thermal = {
   "Asgard_thermal_5108" = {
     description      = "Asgard 5108 Thermal Policy"
     fan_control_mode = "Balanced"

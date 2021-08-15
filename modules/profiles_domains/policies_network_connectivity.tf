@@ -1,10 +1,10 @@
 #_________________________________________________________________________
 #
 # Intersight Network Connectivity Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Network Connectivity
+# GUI Location: Configure > Policy > Create Policy > Network Connectivity
 #_________________________________________________________________________
 
-variable "policy_network_connectivity" {
+variable "policies_network_connectivity" {
   default = {
     default = {
       description    = ""
@@ -47,16 +47,16 @@ variable "policy_network_connectivity" {
 #_________________________________________________________________________
 #
 # Network Connectivity Policies
-# GUI Location: Configure > Policies > Create Policy > Network Connectivity
+# GUI Location: Configure > Policy > Create Policy > Network Connectivity
 #_________________________________________________________________________
 
-module "policy_network_connectivity" {
+module "policies_network_connectivity" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profiles
   ]
   source         = "terraform-cisco-modules/imm/intersight//modules/policies_network_connectivity"
-  for_each       = local.policy_network_connectivity
+  for_each       = local.policies_network_connectivity
   description    = each.value.description != "" ? each.value.description : "${each.key} Network Connectivity (DNS) Policy."
   dns_servers_v4 = each.value.dns_servers_v4
   dns_servers_v6 = each.value.dns_servers_v6
@@ -70,6 +70,6 @@ module "policy_network_connectivity" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policy_network_connectivity == each.key
+    if local.ucs_domain_profiles[s].policies_network_connectivity == each.key
   ])
 }

@@ -1,10 +1,10 @@
 #_________________________________________________________________________
 #
 # Intersight Switch Control Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Switch Control
+# GUI Location: Configure > Policy > Create Policy > Switch Control
 #_________________________________________________________________________
 
-variable "policy_switch_control" {
+variable "policies_switch_control" {
   default = {
     default = {
       description           = ""
@@ -52,17 +52,17 @@ variable "policy_switch_control" {
 #_________________________________________________________________________
 #
 # Switch Control Policies
-# GUI Location: Configure > Policies > Create Policy > Switch Control
+# GUI Location: Configure > Policy > Create Policy > Switch Control
 #_________________________________________________________________________
 
-module "policy_switch_control" {
+module "policies_switch_control" {
   depends_on = [
     local.org_moids,
     module.ucs_domain_profiles_a,
     module.ucs_domain_profiles_b
   ]
   source                = "terraform-cisco-modules/imm/intersight//modules/domain_switch_control"
-  for_each              = local.policy_switch_control
+  for_each              = local.policies_switch_control
   description           = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy."
   name                  = each.key
   mac_aging_option      = each.value.mac_aging_option
@@ -75,7 +75,7 @@ module "policy_switch_control" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policy_switch_control == each.key
+    if local.ucs_domain_profiles[s].policies_switch_control == each.key
   ])
 }
 

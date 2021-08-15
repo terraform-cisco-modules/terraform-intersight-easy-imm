@@ -30,40 +30,40 @@ locals {
     {
       for key, value in var.ucs_server_templates : "profile" =>
       {
-        action                      = (v.action != null ? v.action : "No-op")
-        assign_server               = (v.assign_server != null ? v.assign_server : false)
-        description                 = (v.description != null ? v.description : "")
-        name                        = (v.name != null ? v.name : "")
-        operating_system            = (value.operating_system != null ? value.operating_system : "vmware")
-        organization                = (value.organization != null ? value.organization : "default")
-        policy_bios                 = (value.policy_bios != null ? value.policy_bios : "")
-        policy_boot_order           = (value.policy_boot_order != null ? value.policy_boot_order : "")
-        policy_device_connector     = (value.policy_device_connector != null ? value.policy_device_connector : "")
-        policy_imc_access           = (value.policy_imc_access != null ? value.policy_imc_access : "")
-        policy_ipmi_over_lan        = (value.policy_ipmi_over_lan != null ? value.policy_ipmi_over_lan : "")
-        policy_lan_connectivity     = (value.policy_lan_connectivity != null ? value.policy_lan_connectivity : "")
-        policy_ldap                 = (value.policy_ldap != null ? value.policy_ldap : "")
-        policy_local_users          = (value.policy_local_users != null ? value.policy_local_users : "")
-        policy_network_connectivity = (value.policy_network_connectivity != null ? value.policy_network_connectivity : "")
-        policy_ntp                  = (value.policy_ntp != null ? value.policy_ntp : "")
-        policy_persistent_memory    = (value.policy_persistent_memory != null ? value.policy_persistent_memory : "")
-        policy_power                = (value.policy_power != null ? value.policy_power : "")
-        policy_san_connectivity     = (value.policy_san_connectivity != null ? value.policy_san_connectivity : "")
-        policy_sdcard               = (value.policy_sdcard != null ? value.policy_sdcard : "")
-        policy_serial_over_lan      = (value.policy_serial_over_lan != null ? value.policy_serial_over_lan : "")
-        policy_smtp                 = (value.policy_smtp != null ? value.policy_smtp : "")
-        policy_snmp                 = (value.policy_snmp != null ? value.policy_snmp : "")
-        policy_snmp_1_user          = (value.policy_snmp_1_user != null ? value.policy_snmp_1_user : "")
-        policy_snmp_2_users         = (value.policy_snmp_2_users != null ? value.policy_snmp_2_users : "")
-        policy_ssh                  = (value.policy_ssh != null ? value.policy_ssh : "")
-        policy_storage              = (value.policy_storage != null ? value.policy_storage : "")
-        policy_syslog               = (value.policy_syslog != null ? value.policy_syslog : "")
-        policy_virtual_kvm          = (value.policy_virtual_kvm != null ? value.policy_virtual_kvm : "")
-        policy_virtual_media        = (value.policy_virtual_media != null ? value.policy_virtual_media : "")
-        tags                        = (v.tags != null ? v.tags : [])
-        target_platform             = (value.target_platform != null ? value.target_platform : "FIAttached")
-        type                        = "instance"
-        wait_for_completion         = (v.wait_for_completion != null ? v.wait_for_completion : false)
+        action                        = (v.action != null ? v.action : "No-op")
+        assign_server                 = (v.assign_server != null ? v.assign_server : false)
+        description                   = (v.description != null ? v.description : "")
+        name                          = (v.name != null ? v.name : "")
+        operating_system              = (value.operating_system != null ? value.operating_system : "vmware")
+        organization                  = (value.organization != null ? value.organization : "default")
+        policies_bios                 = (value.policies_bios != null ? value.policies_bios : "")
+        policies_boot_order           = (value.policies_boot_order != null ? value.policies_boot_order : "")
+        policies_device_connector     = (value.policies_device_connector != null ? value.policies_device_connector : "")
+        policies_imc_access           = (value.policies_imc_access != null ? value.policies_imc_access : "")
+        policies_ipmi_over_lan        = (value.policies_ipmi_over_lan != null ? value.policies_ipmi_over_lan : "")
+        policies_lan_connectivity     = (value.policies_lan_connectivity != null ? value.policies_lan_connectivity : "")
+        policies_ldap                 = (value.policies_ldap != null ? value.policies_ldap : "")
+        policies_local_users          = (value.policies_local_users != null ? value.policies_local_users : "")
+        policies_network_connectivity = (value.policies_network_connectivity != null ? value.policies_network_connectivity : "")
+        policies_ntp                  = (value.policies_ntp != null ? value.policies_ntp : "")
+        policies_persistent_memory    = (value.policies_persistent_memory != null ? value.policies_persistent_memory : "")
+        policies_power                = (value.policies_power != null ? value.policies_power : "")
+        policies_san_connectivity     = (value.policies_san_connectivity != null ? value.policies_san_connectivity : "")
+        policies_sdcard               = (value.policies_sdcard != null ? value.policies_sdcard : "")
+        policies_serial_over_lan      = (value.policies_serial_over_lan != null ? value.policies_serial_over_lan : "")
+        policies_smtp                 = (value.policies_smtp != null ? value.policies_smtp : "")
+        policies_snmp                 = (value.policies_snmp != null ? value.policies_snmp : "")
+        policies_snmp_1_user          = (value.policies_snmp_1_user != null ? value.policies_snmp_1_user : "")
+        policies_snmp_2_users         = (value.policies_snmp_2_users != null ? value.policies_snmp_2_users : "")
+        policies_ssh                  = (value.policies_ssh != null ? value.policies_ssh : "")
+        policies_storage              = (value.policies_storage != null ? value.policies_storage : "")
+        policies_syslog               = (value.policies_syslog != null ? value.policies_syslog : "")
+        policies_virtual_kvm          = (value.policies_virtual_kvm != null ? value.policies_virtual_kvm : "")
+        policies_virtual_media        = (value.policies_virtual_media != null ? value.policies_virtual_media : "")
+        tags                          = (v.tags != null ? v.tags : [])
+        target_platform               = (value.target_platform != null ? value.target_platform : "FIAttached")
+        type                          = "instance"
+        wait_for_completion           = (v.wait_for_completion != null ? v.wait_for_completion : false)
       } if v.src_template == key
     }
   }
@@ -74,8 +74,8 @@ locals {
   # BIOS Policy Section Locals
   #__________________________________________________________
 
-  policy_bios = {
-    for k, v in var.policy_bios : k => {
+  policies_bios = {
+    for k, v in var.policies_bios : k => {
       bios_policy  = (v.bios_policy != null ? v.bios_policy : "virtual_node")
       description  = (v.description != null ? v.description : "")
       organization = (v.organization != null ? v.organization : "default")
@@ -88,8 +88,8 @@ locals {
   # BOOT Policy Section Locals
   #__________________________________________________________
 
-  policy_boot_order = {
-    for k, v in var.policy_boot_order : k => {
+  policies_boot_order = {
+    for k, v in var.policies_boot_order : k => {
       boot_policy  = (v.boot_policy != null ? v.boot_policy : "uefi_m2_raid")
       boot_secure  = (v.boot_secure != null ? v.boot_secure : true)
       description  = (v.description != null ? v.description : "")
@@ -103,8 +103,8 @@ locals {
   # Device Connector Policy Section Locals
   #__________________________________________________________
 
-  policy_device_connector = {
-    for k, v in var.policy_device_connector : k => {
+  policies_device_connector = {
+    for k, v in var.policies_device_connector : k => {
       description  = (v.description != null ? v.description : "")
       lockout      = (v.lockout != null ? v.lockout : false)
       organization = (v.organization != null ? v.organization : "default")
@@ -118,8 +118,8 @@ locals {
   # IMC Access Policy Section Locals
   #__________________________________________________________
 
-  policy_imc_access = {
-    for k, v in var.policy_imc_access : k => {
+  policies_imc_access = {
+    for k, v in var.policies_imc_access : k => {
       description  = (v.description != null ? v.description : "")
       inband_vlan  = (v.inband_vlan != null ? v.inband_vlan : 1)
       imc_ip_pool  = (v.imc_ip_pool != null ? v.imc_ip_pool : "")
@@ -136,8 +136,8 @@ locals {
   # IPMI over LAN Policy Section Locals
   #__________________________________________________________
 
-  policy_ipmi_over_lan = {
-    for k, v in var.policy_ipmi_over_lan : k => {
+  policies_ipmi_over_lan = {
+    for k, v in var.policies_ipmi_over_lan : k => {
       description  = (v.description != null ? v.description : "")
       enabled      = (v.enabled != null ? v.enabled : true)
       ipmi_key     = (v.ipmi_key != null ? v.ipmi_key : null)
@@ -153,8 +153,8 @@ locals {
   # LDAP Policy Section Locals
   #__________________________________________________________
 
-  policy_ldap = {
-    for k, v in var.policy_ldap : k => {
+  policies_ldap = {
+    for k, v in var.policies_ldap : k => {
       description                     = (v.description != null ? v.description : "")
       ldap_attribute                  = (v.ldap_attribute != null ? v.ldap_attribute : "CiscoAvPair")
       ldap_base_dn                    = (v.ldap_base_dn != null ? v.ldap_base_dn : "dc=example,dc=com")
@@ -179,7 +179,7 @@ locals {
   }
 
   ldap_servers = {
-    for k, v in var.policy_ldap : "ldap_servers" =>
+    for k, v in var.policies_ldap : "ldap_servers" =>
     {
       for key, value in v.ldap_servers : "${k}_${key}" =>
       {
@@ -191,7 +191,7 @@ locals {
   }
 
   ldap_groups = {
-    for k, v in var.policy_ldap : "ldap_groups" =>
+    for k, v in var.policies_ldap : "ldap_groups" =>
     {
       for key, value in v.ldap_groups : "${k}_${key}" =>
       {
@@ -208,8 +208,8 @@ locals {
   # Local User Policy Section Locals
   #__________________________________________________________
 
-  policy_local_users = {
-    for k, v in var.policy_local_users : k => {
+  policies_local_users = {
+    for k, v in var.policies_local_users : k => {
       description              = (v.description != null ? v.description : "")
       enforce_strong_password  = (v.enforce_strong_password != null ? v.enforce_strong_password : true)
       force_send_password      = (v.force_send_password != null ? v.force_send_password : false)
@@ -225,7 +225,7 @@ locals {
   }
 
   local_users = {
-    for k, v in var.policy_local_users : "users" =>
+    for k, v in var.policies_local_users : "users" =>
     {
       for key, value in v.users : "${k}_${key}" =>
       {
@@ -245,8 +245,8 @@ locals {
   # Network Connectivity (DNS) Policy Section Locals
   #__________________________________________________________
 
-  policy_network_connectivity = {
-    for k, v in var.policy_network_connectivity : k => {
+  policies_network_connectivity = {
+    for k, v in var.policies_network_connectivity : k => {
       description    = (v.description != null ? v.description : "")
       dns_servers_v4 = (v.dns_servers_v4 != null ? v.dns_servers_v4 : ["208.67.220.220", "208.67.222.222"])
       dns_servers_v6 = (v.dns_servers_v6 != null ? v.dns_servers_v6 : [])
@@ -264,8 +264,8 @@ locals {
   # NTP Policy Section Locals
   #__________________________________________________________
 
-  policy_ntp = {
-    for k, v in var.policy_ntp : k => {
+  policies_ntp = {
+    for k, v in var.policies_ntp : k => {
       description  = (v.description != null ? v.description : "")
       enabled      = (v.enabled != null ? v.enabled : true)
       ntp_servers  = (v.ntp_servers != null ? v.ntp_servers : ["time-a-g.nist.gov", "time-b-g.nist.gov"])
@@ -281,8 +281,8 @@ locals {
   # Persistent Memory Policy Section Locals
   #__________________________________________________________
 
-  policy_persistent_memory = {
-    for k, v in var.policy_persistent_memory : k => {
+  policies_persistent_memory = {
+    for k, v in var.policies_persistent_memory : k => {
       description                  = (v.description != null ? v.description : "")
       goals_memory_percentage      = (v.goals_memory_percentage != null ? v.goals_memory_percentage : 0)
       goals_persistent_memory_type = (v.goals_persistent_memory_type != null ? v.goals_persistent_memory_type : "app-direct")
@@ -300,8 +300,8 @@ locals {
   # Power Policy Section Locals
   #__________________________________________________________
 
-  policy_power = {
-    for k, v in var.policy_power : k => {
+  policies_power = {
+    for k, v in var.policies_power : k => {
       allocated_budget    = (v.allocated_budget != null ? v.allocated_budget : 0)
       description         = (v.description != null ? v.description : "")
       organization        = (v.organization != null ? v.organization : "default")
@@ -318,8 +318,8 @@ locals {
   # Serial over LAN Policy Section Locals
   #__________________________________________________________
 
-  policy_serial_over_lan = {
-    for k, v in var.policy_serial_over_lan : k => {
+  policies_serial_over_lan = {
+    for k, v in var.policies_serial_over_lan : k => {
       baud_rate    = (v.baud_rate != null ? v.baud_rate : 115200)
       com_port     = (v.com_port != null ? v.com_port : "com0")
       description  = (v.description != null ? v.description : "")
@@ -336,8 +336,8 @@ locals {
   # SMTP Policy Section Locals
   #__________________________________________________________
 
-  policy_smtp = {
-    for k, v in var.policy_smtp : k => {
+  policies_smtp = {
+    for k, v in var.policies_smtp : k => {
       description     = (v.description != null ? v.description : "")
       enabled         = (v.enabled != null ? v.enabled : true)
       min_severity    = (v.min_severity != null ? v.min_severity : "critical")
@@ -356,8 +356,8 @@ locals {
   # SNMP Policy Section Locals
   #__________________________________________________________
 
-  policy_snmp = {
-    for k, v in var.policy_snmp : k => {
+  policies_snmp = {
+    for k, v in var.policies_snmp : k => {
       description                = (v.description != null ? v.description : "")
       enabled                    = (v.enabled != null ? v.enabled : true)
       organization               = (v.organization != null ? v.organization : "default")
@@ -383,8 +383,8 @@ locals {
   # SSH Policy Section Locals
   #__________________________________________________________
 
-  policy_ssh = {
-    for k, v in var.policy_ssh : k => {
+  policies_ssh = {
+    for k, v in var.policies_ssh : k => {
       description  = (v.description != null ? v.description : "")
       enabled      = (v.enabled != null ? v.enabled : true)
       organization = (v.organization != null ? v.organization : "default")
@@ -400,8 +400,8 @@ locals {
   # Storage Policy Section Locals
   #__________________________________________________________
 
-  policy_storage = {
-    for k, v in var.policy_storage : k => {
+  policies_storage = {
+    for k, v in var.policies_storage : k => {
       access_policy = (v.access_policy != null ? v.access_policy : "Default")
       boot_drive    = (v.boot_drive != null ? v.boot_drive : true)
       description   = (v.description != null ? v.description : "")
@@ -428,8 +428,8 @@ locals {
   # Syslog Policy Section Locals
   #__________________________________________________________
 
-  policy_syslog = {
-    for k, v in var.policy_syslog : k => {
+  policies_syslog = {
+    for k, v in var.policies_syslog : k => {
       description         = (v.description != null ? v.description : "")
       local_min_severity  = (v.local_min_severity != null ? v.local_min_severity : "warning")
       organization        = (v.organization != null ? v.organization : "default")
@@ -444,8 +444,8 @@ locals {
   # vHBA SAN Connectivity Section Locals
   #__________________________________________________________
 
-  policy_vhba_san_connectivity = {
-    for k, v in var.policy_vhba_san_connectivity : k => {
+  policies_vhba_san_connectivity = {
+    for k, v in var.policies_vhba_san_connectivity : k => {
       adapter_template             = (v.adapter_template != null ? v.adapter_template : "VMware")
       description                  = (v.description != null ? v.description : "")
       organization                 = (v.organization != null ? v.organization : "default")
@@ -489,8 +489,8 @@ locals {
   # Virtual KVM Policy Section Locals
   #__________________________________________________________
 
-  policy_virtual_kvm = {
-    for k, v in var.policy_virtual_kvm : k => {
+  policies_virtual_kvm = {
+    for k, v in var.policies_virtual_kvm : k => {
       description        = (v.description != null ? v.description : "")
       enabled            = (v.enabled != null ? v.enabled : true)
       local_server_video = (v.local_server_video != null ? v.local_server_video : true)
@@ -508,8 +508,8 @@ locals {
   # Virtual Media Policy Section Locals
   #__________________________________________________________
 
-  policy_virtual_media = {
-    for k, v in var.policy_virtual_media : k => {
+  policies_virtual_media = {
+    for k, v in var.policies_virtual_media : k => {
       description     = (v.description != null ? v.description : "")
       enabled         = (v.enabled != null ? v.enabled : true)
       encryption      = (v.encryption != null ? v.encryption : true)
@@ -526,8 +526,8 @@ locals {
   # vNIC LAN Connectivity Section Locals
   #__________________________________________________________
 
-  policy_vnic_lan_connectivity = {
-    for k, v in var.policy_vnic_lan_connectivity : k => {
+  policies_vnic_lan_connectivity = {
+    for k, v in var.policies_vnic_lan_connectivity : k => {
       description         = (v.description != null ? v.description : "")
       iqn_allocation_type = (v.iqn_allocation_type != null ? v.iqn_allocation_type : "None")
       iqn_static_name     = (v.iqn_static_name != null ? v.iqn_static_name : "")
@@ -545,8 +545,8 @@ locals {
   # vNIC Template Section Locals
   #__________________________________________________________
 
-  policy_vnic_templates = {
-    for k, v in var.policy_vnic_templates : k => {
+  policies_vnic_templates = {
+    for k, v in var.policies_vnic_templates : k => {
       adapter_template          = (v.adapter_template != null ? v.adapter_template : "VMware")
       description               = (v.description != null ? v.description : "")
       lan_connectivity          = (v.lan_connectivity != null ? v.lan_connectivity : "default")

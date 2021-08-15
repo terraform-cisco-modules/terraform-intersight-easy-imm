@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > Virtual Media
 #_________________________________________________________________________
 
-variable "policy_virtual_media" {
+variable "policies_virtual_media" {
   default = {
     default = {
       description     = ""
@@ -53,7 +53,7 @@ module "virtual_media" {
     module.ucs_server_profiles
   ]
   source        = "terraform-cisco-modules/imm/intersight//modules/policies_virtual_media"
-  for_each      = local.policy_virtual_media
+  for_each      = local.policies_virtual_media
   description   = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy."
   enabled       = each.value.enabled
   encryption    = each.value.encryption
@@ -65,7 +65,7 @@ module "virtual_media" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_virtual_media == each.key
+    if local.ucs_server_profiles[s].profile.policies_virtual_media == each.key
   ]
 }
 

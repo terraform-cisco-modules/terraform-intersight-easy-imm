@@ -1,10 +1,10 @@
 #_________________________________________________________________________
 #
 # Intersight Power Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Power > Start
+# GUI Location: Configure > Policy > Create Policy > Power > Start
 #_________________________________________________________________________
 
-variable "policy_thermal" {
+variable "policies_thermal" {
   default = {
     default = {
       description      = ""
@@ -40,16 +40,16 @@ variable "policy_thermal" {
 #_________________________________________________________________________
 #
 # Thermal Policies
-# GUI Location: Configure > Policies > Create Policy > Thermal > Start
+# GUI Location: Configure > Policy > Create Policy > Thermal > Start
 #_________________________________________________________________________
 
-module "policy_thermal" {
+module "policies_thermal" {
   depends_on = [
     local.org_moids,
     module.ucs_chassis_profiles
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/policies_thermal"
-  for_each         = local.policy_thermal
+  for_each         = local.policies_thermal
   description      = each.value.description != "" ? each.value.description : "${each.key} Thermal Policy."
   fan_control_mode = each.value.fan_control_mode
   name             = each.key
@@ -58,6 +58,6 @@ module "policy_thermal" {
   profiles = [
     for s in sort(keys(local.ucs_chassis_profiles)) :
     module.ucs_chassis_profiles[s].moid
-    if local.ucs_chassis_profiles[s].profile.policy_thermal == each.key
+    if local.ucs_chassis_profiles[s].profile.policies_thermal == each.key
   ]
 }

@@ -1,7 +1,7 @@
 #_________________________________________________________________________
 #
 # Intersight NTP Policies Variables
-# GUI Location: Configure > Policy > Create Policy > NTP > Start
+# GUI Location: Configure > Policies > Create Policy > NTP > Start
 #_________________________________________________________________________
 
 variable "policies_ntp" {
@@ -42,28 +42,26 @@ variable "policies_ntp" {
 #_________________________________________________________________________
 #
 # NTP Policies
-# GUI Location: Configure > Policy > Create Policy > NTP > Start
+# GUI Location: Configure > Policies > Create Policy > NTP > Start
 #_________________________________________________________________________
 
 module "policies_ntp" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_profiles_a,
-    module.ucs_domain_profiles_b
+    module.ucs_server_profiles
   ]
-  source       = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
-  for_each     = local.policies_ntp
-  description  = each.value.description != "" ? each.value.description : "${each.key} NTP Policy."
-  enabled      = each.value.enabled
-  name         = each.key
-  ntp_servers  = each.value.ntp_servers
-  org_moid     = local.org_moids[each.value.organization].moid
-  tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  timezone     = each.value.timezone
-  profile_type = "domain"
-  profiles = flatten([
-    for s in sort(keys(local.ucs_domain_profiles)) :
-    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policies_ntp == each.key
-  ])
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
+  for_each    = local.policies_ntp
+  description = each.value.description != "" ? each.value.description : "${each.key} NTP Policy."
+  enabled     = each.value.enabled
+  name        = each.key
+  ntp_servers = each.value.ntp_servers
+  org_moid    = local.org_moids[each.value.organization].moid
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  timezone    = each.value.timezone
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_ntp == each.key
+  ]
 }

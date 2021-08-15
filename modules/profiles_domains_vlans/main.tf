@@ -1,7 +1,7 @@
 #_________________________________________________________________________
 #
 # Intersight Multicast Policy
-# GUI Location: Policies > Create Policy > Multicast > Start
+# GUI Location: Create > Policy > Create Policy > Multicast > Start
 #_________________________________________________________________________
 
 module "multicast_policy" {

@@ -1,7 +1,7 @@
 #_________________________________________________________________________
 #
 # Intersight SNNMP Policies Variables
-# GUI Location: Configure > Policies > Create Policy > SNMP > Start
+# GUI Location: Configure > Policy > Create Policy > SNMP > Start
 #_________________________________________________________________________
 
 variable "snmp_community" {
@@ -47,7 +47,7 @@ variable "snmp_user_2_privacy_password" {
 }
 
 
-variable "policy_snmp" {
+variable "policies_snmp" {
   default = {
     default = {
       description                = ""
@@ -147,7 +147,7 @@ module "policies_snmp" {
     module.ucs_chassis_profiles
   ]
   for_each = {
-    for k, v in local.policy_snmp : k => v
+    for k, v in local.policies_snmp : k => v
     if v.snmp_user_1_name == "" && v.snmp_user_2_name == ""
   }
   source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
@@ -171,7 +171,7 @@ module "policies_snmp" {
   profiles = [
     for s in sort(keys(local.ucs_chassis_profiles)) :
     module.ucs_chassis_profiles[s].moid
-    if local.ucs_chassis_profiles[s].profile.policy_snmp == each.key
+    if local.ucs_chassis_profiles[s].profile.policies_snmp == each.key
   ]
 }
 
@@ -181,7 +181,7 @@ module "policies_snmp_1_user" {
     module.ucs_chassis_profiles
   ]
   for_each = {
-    for k, v in local.policy_snmp : k => v
+    for k, v in local.policies_snmp : k => v
     if v.snmp_user_1_name != "" && v.snmp_user_2_name == ""
   }
   source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user"
@@ -210,7 +210,7 @@ module "policies_snmp_1_user" {
   profiles = [
     for s in sort(keys(local.ucs_chassis_profiles)) :
     module.ucs_chassis_profiles[s].moid
-    if local.ucs_chassis_profiles[s].profile.policy_snmp == each.key
+    if local.ucs_chassis_profiles[s].profile.policies_snmp == each.key
   ]
 }
 
@@ -220,8 +220,8 @@ module "policies_snmp_2_users" {
     module.ucs_chassis_profiles
   ]
   for_each = {
-    for k, v in local.policy_snmp : k => v
-    if v.snmp_user_2_name == ""
+    for k, v in local.policies_snmp : k => v
+    if v.snmp_user_2_name != ""
   }
   source = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users"
   # source                  = each.value.snmp_user_2_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users" : each.value.snmp_user_1_name != "" ? "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_users" : "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
@@ -254,6 +254,6 @@ module "policies_snmp_2_users" {
   profiles = [
     for s in sort(keys(local.ucs_chassis_profiles)) :
     module.ucs_chassis_profiles[s].moid
-    if local.ucs_chassis_profiles[s].profile.policy_snmp == each.key
+    if local.ucs_chassis_profiles[s].profile.policies_snmp == each.key
   ]
 }

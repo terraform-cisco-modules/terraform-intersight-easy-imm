@@ -1,10 +1,10 @@
 #_________________________________________________________________________
 #
 # Intersight Link Aggregation Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Link Aggregation
+# GUI Location: Configure > Policy > Create Policy > Link Aggregation
 #_________________________________________________________________________
 
-variable "policy_link_aggregation" {
+variable "policies_link_aggregation" {
   default = {
     default = {
       description        = ""
@@ -40,15 +40,15 @@ variable "policy_link_aggregation" {
 #_________________________________________________________________________
 #
 # Link Aggregation Policies
-# GUI Location: Configure > Policies > Create Policy > Link Aggregation
+# GUI Location: Configure > Policy > Create Policy > Link Aggregation
 #_________________________________________________________________________
 
-module "policy_link_aggregation" {
+module "policies_link_aggregation" {
   depends_on = [
     local.org_moids
   ]
   source             = "terraform-cisco-modules/imm/intersight//modules/domain_link_aggregation"
-  for_each           = local.policy_link_aggregation
+  for_each           = local.policies_link_aggregation
   description        = each.value.description != "" ? each.value.description : "${each.key} Link Aggregation Policy."
   lacp_rate          = each.value.lacp_rate
   name               = each.key

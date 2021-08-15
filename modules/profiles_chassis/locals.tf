@@ -27,20 +27,20 @@ locals {
     {
       for key, value in var.ucs_chassis_templates : "profile" =>
       {
-        action              = (v.action != null ? v.action : "No-op")
-        assigned_chassis    = (v.assigned_chassis != null ? v.assigned_chassis : false)
-        description         = (v.description != null ? v.description : "")
-        name                = (v.name != null ? v.name : "")
-        organization        = (value.organization != null ? value.organization : "default")
-        policy_imc_access   = (value.policy_imc_access != null ? value.policy_imc_access : "")
-        policy_power        = (value.policy_power != null ? value.policy_power : "")
-        policy_snmp         = (value.policy_snmp != null ? value.policy_snmp : "")
-        policy_snmp_1_user  = (value.policy_snmp_1_user != null ? value.policy_snmp_1_user : "")
-        policy_snmp_2_users = (value.policy_snmp_2_users != null ? value.policy_snmp_2_users : "")
-        policy_thermal      = (value.policy_thermal != null ? value.policy_thermal : "")
-        tags                = (v.tags != null ? v.tags : [])
-        target_platform     = (value.target_platform != null ? value.target_platform : "FIAttached")
-        wait_for_completion = (v.wait_for_completion != null ? v.wait_for_completion : false)
+        action                = (v.action != null ? v.action : "No-op")
+        assigned_chassis      = (v.assigned_chassis != null ? v.assigned_chassis : false)
+        description           = (v.description != null ? v.description : "")
+        name                  = (v.name != null ? v.name : "")
+        organization          = (value.organization != null ? value.organization : "default")
+        policies_imc_access   = (value.policies_imc_access != null ? value.policies_imc_access : "")
+        policies_power        = (value.policies_power != null ? value.policies_power : "")
+        policies_snmp         = (value.policies_snmp != null ? value.policies_snmp : "")
+        policies_snmp_1_user  = (value.policies_snmp_1_user != null ? value.policies_snmp_1_user : "")
+        policies_snmp_2_users = (value.policies_snmp_2_users != null ? value.policies_snmp_2_users : "")
+        policies_thermal      = (value.policies_thermal != null ? value.policies_thermal : "")
+        tags                  = (v.tags != null ? v.tags : [])
+        target_platform       = (value.target_platform != null ? value.target_platform : "FIAttached")
+        wait_for_completion   = (v.wait_for_completion != null ? v.wait_for_completion : false)
       } if v.src_template == key
     }
   }
@@ -51,8 +51,8 @@ locals {
   # IMC Access Policy Section Locals
   #__________________________________________________________
 
-  policy_imc_access = {
-    for k, v in var.policy_imc_access : k => {
+  policies_imc_access = {
+    for k, v in var.policies_imc_access : k => {
       description  = (v.description != null ? v.description : "")
       inband_vlan  = (v.inband_vlan != null ? v.inband_vlan : 1)
       imc_ip_pool  = (v.imc_ip_pool != null ? v.imc_ip_pool : "")
@@ -69,8 +69,8 @@ locals {
   # Power Policy Section Locals
   #__________________________________________________________
 
-  policy_power = {
-    for k, v in var.policy_power : k => {
+  policies_power = {
+    for k, v in var.policies_power : k => {
       allocated_budget    = (v.allocated_budget != null ? v.allocated_budget : 0)
       description         = (v.description != null ? v.description : "")
       organization        = (v.organization != null ? v.organization : "default")
@@ -87,8 +87,8 @@ locals {
   # SNMP Policy Section Locals
   #__________________________________________________________
 
-  policy_snmp = {
-    for k, v in var.policy_snmp : k => {
+  policies_snmp = {
+    for k, v in var.policies_snmp : k => {
       description                = (v.description != null ? v.description : "")
       enabled                    = (v.enabled != null ? v.enabled : true)
       organization               = (v.organization != null ? v.organization : "default")
@@ -114,8 +114,8 @@ locals {
   # Thermal Policy Section Locals
   #__________________________________________________________
 
-  policy_thermal = {
-    for k, v in var.policy_thermal : k => {
+  policies_thermal = {
+    for k, v in var.policies_thermal : k => {
       description      = (v.description != null ? v.description : "")
       fan_control_mode = (v.fan_control_mode != null ? v.fan_control_mode : "Balanced")
       organization     = (v.organization != null ? v.organization : "default")

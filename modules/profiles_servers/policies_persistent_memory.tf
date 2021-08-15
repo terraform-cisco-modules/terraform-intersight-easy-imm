@@ -11,7 +11,7 @@ variable "persistent_passphrase" {
   type        = string
 }
 
-variable "policy_persistent_memory" {
+variable "policies_persistent_memory" {
   default = {
     default = {
       description                  = ""
@@ -61,13 +61,13 @@ variable "policy_persistent_memory" {
 # GUI Location: Configure > Policies > Create Policy > Persistent Memory
 #_________________________________________________________________________
 
-module "policy_persistent_memory" {
+module "policies_persistent_memory" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source                       = "terraform-cisco-modules/imm/intersight//modules/policies_persistent_memory"
-  for_each                     = local.policy_persistent_memory
+  for_each                     = local.policies_persistent_memory
   description                  = each.value.description != "" ? each.value.description : "${each.key} Persistent Memory Policy."
   goals_memory_percentage      = each.value.goals_memory_percentage
   goals_persistent_memory_type = each.value.goals_persistent_memory_type
@@ -81,7 +81,7 @@ module "policy_persistent_memory" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_persistent_memory == each.key
+    if local.ucs_server_profiles[s].profile.policies_persistent_memory == each.key
   ]
 }
 

@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > IMC Access > Start
 #_________________________________________________________________________
 
-variable "policy_imc_access" {
+variable "policies_imc_access" {
   default = {
     default = {
       description  = ""
@@ -47,25 +47,24 @@ variable "policy_imc_access" {
 # GUI Location: Configure > Policies > Create Policy > IMC Access > Start
 #_________________________________________________________________________
 
-module "policy_imc_access" {
+module "policies_imc_access" {
   depends_on = [
     local.org_moids,
-    module.ucs_chassis_profiles
+    module.ucs_server_profiles
   ]
-  source       = "terraform-cisco-modules/imm/intersight//modules/policies_imc_access"
-  for_each     = local.policy_imc_access
-  description  = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
-  imc_ip_pool  = each.value.imc_ip_pool != "" ? local.ip_pools[each.value.imc_ip_pool] : null
-  inband_vlan  = each.value.inband_vlan
-  ipv4_enable  = each.value.ipv4_enable
-  ipv6_enable  = each.value.ipv6_enable
-  name         = each.key
-  org_moid     = local.org_moids[each.value.organization].moid
-  profile_type = "chassis"
-  tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_imc_access"
+  for_each    = local.policies_imc_access
+  description = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
+  imc_ip_pool = each.value.imc_ip_pool != "" ? local.ip_pools[each.value.imc_ip_pool] : null
+  inband_vlan = each.value.inband_vlan
+  ipv4_enable = each.value.ipv4_enable
+  ipv6_enable = each.value.ipv6_enable
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
-    for s in sort(keys(local.ucs_chassis_profiles)) :
-    module.ucs_chassis_profiles[s].moid
-    if local.ucs_chassis_profiles[s].profile.policy_imc_access == each.key
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_imc_access == each.key
   ]
 }

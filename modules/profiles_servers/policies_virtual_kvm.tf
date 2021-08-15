@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > Virtual KVM
 #_________________________________________________________________________
 
-variable "policy_virtual_kvm" {
+variable "policies_virtual_kvm" {
   default = {
     default = {
       description        = ""
@@ -50,13 +50,13 @@ variable "policy_virtual_kvm" {
 # GUI Location: Configure > Policies > Create Policy > Virtual KVM
 #_________________________________________________________________________
 
-module "policy_virtual_kvm" {
+module "policies_virtual_kvm" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source                    = "terraform-cisco-modules/imm/intersight//modules/policies_virtual_kvm"
-  for_each                  = local.policy_virtual_kvm
+  for_each                  = local.policies_virtual_kvm
   description               = each.value.description != "" ? each.value.description : "${each.key} Virtual KVM Policy."
   enable_local_server_video = each.value.local_server_video
   enable_video_encryption   = each.value.video_encryption
@@ -69,6 +69,6 @@ module "policy_virtual_kvm" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_virtual_kvm == each.key
+    if local.ucs_server_profiles[s].profile.policies_virtual_kvm == each.key
   ]
 }

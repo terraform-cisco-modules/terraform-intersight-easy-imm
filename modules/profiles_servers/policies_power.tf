@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > Power > Start
 #_________________________________________________________________________
 
-variable "policy_power" {
+variable "policies_power" {
   default = {
     default = {
       allocated_budget    = 0
@@ -56,13 +56,13 @@ variable "policy_power" {
 # GUI Location: Configure > Policies > Create Policy > Power > Start
 #_________________________________________________________________________
 
-module "policy_power" {
+module "policies_power" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/policies_power"
-  for_each            = local.policy_power
+  for_each            = local.policies_power
   allocated_budget    = each.value.allocated_budget
   description         = each.value.description != "" ? each.value.description : "${each.key} Power Policy."
   name                = each.key
@@ -74,6 +74,6 @@ module "policy_power" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_power == each.key
+    if local.ucs_server_profiles[s].profile.policies_power == each.key
   ]
 }

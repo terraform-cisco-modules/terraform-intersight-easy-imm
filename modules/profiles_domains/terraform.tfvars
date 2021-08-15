@@ -55,43 +55,43 @@ tags = [{ key = "Module", value = "terraform-intersight-easy-imm" }, { key = "Ow
 
 ucs_domain_profiles = {
   asgard-ucs = {
-    assign_switches             = true
-    action                      = "No-op" # Options are {Delete|Deploy|Ready|No-op|Unassign}.
-    device_model                = "UCS-FI-64108"
-    domain_description          = ""
-    domain_descr_fi_a           = ""
-    domain_descr_fi_b           = ""
-    domain_serial_a             = "FDO23360Y8U"
-    domain_serial_b             = "FDO23360XWU"
-    fc_ports                    = [1, 4]
-    fc_slot_id                  = 1
-    organization                = "Asgard"
-    policy_network_connectivity = "Asgard_sw_dns"
-    policy_ntp                  = "Asgard_sw_ntp"
-    policy_snmp                 = "Asgard_sw_snmp"
-    policy_switch_control       = "Asgard_swctrl"
-    policy_syslog               = "Asgard_sw_syslog"
-    policy_system_qos           = "Asgard_sytemqos"
-    port_policy_descr_a         = ""
-    port_policy_descr_b         = ""
-    san_fill_pattern            = "Arbff"
-    san_pc_breakoutswport       = 0
-    san_pc_ports                = [1, 3]
-    san_pc_slot_id              = 1
-    san_pc_speed                = "16Gbps"
-    server_ports                = "5-18"
-    tags                        = []
-    vlan_description            = ""
-    vlan_native                 = 1
-    vlan_list                   = "101-199,201-299,1100-1299,1700-1799"
-    vsan_a                      = 100
-    vsan_a_description          = ""
-    vsan_a_fcoe                 = null
-    vsan_b                      = 200
-    vsan_b_description          = ""
-    vsan_b_fcoe                 = null
-    vsan_enable_trunking        = false
-    vsan_prefix                 = ""
+    assign_switches               = true
+    action                        = "No-op" # Options are {Delete|Deploy|Ready|No-op|Unassign}.
+    device_model                  = "UCS-FI-64108"
+    domain_description            = ""
+    domain_descr_fi_a             = ""
+    domain_descr_fi_b             = ""
+    domain_serial_a               = "FDO23360Y8U"
+    domain_serial_b               = "FDO23360XWU"
+    fc_ports                      = [1, 4]
+    fc_slot_id                    = 1
+    organization                  = "Asgard"
+    policies_network_connectivity = "Asgard_sw_dns"
+    policies_ntp                  = "Asgard_sw_ntp"
+    policies_snmp                 = "Asgard_sw_snmp"
+    policies_switch_control       = "Asgard_swctrl"
+    policies_syslog               = "Asgard_sw_syslog"
+    policies_system_qos           = "Asgard_sytemqos"
+    port_policy_descr_a           = ""
+    port_policy_descr_b           = ""
+    san_fill_pattern              = "Arbff"
+    san_pc_breakoutswport         = 0
+    san_pc_ports                  = [1, 3]
+    san_pc_slot_id                = 1
+    san_pc_speed                  = "16Gbps"
+    server_ports                  = "5-18"
+    tags                          = []
+    vlan_description              = ""
+    vlan_native                   = 1
+    vlan_list                     = "101-199,201-299,1100-1299,1700-1799"
+    vsan_a                        = 100
+    vsan_a_description            = ""
+    vsan_a_fcoe                   = null
+    vsan_b                        = 200
+    vsan_b_description            = ""
+    vsan_b_fcoe                   = null
+    vsan_enable_trunking          = false
+    vsan_prefix                   = ""
   }
 }
 
@@ -101,7 +101,7 @@ ucs_domain_profiles = {
 # Flow Control Policies
 #______________________________________________
 
-policy_flow_control = {
+policies_flow_control = {
   "Asgard_flowctrl" = {
     description          = ""
     flow_control_mode    = "auto"
@@ -118,17 +118,17 @@ policy_flow_control = {
 # LAN Port Channel Policies
 #______________________________________________
 
-policy_port_channel_lan = {
+policies_port_channel_lan = {
   "key" = {
-    lan_pc_breakoutswport   = 0
-    lan_pc_ports            = [97, 99]
-    lan_pc_slot_id          = 1
-    lan_pc_speed            = "Auto"
-    policy_flow_control     = "Asgard_flowctrl"
-    policy_link_aggregation = "Asgard_linkagg"
-    policy_link_control     = "Asgard_linkctrl"
-    tags                    = []
-    ucs_domain_profile      = "asgard-ucs"
+    lan_pc_breakoutswport     = 0
+    lan_pc_ports              = [97, 99]
+    lan_pc_slot_id            = 1
+    lan_pc_speed              = "Auto"
+    policies_flow_control     = "Asgard_flowctrl"
+    policies_link_aggregation = "Asgard_linkagg"
+    policies_link_control     = "Asgard_linkctrl"
+    tags                      = []
+    ucs_domain_profile        = "asgard-ucs"
   }
 }
 
@@ -138,7 +138,7 @@ policy_port_channel_lan = {
 # Link Aggregation Policies
 #______________________________________________
 
-policy_link_aggregation = {
+policies_link_aggregation = {
   "Asgard_linkagg" = {
     description        = ""
     lacp_rate          = "normal"
@@ -154,7 +154,7 @@ policy_link_aggregation = {
 # Link Control Policies
 #______________________________________________
 
-policy_link_control = {
+policies_link_control = {
   "Asgard_linkctrl" = {
     description      = ""
     organization     = "Asgard"
@@ -170,7 +170,7 @@ policy_link_control = {
 # Network Connectivity (DNS) Policies
 #______________________________________________
 
-policy_network_connectivity = {
+policies_network_connectivity = {
   "Asgard_sw_dns" = {
     description    = ""
     dns_servers_v4 = ["10.101.128.15", "10.101.128.16"]
@@ -189,7 +189,7 @@ policy_network_connectivity = {
 # NTP Policies
 #______________________________________________
 
-policy_ntp = {
+policies_ntp = {
   "Asgard_sw_ntp" = {
     description  = ""
     enabled      = true
@@ -203,21 +203,10 @@ policy_ntp = {
 
 #______________________________________________
 #
-# Port Policies
-#______________________________________________
-
-policy_ports = {
-  "Asgard_64108" = {
-  }
-}
-
-
-#______________________________________________
-#
 # SNMP Policies
 #______________________________________________
 
-policy_snmp = {
+policies_snmp = {
   "Asgard_sw_snmp" = {
     description                = ""
     enabled                    = true
@@ -262,7 +251,7 @@ policy_snmp = {
 # Switch Control Policies
 #______________________________________________
 
-policy_switch_control = {
+policies_switch_control = {
   "Asgard_swctrl" = {
     description           = ""
     mac_aging_option      = "Default"
@@ -281,7 +270,7 @@ policy_switch_control = {
 # Syslog Policies
 #______________________________________________
 
-policy_syslog = {
+policies_syslog = {
   "Asgard_sw_syslog" = {
     description        = ""
     local_min_severity = "warning"
@@ -312,7 +301,7 @@ policy_syslog = {
 # System QoS Policies
 #______________________________________________
 
-policy_system_qos = {
+policies_system_qos = {
   "Asgard_sytemqos" = {
     best_effort_admin_state        = "Enabled"
     best_effort_bandwidth          = 5

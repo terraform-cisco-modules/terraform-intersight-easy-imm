@@ -1,10 +1,10 @@
 #_________________________________________________________________________
 #
 # Intersight Link Control Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Link Control
+# GUI Location: Configure > Policy > Create Policy > Link Control
 #_________________________________________________________________________
 
-variable "policy_link_control" {
+variable "policies_link_control" {
   default = {
     default = {
       description      = ""
@@ -42,15 +42,15 @@ variable "policy_link_control" {
 #_________________________________________________________________________
 #
 # Link Control Policies
-# GUI Location: Configure > Policies > Create Policy > Link Control
+# GUI Location: Configure > Policy > Create Policy > Link Control
 #_________________________________________________________________________
 
-module "policy_link_control" {
+module "policies_link_control" {
   depends_on = [
     local.org_moids
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/domain_link_control"
-  for_each         = local.policy_link_control
+  for_each         = local.policies_link_control
   description      = each.value.description != "" ? each.value.description : "${each.key} Link Control Policy."
   name             = each.key
   org_moid         = local.org_moids[each.value.organization].moid

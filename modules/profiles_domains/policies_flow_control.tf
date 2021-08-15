@@ -1,10 +1,10 @@
 #_________________________________________________________________________
 #
 # Intersight Flow Control Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Flow Control > Start
+# GUI Location: Configure > Policy > Create Policy > Flow Control > Start
 #_________________________________________________________________________
 
-variable "policy_flow_control" {
+variable "policies_flow_control" {
   default = {
     default = {
       description          = ""
@@ -47,15 +47,15 @@ variable "policy_flow_control" {
 #_________________________________________________________________________
 #
 # Flow Control Policies
-# GUI Location: Configure > Policies > Create Policy > Flow Control > Start
+# GUI Location: Configure > Policy > Create Policy > Flow Control > Start
 #_________________________________________________________________________
 
-module "policy_flow_control" {
+module "policies_flow_control" {
   depends_on = [
     local.org_moids
   ]
   source                     = "terraform-cisco-modules/imm/intersight//modules/domain_flow_control"
-  for_each                   = local.policy_flow_control
+  for_each                   = local.policies_flow_control
   description                = each.value.description != "" ? each.value.description : "${each.key} Flow Control Policy."
   name                       = each.key
   org_moid                   = local.org_moids[each.value.organization].moid

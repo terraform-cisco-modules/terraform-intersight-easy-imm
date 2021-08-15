@@ -45,39 +45,39 @@ variable "ucs_chassis_profiles" {
 variable "ucs_chassis_templates" {
   default = {
     default = {
-      organization        = "default"
-      policy_imc_access   = ""
-      policy_power        = ""
-      policy_snmp         = ""
-      policy_snmp_1_user  = ""
-      policy_snmp_2_users = ""
-      policy_thermal      = ""
-      target_platform     = "FIAttached"
+      organization          = "default"
+      policies_imc_access   = ""
+      policies_power        = ""
+      policies_snmp         = ""
+      policies_snmp_1_user  = ""
+      policies_snmp_2_users = ""
+      policies_thermal      = ""
+      target_platform       = "FIAttached"
     }
   }
   description = <<-EOT
   key - Name of the UCS Chassis Template.
   * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
     -  https://intersight.com/an/settings/organizations/
-  * policy_imc_access - Name of the IMC Access Policy Created.
-  * policy_power - Name of the Power Policy Created.
-  * policy_snmp - Name of the SNMP Policy Created.
-  * policy_snmp_1_user - Name of the SNMP Policy Created.
-  * policy_snmp_2_users - Name of the SNMP Policy Created.
-  * policy_thermal - Name of the Thermal Policy Created.
+  * policies_imc_access - Name of the IMC Access Policy Created.
+  * policies_power - Name of the Power Policy Created.
+  * policies_snmp - Name of the SNMP Policy Created.
+  * policies_snmp_1_user - Name of the SNMP Policy Created.
+  * policies_snmp_2_users - Name of the SNMP Policy Created.
+  * policies_thermal - Name of the Thermal Policy Created.
   * target_platform - The platform for which the chassis profile is applicable. It can either be a chassis that is operating in standalone mode or which is attached to a Fabric Interconnect managed by Intersight.
     - FIAttached - Chassis which are connected to a Fabric Interconnect that is managed by Intersight.
   EOT
   type = map(object(
     {
-      organization        = optional(string)
-      policy_imc_access   = optional(string)
-      policy_power        = optional(string)
-      policy_snmp         = optional(string)
-      policy_snmp_1_user  = optional(string)
-      policy_snmp_2_users = optional(string)
-      policy_thermal      = optional(string)
-      target_platform     = optional(string)
+      organization          = optional(string)
+      policies_imc_access   = optional(string)
+      policies_power        = optional(string)
+      policies_snmp         = optional(string)
+      policies_snmp_1_user  = optional(string)
+      policies_snmp_2_users = optional(string)
+      policies_thermal      = optional(string)
+      target_platform       = optional(string)
     }
   ))
 }

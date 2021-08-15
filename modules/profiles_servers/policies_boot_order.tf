@@ -5,7 +5,7 @@
 # GUI Location: Configure > Policies > Create Policy > Boot Order > Start
 #_________________________________________________________________________
 
-variable "policy_boot_order" {
+variable "policies_boot_order" {
   default = {
     default = {
       boot_policy  = "uefi_m2_raid"
@@ -46,13 +46,13 @@ variable "policy_boot_order" {
 #_________________________________________________________________________
 
 
-module "policy_boot_order" {
+module "policies_boot_order" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_boot_order"
-  for_each    = local.policy_boot_order
+  for_each    = local.policies_boot_order
   boot_mode   = "Uefi"
   boot_secure = each.value.boot_secure
   description = each.value.description != "" ? each.value.description : "${each.key} Boot Order Policy."
@@ -62,7 +62,7 @@ module "policy_boot_order" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_boot_order == each.key
+    if local.ucs_server_profiles[s].profile.policies_boot_order == each.key
   ]
   boot_devices = length(regexall("(uefi_m2_pch)", each.value.boot_policy)) > 0 ? [
     {

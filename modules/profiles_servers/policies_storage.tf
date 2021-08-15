@@ -5,7 +5,7 @@
 # GUI Location: Configure > Policies > Create Policy > Storage > Start
 #_________________________________________________________________________
 
-variable "policy_storage" {
+variable "policies_storage" {
   default = {
     default = {
       access_policy = "Default"
@@ -117,7 +117,7 @@ module "disk_groups" {
     local.org_moids,
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_disk_group"
-  for_each    = local.policy_storage
+  for_each    = local.policies_storage
   description = each.value.description != "" ? each.value.description : "${each.key} Disk Group Policy."
   name        = each.key
   raid_level  = each.value.raid_level
@@ -138,14 +138,14 @@ module "disk_groups" {
 # GUI Location: Configure > Policies > Create Policy > Storage > Start
 #_________________________________________________________________________
 
-module "policy_storage" {
+module "policies_storage" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles,
     module.disk_groups,
   ]
   source        = "terraform-cisco-modules/imm/intersight//modules/policies_storage"
-  for_each      = local.policy_storage
+  for_each      = local.policies_storage
   description   = each.value.description != "" ? each.value.description : "${each.key} Storage Policy."
   name          = each.key
   org_moid      = local.org_moids[each.value.organization].moid
@@ -155,7 +155,7 @@ module "policy_storage" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_storage == each.key
+    if local.ucs_server_profiles[s].profile.policies_storage == each.key
   ]
   virtual_drives = [
     {

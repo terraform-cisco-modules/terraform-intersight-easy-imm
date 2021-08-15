@@ -46,33 +46,33 @@ variable "ucs_server_profiles" {
 variable "ucs_server_templates" {
   default = {
     default = {
-      operating_system            = "VMware"
-      organization                = "default"
-      policy_bios                 = ""
-      policy_boot_order           = ""
-      policy_device_connector     = ""
-      policy_imc_access           = ""
-      policy_ipmi_over_lan        = ""
-      policy_lan_connectivity     = ""
-      policy_ldap                 = ""
-      policy_local_users          = ""
-      policy_network_connectivity = ""
-      policy_ntp                  = ""
-      policy_persistent_memory    = ""
-      policy_power                = ""
-      policy_san_connectivity     = ""
-      policy_sdcard               = ""
-      policy_serial_over_lan      = ""
-      policy_smtp                 = ""
-      policy_snmp                 = ""
-      policy_snmp_1_user          = ""
-      policy_snmp_2_users         = ""
-      policy_ssh                  = ""
-      policy_storage              = ""
-      policy_syslog               = ""
-      policy_virtual_kvm          = ""
-      policy_virtual_media        = ""
-      target_platform             = "FIAttached"
+      operating_system              = "VMware"
+      organization                  = "default"
+      policies_bios                 = ""
+      policies_boot_order           = ""
+      policies_device_connector     = ""
+      policies_imc_access           = ""
+      policies_ipmi_over_lan        = ""
+      policies_lan_connectivity     = ""
+      policies_ldap                 = ""
+      policies_local_users          = ""
+      policies_network_connectivity = ""
+      policies_ntp                  = ""
+      policies_persistent_memory    = ""
+      policies_power                = ""
+      policies_san_connectivity     = ""
+      policies_sdcard               = ""
+      policies_serial_over_lan      = ""
+      policies_smtp                 = ""
+      policies_snmp                 = ""
+      policies_snmp_1_user          = ""
+      policies_snmp_2_users         = ""
+      policies_ssh                  = ""
+      policies_storage              = ""
+      policies_syslog               = ""
+      policies_virtual_kvm          = ""
+      policies_virtual_media        = ""
+      target_platform               = "FIAttached"
     }
   }
   description = <<-EOT
@@ -83,63 +83,63 @@ variable "ucs_server_templates" {
     - Windows
   * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
     -  https://intersight.com/an/settings/organizations/
-  policy_bios - Name of the BIOS Policy to assign to the Template.
-  policy_boot_order - Name of the Boot Order Policy to assign to the Template.
-  policy_device_connector - Name of the Device Connector Policy to assign to the Template.
-  policy_imc_access - Name of the IMC Access Policy to assign to the Template.
-  policy_ipmi_over_lan - Name of the IPMI over LAN Policy to assign to the Template.
-  policy_lan_connectivity - Name of the LAN Connectivity Policy to assign to the Template.
-  policy_ldap - Name of the LDAP Policy to assign to the Template.
-  policy_local_users - Name of the Local Users Policy to assign to the Template.
-  policy_network_connectivity - Name of the Network Connectivity Policy to assign to the Template.
-  policy_ntp - Name of the NTP Policy to assign to the Template.
-  policy_persistent_memory - Name of the Persistent Memory Policy to assign to the Template.
-  policy_power - Name of the Power Policy to assign to the Template.
-  policy_san_connectivity - Name of the SAN Connectivity Policy to assign to the Template.
-  policy_sdcard - Name of the SD Card Policy to assign to the Template.
-  policy_serial_over_lan - Name of the Serial over LAN Policy to assign to the Template.
-  policy_smtp - Name of the SMTP Policy to assign to the Template.
-  policy_snmp - Name of the SNMP Policy to assign to the Template.
-  policy_snmp_1_user - Name of the SNMP single user Policy to assign to the Template.
-  policy_snmp_2_users - Name of the SNMP two user Policy to assign to the Template.
-  policy_ssh - Name of the SSH Policy to assign to the Template.
-  policy_storage - Name of the Storage Policy to assign to the Template.
-  policy_syslog - Name of the Syslog Policy to assign to the Template.
-  policy_virtual_kvm - Name of the Virtual KVM Policy to assign to the Template.
-  policy_virtual_media - Name of the Virtual Media Policy to assign to the Template.
+  policies_bios - Name of the BIOS Policy to assign to the Template.
+  policies_boot_order - Name of the Boot Order Policy to assign to the Template.
+  policies_device_connector - Name of the Device Connector Policy to assign to the Template.
+  policies_imc_access - Name of the IMC Access Policy to assign to the Template.
+  policies_ipmi_over_lan - Name of the IPMI over LAN Policy to assign to the Template.
+  policies_lan_connectivity - Name of the LAN Connectivity Policy to assign to the Template.
+  policies_ldap - Name of the LDAP Policy to assign to the Template.
+  policies_local_users - Name of the Local Users Policy to assign to the Template.
+  policies_network_connectivity - Name of the Network Connectivity Policy to assign to the Template.
+  policies_ntp - Name of the NTP Policy to assign to the Template.
+  policies_persistent_memory - Name of the Persistent Memory Policy to assign to the Template.
+  policies_power - Name of the Power Policy to assign to the Template.
+  policies_san_connectivity - Name of the SAN Connectivity Policy to assign to the Template.
+  policies_sdcard - Name of the SD Card Policy to assign to the Template.
+  policies_serial_over_lan - Name of the Serial over LAN Policy to assign to the Template.
+  policies_smtp - Name of the SMTP Policy to assign to the Template.
+  policies_snmp - Name of the SNMP Policy to assign to the Template.
+  policies_snmp_1_user - Name of the SNMP single user Policy to assign to the Template.
+  policies_snmp_2_users - Name of the SNMP two user Policy to assign to the Template.
+  policies_ssh - Name of the SSH Policy to assign to the Template.
+  policies_storage - Name of the Storage Policy to assign to the Template.
+  policies_syslog - Name of the Syslog Policy to assign to the Template.
+  policies_virtual_kvm - Name of the Virtual KVM Policy to assign to the Template.
+  policies_virtual_media - Name of the Virtual Media Policy to assign to the Template.
   target_platform - The platform for which the server profile is applicable. It can either be a server that is operating in standalone mode or which is attached to a Fabric Interconnect managed by Intersight.
     - FIAttached - (Default) - Servers which are connected to a Fabric Interconnect that is managed by Intersight.
     - Standalone - Servers which are operating in standalone mode i.e. not connected to a Fabric Interconnected.
   EOT
   type = map(object(
     {
-      operating_system            = optional(string)
-      organization                = optional(string)
-      policy_bios                 = optional(string)
-      policy_boot_order           = optional(string)
-      policy_device_connector     = optional(string)
-      policy_imc_access           = optional(string)
-      policy_ipmi_over_lan        = optional(string)
-      policy_lan_connectivity     = optional(string)
-      policy_ldap                 = optional(string)
-      policy_local_users          = optional(string)
-      policy_network_connectivity = optional(string)
-      policy_ntp                  = optional(string)
-      policy_persistent_memory    = optional(string)
-      policy_power                = optional(string)
-      policy_san_connectivity     = optional(string)
-      policy_sdcard               = optional(string)
-      policy_serial_over_lan      = optional(string)
-      policy_smtp                 = optional(string)
-      policy_snmp                 = optional(string)
-      policy_snmp_1_user          = optional(string)
-      policy_snmp_2_users         = optional(string)
-      policy_ssh                  = optional(string)
-      policy_storage              = optional(string)
-      policy_syslog               = optional(string)
-      policy_virtual_kvm          = optional(string)
-      policy_virtual_media        = optional(string)
-      target_platform             = optional(string)
+      operating_system              = optional(string)
+      organization                  = optional(string)
+      policies_bios                 = optional(string)
+      policies_boot_order           = optional(string)
+      policies_device_connector     = optional(string)
+      policies_imc_access           = optional(string)
+      policies_ipmi_over_lan        = optional(string)
+      policies_lan_connectivity     = optional(string)
+      policies_ldap                 = optional(string)
+      policies_local_users          = optional(string)
+      policies_network_connectivity = optional(string)
+      policies_ntp                  = optional(string)
+      policies_persistent_memory    = optional(string)
+      policies_power                = optional(string)
+      policies_san_connectivity     = optional(string)
+      policies_sdcard               = optional(string)
+      policies_serial_over_lan      = optional(string)
+      policies_smtp                 = optional(string)
+      policies_snmp                 = optional(string)
+      policies_snmp_1_user          = optional(string)
+      policies_snmp_2_users         = optional(string)
+      policies_ssh                  = optional(string)
+      policies_storage              = optional(string)
+      policies_syslog               = optional(string)
+      policies_virtual_kvm          = optional(string)
+      policies_virtual_media        = optional(string)
+      target_platform               = optional(string)
     }
   ))
 }

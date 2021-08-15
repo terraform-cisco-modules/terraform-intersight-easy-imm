@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > SMTP > Start
 #_________________________________________________________________________
 
-variable "policy_smtp" {
+variable "policies_smtp" {
   default = {
     default = {
       description     = ""
@@ -64,7 +64,7 @@ module "smtp" {
     module.ucs_server_profiles
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/policies_smtp"
-  for_each        = local.policy_smtp
+  for_each        = local.policies_smtp
   description     = each.value.description != "" ? each.value.description : "${each.key} SMTP Policy."
   enabled         = each.value.enabled
   min_severity    = each.value.min_severity
@@ -77,7 +77,7 @@ module "smtp" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_smtp == each.key
+    if local.ucs_server_profiles[s].profile.policies_smtp == each.key
   ]
 }
 

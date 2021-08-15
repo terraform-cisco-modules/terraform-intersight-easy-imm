@@ -1,39 +1,48 @@
 #_________________________________________________________________________
 #
-# Intersight NTP Policies Variables
-# GUI Location: Configure > Policies > Create Policy > NTP > Start
+# Intersight Serial over LAN Policies Variables
+# GUI Location: Configure > Policies > Create Policy > Serial over LAN
 #_________________________________________________________________________
 
-variable "policy_ntp" {
+variable "policies_serial_over_lan" {
   default = {
     default = {
+      baud_rate    = 115200
+      com_port     = "com0"
       description  = ""
       enabled      = true
-      ntp_servers  = ["time-a-g.nist.gov", "time-b-g.nist.gov"]
       organization = "default"
+      ssh_port     = 2400
       tags         = []
-      timezone     = "Etc/GMT"
     }
   }
   description = <<-EOT
-  key - Name of the NTP Policy.
+  key - Name of the Serial over LAN Policy.
+  * baud_rate - Baud Rate to Assign to the Policy.  Options are:
+    - 9600
+    - 19200
+    - 38400
+    - 57600
+    - 115200
+  * com_port - Communications Port to Assign to the Policy.  Options are:
+    - com0
+    - com1
   * description - Description to Assign to the Policy.
   * enabled - Flag to Enable or Disable the Policy.
-  * ntp_servers - List of NTP Servers to Assign to the Policy.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
+  * ssh_port - SSH Port to Assign to the Policy.  Range is between 1024-65535.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  * timezone - Timezone to Assign to the Policy.  For a List of supported timezones see the following URL.
-    - https://github.com/terraform-cisco-modules/terraform-intersight-imm/blob/master/modules/policies_ntp/README.md.
   EOT
   type = map(object(
     {
+      baud_rate    = optional(number)
+      com_port     = optional(string)
       description  = optional(string)
       enabled      = optional(bool)
-      ntp_servers  = optional(set(string))
       organization = optional(string)
+      ssh_port     = optional(number)
       tags         = optional(list(map(string)))
-      timezone     = optional(string)
     }
   ))
 }
@@ -41,27 +50,30 @@ variable "policy_ntp" {
 
 #_________________________________________________________________________
 #
-# NTP Policies
-# GUI Location: Configure > Policies > Create Policy > NTP > Start
+# Serial over LAN Policies
+# GUI Location: Configure > Policies > Create Policy > Serial over LAN
 #_________________________________________________________________________
 
-module "policy_ntp" {
+module "policies_serial_over_lan" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
-  for_each    = local.policy_ntp
-  description = each.value.description != "" ? each.value.description : "${each.key} NTP Policy."
+  source      = "terraform-cisco-modules/imm/intersight//modules/policies_serial_over_lan"
+  for_each    = local.policies_serial_over_lan
+  baud_rate   = each.value.baud_rate
+  com_port    = each.value.com_port
+  description = each.value.description != "" ? each.value.description : "${each.key} Serial over LAN Policy."
   enabled     = each.value.enabled
+  ssh_port    = each.value.ssh_port
   name        = each.key
-  ntp_servers = each.value.ntp_servers
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  timezone    = each.value.timezone
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_ntp == each.key
+    if local.ucs_server_profiles[s].profile.policies_serial_over_lan == each.key
   ]
 }
+
+

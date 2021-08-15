@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > LAN Connectivity
 #_________________________________________________________________________
 
-variable "policy_vnic_lan_connectivity" {
+variable "policies_vnic_lan_connectivity" {
   default = {
     default = {
       description         = ""
@@ -57,7 +57,7 @@ variable "policy_vnic_lan_connectivity" {
 # GUI Location: Configure > Policies > Create Policy > Ethernet XXXX
 #_________________________________________________________________________
 
-variable "policy_vnic_templates" {
+variable "policies_vnic_templates" {
   default = {
     default = {
       adapter_template          = "VMware" # Linux, Linux-NVMe-ROCE, VMware, Windows
@@ -295,7 +295,7 @@ module "vnic_lan_connectivity" {
     module.ucs_server_profiles
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_lan_connectivity"
-  for_each            = local.policy_vnic_lan_connectivity
+  for_each            = local.policies_vnic_lan_connectivity
   description         = each.value.description != "" ? each.value.description : "${each.key} vNIC LAN Connectivity Policy."
   iqn_allocation_type = each.value.iqn_allocation_type
   iqn_static_name     = each.value.iqn_allocation_type == "Static" ? each.value.iqn_static_name : ""
@@ -308,7 +308,7 @@ module "vnic_lan_connectivity" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_lan_connectivity == each.key
+    if local.ucs_server_profiles[s].profile.policies_lan_connectivity == each.key
   ]
 }
 
@@ -324,7 +324,7 @@ module "vnic_adapter" {
     local.org_moids
   ]
   source   = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_adapter"
-  for_each = local.policy_vnic_templates
+  for_each = local.policies_vnic_templates
   description = length(
     regexall("(Linux-NVMe-RoCE)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for NVMe using RDMA." : length(
     regexall("(Linux)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for linux." : length(
@@ -434,7 +434,7 @@ module "vnic_network_control_policy" {
     local.org_moids
   ]
   source                = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_network_control"
-  for_each              = local.policy_vnic_templates
+  for_each              = local.policies_vnic_templates
   cdp_enabled           = each.value.neighbor_discovery == "cdp" || each.value.neighbor_discovery == "both" ? true : false
   description           = each.value.description != "" ? each.value.description : "${each.key} vNIC Network Control Policy - ${each.value.neighbor_discovery}."
   forge_mac             = each.value.mac_forge
@@ -459,7 +459,7 @@ module "vnic_vlan_group" {
     local.org_moids
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_network_group"
-  for_each    = local.policy_vnic_templates
+  for_each    = local.policies_vnic_templates
   description = each.value.description != "" ? each.value.description : "${each.key} vNIC Network Group (VLAN Group) Policy."
   name        = "${each.key}_vlan_group"
   native_vlan = each.value.vlan_native_vlan
@@ -479,7 +479,7 @@ module "vnic_qos" {
     local.org_moids
   ]
   source         = "terraform-cisco-modules/imm/intersight//modules/policies_vnic_qos"
-  for_each       = local.policy_vnic_templates
+  for_each       = local.policies_vnic_templates
   description    = each.value.description != "" ? each.value.description : "${each.key} vNIC QoS Policy."
   name           = "${each.key}_qos"
   mtu            = each.value.qos_mtu
@@ -508,7 +508,7 @@ module "vnic_templates_a" {
     module.vnic_lan_connectivity,
   ]
   source                    = "terraform-cisco-modules/imm/intersight//modules/policies_vnic"
-  for_each                  = local.policy_vnic_templates
+  for_each                  = local.policies_vnic_templates
   cdn_name                  = each.value.vnic_cdn_source == "user" ? each.value.vnic_cdn_a_name : each.value.vnic_name_a
   cdn_source                = each.value.vnic_cdn_source
   failover_enabled          = each.value.vnic_failover_enabled
@@ -549,7 +549,7 @@ module "vnic_templates_b" {
     module.vnic_lan_connectivity,
   ]
   source                    = "terraform-cisco-modules/imm/intersight//modules/policies_vnic"
-  for_each                  = local.policy_vnic_templates
+  for_each                  = local.policies_vnic_templates
   cdn_name                  = each.value.vnic_cdn_source == "user" ? each.value.vnic_cdn_b_name : each.value.vnic_name_b
   cdn_source                = each.value.vnic_cdn_source
   failover_enabled          = each.value.vnic_failover_enabled

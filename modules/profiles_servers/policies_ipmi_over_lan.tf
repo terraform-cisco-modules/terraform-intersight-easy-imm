@@ -11,7 +11,7 @@ variable "ipmi_key_1" {
   type        = string
 }
 
-variable "policy_ipmi_over_lan" {
+variable "policies_ipmi_over_lan" {
   default = {
     default = {
       description  = ""
@@ -54,13 +54,13 @@ variable "policy_ipmi_over_lan" {
 # GUI Location: Configure > Policies > Create Policy > IPMI over LAN
 #_________________________________________________________________________
 
-module "policy_ipmi_over_lan" {
+module "policies_ipmi_over_lan" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
   source         = "terraform-cisco-modules/imm/intersight//modules/policies_ipmi_over_lan"
-  for_each       = local.policy_ipmi_over_lan
+  for_each       = local.policies_ipmi_over_lan
   description    = each.value.description != "" ? each.value.description : "${each.key} IPMI over LAN Policy."
   enabled        = each.value.enabled
   encryption_key = each.value.ipmi_key == 1 ? var.ipmi_key_1 : null
@@ -71,6 +71,6 @@ module "policy_ipmi_over_lan" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policy_ipmi_over_lan == each.key
+    if local.ucs_server_profiles[s].profile.policies_ipmi_over_lan == each.key
   ]
 }

@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > Syslog > Start
 #_________________________________________________________________________
 
-variable "policy_syslog" {
+variable "policies_syslog" {
   default = {
     default = {
       description         = ""
@@ -55,13 +55,16 @@ module "syslog" {
     module.ucs_server_profiles
   ]
   source             = "terraform-cisco-modules/imm/intersight//modules/policies_syslog"
-  for_each           = local.policy_syslog
+  for_each           = local.policies_syslog
   description        = each.value.description != "" ? each.value.description : "${each.key} Syslog Policy."
   name               = each.key
   org_moid           = local.org_moids[each.value.organization].moid
   remote_clients     = each.value.syslog_destinations
   local_min_severity = each.value.local_min_severity
   tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = [for s in sort(keys(
-  local.ucs_server_profiles)) : module.ucs_server_profiles[s].moid if local.ucs_server_profiles[s].profile.policy_syslog == each.key]
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_syslog == each.key
+  ]
 }
