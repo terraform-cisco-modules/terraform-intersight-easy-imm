@@ -46,8 +46,6 @@ variable "policies_vlan" {
     {
       auto_allow_on_uplinks = optional(bool)
       description           = optional(string)
-      organization          =
-      tags                  =
       multicast_policy      = string
       organization          = optional(string)
       tags                  = optional(list(map(string)))
