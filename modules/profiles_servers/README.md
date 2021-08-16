@@ -56,9 +56,9 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="module_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#module\_policies\_snmp\_2\_users) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users | n/a |
 | <a name="module_policies_ssh"></a> [policies\_ssh](#module\_policies\_ssh) | terraform-cisco-modules/imm/intersight//modules/policies_ssh | n/a |
 | <a name="module_policies_storage"></a> [policies\_storage](#module\_policies\_storage) | terraform-cisco-modules/imm/intersight//modules/policies_storage | n/a |
+| <a name="module_policies_syslog"></a> [policies\_syslog](#module\_policies\_syslog) | terraform-cisco-modules/imm/intersight//modules/policies_syslog | n/a |
 | <a name="module_policies_virtual_kvm"></a> [policies\_virtual\_kvm](#module\_policies\_virtual\_kvm) | terraform-cisco-modules/imm/intersight//modules/policies_virtual_kvm | n/a |
 | <a name="module_smtp"></a> [smtp](#module\_smtp) | terraform-cisco-modules/imm/intersight//modules/policies_smtp | n/a |
-| <a name="module_syslog"></a> [syslog](#module\_syslog) | terraform-cisco-modules/imm/intersight//modules/policies_syslog | n/a |
 | <a name="module_ucs_server_profiles"></a> [ucs\_server\_profiles](#module\_ucs\_server\_profiles) | terraform-cisco-modules/imm/intersight//modules/server_profile | n/a |
 | <a name="module_vhba_adapter"></a> [vhba\_adapter](#module\_vhba\_adapter) | terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter | n/a |
 | <a name="module_vhba_network_a"></a> [vhba\_network\_a](#module\_vhba\_network\_a) | terraform-cisco-modules/imm/intersight//modules/policies_vhba_network | n/a |
@@ -140,5 +140,27 @@ This module will create UCS Server Profiles in Intersight.
 | Name | Description |
 |------|-------------|
 | <a name="output_physical_servers"></a> [physical\_servers](#output\_physical\_servers) | Moid of the Physical Servers in the Account. |
+| <a name="output_policies_bios_nvmeof"></a> [policies\_bios\_nvmeof](#output\_policies\_bios\_nvmeof) | n/a |
+| <a name="output_policies_bios_virtual_node"></a> [policies\_bios\_virtual\_node](#output\_policies\_bios\_virtual\_node) | n/a |
+| <a name="output_policies_bios_virtual_rack"></a> [policies\_bios\_virtual\_rack](#output\_policies\_bios\_virtual\_rack) | n/a |
+| <a name="output_policies_boot_order"></a> [policies\_boot\_order](#output\_policies\_boot\_order) | n/a |
+| <a name="output_policies_device_connector"></a> [policies\_device\_connector](#output\_policies\_device\_connector) | n/a |
+| <a name="output_policies_imc_access"></a> [policies\_imc\_access](#output\_policies\_imc\_access) | n/a |
+| <a name="output_policies_ipmi_over_lan"></a> [policies\_ipmi\_over\_lan](#output\_policies\_ipmi\_over\_lan) | n/a |
+| <a name="output_policies_ldap"></a> [policies\_ldap](#output\_policies\_ldap) | n/a |
+| <a name="output_policies_local_users"></a> [policies\_local\_users](#output\_policies\_local\_users) | n/a |
+| <a name="output_policies_network_connectivity"></a> [policies\_network\_connectivity](#output\_policies\_network\_connectivity) | n/a |
+| <a name="output_policies_ntp"></a> [policies\_ntp](#output\_policies\_ntp) | n/a |
+| <a name="output_policies_snmp"></a> [policies\_snmp](#output\_policies\_snmp) | n/a |
+| <a name="output_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#output\_policies\_snmp\_1\_user) | n/a |
+| <a name="output_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#output\_policies\_snmp\_2\_users) | n/a |
+| <a name="output_policies_syslog"></a> [policies\_syslog](#output\_policies\_syslog) | n/a |
 | <a name="output_ucs_server_profiles"></a> [ucs\_server\_profiles](#output\_ucs\_server\_profiles) | moid of the UCS Server Profiles. |
+| <a name="output_vnic_adapter"></a> [vnic\_adapter](#output\_vnic\_adapter) | n/a |
+| <a name="output_vnic_lan_connectivity"></a> [vnic\_lan\_connectivity](#output\_vnic\_lan\_connectivity) | n/a |
+| <a name="output_vnic_network_control_policy"></a> [vnic\_network\_control\_policy](#output\_vnic\_network\_control\_policy) | n/a |
+| <a name="output_vnic_qos"></a> [vnic\_qos](#output\_vnic\_qos) | n/a |
+| <a name="output_vnic_templates_a"></a> [vnic\_templates\_a](#output\_vnic\_templates\_a) | n/a |
+| <a name="output_vnic_templates_b"></a> [vnic\_templates\_b](#output\_vnic\_templates\_b) | n/a |
+| <a name="output_vnic_vlan_group"></a> [vnic\_vlan\_group](#output\_vnic\_vlan\_group) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

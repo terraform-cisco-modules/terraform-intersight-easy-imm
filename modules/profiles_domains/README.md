@@ -47,6 +47,7 @@ This module will create UCS Domain Profiles in Intersight.
 | <a name="module_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#module\_policies\_snmp\_1\_user) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user | n/a |
 | <a name="module_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#module\_policies\_snmp\_2\_users) | terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users | n/a |
 | <a name="module_policies_switch_control"></a> [policies\_switch\_control](#module\_policies\_switch\_control) | terraform-cisco-modules/imm/intersight//modules/domain_switch_control | n/a |
+| <a name="module_policies_syslog"></a> [policies\_syslog](#module\_policies\_syslog) | terraform-cisco-modules/imm/intersight//modules/policies_syslog | n/a |
 | <a name="module_policies_system_qos_1"></a> [policies\_system\_qos\_1](#module\_policies\_system\_qos\_1) | terraform-cisco-modules/imm/intersight//modules/domain_system_qos | n/a |
 | <a name="module_policies_system_qos_2"></a> [policies\_system\_qos\_2](#module\_policies\_system\_qos\_2) | terraform-cisco-modules/imm/intersight//modules/domain_system_qos | n/a |
 | <a name="module_policies_vsan_a"></a> [policies\_vsan\_a](#module\_policies\_vsan\_a) | terraform-cisco-modules/imm/intersight//modules/domain_vsan_policy | n/a |
@@ -55,7 +56,6 @@ This module will create UCS Domain Profiles in Intersight.
 | <a name="module_san_uplink_port_channel_b"></a> [san\_uplink\_port\_channel\_b](#module\_san\_uplink\_port\_channel\_b) | terraform-cisco-modules/imm/intersight//modules/domain_uplink_san_port_channel | n/a |
 | <a name="module_server_ports_a"></a> [server\_ports\_a](#module\_server\_ports\_a) | terraform-cisco-modules/imm/intersight//modules/domain_port_server | n/a |
 | <a name="module_server_ports_b"></a> [server\_ports\_b](#module\_server\_ports\_b) | terraform-cisco-modules/imm/intersight//modules/domain_port_server | n/a |
-| <a name="module_syslog"></a> [syslog](#module\_syslog) | terraform-cisco-modules/imm/intersight//modules/policies_syslog | n/a |
 | <a name="module_ucs_domain_profiles"></a> [ucs\_domain\_profiles](#module\_ucs\_domain\_profiles) | terraform-cisco-modules/imm/intersight//modules/domain_profile_cluster | n/a |
 | <a name="module_ucs_domain_profiles_a"></a> [ucs\_domain\_profiles\_a](#module\_ucs\_domain\_profiles\_a) | terraform-cisco-modules/imm/intersight//modules/domain_profile_switch | n/a |
 | <a name="module_ucs_domain_profiles_b"></a> [ucs\_domain\_profiles\_b](#module\_ucs\_domain\_profiles\_b) | terraform-cisco-modules/imm/intersight//modules/domain_profile_switch | n/a |
@@ -103,6 +103,19 @@ This module will create UCS Domain Profiles in Intersight.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_policies_flow_control"></a> [policies\_flow\_control](#output\_policies\_flow\_control) | n/a |
+| <a name="output_policies_link_aggregation"></a> [policies\_link\_aggregation](#output\_policies\_link\_aggregation) | n/a |
+| <a name="output_policies_link_control"></a> [policies\_link\_control](#output\_policies\_link\_control) | n/a |
+| <a name="output_policies_network_connectivity"></a> [policies\_network\_connectivity](#output\_policies\_network\_connectivity) | n/a |
+| <a name="output_policies_ntp"></a> [policies\_ntp](#output\_policies\_ntp) | n/a |
+| <a name="output_policies_port_channel_lan_a"></a> [policies\_port\_channel\_lan\_a](#output\_policies\_port\_channel\_lan\_a) | n/a |
+| <a name="output_policies_port_channel_lan_b"></a> [policies\_port\_channel\_lan\_b](#output\_policies\_port\_channel\_lan\_b) | n/a |
+| <a name="output_policies_snmp"></a> [policies\_snmp](#output\_policies\_snmp) | n/a |
+| <a name="output_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#output\_policies\_snmp\_1\_user) | n/a |
+| <a name="output_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#output\_policies\_snmp\_2\_users) | n/a |
+| <a name="output_policies_switch_control"></a> [policies\_switch\_control](#output\_policies\_switch\_control) | n/a |
+| <a name="output_policies_syslog"></a> [policies\_syslog](#output\_policies\_syslog) | n/a |
+| <a name="output_policies_system_qos_1"></a> [policies\_system\_qos\_1](#output\_policies\_system\_qos\_1) | n/a |
 | <a name="output_profiles_ucs_domain"></a> [profiles\_ucs\_domain](#output\_profiles\_ucs\_domain) | output local.ucs\_domain\_profiles. |
 | <a name="output_ucs_domain_profiles"></a> [ucs\_domain\_profiles](#output\_ucs\_domain\_profiles) | moid of the UCS Domain Profiles. |
 | <a name="output_ucs_domain_profiles_a"></a> [ucs\_domain\_profiles\_a](#output\_ucs\_domain\_profiles\_a) | UCS Domain Profile - Fabric Interconnect A moids. |

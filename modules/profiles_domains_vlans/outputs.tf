@@ -1,19 +1,33 @@
 #__________________________________________________________
 #
-# VLAN Policy Outputs
+# Multicast Policy Outputs
 #__________________________________________________________
 
 output "policies_multicast" {
   value = {
     for v in sort(keys(module.policies_multicast)) : v => module.policies_multicast[v].moid
+    if v != null
   }
 }
+
+
+#__________________________________________________________
+#
+# VLAN Policy Outputs
+#__________________________________________________________
 
 output "policies_vlan" {
   value = {
     for v in sort(keys(module.policies_vlan)) : v => module.policies_vlan[v].moid
+    if v != null
   }
 }
+
+
+#__________________________________________________________
+#
+# VLAN Outputs
+#__________________________________________________________
 
 output "policies_vlan_native" {
   value = {

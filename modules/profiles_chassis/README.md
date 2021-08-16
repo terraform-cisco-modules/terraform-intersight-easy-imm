@@ -78,5 +78,11 @@ This module will create UCS Chassis Profiles in Intersight.
 | Name | Description |
 |------|-------------|
 | <a name="output_physical_chassis"></a> [physical\_chassis](#output\_physical\_chassis) | Moid of the Physical Chassis in the Account. |
+| <a name="output_policies_imc_access"></a> [policies\_imc\_access](#output\_policies\_imc\_access) | n/a |
+| <a name="output_policies_power"></a> [policies\_power](#output\_policies\_power) | n/a |
+| <a name="output_policies_snmp"></a> [policies\_snmp](#output\_policies\_snmp) | n/a |
+| <a name="output_policies_snmp_1_user"></a> [policies\_snmp\_1\_user](#output\_policies\_snmp\_1\_user) | n/a |
+| <a name="output_policies_snmp_2_users"></a> [policies\_snmp\_2\_users](#output\_policies\_snmp\_2\_users) | n/a |
+| <a name="output_policies_thermal"></a> [policies\_thermal](#output\_policies\_thermal) | n/a |
 | <a name="output_ucs_chassis_profiles"></a> [ucs\_chassis\_profiles](#output\_ucs\_chassis\_profiles) | moid of the UCS Chassis Profiles. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

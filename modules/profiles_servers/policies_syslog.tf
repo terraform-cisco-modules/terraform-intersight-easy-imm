@@ -49,7 +49,7 @@ variable "policies_syslog" {
 # GUI Location: Configure > Policies > Create Policy > Syslog > Start
 #_________________________________________________________________________
 
-module "syslog" {
+module "policies_syslog" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles

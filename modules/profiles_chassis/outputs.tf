@@ -29,3 +29,70 @@ output "physical_chassis" {
     }
   }
 }
+
+#__________________________________________________________
+#
+# IMC Access Policy Outputs
+#__________________________________________________________
+
+output "policies_imc_access" {
+  value = {
+    for v in sort(keys(module.policies_imc_access)) : v => module.policies_imc_access[v].moid
+    if v != null
+  }
+}
+
+
+#__________________________________________________________
+#
+# Power Policy Outputs
+#__________________________________________________________
+
+output "policies_power" {
+  value = {
+    for v in sort(keys(module.policies_power)) : v => module.policies_power[v].moid
+    if v != null
+  }
+}
+
+
+#__________________________________________________________
+#
+# SNMP Policy Outputs
+#__________________________________________________________
+
+output "policies_snmp" {
+  value = {
+    for v in sort(keys(module.policies_snmp)) : v => module.policies_snmp[v].moid
+    if v != null
+  }
+}
+
+output "policies_snmp_1_user" {
+  value = {
+    for v in sort(keys(module.policies_snmp_1_user)) : v => module.policies_snmp_1_user[v].moid
+    if v != null
+  }
+}
+
+output "policies_snmp_2_users" {
+  value = {
+    for v in sort(keys(module.policies_snmp_2_users)) : v => module.policies_snmp_2_users[v].moid
+    if v != null
+  }
+}
+
+
+#__________________________________________________________
+#
+# Thermal Policy Outputs
+#__________________________________________________________
+
+output "policies_thermal" {
+  value = {
+    for v in sort(keys(module.policies_thermal)) : v => module.policies_thermal[v].moid
+    if v != null
+  }
+}
+
+
