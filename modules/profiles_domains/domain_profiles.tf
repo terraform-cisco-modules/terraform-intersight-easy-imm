@@ -7,9 +7,9 @@
 variable "ucs_domain_profiles" {
   default = {
     default = {
-      action          = "No-op"
-      assign_switches = false
-      # device_model                = "UCS-FI-64108"
+      action                        = "No-op"
+      assign_switches               = false
+      device_model                  = "UCS-FI-6454"
       domain_description            = ""
       domain_descr_fi_a             = ""
       domain_descr_fi_b             = ""
@@ -33,9 +33,6 @@ variable "ucs_domain_profiles" {
       san_pc_speed                  = "16Gbps"
       server_ports                  = "5-18"
       tags                          = []
-      vlan_description              = ""
-      vlan_native                   = 1
-      vlan_list                     = "2-3"
       vsan_a                        = 100
       vsan_a_description            = ""
       vsan_a_fcoe                   = null
@@ -88,9 +85,6 @@ variable "ucs_domain_profiles" {
     - 32Gbps - Admin configurable speed 32Gbps.
   * server_ports - List of Ports to assign to the Server Port Policy.  Default is "5-18".
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  * vlan_description - Description to Assign to the Policy.
-  * vlan_native - VLAN ID to Assign as the Native VLAN.  Default is 1.
-  * vlan_list - List of VLANs to assign to the Policy.  Default is "2-3"
   * vsan_a - VSAN ID for Fabric A.  Default is 100.
   * vsan_a_description - Description to Assign to VSAN Policy A.
   * vsan_a_fcoe - VLAN ID for the FCOE VLAN.  If using the same ID as the VSAN ID set this to null.
@@ -128,9 +122,6 @@ variable "ucs_domain_profiles" {
       san_pc_speed                  = optional(string)
       server_ports                  = optional(string)
       tags                          = optional(list(map(string)))
-      vlan_description              = optional(string)
-      vlan_native                   = optional(number)
-      vlan_list                     = optional(string)
       vsan_a                        = optional(number)
       vsan_a_description            = optional(string)
       vsan_a_fcoe                   = optional(number)
@@ -228,30 +219,6 @@ module "ucs_domain_profiles_b" {
   tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
-
-#____________________________________________________________
-#
-# Intersight UCS Domain VLAN Policy
-# GUI Location: Policy > Create Policy
-#____________________________________________________________
-
-module "policies_vlan" {
-  depends_on = [
-    local.org_moids,
-    module.ucs_domain_profiles_a,
-    module.ucs_domain_profiles_b
-  ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/domain_vlan_policy"
-  for_each    = local.ucs_domain_profiles
-  description = each.value.vlan_description != "" ? each.value.vlan_description : "${each.value.organization} ${each.key} VLAN Policy."
-  name        = "${each.key}_vlan"
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = [
-    module.ucs_domain_profiles_a[each.key].moid,
-    module.ucs_domain_profiles_b[each.key].moid
-  ]
-}
 
 #____________________________________________________________
 #

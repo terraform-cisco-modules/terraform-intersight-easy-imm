@@ -18,13 +18,14 @@ locals {
   tags = var.tags
 
   # UCS Domain Outputs
-  vlan_policy = data.terraform_remote_state.domain.outputs.vlan_policy
+  profiles_ucs_domain = data.terraform_remote_state.domain.outputs.profiles_ucs_domain
+
   #______________________________________________
   #
   # Multicast Variables Locals
   #______________________________________________
-  multicast_policy = {
-    for k, v in var.multicast_policy : k => {
+  policies_multicast = {
+    for k, v in var.policies_multicast : k => {
       description    = (v.description != null ? v.description : "")
       organization   = (v.organization != null ? v.organization : "default")
       querier_ip     = (v.querier_ip != null ? v.querier_ip : "")
@@ -36,15 +37,19 @@ locals {
 
   #______________________________________________
   #
-  # VLAN Map Variables Locals
+  # VLAN Policy Variables Locals
   #______________________________________________
-  vlan_lists = {
-    for k, v in var.vlan_lists : k => {
-      multicast_policy = (v.multicast_policy != null ? v.multicast_policy : "default")
-      vlan_native      = (v.vlan_native != null ? v.vlan_native : null)
-      vlan_list        = (v.vlan_list != null ? v.vlan_list : null)
-      vlan_policy      = (v.vlan_policy != null ? v.vlan_policy : null)
-      vlan_prefix      = (v.vlan_prefix != null ? v.vlan_prefix : "")
+  policies_vlan = {
+    for k, v in var.policies_vlan : k => {
+      auto_allow_on_uplinks = (v.auto_allow_on_uplinks != null ? v.auto_allow_on_uplinks : true)
+      description           = (v.description != null ? v.description : "")
+      multicast_policy      = (v.multicast_policy != null ? v.multicast_policy : null)
+      organization          = (v.organization != null ? v.organization : "default")
+      tags                  = (v.tags != null ? v.tags : [])
+      vlan_list             = (v.vlan_list != null ? v.vlan_list : "")
+      vlan_map              = (v.vlan_map != null ? v.vlan_map : "")
+      vlan_native           = (v.vlan_native != null ? v.vlan_native : null)
+      vlan_prefix           = (v.vlan_prefix != null ? v.vlan_prefix : v.organization)
     }
   }
 }

@@ -8,6 +8,11 @@ output "ucs_domain_profiles" {
   value       = { for v in sort(keys(module.ucs_domain_profiles)) : v => module.ucs_domain_profiles[v].moid }
 }
 
+output "profiles_ucs_domain" {
+  description = "output local.ucs_domain_profiles."
+  value       = local.ucs_domain_profiles
+}
+
 
 #__________________________________________________________
 #
