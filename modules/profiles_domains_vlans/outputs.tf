@@ -49,7 +49,7 @@ output "policies_vlan_list" {
 output "policies_vlan_map" {
   value = {
     for v in sort(keys(module.policies_vlan_map)) : v =>
-    module.policies_vlan_map[v]
+    module.policies_vlan_map[v].vlan
     if length(local.policies_vlan[v].vlan_map) > 0
   }
 }
