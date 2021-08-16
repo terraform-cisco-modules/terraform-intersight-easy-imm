@@ -40,6 +40,7 @@ locals {
       policies_switch_control       = (v.policies_switch_control != null ? v.policies_switch_control : "")
       policies_syslog               = (v.policies_syslog != null ? v.policies_syslog : "")
       policies_system_qos           = (v.policies_system_qos != null ? v.policies_system_qos : "")
+      policies_vlan                 = (v.policies_vlan != null ? v.policies_vlan : "")
       port_policy_descr_a           = (v.port_policy_descr_a != null ? v.port_policy_descr_a : "")
       port_policy_descr_b           = (v.port_policy_descr_b != null ? v.port_policy_descr_b : "")
       san_fill_pattern              = (v.san_fill_pattern != null ? v.san_fill_pattern : "Arbff")
