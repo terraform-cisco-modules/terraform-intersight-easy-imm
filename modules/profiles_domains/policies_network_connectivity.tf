@@ -70,6 +70,6 @@ module "policies_network_connectivity" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policies_network_connectivity == each.key
+    if local.ucs_domain_profiles[s].profile.policies_network_connectivity == each.key
   ])
 }

@@ -30,7 +30,7 @@ output "ucs_domain_profiles_a_hardware" {
     for v in sort(keys(data.intersight_network_element_summary.fi_a)) : v => {
       model  = data.intersight_network_element_summary.fi_a[v].results.0.model
       serial = data.intersight_network_element_summary.fi_a[v].results.0.serial
-    } if local.ucs_domain_profiles[v].assign_switches != false
+    } if local.ucs_domain_profiles[v].profile.assign_switches != false
   }
 }
 
@@ -51,6 +51,6 @@ output "ucs_domain_profiles_b_hardware" {
     for v in sort(keys(data.intersight_network_element_summary.fi_b)) : v => {
       model  = data.intersight_network_element_summary.fi_b[v].results.0.model
       serial = data.intersight_network_element_summary.fi_b[v].results.0.serial
-    } if local.ucs_domain_profiles[v].assign_switches != false
+    } if local.ucs_domain_profiles[v].profile.assign_switches != false
   }
 }

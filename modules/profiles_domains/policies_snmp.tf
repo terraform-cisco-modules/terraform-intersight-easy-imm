@@ -172,7 +172,7 @@ module "policies_snmp" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policies_snmp == each.key
+    if local.ucs_domain_profiles[s].profile.policies_snmp == each.key
   ])
 }
 
@@ -212,7 +212,7 @@ module "policies_snmp_1_user" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policies_snmp == each.key
+    if local.ucs_domain_profiles[s].profile.policies_snmp == each.key
   ])
 }
 
@@ -257,6 +257,6 @@ module "policies_snmp_2_users" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policies_snmp == each.key
+    if local.ucs_domain_profiles[s].profile.policies_snmp == each.key
   ])
 }

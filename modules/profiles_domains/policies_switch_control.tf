@@ -75,7 +75,7 @@ module "policies_switch_control" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policies_switch_control == each.key
+    if local.ucs_domain_profiles[s].profile.policies_switch_control == each.key
   ])
 }
 

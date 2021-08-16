@@ -165,7 +165,7 @@ module "policies_system_qos_1" {
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
     [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].policies_system_qos == each.key
+    if local.ucs_domain_profiles[s].profile.policies_system_qos == each.key
   ])
   classes = []
 }

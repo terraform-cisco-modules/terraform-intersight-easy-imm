@@ -18,7 +18,10 @@ locals {
   tags = var.tags
 
   # UCS Domain Outputs
-  profiles_ucs_domain = data.terraform_remote_state.domain.outputs.profiles_ucs_domain
+  profiles_ucs_domain   = data.terraform_remote_state.domain.outputs.profiles_ucs_domain
+  ucs_domain_profiles   = data.terraform_remote_state.domain.outputs.ucs_domain_profiles
+  ucs_domain_profiles_a = data.terraform_remote_state.domain.outputs.ucs_domain_profiles_a
+  ucs_domain_profiles_b = data.terraform_remote_state.domain.outputs.ucs_domain_profiles_b
 
   #______________________________________________
   #
@@ -47,7 +50,7 @@ locals {
       organization          = (v.organization != null ? v.organization : "default")
       tags                  = (v.tags != null ? v.tags : [])
       vlan_list             = (v.vlan_list != null ? v.vlan_list : "")
-      vlan_map              = (v.vlan_map != null ? v.vlan_map : "")
+      vlan_map              = (v.vlan_map != null ? v.vlan_map : [])
       vlan_native           = (v.vlan_native != null ? v.vlan_native : null)
       vlan_prefix           = (v.vlan_prefix != null ? v.vlan_prefix : v.organization)
     }
