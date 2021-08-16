@@ -141,7 +141,7 @@ module "policies_vlan_map" {
     module.policies_multicast,
     module.policies_vlan
   ]
-  source = "../../../terraform-intersight-imm/modules/domain_vlan_map"
+  source = "terraform-cisco-modules/imm/intersight//modules/domain_vlan_map"
   for_each = {
     for k, v in local.policies_vlan : k => v
     if length(v.vlan_map) > 0
