@@ -97,19 +97,19 @@ variable "ucs_domain_templates" {
 variable "ucs_domain_profiles" {
   default = {
     default = {
-      action                        = "No-op"
-      assign_switches               = false
-      device_model                  = "UCS-FI-6454"
-      domain_description            = ""
-      domain_descr_fi_a             = ""
-      domain_descr_fi_b             = ""
-      domain_serial_a               = ""
-      domain_serial_b               = ""
-      port_policy_descr_a           = ""
-      port_policy_descr_b           = ""
-      server_ports                  = "5-18"
-      src_template                  = "**REQUIRED**"
-      tags                          = []
+      action              = "No-op"
+      assign_switches     = false
+      device_model        = "UCS-FI-6454"
+      domain_description  = ""
+      domain_descr_fi_a   = ""
+      domain_descr_fi_b   = ""
+      domain_serial_a     = ""
+      domain_serial_b     = ""
+      port_policy_descr_a = ""
+      port_policy_descr_b = ""
+      server_ports        = "5-18"
+      src_template        = "**REQUIRED**"
+      tags                = []
     }
   }
   description = <<-EOT
@@ -137,19 +137,19 @@ variable "ucs_domain_profiles" {
   EOT
   type = map(object(
     {
-      action                        = optional(string)
-      assign_switches               = optional(bool)
-      device_model                  = optional(string)
-      domain_description            = optional(string)
-      domain_descr_fi_a             = optional(string)
-      domain_descr_fi_b             = optional(string)
-      domain_serial_a               = optional(string)
-      domain_serial_b               = optional(string)
-      port_policy_descr_a           = optional(string)
-      port_policy_descr_b           = optional(string)
-      server_ports                  = optional(string)
-      src_template                  = string
-      tags                          = optional(list(map(string)))
+      action              = optional(string)
+      assign_switches     = optional(bool)
+      device_model        = optional(string)
+      domain_description  = optional(string)
+      domain_descr_fi_a   = optional(string)
+      domain_descr_fi_b   = optional(string)
+      domain_serial_a     = optional(string)
+      domain_serial_b     = optional(string)
+      port_policy_descr_a = optional(string)
+      port_policy_descr_b = optional(string)
+      server_ports        = optional(string)
+      src_template        = string
+      tags                = optional(list(map(string)))
     }
   ))
 }

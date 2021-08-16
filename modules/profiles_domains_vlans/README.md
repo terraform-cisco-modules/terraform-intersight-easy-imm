@@ -62,5 +62,11 @@ This module will Create a Multicast Policy and assign it to VLANs in a VLAN poli
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_policies_multicast"></a> [policies\_multicast](#output\_policies\_multicast) | n/a |
+| <a name="output_policies_vlan"></a> [policies\_vlan](#output\_policies\_vlan) | n/a |
+| <a name="output_policies_vlan_list"></a> [policies\_vlan\_list](#output\_policies\_vlan\_list) | n/a |
+| <a name="output_policies_vlan_map"></a> [policies\_vlan\_map](#output\_policies\_vlan\_map) | n/a |
+| <a name="output_policies_vlan_native"></a> [policies\_vlan\_native](#output\_policies\_vlan\_native) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
