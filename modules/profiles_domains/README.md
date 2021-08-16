@@ -108,5 +108,4 @@ This module will create UCS Domain Profiles in Intersight.
 | <a name="output_ucs_domain_profiles_a_hardware"></a> [ucs\_domain\_profiles\_a\_hardware](#output\_ucs\_domain\_profiles\_a\_hardware) | Fabric Interconnect A Hardware Information. |
 | <a name="output_ucs_domain_profiles_b"></a> [ucs\_domain\_profiles\_b](#output\_ucs\_domain\_profiles\_b) | UCS Domain Profile - Fabric Interconnect B moids. |
 | <a name="output_ucs_domain_profiles_b_hardware"></a> [ucs\_domain\_profiles\_b\_hardware](#output\_ucs\_domain\_profiles\_b\_hardware) | Fabric Interconnect B Hardware Information. |
-| <a name="output_vlan_policies"></a> [vlan\_policies](#output\_vlan\_policies) | moid of the UCS Domain VLAN Policies. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

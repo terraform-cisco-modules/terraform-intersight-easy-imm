@@ -54,17 +54,3 @@ output "ucs_domain_profiles_b_hardware" {
     } if local.ucs_domain_profiles[v].assign_switches != false
   }
 }
-
-#__________________________________________________________
-#
-# UCS Domain VLAN Policy Outputs
-#__________________________________________________________
-
-output "vlan_policies" {
-  description = "moid of the UCS Domain VLAN Policies."
-  value       = { for v in sort(keys(module.policies_vlan)) : v => module.policies_vlan[v].moid }
-}
-
-# output "domain_tags" {
-#   value = local.ucs_domain_profiles
-# }
