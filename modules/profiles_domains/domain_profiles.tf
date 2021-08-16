@@ -24,6 +24,7 @@ variable "ucs_domain_profiles" {
       policies_switch_control       = ""
       policies_syslog               = ""
       policies_system_qos           = ""
+      policies_vlan                 = ""
       port_policy_descr_a           = ""
       port_policy_descr_b           = ""
       san_fill_pattern              = "Arbff"
@@ -70,6 +71,7 @@ variable "ucs_domain_profiles" {
   * policies_switch_control - Name of the Switch Control Policy to assign to the UCS Domain Profile.
   * policies_syslog - Name of the Syslog Policy to assign to the UCS Domain Profile.
   * policies_system_qos - Name of the System QoS Policy to assign to the UCS Domain Profile.
+  * policies_vlan = Name of the VLAN Policy to assign tot he UCS Domain Profile.
   * port_policy_descr_a - Description to Assign to Port Policy A.
   * port_policy_descr_b - Description to Assign to Port Policy B.
   * san_fill_pattern - Fill pattern to differentiate the configs in NPIV.
@@ -113,6 +115,7 @@ variable "ucs_domain_profiles" {
       policies_switch_control       = optional(string)
       policies_syslog               = optional(string)
       policies_system_qos           = optional(string)
+      policies_vlan                 = optional(string)
       port_policy_descr_a           = optional(string)
       port_policy_descr_b           = optional(string)
       san_fill_pattern              = optional(string)
