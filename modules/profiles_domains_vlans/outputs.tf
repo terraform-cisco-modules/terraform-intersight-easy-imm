@@ -18,8 +18,8 @@ output "policies_vlan" {
 output "policies_vlan_native" {
   value = {
     for v in sort(keys(module.policies_vlan_native)) : v => {
-      moid = module.policies_vlan_native[v].moid
-      name = module.policies_vlan_native[v].name
+      moid = module.policies_vlan_native[v].vlan.moid
+      name = module.policies_vlan_native[v].vlan.name
     } if local.policies_vlan[v].vlan_native != null
   }
 }
@@ -27,8 +27,8 @@ output "policies_vlan_native" {
 output "policies_vlan_list" {
   value = {
     for v in sort(keys(module.policies_vlan_list)) : v => {
-      moid = module.policies_vlan_list[v].moid
-      name = module.policies_vlan_list[v].name
+      moid = module.policies_vlan_list[v].vlan.moid
+      name = module.policies_vlan_list[v].vlan.name
     } if local.policies_vlan[v].vlan_list != null
   }
 }
@@ -36,8 +36,8 @@ output "policies_vlan_list" {
 output "policies_vlan_map" {
   value = {
     for v in sort(keys(module.policies_vlan_map)) : v => {
-      moid = module.policies_vlan_map[v].moid
-      name = module.policies_vlan_map[v].name
+      moid = module.policies_vlan_map[v].vlan.moid
+      name = module.policies_vlan_map[v].vlan.name
     } if local.policies_vlan[v].vlan_map != null
   }
 }
