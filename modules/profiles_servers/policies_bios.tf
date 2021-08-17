@@ -122,7 +122,6 @@ module "policies_bios_dss" {
   ]
 }
 
-
 module "policies_bios_hpc" {
   depends_on = [
     local.org_moids,
@@ -143,6 +142,58 @@ module "policies_bios_hpc" {
     module.ucs_server_profiles[s].moid
     if local.ucs_server_profiles[s].profile.policies_bios == each.key
   ]
+  #+++++++++++++++++++++++++++++++
+  # Boot Options Section
+  #+++++++++++++++++++++++++++++++
+  vmd_enable = "enabled" # VMD Enablement
+  #+++++++++++++++++++++++++++++++
+  # Intel Directed IO Section
+  #+++++++++++++++++++++++++++++++
+  intel_vt_for_directed_io      = "disabled" # Intel VT for Directed IO
+  intel_vtd_coherency_support   = "enabled"  # Intel(R) VT-d Coherency Support
+  intel_vtd_interrupt_remapping = "enabled"  # Intel(R) VT-d interrupt Remapping
+  #+++++++++++++++++++++++++++++++
+  # LOM and PCIe Slots Section
+  #+++++++++++++++++++++++++++++++
+  cdn_support = "enabled" # CDN Support for LOM
+  # lom_ports_all_state = "disabled" # All Onboard LOM Ports
+  #+++++++++++++++++++++++++++++++
+  # Memory Section
+  #+++++++++++++++++++++++++++++++
+  select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
+  #+++++++++++++++++++++++++++++++
+  # PCI Section
+  #+++++++++++++++++++++++++++++++
+  memory_mapped_io_above4gb = "enabled" # Memory Mapped IO Above 4GiB
+  #+++++++++++++++++++++++++++++++
+  # Processor Section
+  #+++++++++++++++++++++++++++++++
+  altitude                        = "auto"        # Altitude
+  cpu_energy_performance          = "performance" # Energy Performance
+  cpu_performance                 = "hpc"         # CPU Performance
+  cpu_frequency_floor             = "enabled"     # Frequency Floor Override
+  cpu_power_management            = "energy-efficient"      # Power Technology
+  direct_cache_access             = "enabled"     # Direct Cache Access Support
+  dram_clock_throttling           = "Performance" # DRAM Clock Throttling
+  imc_interleave                  = "Auto"        # IMC Interleaving
+  intel_virtualization_technology = "disabled"    # Intel(R) VT
+  intel_hyper_threading_tech      = "disabled"    # Intel HyperThreading Tech
+  llc_prefetch                    = "disabled"    # LLC Prefetch
+  processor_c1e                   = "enabled"     # Processor C1E
+  processor_c3report              = "enabled"     # Processor C3 Report
+  processor_c6report              = "enabled"     # Processor C6 Report
+  processor_cstate                = "enabled"     # CPU C State
+  snc                             = "disabled"    # Sub Numa Clustering
+  work_load_config                = "balanced"    # Workload Configuration
+  xpt_prefetch                    = "disabled"    # XPT Prefetch
+  #+++++++++++++++++++++++++++++++
+  # Server Management Section
+  #+++++++++++++++++++++++++++++++
+  cdn_enable = "enabled" # Consistent Device Naming
+  #+++++++++++++++++++++++++++++++
+  # Trusted Platform Section
+  #+++++++++++++++++++++++++++++++
+  txt_support = "enabled" # Intel Trusted Execution Technology Support
 }
 
 module "policies_bios_java" {
