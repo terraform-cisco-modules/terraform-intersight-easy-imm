@@ -263,21 +263,21 @@ module "vhba_network_b" {
 # GUI Location: Policies > Create Policy
 #____________________________________________________________
 
-# module "vhba_qos" {
-#   depends_on = [
-#     local.org_moids
-#   ]
-#   source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_qos"
-#   for_each            = local.policies_vhba_san_connectivity
-#   burst               = each.value.target_platform == "Standalone" ? each.value.qos_burst : 1024
-#   cos                 = each.value.target_platform == "FIAttached" ? each.value.qos_cos : 3
-#   description         = each.value.description != "" ? each.value.description : "${each.key} vHBA QoS Policy."
-#   max_data_field_size = each.value.qos_max_data_field_size
-#   name                = "${each.key}_qos"
-#   org_moid            = local.org_moids[each.value.organization].moid
-#   rate_limit          = each.value.qos_rate_limit
-#   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
-# }
+module "vhba_qos" {
+  depends_on = [
+    local.org_moids
+  ]
+  source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_qos"
+  for_each            = local.policies_vhba_san_connectivity
+  burst               = each.value.target_platform == "Standalone" ? each.value.qos_burst : 1024
+  cos                 = each.value.target_platform == "FIAttached" ? each.value.qos_cos : 3
+  description         = each.value.description != "" ? each.value.description : "${each.key} vHBA QoS Policy."
+  max_data_field_size = each.value.qos_max_data_field_size
+  name                = "${each.key}_qos"
+  org_moid            = local.org_moids[each.value.organization].moid
+  rate_limit          = each.value.qos_rate_limit
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
+}
 
 
 #______________________________________________
@@ -290,7 +290,7 @@ module "vhba_template_a" {
     local.org_moids,
     module.vhba_adapter,
     module.vhba_network_a,
-    # module.vhba_qos,
+    module.vhba_qos,
     module.vhba_san_connectivity,
   ]
   source                  = "terraform-cisco-modules/imm/intersight//modules/policies_vhba"
@@ -307,7 +307,7 @@ module "vhba_template_a" {
   vhba_name               = each.value.vhba_name_a
   vhba_network_moid       = module.vhba_network_a[each.key].moid
   vhba_order              = each.value.vhba_order_a
-  vhba_qos_moid           = "" # module.vhba_qos[each.key].moid
+  vhba_qos_moid           = module.vhba_qos[each.key].moid
   wwpn_address_type       = each.value.wwpn_address_type
   wwpn_pool_moid          = each.value.wwpn_address_type == "POOL" ? [local.fc_pools[each.value.wwpn_pool_a_name]] : []
 }
@@ -317,7 +317,7 @@ module "vhba_template_b" {
     local.org_moids,
     module.vhba_adapter,
     module.vhba_network_b,
-    # module.vhba_qos,
+    module.vhba_qos,
     module.vhba_san_connectivity,
   ]
   source                  = "terraform-cisco-modules/imm/intersight//modules/policies_vhba"
@@ -334,7 +334,7 @@ module "vhba_template_b" {
   vhba_name               = each.value.vhba_name_b
   vhba_network_moid       = module.vhba_network_b[each.key].moid
   vhba_order              = each.value.vhba_order_b
-  vhba_qos_moid           = "" # module.vhba_qos[each.key].moid
+  vhba_qos_moid           = module.vhba_qos[each.key].moid
   wwpn_address_type       = each.value.wwpn_address_type
   wwpn_pool_moid          = each.value.wwpn_address_type == "POOL" ? [local.fc_pools[each.value.wwpn_pool_a_name]] : []
 }
