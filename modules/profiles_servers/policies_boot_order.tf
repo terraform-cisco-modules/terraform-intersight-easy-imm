@@ -150,7 +150,7 @@ module "policies_boot_order" {
             Path        = "\\EFI\\BOOT\\"
           }
           Lun     = 0
-          Subtype = "none"
+          Subtype = "SDCARD" # None|flex-flash|flex-util|SDCARD
         }
       )
       enabled     = true,

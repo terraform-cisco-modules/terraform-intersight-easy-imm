@@ -61,7 +61,7 @@ variable "ucs_server_templates" {
       policies_persistent_memory    = ""
       policies_power                = ""
       policies_san_connectivity     = ""
-      policies_sdcard               = ""
+      policies_sd_card              = ""
       policies_serial_over_lan      = ""
       policies_smtp                 = ""
       policies_snmp                 = ""
@@ -96,7 +96,7 @@ variable "ucs_server_templates" {
   policies_persistent_memory - Name of the Persistent Memory Policy to assign to the Template.
   policies_power - Name of the Power Policy to assign to the Template.
   policies_san_connectivity - Name of the SAN Connectivity Policy to assign to the Template.
-  policies_sdcard - Name of the SD Card Policy to assign to the Template.
+  policies_sd_card - Name of the SD Card Policy to assign to the Template.
   policies_serial_over_lan - Name of the Serial over LAN Policy to assign to the Template.
   policies_smtp - Name of the SMTP Policy to assign to the Template.
   policies_snmp - Name of the SNMP Policy to assign to the Template.
@@ -128,7 +128,7 @@ variable "ucs_server_templates" {
       policies_persistent_memory    = optional(string)
       policies_power                = optional(string)
       policies_san_connectivity     = optional(string)
-      policies_sdcard               = optional(string)
+      policies_sd_card              = optional(string)
       policies_serial_over_lan      = optional(string)
       policies_smtp                 = optional(string)
       policies_snmp                 = optional(string)

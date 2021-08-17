@@ -49,7 +49,7 @@ locals {
         policies_persistent_memory    = (value.policies_persistent_memory != null ? value.policies_persistent_memory : "")
         policies_power                = (value.policies_power != null ? value.policies_power : "")
         policies_san_connectivity     = (value.policies_san_connectivity != null ? value.policies_san_connectivity : "")
-        policies_sdcard               = (value.policies_sdcard != null ? value.policies_sdcard : "")
+        policies_sd_card              = (value.policies_sd_card != null ? value.policies_sd_card : "")
         policies_serial_over_lan      = (value.policies_serial_over_lan != null ? value.policies_serial_over_lan : "")
         policies_smtp                 = (value.policies_smtp != null ? value.policies_smtp : "")
         policies_snmp                 = (value.policies_snmp != null ? value.policies_snmp : "")
@@ -309,6 +309,25 @@ locals {
       power_restore_state = (v.power_restore_state != null ? v.power_restore_state : "LastState")
       tags                = (v.tags != null ? v.tags : [])
       redundancy_mode     = (v.redundancy_mode != null ? v.redundancy_mode : "Grid")
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # Serial over LAN Policy Section Locals
+  #__________________________________________________________
+
+  policies_sd_card = {
+    for k, v in var.policies_sd_card : k => {
+      description        = (v.description != null ? v.description : "")
+      enable_diagnostics = (v.enable_diagnostics != null ? v.enable_diagnostics : false)
+      enable_drivers     = (v.enable_drivers != null ? v.enable_drivers : false)
+      enable_huu         = (v.enable_huu != null ? v.enable_huu : false)
+      enable_os          = (v.enable_os != null ? v.enable_os : false)
+      enable_scu         = (v.enable_scu != null ? v.enable_scu : false)
+      organization       = (v.organization != null ? v.organization : "default")
+      tags               = (v.tags != null ? v.tags : [])
     }
   }
 

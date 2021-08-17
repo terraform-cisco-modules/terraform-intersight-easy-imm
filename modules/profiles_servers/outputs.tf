@@ -24,6 +24,7 @@ output "physical_servers" {
   value = {
     for v in sort(keys(data.intersight_compute_physical_summary.server)) : v => {
       moid        = data.intersight_compute_physical_summary.server[v].results[0].moid
+      model       = data.intersight_compute_physical_summary.server[v].results[0].model
       name        = data.intersight_compute_physical_summary.server[v].results[0].name
       object_type = data.intersight_compute_physical_summary.server[v].results[0].source_object_type
     } if v != null
