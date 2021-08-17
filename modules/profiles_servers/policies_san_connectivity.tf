@@ -290,7 +290,7 @@ module "vhba_template_a" {
     local.org_moids,
     module.vhba_adapter,
     module.vhba_network_a,
-    module.vhba_qos,
+    # module.vhba_qos,
     module.vhba_san_connectivity,
   ]
   source                  = "terraform-cisco-modules/imm/intersight//modules/policies_vhba"
@@ -317,7 +317,7 @@ module "vhba_template_b" {
     local.org_moids,
     module.vhba_adapter,
     module.vhba_network_b,
-    module.vhba_qos,
+    # module.vhba_qos,
     module.vhba_san_connectivity,
   ]
   source                  = "terraform-cisco-modules/imm/intersight//modules/policies_vhba"
