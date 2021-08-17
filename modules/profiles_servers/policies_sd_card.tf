@@ -63,7 +63,7 @@ module "policies_sd_card" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "../../../terraform-intersight-imm/modules/policies_sd_card"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_sd_card"
   for_each = {
     for k, v in local.policies_sd_card : k => v
     if v.enable_os == true && (v.enable_diagnostics == true || v.enable_drivers == true || v.enable_huu == true || v.enable_scu == true)
@@ -89,7 +89,7 @@ module "policies_sd_card_os" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "../../../terraform-intersight-imm/modules/policies_sd_card_os"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_sd_card_os"
   for_each = {
     for k, v in local.policies_sd_card : k => v
     if v.enable_os == true && v.enable_diagnostics == false && v.enable_drivers == false && v.enable_huu == false && v.enable_scu == false
@@ -110,7 +110,7 @@ module "policies_sd_card_utiity" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "../../../terraform-intersight-imm/modules/policies_sd_card_utility"
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_sd_card_utility"
   for_each = {
     for k, v in local.policies_sd_card : k => v
     if v.enable_os == false && (v.enable_diagnostics == true || v.enable_drivers == true || v.enable_huu == true || v.enable_scu == true)
