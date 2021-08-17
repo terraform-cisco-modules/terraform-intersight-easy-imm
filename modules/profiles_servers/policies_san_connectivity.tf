@@ -307,7 +307,7 @@ module "vhba_template_a" {
   vhba_name               = each.value.vhba_name_a
   vhba_network_moid       = module.vhba_network_a[each.key].moid
   vhba_order              = each.value.vhba_order_a
-  # vhba_qos_moid           = module.vhba_qos[each.key].moid
+  vhba_qos_moid           = "" # module.vhba_qos[each.key].moid
   wwpn_address_type       = each.value.wwpn_address_type
   wwpn_pool_moid          = each.value.wwpn_address_type == "POOL" ? [local.fc_pools[each.value.wwpn_pool_a_name]] : []
 }
@@ -334,7 +334,7 @@ module "vhba_template_b" {
   vhba_name               = each.value.vhba_name_b
   vhba_network_moid       = module.vhba_network_b[each.key].moid
   vhba_order              = each.value.vhba_order_b
-  # vhba_qos_moid           = module.vhba_qos[each.key].moid
+  vhba_qos_moid           = "" # module.vhba_qos[each.key].moid
   wwpn_address_type       = each.value.wwpn_address_type
   wwpn_pool_moid          = each.value.wwpn_address_type == "POOL" ? [local.fc_pools[each.value.wwpn_pool_a_name]] : []
 }
