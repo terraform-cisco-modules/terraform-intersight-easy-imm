@@ -100,6 +100,95 @@ module "policies_bios_nvmeof" {
   txt_support = "enabled" # Intel Trusted Execution Technology Support
 }
 
+module "policies_bios_dss" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_server_profiles
+  ]
+  # Eugene & Bill
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  for_each = {
+    for k, v in local.policies_bios : k => v
+    if local.policies_bios[k].bios_policy == "virtual_node"
+  }
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_bios == each.key
+  ]
+}
+
+
+module "policies_bios_hpc" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_server_profiles
+  ]
+  # Patrick Byron
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  for_each = {
+    for k, v in local.policies_bios : k => v
+    if local.policies_bios[k].bios_policy == "virtual_node"
+  }
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_bios == each.key
+  ]
+}
+
+module "policies_bios_java" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_server_profiles
+  ]
+  # Adam & Tyson
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  for_each = {
+    for k, v in local.policies_bios : k => v
+    if local.policies_bios[k].bios_policy == "virtual_node"
+  }
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_bios == each.key
+  ]
+}
+
+module "policies_bios_oltp" {
+  depends_on = [
+    local.org_moids,
+    module.ucs_server_profiles
+  ]
+  # Whoever finishes first
+  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  for_each = {
+    for k, v in local.policies_bios : k => v
+    if local.policies_bios[k].bios_policy == "virtual_node"
+  }
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  profiles = [
+    for s in sort(keys(local.ucs_server_profiles)) :
+    module.ucs_server_profiles[s].moid
+    if local.ucs_server_profiles[s].profile.policies_bios == each.key
+  ]
+}
+
 module "policies_bios_virtual_node" {
   depends_on = [
     local.org_moids,
