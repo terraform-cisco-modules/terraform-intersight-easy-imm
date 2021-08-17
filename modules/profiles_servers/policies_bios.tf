@@ -183,6 +183,7 @@ module "policies_bios_hpc" {
   processor_c3report              = "enabled"     # Processor C3 Report
   processor_c6report              = "enabled"     # Processor C6 Report
   processor_cstate                = "enabled"     # CPU C State
+  # Waiting for fix to CSCvx09391 to add processor c7 state which should be enabled
   snc                             = "disabled"    # Sub Numa Clustering
   work_load_config                = "balanced"    # Workload Configuration
   xpt_prefetch                    = "disabled"    # XPT Prefetch
