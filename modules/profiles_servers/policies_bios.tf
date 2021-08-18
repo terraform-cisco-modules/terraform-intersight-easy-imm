@@ -216,7 +216,45 @@ module "policies_bios_java" {
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
     if local.ucs_server_profiles[s].profile.policies_bios == each.key
-  ]
+  ] 
+  #+++++++++++++++++++++++++++++++
+  # Boot Options Section
+  #+++++++++++++++++++++++++++++++
+  #+++++++++++++++++++++++++++++++
+  # Intel Directed IO Section
+  #+++++++++++++++++++++++++++++++
+  intel_vt_for_directed_io      = "disabled" # Intel VT for Directed IO 
+  #+++++++++++++++++++++++++++++++
+  # LOM and PCIe Slots Section
+  #+++++++++++++++++++++++++++++++
+  cdn_support = "enabled" # CDN Support for LOM
+  # lom_ports_all_state = "disabled" # All Onboard LOM Ports
+  #+++++++++++++++++++++++++++++++
+  # Memory Section
+  #+++++++++++++++++++++++++++++++
+  select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
+  #+++++++++++++++++++++++++++++++
+  # PCI Section
+  #+++++++++++++++++++++++++++++++
+  memory_mapped_io_above4gb = "enabled" # Memory Mapped IO Above 4GiB
+  #+++++++++++++++++++++++++++++++
+  # Processor Section
+  #+++++++++++++++++++++++++++++++
+  cpu_power_management            = "custom"      # Power Technology 
+  intel_virtualization_technology = "disabled"    # Intel(R) VT 
+  processor_c1e                   = "disabled"     # Processor C1E 
+  processor_c3report              = "disabled"     # Processor C3 Report 
+  processor_c6report              = "disabled"     # Processor C6 Report 
+  processor_cstate                = "disabled"     # CPU C State 
+  # Waiting for fix to CSCvx09391 to add processor c7 state which should be enabled
+  #+++++++++++++++++++++++++++++++
+  # Server Management Section
+  #+++++++++++++++++++++++++++++++
+  cdn_enable = "enabled" # Consistent Device Naming 
+  #+++++++++++++++++++++++++++++++
+  # Trusted Platform Section
+  #+++++++++++++++++++++++++++++++
+  txt_support = "enabled" # Intel Trusted Execution Technology Support
 }
 
 module "policies_bios_oltp" {
