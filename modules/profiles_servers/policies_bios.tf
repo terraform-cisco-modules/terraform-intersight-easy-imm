@@ -239,6 +239,55 @@ module "policies_bios_oltp" {
     module.ucs_server_profiles[s].moid
     if local.ucs_server_profiles[s].profile.policies_bios == each.key
   ]
+  #+++++++++++++++++++++++++++++++
+  # Boot Options Section
+  #+++++++++++++++++++++++++++++++
+  vmd_enable = "enabled" # VMD Enablement
+  #+++++++++++++++++++++++++++++++
+  # Intel Directed IO Section
+  #+++++++++++++++++++++++++++++++
+  intel_vtd_coherency_support   = "enabled"  # Intel(R) VT-d Coherency Support
+  intel_vtd_interrupt_remapping = "enabled"  # Intel(R) VT-d interrupt Remapping
+  #+++++++++++++++++++++++++++++++
+  # LOM and PCIe Slots Section
+  #+++++++++++++++++++++++++++++++
+  cdn_support = "enabled" # CDN Support for LOM
+  # lom_ports_all_state = "disabled" # All Onboard LOM Ports
+  #+++++++++++++++++++++++++++++++
+  # Memory Section
+  #+++++++++++++++++++++++++++++++
+  select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
+  #+++++++++++++++++++++++++++++++
+  # PCI Section
+  #+++++++++++++++++++++++++++++++
+  memory_mapped_io_above4gb = "enabled" # Memory Mapped IO Above 4GiB
+  #+++++++++++++++++++++++++++++++
+  # Processor Section
+  #+++++++++++++++++++++++++++++++
+  altitude                        = "auto"        # Altitude
+  cpu_energy_performance          = "performance" # Energy Performance
+  cpu_performance                 = "hpc"         # CPU Performance
+  cpu_frequency_floor             = "enabled"     # Frequency Floor Override
+  cpu_power_management            = "energy-efficient"      # Power Technology
+  direct_cache_access             = "enabled"     # Direct Cache Access Support
+  dram_clock_throttling           = "Performance" # DRAM Clock Throttling
+  imc_interleave                  = "Auto"        # IMC Interleaving
+  llc_prefetch                    = "disabled"    # LLC Prefetch
+  processor_c1e                   = "disabled"     # Processor C1E
+  processor_c3report              = "disabled"     # Processor C3 Report
+  processor_c6report              = "disabled"     # Processor C6 Report
+  processor_cstate                = "disabled"     # CPU C State
+  # Waiting for fix to CSCvx09391 to add processor c7 state which should be enabled
+  snc                             = "disabled"    # Sub Numa Clustering
+  xpt_prefetch                    = "disabled"    # XPT Prefetch
+  #+++++++++++++++++++++++++++++++
+  # Server Management Section
+  #+++++++++++++++++++++++++++++++
+  cdn_enable = "enabled" # Consistent Device Naming
+  #+++++++++++++++++++++++++++++++
+  # Trusted Platform Section
+  #+++++++++++++++++++++++++++++++
+  txt_support = "enabled" # Intel Trusted Execution Technology Support
 }
 
 module "policies_bios_virtual_node" {
