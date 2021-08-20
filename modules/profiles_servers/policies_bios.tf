@@ -120,7 +120,38 @@ module "policies_bios_dss" {
     module.ucs_server_profiles[s].moid
     if local.ucs_server_profiles[s].profile.policies_bios == each.key
   ]
-}
+  #+++++++++++++++++++++++++++++++
+  # Boot Options Section
+  #+++++++++++++++++++++++++++++++
+  #+++++++++++++++++++++++++++++++
+  # Intel Directed IO Section
+  #+++++++++++++++++++++++++++++++
+  intel_vt_for_directed_io      = "disabled" # Intel VT for Directed IO
+  #+++++++++++++++++++++++++++++++
+  # LOM and PCIe Slots Section
+  #+++++++++++++++++++++++++++++++
+  #+++++++++++++++++++++++++++++++
+  # Memory Section
+  #+++++++++++++++++++++++++++++++
+  #+++++++++++++++++++++++++++++++
+  # PCI Section
+  #+++++++++++++++++++++++++++++++
+  #+++++++++++++++++++++++++++++++
+  # Processor Section
+  #+++++++++++++++++++++++++++++++
+  cpu_power_management            = "custom"      # Power Technology
+  processor_c1e                   = "disabled"     # Processor C1E
+  processor_c3report              = "disabled"     # Processor C3 Report
+  processor_c6report              = "disabled"     # Processor C6 Report
+  processor_cstate                = "disabled"     # CPU C State
+  # Waiting for fix to CSCvx09391 to add processor c7 state which should be disabled
+  #+++++++++++++++++++++++++++++++
+  # Server Management Section
+  #+++++++++++++++++++++++++++++++
+  #+++++++++++++++++++++++++++++++
+  # Trusted Platform Section
+  #+++++++++++++++++++++++++++++++
+  }
 
 module "policies_bios_hpc" {
   depends_on = [
