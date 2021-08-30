@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > VLAN > Start
 #_________________________________________________________________________
 
-variable "policies_vlan" {
+variable "vlan_policies" {
   default = {
     default = {
       auto_allow_on_uplinks = true
@@ -63,21 +63,21 @@ variable "policies_vlan" {
 # GUI Location: Create > Policy > Create Policy > VLAN > Start
 #_________________________________________________________________________
 
-module "policies_vlan" {
+module "vlan_policies" {
   depends_on = [
     local.org_moids,
-    local.profiles_ucs_domain
+    local.ucs_domain_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/domain_vlan_policy"
-  for_each    = local.policies_vlan
+  source      = "terraform-cisco-modules/imm/intersight//modules/vlan_policies"
+  for_each    = local.vlan_policies
   description = each.value.description != "" ? each.value.description : "${each.key} VLAN Policy."
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    [local.ucs_domain_profiles_a[s], local.ucs_domain_profiles_b[s]]
-    if local.profiles_ucs_domain[s].profile.policies_vlan == each.key
+    [local.ucs_domain_switches_a[s], local.ucs_domain_switches_b[s]]
+    if local.ucs_domain_profiles[s].profile.vlan_policies == each.key
   ])
 }
 
@@ -86,22 +86,22 @@ module "policies_vlan" {
 # Assign a Native VLAN to VLAN Policies
 #______________________________________________
 
-module "policies_vlan_native" {
+module "vlan_policy_add_vlan" {
   depends_on = [
     local.org_moids,
-    module.policies_multicast,
-    module.policies_vlan
+    module.multicast_policies,
+    module.vlan_policies
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/domain_vlan"
+  source = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan"
   for_each = {
-    for k, v in local.policies_vlan : k => v
+    for k, v in local.vlan_policies : k => v
     if v.vlan_native != null
   }
   auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
   is_native             = true
-  multicast_moid        = module.policies_multicast[each.value.multicast_policy].moid
+  multicast_moid        = module.multicast_policies[each.value.multicast_policy].moid
   vlan                  = each.value.vlan_native
-  vlan_policy_moid      = module.policies_vlan[each.key].moid
+  vlan_policy_moid      = module.vlan_policies[each.key].moid
   vlan_prefix           = each.value.vlan_prefix
 }
 
@@ -110,22 +110,22 @@ module "policies_vlan_native" {
 # Assign VLAN List to VLAN Policies
 #______________________________________________
 
-module "policies_vlan_list" {
+module "vlan_policy_add_vlan_list" {
   depends_on = [
     local.org_moids,
-    module.policies_multicast,
-    module.policies_vlan
+    module.multicast_policies,
+    module.vlan_policies
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/domain_vlan_list"
+  source = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list"
   for_each = {
-    for k, v in local.policies_vlan : k => v
+    for k, v in local.vlan_policies : k => v
     if v.vlan_list != ""
   }
   auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
   is_native             = false
-  multicast_moid        = module.policies_multicast[each.value.multicast_policy].moid
+  multicast_moid        = module.multicast_policies[each.value.multicast_policy].moid
   vlan_list             = each.value.vlan_list
-  vlan_policy_moid      = module.policies_vlan[each.key].moid
+  vlan_policy_moid      = module.vlan_policies[each.key].moid
   vlan_prefix           = each.value.vlan_prefix
 }
 
@@ -135,20 +135,20 @@ module "policies_vlan_list" {
 # Assign VLAN Map to VLAN Policies
 #______________________________________________
 
-module "policies_vlan_map" {
+module "vlan_policy_add_vlan_map" {
   depends_on = [
     local.org_moids,
-    module.policies_multicast,
-    module.policies_vlan
+    module.multicast_policies,
+    module.vlan_policies
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/domain_vlan_map"
+  source = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_map"
   for_each = {
-    for k, v in local.policies_vlan : k => v
+    for k, v in local.vlan_policies : k => v
     if length(v.vlan_map) > 0
   }
   auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
   is_native             = false
-  multicast_moid        = module.policies_multicast[each.value.multicast_policy].moid
+  multicast_moid        = module.multicast_policies[each.value.multicast_policy].moid
   vlan_map              = each.value.vlan_map
-  vlan_policy_moid      = module.policies_vlan[each.key].moid
+  vlan_policy_moid      = module.vlan_policies[each.key].moid
 }

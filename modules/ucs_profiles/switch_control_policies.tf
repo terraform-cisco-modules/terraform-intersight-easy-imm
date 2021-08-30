@@ -61,7 +61,7 @@ module "switch_control_policies" {
     module.ucs_domain_profiles_a,
     module.ucs_domain_profiles_b
   ]
-  source                = "terraform-cisco-modules/imm/intersight//modules/policies_switch_control"
+  source                = "terraform-cisco-modules/imm/intersight//modules/switch_control_policies"
   for_each              = local.switch_control_policies
   description           = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy."
   name                  = each.key

@@ -150,7 +150,7 @@ module "snmp_policies" {
     for k, v in local.snmp_policies : k => v
     if v.snmp_user_1_name == "" && v.snmp_user_2_name == ""
   }
-  source          = "terraform-cisco-modules/imm/intersight//modules/policies_snmp"
+  source          = "terraform-cisco-modules/imm/intersight//modules/snmp_policies"
   description     = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled         = each.value.enabled
   name            = each.key
@@ -183,7 +183,7 @@ module "snmp_policies_1_user" {
     for k, v in local.snmp_policies : k => v
     if v.snmp_user_1_name != "" && v.snmp_user_2_name == ""
   }
-  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_1_user"
+  source                  = "terraform-cisco-modules/imm/intersight//modules/snmp_policies_1_user"
   description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled                 = each.value.enabled
   name                    = each.key
@@ -221,7 +221,7 @@ module "snmp_policies_2_users" {
     for k, v in local.snmp_policies : k => v
     if v.snmp_user_2_name != ""
   }
-  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_snmp_2_users"
+  source                  = "terraform-cisco-modules/imm/intersight//modules/snmp_policies_2_users"
   description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled                 = each.value.enabled
   name                    = each.key

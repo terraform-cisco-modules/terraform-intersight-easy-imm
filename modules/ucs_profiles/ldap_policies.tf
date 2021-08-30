@@ -149,7 +149,7 @@ module "ldap_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source                     = "terraform-cisco-modules/imm/intersight//modules/policies_ldap"
+  source                     = "terraform-cisco-modules/imm/intersight//modules/ldap_policies"
   for_each                   = local.ldap_policies
   attribute                  = each.value.ldap_attribute
   base_dn                    = each.value.ldap_base_dn
@@ -191,7 +191,7 @@ module "ldap_provider" {
     module.ldap_policies
   ]
   for_each         = local.ldap_servers.ldap_servers
-  source           = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_provider"
+  source           = "terraform-cisco-modules/imm/intersight//modules/ldap_add_server"
   ldap_policy_moid = module.ldap_policies[each.value.policy].moid
   ldap_port        = each.value.ldap_port
   ldap_server      = each.value.ldap_server
@@ -207,7 +207,7 @@ module "ldap_groups" {
     local.org_moids,
     module.ldap_policies
   ]
-  source           = "terraform-cisco-modules/imm/intersight//modules/policies_ldap_group"
+  source           = "terraform-cisco-modules/imm/intersight//modules/ldap_add_group"
   for_each         = local.ldap_groups.ldap_groups
   group_role       = each.value.group_role
   ldap_domain      = each.value.ldap_domain

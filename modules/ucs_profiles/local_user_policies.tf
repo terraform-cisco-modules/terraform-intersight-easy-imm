@@ -114,7 +114,7 @@ module "local_user_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source                   = "terraform-cisco-modules/imm/intersight//modules/policies_local_user"
+  source                   = "terraform-cisco-modules/imm/intersight//modules/local_user_policies"
   for_each                 = local.local_user_policies
   description              = each.value.description != "" ? each.value.description : "${each.key} Local User Policy."
   enable_password_expiry   = each.value.password_expiry
@@ -147,7 +147,7 @@ module "local_users" {
     module.local_user_policies
   ]
   for_each         = local.local_users.users
-  source           = "terraform-cisco-modules/imm/intersight//modules/policies_local_user_users"
+  source           = "terraform-cisco-modules/imm/intersight//modules/local_user_add_users"
   org_moid         = local.org_moids[each.value.organization].moid
   user_enabled     = each.value.enabled
   user_password    = each.value.password == 1 ? var.local_user_password_1 : each.value.password == 2 ? var.local_user_password_1 : each.value.password == 3 ? var.local_user_password_1 : each.value.password == 4 ? var.local_user_password_1 : var.local_user_password_1

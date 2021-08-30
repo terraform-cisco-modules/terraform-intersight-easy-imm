@@ -86,12 +86,12 @@ variable "firmware_upgrade_server" {
 # GUI Location: Configure > Policies > Create Policy > Serial over LAN
 #_________________________________________________________________________
 
-module "policies_serial_over_lan" {
+module "ucs_server_firmware" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_serial_over_lan"
+  source      = "terraform-cisco-modules/imm/intersight//modules/ucs_server_firmware"
   for_each    = local.policies_serial_over_lan
   baud_rate   = each.value.baud_rate
   com_port    = each.value.com_port

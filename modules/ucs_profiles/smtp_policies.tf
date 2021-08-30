@@ -63,7 +63,7 @@ module "smtp_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/policies_smtp"
+  source          = "terraform-cisco-modules/imm/intersight//modules/smtp_policies"
   for_each        = local.smtp_policies
   description     = each.value.description != "" ? each.value.description : "${each.key} SMTP Policy."
   enabled         = each.value.enabled

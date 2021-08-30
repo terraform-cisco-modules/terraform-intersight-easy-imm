@@ -156,7 +156,7 @@ module "system_qos_policies_1" {
     module.ucs_domain_profiles_a,
     module.ucs_domain_profiles_b
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
+  source      = "terraform-cisco-modules/imm/intersight//modules/system_qos_policies"
   for_each    = local.system_qos_policies
   description = each.value.description != "" ? each.value.description : "${each.key} System QoS Policy."
   name        = each.key
@@ -176,7 +176,7 @@ module "system_qos_policies_2" {
     module.ucs_domain_profiles_a,
     module.ucs_domain_profiles_b
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/domain_system_qos"
+  source      = "terraform-cisco-modules/imm/intersight//modules/system_qos_policies"
   for_each    = local.system_qos_policies
   description = each.value.description != "" ? each.value.description : "${each.key} System QoS Policy."
   name        = each.key

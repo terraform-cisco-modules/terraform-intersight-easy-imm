@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > Multicast > Start
 #_________________________________________________________________________
 
-variable "policies_multicast" {
+variable "multicast_policies" {
   default = {
     default = {
       description             = ""
@@ -51,12 +51,12 @@ variable "policies_multicast" {
 # GUI Location: Create > Policy > Create Policy > Multicast > Start
 #_________________________________________________________________________
 
-module "policies_multicast" {
+module "multicast_policies" {
   depends_on = [
     local.org_moids
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/domain_multicast"
-  for_each                = local.policies_multicast
+  source                  = "terraform-cisco-modules/imm/intersight//modules/multicast_policies"
+  for_each                = local.multicast_policies
   description             = each.value.description != "" ? each.value.description : "${each.key} Multicast Policy."
   name                    = each.key
   org_moid                = local.org_moids[each.value.organization].moid

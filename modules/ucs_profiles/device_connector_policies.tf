@@ -43,7 +43,7 @@ module "device_connector_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_device_connector"
+  source      = "terraform-cisco-modules/imm/intersight//modules/device_connector_policies"
   for_each    = local.device_connector_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Device Connector Policy."
   lockout     = each.value.lockout

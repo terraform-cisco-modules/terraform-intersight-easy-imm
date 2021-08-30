@@ -40,7 +40,7 @@ module "bios_policies_nvmeof" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each = {
     for k, v in local.bios_policies_templates : k => v
     if local.bios_policies_templates[k].bios_policy == "nvmeof"
@@ -108,7 +108,7 @@ module "bios_policies_dss" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each = {
     for k, v in local.bios_policies_templates : k => v
     if local.bios_policies_templates[k].bios_policy == "virtual_node"
@@ -129,7 +129,7 @@ module "bios_policies_hpc" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each = {
     for k, v in local.bios_policies_templates : k => v
     if local.bios_policies_templates[k].bios_policy == "virtual_node"
@@ -203,7 +203,7 @@ module "bios_policies_java" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each = {
     for k, v in local.bios_policies_templates : k => v
     if local.bios_policies_templates[k].bios_policy == "java"
@@ -225,7 +225,7 @@ module "bios_policies_oltp" {
     module.ucs_server_profiles
   ]
   # Whoever finishes first
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each = {
     for k, v in local.bios_policies_templates : k => v
     if local.bios_policies_templates[k].bios_policy == "oltp"
@@ -246,7 +246,7 @@ module "bios_policies_virtual_node" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each = {
     for k, v in local.bios_policies_templates : k => v
     if local.bios_policies_templates[k].bios_policy == "virtual_node"
@@ -317,7 +317,7 @@ module "bios_policies_virtual_rack" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+  source = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each = {
     for k, v in local.bios_policies_templates : k => v
     if local.bios_policies_templates[k].bios_policy == "virtual_rack"
@@ -1187,7 +1187,7 @@ variable "bios_policies" {
 #     local.org_moids,
 #     module.ucs_server_profiles
 #   ]
-#   source      = "terraform-cisco-modules/imm/intersight//modules/policies_bios"
+#   source      = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
 #   for_each = {
 #     for assign, bios_policies in local.bios_policies : assign => bios_policies
 #     if bios_policies.create == true

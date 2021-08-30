@@ -50,7 +50,7 @@ module "ntp_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_ntp"
+  source      = "terraform-cisco-modules/imm/intersight//modules/ntp_policies"
   for_each    = local.ntp_policies
   description = each.value.description != "" ? each.value.description : "${each.key} NTP Policy."
   enabled     = each.value.enabled

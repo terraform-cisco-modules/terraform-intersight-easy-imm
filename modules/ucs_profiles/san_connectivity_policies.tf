@@ -158,14 +158,14 @@ variable "policies_vhba_san_connectivity" {
 # GUI Location: Configure > Policies > Create Policy > SAN Connectivity
 #_________________________________________________________________________
 
-module "vhba_san_connectivity" {
+module "san_connectivity_policies" {
   depends_on = [
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_san_connectivity"
-  for_each            = local.policies_vhba_san_connectivity
-  description         = each.value.description != "" ? each.value.description : "${each.key} vHBA SAN Connectivity Policy."
+  source              = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_policies"
+  for_each            = local.san_connectivity_policies
+  description         = each.value.description != "" ? each.value.description : "${each.key} SAN Connectivity Policy."
   name                = each.key
   org_moid            = local.org_moids[each.value.organization].moid
   placement_mode      = each.value.placement_mode
@@ -177,106 +177,8 @@ module "vhba_san_connectivity" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.policies_san_connectivity == each.key
+    if local.ucs_server_profiles[s].profile.san_connectivity_policies == each.key
   ]
-}
-
-
-#_________________________________________________________________________
-#
-# vHBA Adapter Polies
-# GUI Location: Configure > Policies > Create Policy > Fibre Channel Adapter
-#_________________________________________________________________________
-
-module "vhba_adapter" {
-  depends_on = [
-    local.org_moids
-  ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_adapter"
-  for_each    = local.policies_vhba_san_connectivity
-  description = each.value.description != "" ? each.value.description : "${each.key} ${each.value.adapter_template} vHBA Adapter Policy."
-  name        = "${each.key}_${each.value.adapter_template}"
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  # vHBA Adapter Customization for Template
-  error_detection_timeout          = 20000
-  error_recovery_enabled           = false
-  error_recovery_io_retry_count    = each.value.adapter_template != "default" ? 30 : 8
-  error_recovery_io_retry_timeout  = 5
-  error_recovery_link_down_timeout = 30000
-  error_recovery_port_down_timeout = each.value.adapter_template == "WindowsBoot" ? 5000 : length(regexall(
-  "(FCNVMeInitiator|Initiator|Solaris|VMware|Windows)", each.value.adapter_template)) > 0 ? 30000 : 10000
-  flogi_retries               = 8
-  flogi_timeout               = 4000
-  interrupt_mode              = "MSIx"
-  io_throttle_count           = each.value.adapter_template != "default" ? 256 : 512
-  lun_count                   = 1024
-  lun_queue_depth             = 20
-  plogi_retries               = 8
-  plogi_timeout               = each.value.adapter_template == "WindowsBoot" ? 4000 : 20000
-  resource_allocation_timeout = 10000
-  rx_ring_size                = length(regexall("(FCNVMeTarget|Target)", each.value.adapter_template)) > 0 ? 2048 : 64
-  scsi_io_queues              = length(regexall("(FCNVMeTarget|FCNVMeInitiator)", each.value.adapter_template)) > 0 ? 16 : 1
-  scsi_io_ring_size           = 512
-  tx_ring_size                = 64
-}
-
-
-#____________________________________________________________
-#
-# Fibre Channel (vHBA) Network Policies
-# GUI Location: Policies > Create Policy
-#____________________________________________________________
-
-module "vhba_network_a" {
-  depends_on = [
-    local.org_moids
-  ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_network"
-  for_each        = local.policies_vhba_san_connectivity
-  default_vlan_id = each.value.target_platform == "Standalone" ? each.value.vsan_a_default_vlan_id : 0
-  description     = each.value.description != "" ? each.value.description : "${each.key} vHBA Network Policy - Fabric A."
-  name            = "${each.key}_vsan_a"
-  org_moid        = local.org_moids[each.value.organization].moid
-  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vsan_id         = each.value.vsan_a
-}
-
-module "vhba_network_b" {
-  depends_on = [
-    local.org_moids
-  ]
-  source          = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_network"
-  for_each        = local.policies_vhba_san_connectivity
-  default_vlan_id = each.value.target_platform == "Standalone" ? each.value.vsan_b_default_vlan_id : 0
-  description     = each.value.description != "" ? each.value.description : "${each.key} vHBA Network Policy - Fabric B."
-  name            = "${each.key}_vsan_b"
-  org_moid        = local.org_moids[each.value.organization].moid
-  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vsan_id         = each.value.vsan_b
-}
-
-
-#____________________________________________________________
-#
-# Fibre Channel (vHBA) QoS Policy
-# GUI Location: Policies > Create Policy
-#____________________________________________________________
-
-module "vhba_qos" {
-  depends_on = [
-    local.org_moids
-  ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/policies_vhba_qos"
-  for_each            = local.policies_vhba_san_connectivity
-  burst               = each.value.target_platform == "Standalone" ? each.value.qos_burst : 1024
-  cos                 = each.value.target_platform == "FIAttached" ? each.value.qos_cos : 3
-  description         = each.value.description != "" ? each.value.description : "${each.key} vHBA QoS Policy."
-  max_data_field_size = each.value.qos_max_data_field_size
-  name                = "${each.key}_qos"
-  org_moid            = local.org_moids[each.value.organization].moid
-  rate_limit          = each.value.qos_rate_limit
-  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
 
 
@@ -285,56 +187,56 @@ module "vhba_qos" {
 # vHBA with Default Values
 #______________________________________________
 
-module "vhba_template_a" {
+module "san_connectivity_add_vhba_a" {
   depends_on = [
     local.org_moids,
-    module.vhba_adapter,
-    module.vhba_network_a,
-    module.vhba_qos,
-    module.vhba_san_connectivity,
+    module.fibre_channel_adapter_policies,
+    module.fibre_channel_network_policies_a,
+    module.fibre_channel_qos_policies,
+    module.san_connectivity_policies,
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_vhba"
-  for_each                = local.policies_vhba_san_connectivity
+  source                  = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba"
+  for_each                = local.san_connectivity_policies
   persistent_lun_bindings = each.value.vhba_persistent_lun_bindings
   placement_pci_link      = each.value.vhba_placement_pci_link_a
   placement_slot_id       = each.value.vhba_placement_slot_id
   placement_switch_id     = each.value.vhba_placement_switch_a
   placement_uplink        = each.value.vhba_placement_uplink
-  san_connectivity_moid   = module.vhba_san_connectivity[each.key].moid
+  san_connectivity_moid   = module.san_connectivity_policies[each.key].moid
   static_wwpn_address     = each.value.wwpn_address_type == "STATIC" ? each.value.wwpn_address_a_static : null
   vhba_type               = each.value.vhba_type
-  vhba_adapter_moid       = module.vhba_adapter[each.key].moid
+  vhba_adapter_moid       = module.fibre_channel_adapter_policies[each.key].moid
   vhba_name               = each.value.vhba_name_a
-  vhba_network_moid       = module.vhba_network_a[each.key].moid
+  vhba_network_moid       = module.fibre_channel_network_policies_a[each.key].moid
   vhba_order              = each.value.vhba_order_a
-  vhba_qos_moid           = module.vhba_qos[each.key].moid
+  vhba_qos_moid           = module.fibre_channel_qos_policies[each.key].moid
   wwpn_address_type       = each.value.wwpn_address_type
   wwpn_pool_moid          = each.value.wwpn_address_type == "POOL" ? [local.fc_pools[each.value.wwpn_pool_a_name]] : []
 }
 
-module "vhba_template_b" {
+module "san_connectivity_add_vhba_b" {
   depends_on = [
     local.org_moids,
-    module.vhba_adapter,
-    module.vhba_network_b,
-    module.vhba_qos,
-    module.vhba_san_connectivity,
+    module.fibre_channel_adapter_policies,
+    module.fibre_channel_network_policies_b,
+    module.fibre_channel_qos_policies,
+    module.san_connectivity_policies,
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/policies_vhba"
-  for_each                = local.policies_vhba_san_connectivity
+  source                  = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba"
+  for_each                = local.san_connectivity_policies
   persistent_lun_bindings = each.value.vhba_persistent_lun_bindings
   placement_pci_link      = each.value.vhba_placement_pci_link_b
   placement_slot_id       = each.value.vhba_placement_slot_id
   placement_switch_id     = each.value.vhba_placement_switch_b
   placement_uplink        = each.value.vhba_placement_uplink
-  san_connectivity_moid   = module.vhba_san_connectivity[each.key].moid
-  static_wwpn_address     = each.value.wwpn_address_type == "STATIC" ? each.value.wwpn_address_a_static : null
+  san_connectivity_moid   = module.san_connectivity_policies[each.key].moid
+  static_wwpn_address     = each.value.wwpn_address_type == "STATIC" ? each.value.wwpn_address_b_static : null
   vhba_type               = each.value.vhba_type
   vhba_adapter_moid       = module.vhba_adapter[each.key].moid
   vhba_name               = each.value.vhba_name_b
-  vhba_network_moid       = module.vhba_network_b[each.key].moid
+  vhba_network_moid       = module.fibre_channel_network_policies_b[each.key].moid
   vhba_order              = each.value.vhba_order_b
-  vhba_qos_moid           = module.vhba_qos[each.key].moid
+  vhba_qos_moid           = module.fibre_channel_qos_policies[each.key].moid
   wwpn_address_type       = each.value.wwpn_address_type
-  wwpn_pool_moid          = each.value.wwpn_address_type == "POOL" ? [local.fc_pools[each.value.wwpn_pool_a_name]] : []
+  wwpn_pool_moid          = each.value.wwpn_address_type == "POOL" ? [local.fc_pools[each.value.wwpn_pool_b_name]] : []
 }

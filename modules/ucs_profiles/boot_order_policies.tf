@@ -51,7 +51,7 @@ module "boot_order_policies_templates" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_boot_order"
+  source      = "terraform-cisco-modules/imm/intersight//modules/boot_order_policies"
   for_each    = local.boot_order_policies_templates
   boot_mode   = "Uefi"
   boot_secure = each.value.boot_secure

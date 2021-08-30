@@ -52,16 +52,16 @@ module "imc_access_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_imc_access"
-  for_each    = local.imc_access_policies
-  description = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
-  imc_ip_pool = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
-  inband_vlan = each.value.inband_vlan_id
-  ipv4_enable = each.value.ipv4_address_configuration
-  ipv6_enable = each.value.ipv6_address_configuration
-  name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  source         = "terraform-cisco-modules/imm/intersight//modules/policies_imc_access"
+  for_each       = local.imc_access_policies
+  description    = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
+  inband_ip_pool = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
+  inband_vlan_id = each.value.inband_vlan_id
+  enable_ipv4    = each.value.ipv4_address_configuration
+  enable_ipv6    = each.value.ipv6_address_configuration
+  name           = each.key
+  org_moid       = local.org_moids[each.value.organization].moid
+  tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid

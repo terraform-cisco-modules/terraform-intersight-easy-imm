@@ -55,7 +55,7 @@ module "virtual_kvm_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source                    = "terraform-cisco-modules/imm/intersight//modules/policies_virtual_kvm"
+  source                    = "terraform-cisco-modules/imm/intersight//modules/virtual_kvm_policies"
   for_each                  = local.virtual_kvm_policies
   description               = each.value.description != "" ? each.value.description : "${each.key} Virtual KVM Policy."
   enable_local_server_video = each.value.local_server_video

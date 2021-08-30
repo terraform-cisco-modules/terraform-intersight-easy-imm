@@ -72,7 +72,7 @@ module "policies_port_channel_lan_a" {
     module.policies_link_control,
     module.policies_ports_a
   ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_lan_port_channel"
+  source              = "terraform-cisco-modules/imm/intersight//modules/port_ethernet_uplink_port_channel"
   for_each            = local.policies_port_channel_lan
   breakout_sw_port    = each.value.lan_pc_breakoutswport
   lan_uplink_pc_id    = element(each.value.lan_pc_ports, 0)
@@ -105,7 +105,7 @@ module "policies_port_channel_lan_b" {
     module.policies_link_control,
     module.policies_ports_b
   ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/domain_uplink_lan_port_channel"
+  source              = "terraform-cisco-modules/imm/intersight//modules/port_ethernet_uplink_port_channel"
   for_each            = local.policies_port_channel_lan
   breakout_sw_port    = each.value.lan_pc_breakoutswport
   lan_uplink_pc_id    = element(each.value.lan_pc_ports, 0)

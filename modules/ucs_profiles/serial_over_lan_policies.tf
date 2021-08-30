@@ -59,7 +59,7 @@ module "serial_over_lan_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/policies_serial_over_lan"
+  source      = "terraform-cisco-modules/imm/intersight//modules/serial_over_lan_policies"
   for_each    = local.serial_over_lan_policies
   baud_rate   = each.value.baud_rate
   com_port    = each.value.com_port
