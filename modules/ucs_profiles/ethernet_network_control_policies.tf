@@ -1,10 +1,26 @@
 #_________________________________________________________________________
 #
-# Ethernet (vNIC) Network Control Policies
+# Ethernet Network Control Policies
 # GUI Location: Configure > Policies > Create Policy > Ethernet Network Control
 #_________________________________________________________________________
 
-module "ethernet_network_control_policies" {
+variable "ethernet_network_control_policies" {
+  default {
+    default = {
+      action_on_uplink_fail = "linkDown"
+      cdp_enable            = false
+      description           = ""
+      lldp_enable_receive   = false
+      lldp_enable_transmit  = false
+      mac_register_mode     = "nativeVlanOnly"
+      mac_security_forge    = "allow"
+      organization          = "default"
+      tags                  = []
+    }
+  }
+}
+
+module "ethernet_network_control_templates" {
   depends_on = [
     local.org_moids
   ]

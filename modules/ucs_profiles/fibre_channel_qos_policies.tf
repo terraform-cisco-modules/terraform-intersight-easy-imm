@@ -4,6 +4,19 @@
 # GUI Location: Policies > Create Policy > Fibre Channel QoS
 #____________________________________________________________
 
+variable "fibre_channel_qos_policies" {
+  default {
+    default = {
+      burst               = 10240
+      description         = ""
+      max_data_field_size = 2112
+      organization        = "default"
+      rate_limit          = 0
+      tags                = []
+    }
+  }
+}
+
 module "fibre_channel_qos_policies" {
   depends_on = [
     local.org_moids

@@ -26,7 +26,7 @@ variable "ipmi_over_lan_policies" {
   key - Name of the IPMI over LAN Policy.
   * description - Description to Assign to the Policy.
   * enabled - Flag to Enable or Disable the Policy.
-  * encryption_key - If null then encryption will not be applied.  If the value is set to 1 it will apply the ipmi_key_1 value.
+  * ipmi_key - If null then encryption will not be applied.  If the value is set to 1 it will apply the ipmi_key_1 value.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
   * privilege - The highest privilege level that can be assigned to an IPMI session on a server.

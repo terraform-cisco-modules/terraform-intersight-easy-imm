@@ -7,20 +7,20 @@
 variable "switch_control_policies" {
   default = {
     default = {
-      description           = ""
-      mac_aging_option      = "Default"
-      mac_aging_time        = 14500
-      organization          = "default"
-      tags                  = []
-      udld_message_interval = 15
-      udld_recovery_action  = "none"
-      vlan_optimization     = false
+      description                  = ""
+      mac_address_table_aging      = "Default"
+      mac_aging_time               = 14500
+      organization                 = "default"
+      tags                         = []
+      udld_message_interval        = 15
+      udld_recovery_action         = "none"
+      vlan_port_count_optimization = false
     }
   }
   description = <<-EOT
   key - Name of the Link Control Policy.
   * description - Description to Assign to the Policy.
-  * mac_aging_option - This specifies one of the option to configure the MAC address aging time.
+  * mac_address_table_aging - This specifies one of the option to configure the MAC address aging time.
     - Custom - This option allows the the user to configure the MAC address aging time on the switch. For Switch Model UCS-FI-6454 or higher, the valid range is 120 to 918000 seconds and the switch will set the lower multiple of 5 of the given time.
     - Default - (Default) This option sets the default MAC address aging time to 14500 seconds for End Host mode.
     - Never - This option disables the MAC address aging process and never allows the MAC address entries to get removed from the table.
@@ -32,18 +32,18 @@ variable "switch_control_policies" {
   * udld_recovery_action - UDLD recovery when enabled, attempts to bring an UDLD error-disabled port out of reset.
     - none - (Default) No action is taken when a port has been disabled.
     - reset - The switch will attempt to bring a UDLD error-disabled port back online.
-  * vlan_optimization - To enable or disable the VLAN port count optimization.  Default is false.
+  * vlan_port_count_optimization - To enable or disable the VLAN port count optimization.  Default is false.
   EOT
   type = map(object(
     {
-      description           = optional(string)
-      mac_aging_option      = optional(string)
-      mac_aging_time        = optional(number)
-      organization          = optional(string)
-      tags                  = optional(list(map(string)))
-      udld_message_interval = optional(number)
-      udld_recovery_action  = optional(string)
-      vlan_optimization     = optional(bool)
+      description                  = optional(string)
+      mac_aging_option             = optional(string)
+      mac_aging_time               = optional(number)
+      organization                 = optional(string)
+      tags                         = optional(list(map(string)))
+      udld_message_interval        = optional(number)
+      udld_recovery_action         = optional(string)
+      vlan_port_count_optimization = optional(bool)
     }
   ))
 }
@@ -65,11 +65,11 @@ module "switch_control_policies" {
   for_each              = local.switch_control_policies
   description           = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy."
   name                  = each.key
-  mac_aging_option      = each.value.mac_aging_option
+  mac_aging_option      = each.value.mac_address_table_aging
   mac_aging_time        = each.value.mac_aging_time
   udld_message_interval = each.value.udld_message_interval
   udld_recovery_action  = each.value.udld_recovery_action
-  vlan_optimization     = each.value.vlan_optimization
+  vlan_optimization     = each.value.vlan_port_count_optimization
   org_moid              = local.org_moids[each.value.organization].moid
   tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = flatten([

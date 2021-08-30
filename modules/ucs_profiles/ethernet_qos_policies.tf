@@ -4,6 +4,21 @@
 # GUI Location: Configure > Policies > Create Policy > Ethernet QoS
 #_________________________________________________________________________
 
+variable "ethernet_qos_policies" {
+  default {
+    default = {
+      burst                 = 10240
+      description           = ""
+      enable_trust_host_cos = false
+      priority              = "Best Effort"
+      mtu                   = 1500
+      organization          = "default"
+      rate_limit            = 0
+      tags                  = []
+    }
+  }
+}
+
 module "ethernet_qos_policies" {
   depends_on = [
     local.org_moids

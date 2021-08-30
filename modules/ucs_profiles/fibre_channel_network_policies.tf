@@ -4,6 +4,18 @@
 # GUI Location: Policies > Create Policy > Fibre Channel Network
 #________________________________________________________________
 
+variable "fibre_channel_network_policies" {
+  default {
+    default = {
+      default_vlan_id = 4
+      description     = ""
+      vsan_id         = 4
+      organization    = "default"
+      tags            = []
+    }
+  }
+}
+
 module "fibre_channel_network_policies_a" {
   depends_on = [
     local.org_moids
