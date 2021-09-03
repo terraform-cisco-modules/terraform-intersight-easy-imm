@@ -43,7 +43,7 @@ module "device_connector_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/device_connector_policies"
+  source      = "../../../terraform-intersight-imm/modules/device_connector_policies"
   for_each    = local.device_connector_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Device Connector Policy."
   lockout     = each.value.lockout
@@ -53,6 +53,6 @@ module "device_connector_policies" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.device_connector_policies == each.key
+    if local.ucs_server_profiles[s].profile.device_connector_policy == each.key
   ]
 }

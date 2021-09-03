@@ -102,23 +102,6 @@ ucs_domain_profiles = {
 
 #______________________________________________
 #
-# Flow Control Policies
-#______________________________________________
-
-policies_flow_control = {
-  "Asgard_flowctrl" = {
-    description          = ""
-    flow_control_mode    = "auto"
-    flow_control_receive = "Disabled"
-    flow_control_send    = "Disabled"
-    organization         = "Asgard"
-    tags                 = []
-  }
-}
-
-
-#______________________________________________
-#
 # LAN Port Channel Policies
 #______________________________________________
 
@@ -133,74 +116,6 @@ policies_port_channel_lan = {
     policies_link_control     = "Asgard_linkctrl"
     tags                      = []
     ucs_domain_profile        = "asgard-ucs"
-  }
-}
-
-
-#______________________________________________
-#
-# Link Aggregation Policies
-#______________________________________________
-
-policies_link_aggregation = {
-  "Asgard_linkagg" = {
-    description        = ""
-    lacp_rate          = "normal"
-    organization       = "Asgard"
-    suspend_individual = false
-    tags               = []
-  }
-}
-
-
-#______________________________________________
-#
-# Link Control Policies
-#______________________________________________
-
-policies_link_control = {
-  "Asgard_linkctrl" = {
-    description      = ""
-    organization     = "Asgard"
-    tags             = []
-    udld_admin_state = "Enabled"
-    udld_mode        = "normal"
-  }
-}
-
-
-#______________________________________________
-#
-# Network Connectivity (DNS) Policies
-#______________________________________________
-
-policies_network_connectivity = {
-  "Asgard_sw_dns" = {
-    description    = ""
-    dns_servers_v4 = ["10.101.128.15", "10.101.128.16"]
-    dns_servers_v6 = []
-    dynamic_dns    = false
-    ipv6_enable    = false
-    organization   = "Asgard"
-    tags           = []
-    update_domain  = ""
-  }
-}
-
-
-#______________________________________________
-#
-# NTP Policies
-#______________________________________________
-
-policies_ntp = {
-  "Asgard_sw_ntp" = {
-    description  = ""
-    enabled      = true
-    ntp_servers  = ["10.101.128.15", "10.101.128.16"]
-    organization = "Asgard"
-    tags         = []
-    timezone     = "America/New_York"
   }
 }
 

@@ -37,7 +37,7 @@ variable "switch_control_policies" {
   type = map(object(
     {
       description                  = optional(string)
-      mac_aging_option             = optional(string)
+      mac_address_table_aging      = optional(string)
       mac_aging_time               = optional(number)
       organization                 = optional(string)
       tags                         = optional(list(map(string)))
@@ -58,10 +58,10 @@ variable "switch_control_policies" {
 module "switch_control_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_profiles_a,
-    module.ucs_domain_profiles_b
+    module.ucs_domain_switches_a,
+    module.ucs_domain_switches_b
   ]
-  source                = "terraform-cisco-modules/imm/intersight//modules/switch_control_policies"
+  source                = "../../../terraform-intersight-imm/modules/switch_control_policies"
   for_each              = local.switch_control_policies
   description           = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy."
   name                  = each.key
@@ -74,8 +74,8 @@ module "switch_control_policies" {
   tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = flatten([
     for s in sort(keys(local.ucs_domain_profiles)) :
-    [module.ucs_domain_profiles_a[s].moid, module.ucs_domain_profiles_b[s].moid]
-    if local.ucs_domain_profiles[s].profile.switch_control_policies == each.key
+    [module.ucs_domain_switches_a[s].moid, module.ucs_domain_switches_b[s].moid]
+    if local.ucs_domain_profiles[s].switch_control_policy == each.key
   ])
 }
 

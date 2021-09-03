@@ -59,7 +59,7 @@ module "ipmi_over_lan_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source         = "terraform-cisco-modules/imm/intersight//modules/ipmi_over_lan_policies"
+  source         = "../../../terraform-intersight-imm/modules/ipmi_over_lan_policies"
   for_each       = local.ipmi_over_lan_policies
   description    = each.value.description != "" ? each.value.description : "${each.key} IPMI over LAN Policy."
   enabled        = each.value.enabled
@@ -71,6 +71,6 @@ module "ipmi_over_lan_policies" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.ipmi_over_lan_policies == each.key
+    if local.ucs_server_profiles[s].profile.ipmi_over_lan_policy == each.key
   ]
 }

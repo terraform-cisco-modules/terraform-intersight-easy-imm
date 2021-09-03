@@ -49,7 +49,7 @@ module "ssh_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/ssh_policies"
+  source      = "../../../terraform-intersight-imm/modules/ssh_policies"
   for_each    = local.ssh_policies
   description = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
   enabled     = each.value.enabled
@@ -61,6 +61,6 @@ module "ssh_policies" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.ssh_policies == each.key
+    if local.ucs_server_profiles[s].profile.ssh_policy == each.key
   ]
 }

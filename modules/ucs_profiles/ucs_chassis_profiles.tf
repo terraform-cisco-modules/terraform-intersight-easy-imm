@@ -8,79 +8,58 @@ variable "ucs_chassis_profiles" {
   default = {
     default = {
       action              = "No-op"
-      assigned_chassis    = false
+      assign_chassis      = false
+      imc_access_policy   = ""
+      organization        = "default"
+      power_policy        = ""
+      snmp_policy         = ""
+      target_platform     = "FIAttached"
+      thermal_policy      = ""
       description         = ""
-      name                = "" # If Name is not specified the Serial Will be assigned as the Hostname
+      serial_number       = ""
       src_template        = ""
       tags                = []
       wait_for_completion = false
     }
   }
   description = <<-EOT
-  key - Serial Number of the Chassis.
+  key - Name for the Chassis.
   * action - Action to Perform on the Chassis Profile Assignment.  Options are:
     - Deploy
     - No-op
     - Unassign
-  * assigned_chassis - A reference to a equipmentChassis resource.
+  * assign_chassis - Set flag to True to Assign the Profile to a Physical Chassis Serial Number.
   * description - Description for the Profile.
-  * name - If Name is not specified the Serial Will be assigned as the Hostname.
-  * src_template - The Name of the ucs_chassis_template to apply to the chassis.
-  * tags -
+  * imc_access_policy - Name of the IMC Access Policy to Assign.
+  * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
+    -  https://intersight.com/an/settings/organizations/
+  * power_policy - Name of the Power Policy to Assign.
+  * serial_number - Serial Number of the Chassis to Assign.
+  * snmp_policy - Name of the SNMP Policy to Assign.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * target_platform - The platform for which the chassis profile is applicable. It can either be a chassis that is operating in standalone mode or which is attached to a Fabric Interconnect managed by Intersight.
+    - FIAttached - Chassis which are connected to a Fabric Interconnect that is managed by Intersight.
+  * thermal_policy - Name of the Thermal Policy to Assign.
   * wait_for_completion -
   EOT
   type = map(object(
     {
       action              = optional(string)
-      assigned_chassis    = optional(bool)
+      assign_chassis      = optional(bool)
       description         = optional(string)
-      name                = optional(string)
-      src_template        = optional(string)
+      imc_access_policy   = optional(string)
+      organization        = optional(string)
+      power_policy        = optional(string)
+      serial_number       = optional(string)
+      snmp_policy         = optional(string)
+      target_platform     = optional(string)
+      thermal_policy      = optional(string)
       tags                = optional(list(map(string)))
       wait_for_completion = optional(bool)
     }
   ))
 }
 
-variable "ucs_chassis_templates" {
-  default = {
-    default = {
-      imc_access_policies   = ""
-      organization          = "default"
-      power_policies        = ""
-      snmp_policies         = ""
-      snmp_1_user_policies  = ""
-      snmp_2_users_policies = ""
-      target_platform       = "FIAttached"
-      thermal_policies      = ""
-    }
-  }
-  description = <<-EOT
-  key - Name of the UCS Chassis Template.
-  * imc_access_policies - Name of the IMC Access Policy Created.
-  * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
-    -  https://intersight.com/an/settings/organizations/
-  * power_policies - Name of the Power Policy Created.
-  * snmp_policies - Name of the SNMP Policy Created.
-  * snmp_1_user_policies - Name of the SNMP Policy Created.
-  * snmp_2_users_policies - Name of the SNMP Policy Created.
-  * target_platform - The platform for which the chassis profile is applicable. It can either be a chassis that is operating in standalone mode or which is attached to a Fabric Interconnect managed by Intersight.
-    - FIAttached - Chassis which are connected to a Fabric Interconnect that is managed by Intersight.
-  * thermal_policies - Name of the Thermal Policy Created.
-  EOT
-  type = map(object(
-    {
-      imc_access_policies   = optional(string)
-      organization          = optional(string)
-      power_policies        = optional(string)
-      snmp_policies         = optional(string)
-      snmp_1_user_policies  = optional(string)
-      snmp_2_users_policies = optional(string)
-      target_platform       = optional(string)
-      thermal_policies      = optional(string)
-    }
-  ))
-}
 
 #_________________________________________________________________________
 #
@@ -92,16 +71,16 @@ module "ucs_chassis_profiles" {
   depends_on = [
     local.org_moids
   ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/ucs_chassis_profiles"
+  source              = "../../../terraform-intersight-imm/modules/ucs_chassis_profiles"
   for_each            = local.ucs_chassis_profiles
-  action              = each.value.profile.action
-  description         = each.value.profile.description != "" ? each.value.profile.description : "${each.value.profile.name} Chassis Profile."
-  name                = each.value.profile.name != "" ? each.value.profile.name : each.key
-  org_moid            = local.org_moids[each.value.profile.organization].moid
-  tags                = length(each.value.profile.tags) > 0 ? each.value.profile.tags : local.tags
-  target_platform     = each.value.profile.target_platform == "Standalone" ? "Standalone" : "FIAttached"
-  wait_for_completion = each.value.profile.wait_for_completion
-  assigned_chassis = each.value.profile.assigned_chassis == true ? [
+  action              = each.value.action
+  description         = each.value.description != "" ? each.value.description : "${each.key} Chassis Profile."
+  name                = each.key
+  org_moid            = local.org_moids[each.value.organization].moid
+  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
+  wait_for_completion = each.value.wait_for_completion
+  assigned_chassis    = each.value.assign_chassis == true ? [
     {
       moid = data.intersight_equipment_chassis.chassis[each.key].results[0].moid
     }

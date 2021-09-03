@@ -48,7 +48,7 @@ module "thermal_policies" {
     local.org_moids,
     module.ucs_chassis_profiles
   ]
-  source           = "terraform-cisco-modules/imm/intersight//modules/policies_thermal"
+  source           = "../../../terraform-intersight-imm/modules/thermal_policies"
   for_each         = local.thermal_policies
   description      = each.value.description != "" ? each.value.description : "${each.key} Thermal Policy."
   fan_control_mode = each.value.fan_control_mode
@@ -58,6 +58,6 @@ module "thermal_policies" {
   profiles = [
     for s in sort(keys(local.ucs_chassis_profiles)) :
     module.ucs_chassis_profiles[s].moid
-    if local.ucs_chassis_profiles[s].profile.thermal_policies == each.key
+    if local.ucs_chassis_profiles[s].thermal_policy == each.key
   ]
 }

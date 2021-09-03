@@ -59,7 +59,7 @@ module "network_connectivity_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source         = "terraform-cisco-modules/imm/intersight//modules/network_connectivity_policies"
+  source         = "../../../terraform-intersight-imm/modules/network_connectivity_policies"
   for_each       = local.network_connectivity_policies
   description    = each.value.description != "" ? each.value.description : "${each.key} Network Connectivity (DNS) Policy."
   dns_servers_v4 = each.value.dns_servers_v4
@@ -72,7 +72,10 @@ module "network_connectivity_policies" {
   update_domain  = each.value.update_domain
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.network_connectivity_policies == each.key
+    {
+      moid = module.ucs_server_profiles[s].moid
+      type = "server"
+    }
+    if local.ucs_server_profiles[s].profile.network_connectivity_policy == each.key
   ]
 }

@@ -4,14 +4,21 @@
 #__________________________________________________________
 
 data "terraform_remote_state" "pools" {
-  backend = "remote"
+  backend = "local"
   config = {
-    organization = var.tfc_organization
-    workspaces = {
-      name = var.ws_pools
-    }
+    path = "../pools/terraform.tfstate"
   }
 }
+
+# data "terraform_remote_state" "pools" {
+#   backend = "remote"
+#   config = {
+#     organization = var.tfc_organization
+#     workspaces = {
+#       name = var.ws_pools
+#     }
+#   }
+# }
 
 
 #____________________________________________________________
@@ -32,13 +39,13 @@ data "intersight_organization_organization" "org_moid" {
 #   Operate > Servers > Copy the Serial from the Column.
 #____________________________________________________________
 
-data "intersight_compute_physical_summary" "server" {
-  for_each = {
-    for k, v in local.ucs_server_profiles : k => v
-    if v.profile.assign_server == true
-  }
-  serial = each.key
-}
+# data "intersight_compute_physical_summary" "server" {
+#   for_each = {
+#     for k, v in local.ucs_server_profiles : k => v
+#     if v.profile.assign_server == true
+#   }
+#   serial = each.key
+# }
 
 
 #____________________________________________________________
@@ -51,9 +58,9 @@ data "intersight_compute_physical_summary" "server" {
 data "intersight_equipment_chassis" "chassis" {
   for_each = {
     for k, v in local.ucs_chassis_profiles : k => v
-    if v.profile.assigned_chassis == true
+    if v.assign_chassis == true
   }
-  serial = each.key
+  serial = each.value.serial_number
 }
 
 
@@ -68,15 +75,15 @@ data "intersight_equipment_chassis" "chassis" {
 data "intersight_network_element_summary" "fi_a" {
   for_each = {
     for assign, serial in local.ucs_domain_profiles : assign => serial
-    if serial.profile.assign_switches == true
+    if serial.assign_switches == true
   }
-  serial = each.value.profile.domain_serial_a
+  serial = each.value.domain_serial_a
 }
 
 data "intersight_network_element_summary" "fi_b" {
   for_each = {
     for assign, serial in local.ucs_domain_profiles : assign => serial
-    if serial.profile.assign_switches == true
+    if serial.assign_switches == true
   }
-  serial = each.value.profile.domain_serial_b
+  serial = each.value.domain_serial_b
 }

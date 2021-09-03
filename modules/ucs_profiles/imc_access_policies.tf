@@ -52,7 +52,7 @@ module "imc_access_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source         = "terraform-cisco-modules/imm/intersight//modules/policies_imc_access"
+  source         = "../../../terraform-intersight-imm/modules/imc_access_policies"
   for_each       = local.imc_access_policies
   description    = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
   inband_ip_pool = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
@@ -65,6 +65,6 @@ module "imc_access_policies" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.imc_access_policies == each.key
+    if local.ucs_server_profiles[s].profile.imc_access_policy == each.key
   ]
 }

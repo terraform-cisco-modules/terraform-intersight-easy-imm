@@ -4,23 +4,6 @@
 #__________________________________________________________
 
 locals {
-  # Intersight Organization Variables
-  organizations = var.organizations
-  org_moids = {
-    for v in sort(keys(data.intersight_organization_organization.org_moid)) : v => {
-      moid = data.intersight_organization_organization.org_moid[v].results[0].moid
-    }
-  }
-
-  # Tags for Deployment
-  tags = var.tags
-
-  # Terraform Cloud Remote Resources
-  ip_pools   = data.terraform_remote_state.pools.outputs.ip_pools
-  iqn_pools  = data.terraform_remote_state.pools.outputs.iqn_pools
-  mac_pools  = data.terraform_remote_state.pools.outputs.mac_pools
-  fc_pools   = data.terraform_remote_state.pools.outputs.fc_pools
-  uuid_pools = data.terraform_remote_state.pools.outputs.uuid_pools
   #__________________________________________________________
   #
   # BIOS Policy Section Locals
@@ -49,73 +32,6 @@ locals {
       tags         = (v.tags != null ? v.tags : [])
     }
   }
-
-  #__________________________________________________________
-  #
-  # Device Connector Policy Section Locals
-  #__________________________________________________________
-
-  device_connector_policies = {
-    for k, v in var.device_connector_policies : k => {
-      description  = (v.description != null ? v.description : "")
-      lockout      = (v.lockout != null ? v.lockout : false)
-      organization = (v.organization != null ? v.organization : "default")
-      tags         = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # Flow Control Policy Section Locals
-  #__________________________________________________________
-
-  flow_control_policies = {
-    for k, v in var.flow_control_policies : k => {
-      description  = (v.description != null ? v.description : "")
-      priority     = (v.priority != null ? v.priority : "auto")
-      organization = (v.organization != null ? v.organization : "default")
-      receive      = (v.receive != null ? v.receive : "Disabled")
-      send         = (v.send != null ? v.send : "Disabled")
-      tags         = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # IMC Access Policy Section Locals
-  #__________________________________________________________
-
-  imc_access_policies = {
-    for k, v in var.imc_access_policies : k => {
-      description  = (v.description != null ? v.description : "")
-      inband_vlan  = (v.inband_vlan != null ? v.inband_vlan : 1)
-      imc_ip_pool  = (v.imc_ip_pool != null ? v.imc_ip_pool : "")
-      ipv4_enable  = (v.ipv4_enable != null ? v.ipv4_enable : true)
-      ipv6_enable  = (v.ipv6_enable != null ? v.ipv6_enable : false)
-      organization = (v.organization != null ? v.organization : "default")
-      tags         = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # IPMI over LAN Policy Section Locals
-  #__________________________________________________________
-
-  ipmi_over_lan_policies = {
-    for k, v in var.ipmi_over_lan_policies : k => {
-      description  = (v.description != null ? v.description : "")
-      enabled      = (v.enabled != null ? v.enabled : true)
-      ipmi_key     = (v.ipmi_key != null ? v.ipmi_key : null)
-      organization = (v.organization != null ? v.organization : "default")
-      privilege    = (v.privilege != null ? v.privilege : "admin")
-      tags         = (v.tags != null ? v.tags : [])
-    }
-  }
-
 
   #__________________________________________________________
   #
@@ -268,38 +184,6 @@ locals {
 
   #__________________________________________________________
   #
-  # Link Aggregation Policy Section Locals
-  #__________________________________________________________
-
-  link_aggregation_policies = {
-    for k, v in var.link_aggregation_policies : k => {
-      description        = (v.description != null ? v.description : "")
-      lacp_rate          = (v.lacp_rate != null ? v.lacp_rate : "normal")
-      organization       = (v.organization != null ? v.organization : "default")
-      suspend_individual = (v.suspend_individual != null ? v.suspend_individual : false)
-      tags               = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # Link Control Policy Section Locals
-  #__________________________________________________________
-
-  link_control_policies = {
-    for k, v in var.link_control_policies : k => {
-      description      = (v.description != null ? v.description : "")
-      organization     = (v.organization != null ? v.organization : "default")
-      tags             = (v.tags != null ? v.tags : [])
-      udld_admin_state = (v.udld_admin_state != null ? v.udld_admin_state : "Enabled")
-      udld_mode        = (v.udld_mode != null ? v.udld_mode : "normal")
-    }
-  }
-
-
-  #__________________________________________________________
-  #
   # Local User Policy Section Locals
   #__________________________________________________________
 
@@ -337,42 +221,6 @@ locals {
 
   #__________________________________________________________
   #
-  # Network Connectivity (DNS) Policy Section Locals
-  #__________________________________________________________
-
-  network_connectivity_policies = {
-    for k, v in var.network_connectivity_policies : k => {
-      description    = (v.description != null ? v.description : "")
-      dns_servers_v4 = (v.dns_servers_v4 != null ? v.dns_servers_v4 : ["208.67.220.220", "208.67.222.222"])
-      dns_servers_v6 = (v.dns_servers_v6 != null ? v.dns_servers_v6 : [])
-      dynamic_dns    = (v.dynamic_dns != null ? v.dynamic_dns : false)
-      ipv6_enable    = (v.ipv6_enable != null ? v.ipv6_enable : false)
-      organization   = (v.organization != null ? v.organization : "default")
-      tags           = (v.tags != null ? v.tags : [])
-      update_domain  = (v.update_domain != null ? v.update_domain : "")
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # NTP Policy Section Locals
-  #__________________________________________________________
-
-  ntp_policies = {
-    for k, v in var.ntp_policies : k => {
-      description  = (v.description != null ? v.description : "")
-      enabled      = (v.enabled != null ? v.enabled : true)
-      ntp_servers  = (v.ntp_servers != null ? v.ntp_servers : ["time-a-g.nist.gov", "time-b-g.nist.gov"])
-      organization = (v.organization != null ? v.organization : "default")
-      tags         = (v.tags != null ? v.tags : [])
-      timezone     = (v.timezone != null ? v.timezone : "Etc/GMT")
-    }
-  }
-
-
-  #__________________________________________________________
-  #
   # Persistent Memory Policy Section Locals
   #__________________________________________________________
 
@@ -386,24 +234,6 @@ locals {
       organization                 = (v.organization != null ? v.organization : "default")
       retain_namespaces            = (v.retain_namespaces != null ? v.retain_namespaces : true)
       tags                         = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # Power Policy Section Locals
-  #__________________________________________________________
-
-  power_policies = {
-    for k, v in var.power_policies : k => {
-      allocated_budget    = (v.allocated_budget != null ? v.allocated_budget : 0)
-      description         = (v.description != null ? v.description : "")
-      organization        = (v.organization != null ? v.organization : "default")
-      power_profiling     = (v.power_profiling != null ? v.power_profiling : "Enabled")
-      power_restore_state = (v.power_restore_state != null ? v.power_restore_state : "LastState")
-      tags                = (v.tags != null ? v.tags : [])
-      redundancy_mode     = (v.redundancy_mode != null ? v.redundancy_mode : "Grid")
     }
   }
 
@@ -447,26 +277,6 @@ locals {
 
   #__________________________________________________________
   #
-  # SMTP Policy Section Locals
-  #__________________________________________________________
-
-  smtp_policies = {
-    for k, v in var.smtp_policies : k => {
-      description     = (v.description != null ? v.description : "")
-      enabled         = (v.enabled != null ? v.enabled : true)
-      min_severity    = (v.min_severity != null ? v.min_severity : "critical")
-      organization    = (v.organization != null ? v.organization : "default")
-      sender_email    = (v.sender_email != null ? v.sender_email : "")
-      smtp_port       = (v.smtp_port != null ? v.smtp_port : 25)
-      smtp_recipients = (v.smtp_recipients != null ? v.smtp_recipients : [])
-      smtp_server     = (v.smtp_server != null ? v.smtp_server : "")
-      tags            = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #__________________________________________________________
-  #
   # SNMP Policy Section Locals
   #__________________________________________________________
 
@@ -488,23 +298,6 @@ locals {
       system_contact             = (v.system_contact != null ? v.system_contact : "")
       system_location            = (v.system_location != null ? v.system_location : "")
       tags                       = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # SSH Policy Section Locals
-  #__________________________________________________________
-
-  ssh_policies = {
-    for k, v in var.ssh_policies : k => {
-      description  = (v.description != null ? v.description : "")
-      enabled      = (v.enabled != null ? v.enabled : true)
-      organization = (v.organization != null ? v.organization : "default")
-      ssh_port     = (v.ssh_port != null ? v.ssh_port : 22)
-      tags         = (v.tags != null ? v.tags : [])
-      timeout      = (v.timeout != null ? v.timeout : 1800)
     }
   }
 
@@ -533,25 +326,6 @@ locals {
       unused_disks  = (v.unused_disks != null ? v.unused_disks : "UnconfiguredGood")
       use_jbods     = (v.use_jbods != null ? v.use_jbods : true)
       write_policy  = (v.write_policy != null ? v.write_policy : "Default")
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # Switch Control Policy Section Locals
-  #__________________________________________________________
-
-  switch_control_policies = {
-    for k, v in var.switch_control_policies : k => {
-      description           = (v.description != null ? v.description : "")
-      mac_aging_option      = (v.mac_aging_option != null ? v.mac_aging_option : "Default")
-      mac_aging_time        = (v.mac_aging_time != null ? v.mac_aging_time : 14500)
-      organization          = (v.organization != null ? v.organization : "default")
-      tags                  = (v.tags != null ? v.tags : [])
-      udld_message_interval = (v.udld_message_interval != null ? v.udld_message_interval : 15)
-      udld_recovery_action  = (v.udld_recovery_action != null ? v.udld_recovery_action : "none")
-      vlan_optimization     = (v.vlan_optimization != null ? v.vlan_optimization : false)
     }
   }
 
@@ -617,146 +391,6 @@ locals {
       silver_packet_drop             = (v.silver_packet_drop != null ? v.silver_packet_drop : true)
       silver_weight                  = (v.silver_weight != null ? v.silver_weight : 1)
       tags                           = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #__________________________________________________________
-  #
-  # Thermal Policy Section Locals
-  #__________________________________________________________
-
-  thermal_policies = {
-    for k, v in var.thermal_policies : k => {
-      description      = (v.description != null ? v.description : "")
-      fan_control_mode = (v.fan_control_mode != null ? v.fan_control_mode : "Balanced")
-      organization     = (v.organization != null ? v.organization : "default")
-      tags             = (v.tags != null ? v.tags : [])
-    }
-  }
-
-
-  #______________________________________________
-  #
-  # UCS Chassis Profiles Variables
-  #______________________________________________
-  ucs_chassis_profiles = {
-    for k, v in var.ucs_chassis_profiles : k =>
-    {
-      for key, value in var.ucs_chassis_templates : "profile" =>
-      {
-        action                = (v.action != null ? v.action : "No-op")
-        assigned_chassis      = (v.assigned_chassis != null ? v.assigned_chassis : false)
-        description           = (v.description != null ? v.description : "")
-        name                  = (v.name != null ? v.name : "")
-        organization          = (value.organization != null ? value.organization : "default")
-        policies_imc_access   = (value.policies_imc_access != null ? value.policies_imc_access : "")
-        policies_power        = (value.policies_power != null ? value.policies_power : "")
-        policies_snmp         = (value.policies_snmp != null ? value.policies_snmp : "")
-        policies_snmp_1_user  = (value.policies_snmp_1_user != null ? value.policies_snmp_1_user : "")
-        policies_snmp_2_users = (value.policies_snmp_2_users != null ? value.policies_snmp_2_users : "")
-        policies_thermal      = (value.policies_thermal != null ? value.policies_thermal : "")
-        tags                  = (v.tags != null ? v.tags : [])
-        target_platform       = (value.target_platform != null ? value.target_platform : "FIAttached")
-        wait_for_completion   = (v.wait_for_completion != null ? v.wait_for_completion : false)
-      } if v.src_template == key
-    }
-  }
-
-
-  #______________________________________________
-  #
-  # UCS Domain Variables
-  #______________________________________________
-  ucs_domain_profiles = {
-    for k, v in var.ucs_domain_profiles : k =>
-    {
-      for key, value in var.ucs_domain_templates : "profile" =>
-      {
-        action                        = (v.action != null ? v.action : "No-op")
-        assign_switches               = (v.assign_switches != null ? v.assign_switches : false)
-        device_model                  = (v.device_model != null ? v.device_model : "UCS-FI-6454")
-        domain_description            = (v.domain_description != null ? v.domain_description : "")
-        domain_descr_fi_a             = (v.domain_descr_fi_a != null ? v.domain_descr_fi_a : "")
-        domain_descr_fi_b             = (v.domain_descr_fi_b != null ? v.domain_descr_fi_b : "")
-        domain_serial_a               = (v.domain_serial_a != null ? v.domain_serial_a : "")
-        domain_serial_b               = (v.domain_serial_b != null ? v.domain_serial_b : "")
-        fc_ports                      = (value.fc_ports != null ? value.fc_ports : [1, 4])
-        fc_slot_id                    = (value.fc_slot_id != null ? value.fc_slot_id : 1)
-        organization                  = (value.organization != null ? value.organization : "default")
-        policies_network_connectivity = (value.policies_network_connectivity != null ? value.policies_network_connectivity : "")
-        policies_ntp                  = (value.policies_ntp != null ? value.policies_ntp : "")
-        policies_snmp                 = (value.policies_snmp != null ? value.policies_snmp : "")
-        policies_switch_control       = (value.policies_switch_control != null ? value.policies_switch_control : "")
-        policies_syslog               = (value.policies_syslog != null ? value.policies_syslog : "")
-        policies_system_qos           = (value.policies_system_qos != null ? value.policies_system_qos : "")
-        policies_vlan                 = (value.policies_vlan != null ? value.policies_vlan : "")
-        port_policy_descr_a           = (v.port_policy_descr_a != null ? v.port_policy_descr_a : "")
-        port_policy_descr_b           = (v.port_policy_descr_b != null ? v.port_policy_descr_b : "")
-        san_fill_pattern              = (value.san_fill_pattern != null ? value.san_fill_pattern : "Arbff")
-        san_pc_breakoutswport         = (value.san_pc_breakoutswport != null ? value.san_pc_breakoutswport : 0)
-        san_pc_ports                  = (value.san_pc_ports != null ? value.san_pc_ports : [1, 2])
-        san_pc_speed                  = (value.san_pc_speed != null ? value.san_pc_speed : "16Gbps")
-        san_pc_slot_id                = (value.san_pc_slot_id != null ? value.san_pc_slot_id : 1)
-        server_ports                  = (v.server_ports != null ? v.server_ports : "5-18")
-        tags                          = (v.tags != null ? v.tags : [])
-        vsan_a                        = (value.vsan_a != null ? value.vsan_a : 100)
-        vsan_a_description            = (value.vsan_a_description != null ? value.vsan_a_description : "")
-        vsan_a_fcoe                   = (value.vsan_a_fcoe != null ? value.vsan_a_fcoe : null)
-        vsan_b                        = (value.vsan_b != null ? value.vsan_b : 200)
-        vsan_b_description            = (value.vsan_b_description != null ? value.vsan_b_description : "")
-        vsan_b_fcoe                   = (value.vsan_b_fcoe != null ? value.vsan_b_fcoe : null)
-        vsan_enable_trunking          = (value.vsan_enable_trunking != null ? value.vsan_enable_trunking : false)
-        vsan_prefix                   = (value.vsan_prefix != null ? value.vsan_prefix : "")
-      } if v.src_template == key
-    }
-  }
-
-
-  #______________________________________________
-  #
-  # UCS Domain Variables
-  #______________________________________________
-  ucs_server_profiles = {
-    for k, v in var.ucs_server_profiles : k =>
-    {
-      for key, value in var.ucs_server_templates : "profile" =>
-      {
-        action                        = (v.action != null ? v.action : "No-op")
-        assign_server                 = (v.assign_server != null ? v.assign_server : false)
-        description                   = (v.description != null ? v.description : "")
-        name                          = (v.name != null ? v.name : "")
-        operating_system              = (value.operating_system != null ? value.operating_system : "vmware")
-        organization                  = (value.organization != null ? value.organization : "default")
-        policies_bios                 = (value.policies_bios != null ? value.policies_bios : "")
-        policies_boot_order           = (value.policies_boot_order != null ? value.policies_boot_order : "")
-        policies_device_connector     = (value.policies_device_connector != null ? value.policies_device_connector : "")
-        policies_imc_access           = (value.policies_imc_access != null ? value.policies_imc_access : "")
-        policies_ipmi_over_lan        = (value.policies_ipmi_over_lan != null ? value.policies_ipmi_over_lan : "")
-        policies_lan_connectivity     = (value.policies_lan_connectivity != null ? value.policies_lan_connectivity : "")
-        policies_ldap                 = (value.policies_ldap != null ? value.policies_ldap : "")
-        policies_local_users          = (value.policies_local_users != null ? value.policies_local_users : "")
-        policies_network_connectivity = (value.policies_network_connectivity != null ? value.policies_network_connectivity : "")
-        policies_ntp                  = (value.policies_ntp != null ? value.policies_ntp : "")
-        policies_persistent_memory    = (value.policies_persistent_memory != null ? value.policies_persistent_memory : "")
-        policies_power                = (value.policies_power != null ? value.policies_power : "")
-        policies_san_connectivity     = (value.policies_san_connectivity != null ? value.policies_san_connectivity : "")
-        policies_sd_card              = (value.policies_sd_card != null ? value.policies_sd_card : "")
-        policies_serial_over_lan      = (value.policies_serial_over_lan != null ? value.policies_serial_over_lan : "")
-        policies_smtp                 = (value.policies_smtp != null ? value.policies_smtp : "")
-        policies_snmp                 = (value.policies_snmp != null ? value.policies_snmp : "")
-        policies_snmp_1_user          = (value.policies_snmp_1_user != null ? value.policies_snmp_1_user : "")
-        policies_snmp_2_users         = (value.policies_snmp_2_users != null ? value.policies_snmp_2_users : "")
-        policies_ssh                  = (value.policies_ssh != null ? value.policies_ssh : "")
-        policies_storage              = (value.policies_storage != null ? value.policies_storage : "")
-        policies_syslog               = (value.policies_syslog != null ? value.policies_syslog : "")
-        policies_virtual_kvm          = (value.policies_virtual_kvm != null ? value.policies_virtual_kvm : "")
-        policies_virtual_media        = (value.policies_virtual_media != null ? value.policies_virtual_media : "")
-        tags                          = (v.tags != null ? v.tags : [])
-        target_platform               = (value.target_platform != null ? value.target_platform : "FIAttached")
-        type                          = "instance"
-        wait_for_completion           = (v.wait_for_completion != null ? v.wait_for_completion : false)
-      } if v.src_template == key
     }
   }
 

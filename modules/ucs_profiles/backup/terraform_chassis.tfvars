@@ -52,47 +52,6 @@ organizations = ["Asgard"]
 
 tags = [{ key = "Module", value = "terraform-intersight-easy-imm" }, { key = "Owner", value = "tyscott" }]
 
-#__________________________________________________________
-#
-# Intersight UCS Chassis Profiles - Variables
-#__________________________________________________________
-
-#______________________________________________
-#
-# UCS Chassis Profile Variables
-#______________________________________________
-
-ucs_chassis_templates = {
-  "Asgard_5108" = {
-    organization        = "Asgard"
-    policies_imc_access = "Asgard_imc_chassis"
-    policies_power      = "Asgard_power_5108"
-    policies_snmp       = "Asgard_snmp_chassis"
-    policies_thermal    = "Asgard_thermal_5108"
-    target_platform     = "FIAttached"
-  }
-  "Asgard_9508" = {
-    organization        = "Asgard"
-    policies_imc_access = "Asgard_imc_chassis"
-    policies_power      = "Asgard_power_9508"
-    policies_snmp       = "Asgard_snmp_chassis"
-    policies_thermal    = "Asgard_thermal_9508"
-    target_platform     = "FIAttached"
-  }
-}
-
-ucs_chassis_profiles = {
-  FOX2308P6M7 = {
-    action              = "No-op" # Options are {Delete|Deploy|Ready|No-op|Unassign}.
-    assigned_chassis    = true
-    description         = ""
-    name                = "asgard-ucs-1"
-    src_template        = "Asgard_5108"
-    tags                = []
-    wait_for_completion = false
-  }
-}
-
 
 #__________________________________________________________
 #
@@ -115,33 +74,6 @@ policies_imc_access = {
     tags         = []
   }
 }
-
-#______________________________________________
-#
-# Power Policies
-#______________________________________________
-
-policies_power = {
-  "Asgard_power_5108" = {
-    allocated_budget    = 0
-    description         = "Asgard 5108 Power Policy."
-    organization        = "Asgard"
-    power_profiling     = "Enabled"
-    power_restore_state = "AlwaysOff"
-    redundancy_mode     = "Grid"
-    tags                = []
-  }
-  "Asgard_power_9508" = {
-    allocated_budget    = 0
-    description         = "Asgard X-Series Power Policy."
-    organization        = "Asgard"
-    power_profiling     = "Enabled"
-    power_restore_state = "AlwaysOff"
-    redundancy_mode     = "Grid"
-    tags                = []
-  }
-}
-
 
 #______________________________________________
 #
