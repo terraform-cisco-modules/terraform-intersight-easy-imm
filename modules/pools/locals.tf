@@ -21,8 +21,18 @@ locals {
   #
   # Fibre-Channel Pools
   #______________________________________________
-  fc_pools = {
-    for k, v in var.fc_pools : k => {
+  wwnn_pools = {
+    for k, v in var.wwnn_pools : k => {
+      assignment_order = (v.assignment_order != null ? v.assignment_order : "default")
+      description      = (v.description != null ? v.description : "")
+      id_blocks        = (v.id_blocks != null ? v.id_blocks : [{ from = "20:00:00:25:B5:00:00:00", to = "20:00:00:25:B5:00:00:ff" }])
+      organization     = (v.organization != null ? v.organization : "default")
+      pool_purpose     = (v.pool_purpose != null ? v.pool_purpose : "WWPN")
+      tags             = (v.tags != null ? v.tags : [])
+    }
+  }
+  wwpn_pools = {
+    for k, v in var.wwpn_pools : k => {
       assignment_order = (v.assignment_order != null ? v.assignment_order : "default")
       description      = (v.description != null ? v.description : "")
       id_blocks        = (v.id_blocks != null ? v.id_blocks : [{ from = "20:00:00:25:B5:0a:00:00", to = "20:00:00:25:B5:0a:00:ff" }])
@@ -39,12 +49,10 @@ locals {
     for k, v in var.ip_pools : k => {
       assignment_order = (v.assignment_order != null ? v.assignment_order : "default")
       description      = (v.description != null ? v.description : "")
-      dns_servers_v4   = (v.dns_servers_v4 != null ? v.dns_servers_v4 : ["208.67.220.220", "208.67.222.222"])
-      dns_servers_v6   = (v.dns_servers_v6 != null ? v.dns_servers_v6 : [])
       ipv4_block       = (v.ipv4_block != null ? v.ipv4_block : [])
-      ipv4_config      = (v.ipv4_config != null ? v.ipv4_config : [])
+      ipv4_config      = (v.ipv4_config != null ? v.ipv4_config : {})
       ipv6_block       = (v.ipv6_block != null ? v.ipv6_block : [])
-      ipv6_config      = (v.ipv6_config != null ? v.ipv6_config : [])
+      ipv6_config      = (v.ipv6_config != null ? v.ipv6_config : {})
       organization     = (v.organization != null ? v.organization : "default")
       tags             = (v.tags != null ? v.tags : [])
     }

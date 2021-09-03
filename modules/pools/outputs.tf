@@ -3,9 +3,14 @@
 # Fibre-Channel Pool Outputs
 #__________________________________________________________
 
-output "fc_pools" {
-  description = "moid of the Fibre-Channel Pools."
-  value       = var.fc_pools != {} ? { for v in sort(keys(module.fc_pools)) : v => module.fc_pools[v].moid } : {}
+output "wwnn_pools" {
+  description = "moid of the Fibre-Channel WWNN Pools."
+  value       = var.wwnn_pools != {} ? { for v in sort(keys(module.wwnn_pools)) : v => module.wwnn_pools[v].moid } : {}
+}
+
+output "wwpn_pools" {
+  description = "moid of the Fibre-Channel WWPN Pools."
+  value       = var.wwpn_pools != {} ? { for v in sort(keys(module.wwpn_pools)) : v => module.wwpn_pools[v].moid } : {}
 }
 
 
