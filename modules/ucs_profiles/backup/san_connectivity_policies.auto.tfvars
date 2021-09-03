@@ -14,11 +14,11 @@ san_connectivity_policies = {
     wwnn_pool            = ["DEMO"]
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -57,11 +57,11 @@ san_connectivity_policies = {
     wwnn_pool            = ["NN-ESXi-OCB"]
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -100,11 +100,11 @@ san_connectivity_policies = {
     wwnn_pool            = ["DEMO"]
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -132,11 +132,11 @@ san_connectivity_policies = {
     wwnn_pool            = ["DEMO"]
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

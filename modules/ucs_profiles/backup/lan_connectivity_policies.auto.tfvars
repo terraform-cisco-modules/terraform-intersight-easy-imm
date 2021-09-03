@@ -15,11 +15,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -76,11 +76,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -254,11 +254,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -358,11 +358,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -628,11 +628,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -702,11 +702,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -750,11 +750,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -785,11 +785,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -820,11 +820,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -855,11 +855,11 @@ lan_connectivity_policies = {
     target_platform             = "FI-Attached"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

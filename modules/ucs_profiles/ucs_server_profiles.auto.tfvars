@@ -29,11 +29,11 @@ ucs_server_profiles = {
     ucs_server_profile_template   = "ESXI-OCB-POC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -48,11 +48,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-OCB-POC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -67,11 +67,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-OCB-POC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -86,11 +86,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-ISCSI-AUTO"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -105,11 +105,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -124,11 +124,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -143,11 +143,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -162,11 +162,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -181,11 +181,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -200,11 +200,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -219,11 +219,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -238,11 +238,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -257,11 +257,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -276,11 +276,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -295,11 +295,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "TEST-PLACEMENT-TEMPLATE"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -314,11 +314,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "TEST-PLACEMENT-TEMPLATE"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -333,11 +333,11 @@ ucs_server_profiles = {
     ucs_server_profile_template = "TEST-PLACEMENT-TEMPLATE"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

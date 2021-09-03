@@ -20,8 +20,8 @@ locals {
   iqn_pools  = data.terraform_remote_state.pools.outputs.iqn_pools
   mac_pools  = data.terraform_remote_state.pools.outputs.mac_pools
   uuid_pools = data.terraform_remote_state.pools.outputs.uuid_pools
-  wwnn_pools   = data.terraform_remote_state.pools.outputs.wwnn_pools
-  wwpn_pools   = data.terraform_remote_state.pools.outputs.wwpn_pools
+  wwnn_pools = data.terraform_remote_state.pools.outputs.wwnn_pools
+  wwpn_pools = data.terraform_remote_state.pools.outputs.wwpn_pools
 
 
   #__________________________________________________________
@@ -46,7 +46,7 @@ locals {
 
   ethernet_adapter_policies = {
     for k, v in var.ethernet_adapter_policies : k => {
-      adapter_template       = v.adapter_template != null ? v.adapter_template : ""
+      adapter_template = v.adapter_template != null ? v.adapter_template : ""
       completion_queue_count = length(
         regexall("(Linux-NVMe-RoCE|Linux|Solaris|VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 2 : length(
         regexall("(usNIC)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 6 : length(
@@ -94,7 +94,7 @@ locals {
       ) > 0 ? false : v.adapter_template != null ? false : v.enable_nvgre_offload != null ? v.enable_nvgre_offload : false
       enable_vxlan_offload = length(
         regexall("(Win-AzureStack|Win-HPN|Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))
-        ) > 0 ? true : v.adapter_template != null ? false : v.enable_vxlan_offload != null ? v.enable_vxlan_offload : false
+      ) > 0 ? true : v.adapter_template != null ? false : v.enable_vxlan_offload != null ? v.enable_vxlan_offload : false
       interrupt_coalescing_type = length(
         regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? false : v.adapter_template != null ? "Min" : v.interrupt_coalescing_type != null ? v.interrupt_coalescing_type : false
@@ -102,7 +102,7 @@ locals {
         regexall("(VMwarePassThru)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? "MSI" : v.adapter_template != null ? "MSIx" : v.interrupt_mode != null ? v.interrupt_mode : "MSIx"
       interrupt_timer = v.adapter_template != null ? 125 : v.interrupt_timer != null ? v.interrupt_timer : 125
-      interrupts      = length(
+      interrupts = length(
         regexall("(Linux|Solaris|VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 4 : length(
         regexall("(VMwarePassThru)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 12 : length(
         regexall("(SRIOV)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 32 : length(
@@ -110,7 +110,7 @@ locals {
         regexall("(Linux-NVMe-RoCE|MQ|Win-AzureStack)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 256 : length(
         regexall("(usNICOracleRAC)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? 1024 : v.adapter_template != null ? 8 : v.interrupts != null ? v.interrupts : 8
-      organization        = v.organization != null ? v.organization : "default"
+      organization = v.organization != null ? v.organization : "default"
       receive_queue_count = length(
         regexall("(Linux|Linux-NVMe-RoCE|Solaris|VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 1 : length(
         regexall("(usNIC)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 6 : length(
@@ -124,7 +124,7 @@ locals {
       receive_side_scaling_enable = length(
         regexall("(Linux|Solaris|VMware)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? false : v.adapter_template != null ? true : v.receive_side_scaling_enable != null ? v.receive_side_scaling_enable : true
-      roce_cos    = v.adapter_template != null ? 5 : v.roce_cos != null ? v.roce_cos : 5
+      roce_cos = v.adapter_template != null ? 5 : v.roce_cos != null ? v.roce_cos : 5
       roce_enable = length(
         regexall("(Linux-NVMe-RoCE|MQ-SMBd|SMBClient|SMBServer|Win-AzureStack|Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? true : v.roce_enable != null ? v.roce_enable : false
@@ -169,7 +169,7 @@ locals {
       rss_enable_udp_and_ipv6_hash = length(
         regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? false : v.adapter_template != null ? false : v.rss_enable_udp_and_ipv6_hash != null ? v.rss_enable_udp_and_ipv6_hash : false
-      tags                      = v.tags != null ? v.tags : []
+      tags = v.tags != null ? v.tags : []
       tcp_offload_large_recieve = length(
         regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? true : v.adapter_template != null ? true : v.tcp_offload_large_recieve != null ? v.tcp_offload_large_recieve : true
@@ -268,8 +268,8 @@ locals {
 
   fibre_channel_adapter_policies = {
     for k, v in var.fibre_channel_adapter_policies : k => {
-      adapter_template                         = v.adapter_template != null ? v.adapter_template : ""
-      description                              = length(
+      adapter_template = v.adapter_template != null ? v.adapter_template : ""
+      description = length(
         regexall("(FCNVMeInitiator)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for FCNVMeInitiator." : length(
         regexall("(FCNVMeTarget)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for FCNVMeTarget." : length(
         regexall("(Initiator)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for Initiator." : length(
@@ -284,7 +284,7 @@ locals {
       error_recovery_io_retry_timeout   = v.error_recovery_io_retry_timeout != null ? v.error_recovery_io_retry_timeout : 5
       error_recovery_link_down_timeout  = v.error_recovery_link_down_timeout != null ? v.error_recovery_link_down_timeout : 30000
       error_recovery_port_down_io_retry = v.adapter_template != null ? 30 : v.error_recovery_port_down_io_retry != null ? v.error_recovery_port_down_io_retry : 8
-      error_recovery_port_down_timeout= v.adapter_template == "WindowsBoot" ? 5000 : length(
+      error_recovery_port_down_timeout = v.adapter_template == "WindowsBoot" ? 5000 : length(
         regexall("(FCNVMeInitiator|Initiator|Solaris|VMware|Windows)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? 30000 : v.error_recovery_port_down_timeout != null ? v.error_recovery_port_down_timeout : 10000
       flogi_retries       = v.flogi_retries != null ? v.flogi_retries : 8
@@ -318,10 +318,10 @@ locals {
   fibre_channel_network_policies = {
     for k, v in var.fibre_channel_network_policies : k => {
       default_vlan_id = v.default_vlan_id != null ? v.default_vlan_id : 0
-      description     = v.description     != null ? v.description     : ""
-      organization    = v.organization    != null ? v.organization    : "default"
-      tags            = v.tags            != null ? v.tags            : []
-      vsan_id         = v.vsan_id         != null ? v.vsan_id         : 4
+      description     = v.description != null ? v.description : ""
+      organization    = v.organization != null ? v.organization : "default"
+      tags            = v.tags != null ? v.tags : []
+      vsan_id         = v.vsan_id != null ? v.vsan_id : 4
     }
   }
 
@@ -333,13 +333,13 @@ locals {
 
   fibre_channel_qos_policies = {
     for k, v in var.fibre_channel_qos_policies : k => {
-      burst               = v.burst               != null ? v.burst               : 1024
-      cos                 = v.cos                 != null ? v.cos                 : 3
-      description         = v.description         != null ? v.description         : ""
+      burst               = v.burst != null ? v.burst : 1024
+      cos                 = v.cos != null ? v.cos : 3
+      description         = v.description != null ? v.description : ""
       max_data_field_size = v.max_data_field_size != null ? v.max_data_field_size : 2112
-      organization        = v.organization        != null ? v.organization        : "default"
-      rate_limit          = v.rate_limit          != null ? v.rate_limit          : 0
-      tags                = v.tags                != null ? v.tags                : []
+      organization        = v.organization != null ? v.organization : "default"
+      rate_limit          = v.rate_limit != null ? v.rate_limit : 0
+      tags                = v.tags != null ? v.tags : []
     }
   }
 
@@ -373,8 +373,8 @@ locals {
       inband_vlan_id             = (v.inband_vlan_id != null ? v.inband_vlan_id : 1)
       ipv4_address_configuration = (v.ipv4_address_configuration != null ? v.ipv4_address_configuration : true)
       ipv6_address_configuration = (v.ipv6_address_configuration != null ? v.ipv6_address_configuration : false)
-      organization                = (v.organization != null ? v.organization : "default")
-      tags                        = (v.tags != null ? v.tags : [])
+      organization               = (v.organization != null ? v.organization : "default")
+      tags                       = (v.tags != null ? v.tags : [])
     }
   }
 

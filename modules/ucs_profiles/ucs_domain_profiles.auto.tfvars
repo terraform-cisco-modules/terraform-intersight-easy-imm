@@ -26,11 +26,11 @@ ucs_domain_profiles = {
     vsan_policy_fabric_b        = "UCS-DEMO2-B"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

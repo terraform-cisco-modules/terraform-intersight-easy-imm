@@ -13,11 +13,11 @@ iscsi_static_target_policies = {
     target_name  = "iqn.2010-01.com.solidfire:nb6q.ucs-boot-01.58"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -31,11 +31,11 @@ iscsi_static_target_policies = {
     target_name  = "iqn.2010-01.com.solidfire:nb6q.ucs-boot-01.58"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -49,11 +49,11 @@ iscsi_static_target_policies = {
     target_name  = "iqn.2010-01.com.solidfire:nb6q.ucs-boot-01.58"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -67,11 +67,11 @@ iscsi_static_target_policies = {
     target_name  = "iqn.2010-01.com.solidfire:nb6q.ucs-boot-01.58"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

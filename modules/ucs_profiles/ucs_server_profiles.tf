@@ -53,12 +53,12 @@ module "ucs_server_profiles" {
   depends_on = [
     local.org_moids
   ]
-  source              = "../../../terraform-intersight-imm/modules/ucs_server_profiles"
-  for_each            = local.ucs_server_profiles
+  source   = "../../../terraform-intersight-imm/modules/ucs_server_profiles"
+  for_each = local.ucs_server_profiles
   # action              = each.value.profile.action
   # description         = each.value.profile.description != "" ? each.value.profile.description : "${each.value.profile.organization} ${each.value.profile.name} Server Profile."
   # name                = each.value.profile.name != "" ? each.value.profile.name : each.key
-  org_moid            = ""
+  org_moid = ""
   # org_moid            = local.org_moids[each.value.profile.organization].moid
   # tags                = length(each.value.profile.tags) > 0 ? each.value.profile.tags : local.tags
   # target_platform     = each.value.profile.target_platform == "Standalone" ? "Standalone" : "FIAttached"

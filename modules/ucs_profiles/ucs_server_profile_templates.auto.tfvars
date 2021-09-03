@@ -25,11 +25,11 @@ ucs_server_profile_templates = {
     virtual_media_policy          = "ESXI7.0"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -55,11 +55,11 @@ ucs_server_profile_templates = {
     virtual_media_policy          = "ESXI7.0"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -85,11 +85,11 @@ ucs_server_profile_templates = {
     virtual_media_policy          = "ESXI7.0"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -115,11 +115,11 @@ ucs_server_profile_templates = {
     virtual_media_policy          = "ESXI7.0"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -145,11 +145,11 @@ ucs_server_profile_templates = {
     virtual_media_policy          = "ESXI7.0"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

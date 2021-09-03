@@ -10,7 +10,7 @@ ntp_policies = {
     organization = "Asgard"
     tags         = []
     timezone     = "America/New_York"
-    ntp_servers  = [
+    ntp_servers = [
       "10.101.128.15",
       "10.101.128.16"
     ]
@@ -25,11 +25,11 @@ ntp_policies = {
     ]
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

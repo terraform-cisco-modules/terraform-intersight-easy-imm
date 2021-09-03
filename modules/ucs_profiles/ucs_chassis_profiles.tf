@@ -80,7 +80,7 @@ module "ucs_chassis_profiles" {
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
   wait_for_completion = each.value.wait_for_completion
-  assigned_chassis    = each.value.assign_chassis == true ? [
+  assigned_chassis = each.value.assign_chassis == true ? [
     {
       moid = data.intersight_equipment_chassis.chassis[each.key].results[0].moid
     }

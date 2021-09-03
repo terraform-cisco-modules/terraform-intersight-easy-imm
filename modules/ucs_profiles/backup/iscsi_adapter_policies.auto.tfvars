@@ -12,11 +12,11 @@ iscsi_adapter_policies = {
     tcp_connection_timeout = 0
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

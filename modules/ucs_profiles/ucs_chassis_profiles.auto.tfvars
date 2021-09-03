@@ -4,7 +4,7 @@
 #__________________________________________________________
 
 ucs_chassis_profiles = {
-   asgard-ucs-1 = {
+  asgard-ucs-1 = {
     action              = "No-op" # Options are {Delete|Deploy|Ready|No-op|Unassign}.
     assign_chassis      = true
     description         = ""

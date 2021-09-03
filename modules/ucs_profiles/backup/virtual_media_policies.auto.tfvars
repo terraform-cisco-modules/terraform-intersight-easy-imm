@@ -12,23 +12,23 @@ virtual_media_policies = {
     organization                    = "UCS-DEMO2"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
     vmedia_mounts = [
       {
-        device_type             = "cdd",
-        hostname                = "192.168.20.13",
-        name                    = "ESXI7.0",
-        protocol                = "http",
-        remote_file             = "customesxi.iso",
-        remote_path             = "/",
-        username                = "root"
+        device_type = "cdd",
+        hostname    = "192.168.20.13",
+        name        = "ESXI7.0",
+        protocol    = "http",
+        remote_file = "customesxi.iso",
+        remote_path = "/",
+        username    = "root"
       },
     ]
   }
@@ -40,23 +40,23 @@ virtual_media_policies = {
     organization                    = "UCS-DEMO2"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
     vmedia_mounts = [
       {
-        device_type             = "cdd",
-        hostname                = "192.168.20.13",
-        name                    = "ESXI7.0",
-        protocol                = "http",
-        remote_file             = "customesxi.iso",
-        remote_path             = "/",
-        username                = "root"
+        device_type = "cdd",
+        hostname    = "192.168.20.13",
+        name        = "ESXI7.0",
+        protocol    = "http",
+        remote_file = "customesxi.iso",
+        remote_path = "/",
+        username    = "root"
       },
     ]
   }

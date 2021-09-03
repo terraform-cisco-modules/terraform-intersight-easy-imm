@@ -170,8 +170,8 @@ module "ethernet_adapter_policies" {
   depends_on = [
     local.org_moids
   ]
-  source   = "../../../terraform-intersight-imm/modules/ethernet_adapter_policies"
-  for_each = local.ethernet_adapter_policies
+  source                                   = "../../../terraform-intersight-imm/modules/ethernet_adapter_policies"
+  for_each                                 = local.ethernet_adapter_policies
   completion_queue_count                   = each.value.completion_queue_count
   completion_ring_size                     = each.value.completion_ring_size
   description                              = each.value.description
