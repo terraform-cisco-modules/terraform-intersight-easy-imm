@@ -101,7 +101,7 @@ module "ethernet_adapter_templates" {
     local.org_moids
   ]
   source   = "terraform-cisco-modules/imm/intersight//modules/ethernet_adapter_policies"
-  for_each    = local.lan_connectivity_policies
+  for_each = local.lan_connectivity_policies
   description = length(
     regexall("(Linux-NVMe-RoCE)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for NVMe using RDMA." : length(
     regexall("(Linux)", each.value.adapter_template)) > 0 ? "Recommended adapter settings for linux." : length(

@@ -7,11 +7,11 @@
 variable "syslog_policies" {
   default = {
     default = {
-      description         = ""
-      local_min_severity  = "warning"
-      organization        = "default"
-      remote_clients      = []
-      tags                = []
+      description        = ""
+      local_min_severity = "warning"
+      organization       = "default"
+      remote_clients     = []
+      tags               = []
     }
   }
   description = <<-EOT
@@ -33,11 +33,11 @@ variable "syslog_policies" {
   EOT
   type = map(object(
     {
-      description         = optional(string)
-      local_min_severity  = optional(string)
-      organization        = optional(string)
-      remote_clients      = optional(list(map(string)))
-      tags                = optional(list(map(string)))
+      description        = optional(string)
+      local_min_severity = optional(string)
+      organization       = optional(string)
+      remote_clients     = optional(list(map(string)))
+      tags               = optional(list(map(string)))
     }
   ))
 }

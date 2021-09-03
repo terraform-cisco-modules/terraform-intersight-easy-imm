@@ -150,12 +150,12 @@ variable "ip_pools" {
       description      = ""
       # dns_servers_v4   = ["208.67.220.220", "208.67.222.222"]
       # dns_servers_v6   = []
-      ipv4_block       = []
-      ipv4_config      = {}
-      ipv6_block       = []
-      ipv6_config      = {}
-      organization     = "default"
-      tags             = []
+      ipv4_block   = []
+      ipv4_config  = {}
+      ipv6_block   = []
+      ipv6_config  = {}
+      organization = "default"
+      tags         = []
     }
   }
   description = <<-EOT
@@ -189,7 +189,7 @@ variable "ip_pools" {
       assignment_order = optional(string)
       description      = optional(string)
       ipv4_block       = optional(list(map(string)))
-      ipv4_config      = optional(map(object(
+      ipv4_config = optional(map(object(
         {
           gateway       = string
           netmask       = string
@@ -197,8 +197,8 @@ variable "ip_pools" {
           secondary_dns = optional(string)
         }
       )))
-      ipv6_block       = optional(list(map(string)))
-      ipv6_config      = optional(map(object(
+      ipv6_block = optional(list(map(string)))
+      ipv6_config = optional(map(object(
         {
           gateway       = string
           prefix        = number
@@ -206,8 +206,8 @@ variable "ip_pools" {
           secondary_dns = optional(string)
         }
       )))
-      organization     = optional(string)
-      tags             = optional(list(map(string)))
+      organization = optional(string)
+      tags         = optional(list(map(string)))
     }
   ))
 }

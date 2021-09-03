@@ -169,25 +169,25 @@ module "bios_policies_hpc" {
   #+++++++++++++++++++++++++++++++
   # Processor Section
   #+++++++++++++++++++++++++++++++
-  altitude                        = "auto"        # Altitude
-  cpu_energy_performance          = "performance" # Energy Performance
-  cpu_performance                 = "hpc"         # CPU Performance
-  cpu_frequency_floor             = "enabled"     # Frequency Floor Override
-  cpu_power_management            = "energy-efficient"      # Power Technology
-  direct_cache_access             = "enabled"     # Direct Cache Access Support
-  dram_clock_throttling           = "Performance" # DRAM Clock Throttling
-  imc_interleave                  = "Auto"        # IMC Interleaving
-  intel_virtualization_technology = "disabled"    # Intel(R) VT
-  intel_hyper_threading_tech      = "disabled"    # Intel HyperThreading Tech
-  llc_prefetch                    = "disabled"    # LLC Prefetch
-  processor_c1e                   = "enabled"     # Processor C1E
-  processor_c3report              = "enabled"     # Processor C3 Report
-  processor_c6report              = "enabled"     # Processor C6 Report
-  processor_cstate                = "enabled"     # CPU C State
+  altitude                        = "auto"             # Altitude
+  cpu_energy_performance          = "performance"      # Energy Performance
+  cpu_performance                 = "hpc"              # CPU Performance
+  cpu_frequency_floor             = "enabled"          # Frequency Floor Override
+  cpu_power_management            = "energy-efficient" # Power Technology
+  direct_cache_access             = "enabled"          # Direct Cache Access Support
+  dram_clock_throttling           = "Performance"      # DRAM Clock Throttling
+  imc_interleave                  = "Auto"             # IMC Interleaving
+  intel_virtualization_technology = "disabled"         # Intel(R) VT
+  intel_hyper_threading_tech      = "disabled"         # Intel HyperThreading Tech
+  llc_prefetch                    = "disabled"         # LLC Prefetch
+  processor_c1e                   = "enabled"          # Processor C1E
+  processor_c3report              = "enabled"          # Processor C3 Report
+  processor_c6report              = "enabled"          # Processor C6 Report
+  processor_cstate                = "enabled"          # CPU C State
   # Waiting for fix to CSCvx09391 to add processor c7 state which should be enabled
-  snc                             = "disabled"    # Sub Numa Clustering
-  work_load_config                = "balanced"    # Workload Configuration
-  xpt_prefetch                    = "disabled"    # XPT Prefetch
+  snc              = "disabled" # Sub Numa Clustering
+  work_load_config = "balanced" # Workload Configuration
+  xpt_prefetch     = "disabled" # XPT Prefetch
   #+++++++++++++++++++++++++++++++
   # Server Management Section
   #+++++++++++++++++++++++++++++++
