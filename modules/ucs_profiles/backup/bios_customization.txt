@@ -1,0 +1,119 @@
+# Java/DSS/OLTP have no customization?
+
+module "bios_policies_nvmeof" {
+  intel_vt_for_directed_io        = "enabled"             # Intel VT for Directed IO
+  intel_vtd_coherency_support     = "enabled"             # Intel(R) VT-d Coherency Support
+  intel_vtd_interrupt_remapping   = "enabled"             # Intel(R) VT-d interrupt Remapping
+  cdn_support                     = "enabled"             # CDN Support for LOM
+  lom_ports_all_state             = "disabled"            # All Onboard LOM Ports
+  select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
+  memory_mapped_io_above4gb       = "enabled"             # Memory Mapped IO Above 4GiB
+  altitude                        = "auto"                # Altitude
+  cpu_energy_performance          = "performance"         # Energy Performance
+  cpu_frequency_floor             = "enabled"             # Frequency Floor Override
+  cpu_power_management            = "performance"         # Power Technology
+  direct_cache_access             = "enabled"             # Direct Cache Access Support
+  dram_clock_throttling           = "Performance"         # DRAM Clock Throttling
+  intel_virtualization_technology = "enabled"             # Intel(R) VT
+  processor_c1e                   = "disabled"            # Processor C1E
+  processor_c3report              = "disabled"            # Processor C3 Report
+  processor_c6report              = "disabled"            # Processor C6 Report
+  processor_cstate                = "disabled"            # CPU C State
+  serial_port_aenable             = "enabled"             # Serial A Enable
+  cdn_enable                      = "enabled"             # Consistent Device Naming
+  console_redirection             = "serial-port-a"       # Console Redirection
+  out_of_band_mgmt_port           = "enabled"             # Out-of-Band Mgmt Port
+  txt_support                     = "enabled"             # Intel Trusted Execution Technology Support
+}
+
+module "bios_policies_hpc" {
+  # lom_ports_all_state = "disabled" # All Onboard LOM Ports
+  vmd_enable                      = "enabled"             # VMD Enablement
+  intel_vt_for_directed_io        = "disabled"            # Intel VT for Directed IO
+  intel_vtd_coherency_support     = "enabled"             # Intel(R) VT-d Coherency Support
+  intel_vtd_interrupt_remapping   = "enabled"             # Intel(R) VT-d interrupt Remapping
+  cdn_support                     = "enabled"             # CDN Support for LOM
+  select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
+  memory_mapped_io_above4gb       = "enabled"             # Memory Mapped IO Above 4GiB
+  altitude                        = "auto"                # Altitude
+  cpu_energy_performance          = "performance"         # Energy Performance
+  cpu_performance                 = "hpc"                 # CPU Performance
+  cpu_frequency_floor             = "enabled"             # Frequency Floor Override
+  cpu_power_management            = "energy-efficient"    # Power Technology
+  direct_cache_access             = "enabled"             # Direct Cache Access Support
+  dram_clock_throttling           = "Performance"         # DRAM Clock Throttling
+  imc_interleave                  = "Auto"                # IMC Interleaving
+  intel_virtualization_technology = "disabled"            # Intel(R) VT
+  intel_hyper_threading_tech      = "disabled"            # Intel HyperThreading Tech
+  llc_prefetch                    = "disabled"            # LLC Prefetch
+  processor_c1e                   = "enabled"             # Processor C1E
+  processor_c3report              = "enabled"             # Processor C3 Report
+  processor_c6report              = "enabled"             # Processor C6 Report
+  processor_cstate                = "enabled"             # CPU C State
+  snc                             = "disabled"            # Sub Numa Clustering
+  work_load_config                = "balanced"            # Workload Configuration
+  xpt_prefetch                    = "disabled"            # XPT Prefetch
+  cdn_enable                      = "enabled"             # Consistent Device Naming
+  txt_support                     = "enabled"             # Intel Trusted Execution Technology Support
+}
+
+module "bios_policies_virtual_node" {
+  # lom_ports_all_state = "disabled" # All Onboard LOM Ports
+  vmd_enable                      = "enabled"             # VMD Enablement
+  intel_vt_for_directed_io        = "enabled"             # Intel VT for Directed IO
+  intel_vtd_coherency_support     = "enabled"             # Intel(R) VT-d Coherency Support
+  intel_vtd_interrupt_remapping   = "enabled"             # Intel(R) VT-d interrupt Remapping
+  cdn_support                     = "enabled"             # CDN Support for LOM
+  select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
+  memory_mapped_io_above4gb       = "enabled"             # Memory Mapped IO Above 4GiB
+  altitude                        = "auto"                # Altitude
+  cpu_energy_performance          = "performance"         # Energy Performance
+  cpu_performance                 = "hpc"                 # CPU Performance
+  cpu_frequency_floor             = "enabled"             # Frequency Floor Override
+  cpu_power_management            = "custom"              # Power Technology
+  direct_cache_access             = "enabled"             # Direct Cache Access Support
+  dram_clock_throttling           = "Performance"         # DRAM Clock Throttling
+  imc_interleave                  = "Auto"                # IMC Interleaving
+  intel_virtualization_technology = "enabled"             # Intel(R) VT
+  llc_prefetch                    = "disabled"            # LLC Prefetch
+  processor_c1e                   = "disabled"            # Processor C1E
+  processor_c3report              = "disabled"            # Processor C3 Report
+  processor_c6report              = "disabled"            # Processor C6 Report
+  processor_cstate                = "disabled"            # CPU C State
+  snc                             = "disabled"            # Sub Numa Clustering
+  xpt_prefetch                    = "disabled"            # XPT Prefetch
+  cdn_enable                      = "enabled"             # Consistent Device Naming
+  txt_support                     = "enabled"             # Intel Trusted Execution Technology Support
+}
+
+module "bios_policies_virtual_rack" {
+  vmd_enable                      = "enabled"             # VMD Enablement
+  intel_vt_for_directed_io        = "enabled"             # Intel VT for Directed IO
+  intel_vtd_coherency_support     = "enabled"             # Intel(R) VT-d Coherency Support
+  intel_vtd_interrupt_remapping   = "enabled"             # Intel(R) VT-d interrupt Remapping
+  cdn_support                     = "enabled"             # CDN Support for LOM
+  lom_ports_all_state             = "disabled"            # All Onboard LOM Ports
+  select_memory_ras_configuration = "maximum-performance" # Memory RAS Configuration
+  memory_mapped_io_above4gb       = "enabled"             # Memory Mapped IO Above 4GiB
+  altitude                        = "auto"                # Altitude
+  cpu_energy_performance          = "performance"         # Energy Performance
+  cpu_performance                 = "hpc"                 # CPU Performance
+  cpu_frequency_floor             = "enabled"             # Frequency Floor Override
+  cpu_power_management            = "custom"              # Power Technology
+  direct_cache_access             = "enabled"             # Direct Cache Access Support
+  dram_clock_throttling           = "Performance"         # DRAM Clock Throttling
+  imc_interleave                  = "Auto"                # IMC Interleaving
+  intel_virtualization_technology = "enabled"             # Intel(R) VT
+  llc_prefetch                    = "disabled"            # LLC Prefetch
+  processor_c1e                   = "disabled"            # Processor C1E
+  processor_c3report              = "disabled"            # Processor C3 Report
+  processor_c6report              = "disabled"            # Processor C6 Report
+  processor_cstate                = "disabled"            # CPU C State
+  snc                             = "disabled"            # Sub Numa Clustering
+  xpt_prefetch                    = "disabled"            # XPT Prefetch
+  serial_port_aenable             = "enabled"             # Serial A Enable
+  cdn_enable                      = "enabled"             # Consistent Device Naming
+  console_redirection             = "serial-port-a"       # Console Redirection
+  out_of_band_mgmt_port           = "enabled"             # Out-of-Band Mgmt Port
+  txt_support                     = "enabled"             # Intel Trusted Execution Technology Support
+}

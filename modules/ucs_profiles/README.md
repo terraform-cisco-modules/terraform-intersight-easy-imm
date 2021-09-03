@@ -33,14 +33,7 @@ This module will create UCS Server Profiles in Intersight.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_bios_policies"></a> [bios\_policies](#module\_bios\_policies) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
-| <a name="module_bios_policies_dss"></a> [bios\_policies\_dss](#module\_bios\_policies\_dss) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
-| <a name="module_bios_policies_hpc"></a> [bios\_policies\_hpc](#module\_bios\_policies\_hpc) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
-| <a name="module_bios_policies_java"></a> [bios\_policies\_java](#module\_bios\_policies\_java) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
-| <a name="module_bios_policies_nvmeof"></a> [bios\_policies\_nvmeof](#module\_bios\_policies\_nvmeof) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
-| <a name="module_bios_policies_oltp"></a> [bios\_policies\_oltp](#module\_bios\_policies\_oltp) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
-| <a name="module_bios_policies_virtual_node"></a> [bios\_policies\_virtual\_node](#module\_bios\_policies\_virtual\_node) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
-| <a name="module_bios_policies_virtual_rack"></a> [bios\_policies\_virtual\_rack](#module\_bios\_policies\_virtual\_rack) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
+| <a name="module_bios_policies"></a> [bios\_policies](#module\_bios\_policies) | ../../../terraform-intersight-imm/modules/bios_policies | n/a |
 | <a name="module_device_connector_policies"></a> [device\_connector\_policies](#module\_device\_connector\_policies) | ../../../terraform-intersight-imm/modules/device_connector_policies | n/a |
 | <a name="module_ethernet_adapter_policies"></a> [ethernet\_adapter\_policies](#module\_ethernet\_adapter\_policies) | ../../../terraform-intersight-imm/modules/ethernet_adapter_policies | n/a |
 | <a name="module_ethernet_network_control_policies"></a> [ethernet\_network\_control\_policies](#module\_ethernet\_network\_control\_policies) | ../../../terraform-intersight-imm/modules/ethernet_network_control_policies | n/a |
