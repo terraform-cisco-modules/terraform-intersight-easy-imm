@@ -7,38 +7,38 @@
 variable "virtual_kvm_policies" {
   default = {
     default = {
-      description        = ""
-      enabled            = true
-      local_server_video = true
-      maximum_sessions   = 4
-      organization       = "default"
-      remote_port        = 2068
-      tags               = []
-      video_encryption   = true
+      description               = ""
+      enable_local_server_video = true
+      enable_video_encryption   = true
+      enable_virtual_kvm        = true
+      maximum_sessions          = 4
+      organization              = "default"
+      remote_port               = 2068
+      tags                      = []
     }
   }
   description = <<-EOT
   key - Name of the Virtual KVM Policy.
   * description - Description to Assign to the Policy.
-  * enabled - Flag to Enable or Disable the Policy.
-  * local_server_video - If enabled, displays KVM session on any monitor attached to the server.
-  * maximum_sessions - The maximum number of concurrent KVM sessions allowed. Range is 1 to 4.
+  * enable_local_server_video - Default is true.  If enabled, displays KVM session on any monitor attached to the server.
+  * enable_video_encryption - Default is true.  If enabled, encrypts all video information sent through KVM.
+  * enable_virtual_kvm - Default is true.  Flag to Enable or Disable the Policy.
+  * maximum_sessions - Default is 4.  The maximum number of concurrent KVM sessions allowed. Range is 1 to 4.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  * remote_port - The port used for KVM communication. Range is 1 to 65535.
+  * remote_port - Defualt is 2068.  The port used for KVM communication. Range is 1 to 65535.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  * video_encryption - If enabled, encrypts all video information sent through KVM.
   EOT
   type = map(object(
     {
-      description        = optional(string)
-      enabled            = optional(bool)
-      local_server_video = optional(bool)
-      maximum_sessions   = optional(number)
-      organization       = optional(string)
-      remote_port        = optional(number)
-      tags               = optional(list(map(string)))
-      video_encryption   = optional(bool)
+      description               = optional(string)
+      enable_local_server_video = optional(bool)
+      enable_video_encryption   = optional(bool)
+      enable_virtual_kvm        = optional(bool)
+      maximum_sessions          = optional(number)
+      organization              = optional(string)
+      remote_port               = optional(number)
+      tags                      = optional(list(map(string)))
     }
   ))
 }
@@ -55,12 +55,12 @@ module "virtual_kvm_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source                    = "terraform-cisco-modules/imm/intersight//modules/virtual_kvm_policies"
+  source                    = "../../../terraform-intersight-imm/modules/virtual_kvm_policies"
   for_each                  = local.virtual_kvm_policies
   description               = each.value.description != "" ? each.value.description : "${each.key} Virtual KVM Policy."
-  enable_local_server_video = each.value.local_server_video
-  enable_video_encryption   = each.value.video_encryption
-  enabled                   = each.value.enabled
+  enable_local_server_video = each.value.enable_local_server_video
+  enable_video_encryption   = each.value.enable_video_encryption
+  enable_virtual_kvm        = each.value.enable_virtual_kvm
   maximum_sessions          = each.value.maximum_sessions
   name                      = each.key
   org_moid                  = local.org_moids[each.value.organization].moid
@@ -69,6 +69,6 @@ module "virtual_kvm_policies" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.virtual_kvm_policies == each.key
+    if local.ucs_server_profiles[s].profile.virtual_kvm_policy == each.key
   ]
 }

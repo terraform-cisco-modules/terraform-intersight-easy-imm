@@ -151,7 +151,7 @@ variable "bios_policies" {
       onboard_scu_storage_sw_stack          = "platform-default"
       onboard10gbit_lom                     = "platform-default"
       operation_mode                        = "platform-default"
-      organization                          = "organization"
+      organization                          = "default"
       os_boot_watchdog_timer                = "platform-default"
       os_boot_watchdog_timer_policy         = "platform-default"
       os_boot_watchdog_timer_timeout        = "platform-default"
@@ -2697,6 +2697,7 @@ variable "bios_policies" {
       usb_port_rear                         = optional(string)
       usb_port_sd_card                      = optional(string)
       usb_port_vmedia                       = optional(string)
+      usb_xhci_support                      = optional(string)
       vga_priority                          = optional(string)
       vmd_enable                            = optional(string)
       vol_memory_mode                       = optional(string)
@@ -2713,9 +2714,9 @@ module "bios_policies" {
   ]
   source      = "../../../terraform-intersight-imm/modules/bios_policies"
   for_each    = local.bios_policies
-  description = each.value.description
-  name        = each.value.name
-  org_moid    = local.org_moids[organization].moid
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid

@@ -1,12 +1,20 @@
 #______________________________________________
 #
-# Virtual Media Policies
+# Virtual Media Policy Variables
 #______________________________________________
 
 virtual_media_policies = {
+  "Asgard_vmedia_usb" = {
+    description                     = ""
+    enabled                         = true
+    enable_low_power_usb            = true
+    enable_virtual_media_encryption = false
+    organization                    = "Asgard"
+    tags                            = []
+    vmedia_mappings                 = []
+  }
   "ESXI7.0" = {
     description                     = ""
-    enable_low_power_usb            = false
     enable_low_power_usb            = false
     enable_virtual_media_encryption = false
     organization                    = "UCS-DEMO2"
@@ -34,7 +42,6 @@ virtual_media_policies = {
   }
   "test_writeable" = {
     description                     = ""
-    enable_low_power_usb            = false
     enable_low_power_usb            = false
     enable_virtual_media_encryption = false
     organization                    = "UCS-DEMO2"

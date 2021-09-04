@@ -63,7 +63,7 @@ module "sd_card_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies"
+  source = "../../../terraform-intersight-imm/modules/sd_card_policies"
   for_each = {
     for k, v in local.sd_card_policies : k => v
     if v.enable_os == true && (v.enable_diagnostics == true || v.enable_drivers == true || v.enable_huu == true || v.enable_scu == true)
@@ -80,7 +80,7 @@ module "sd_card_policies" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.sd_card_policies == each.key
+    if local.ucs_server_profiles[s].profile.sd_card_policy == each.key
   ]
 }
 
@@ -89,7 +89,7 @@ module "sd_card_policies_os" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies_os"
+  source = "../../../terraform-intersight-imm/modules/sd_card_policies_os"
   for_each = {
     for k, v in local.sd_card_policies : k => v
     if v.enable_os == true && v.enable_diagnostics == false && v.enable_drivers == false && v.enable_huu == false && v.enable_scu == false
@@ -101,7 +101,7 @@ module "sd_card_policies_os" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.sd_card_policies == each.key
+    if local.ucs_server_profiles[s].profile.sd_card_policy == each.key
   ]
 }
 
@@ -110,7 +110,7 @@ module "sd_card_policies_utiity" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies_utiity"
+  source = "../../../terraform-intersight-imm/modules/sd_card_policies_utility"
   for_each = {
     for k, v in local.sd_card_policies : k => v
     if v.enable_os == false && (v.enable_diagnostics == true || v.enable_drivers == true || v.enable_huu == true || v.enable_scu == true)
@@ -126,6 +126,6 @@ module "sd_card_policies_utiity" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.sd_card_policies == each.key
+    if local.ucs_server_profiles[s].profile.sd_card_policy == each.key
   ]
 }

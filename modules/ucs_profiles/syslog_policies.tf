@@ -54,7 +54,7 @@ module "syslog_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source             = "terraform-cisco-modules/imm/intersight//modules/syslog_policies"
+  source             = "../../../terraform-intersight-imm/modules/syslog_policies"
   for_each           = local.syslog_policies
   description        = each.value.description != "" ? each.value.description : "${each.key} Syslog Policy."
   name               = each.key
@@ -65,6 +65,6 @@ module "syslog_policies" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.syslog_policies == each.key
+    if local.ucs_server_profiles[s].profile.syslog_policy == each.key
   ]
 }

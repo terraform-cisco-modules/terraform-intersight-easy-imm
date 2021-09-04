@@ -7,21 +7,21 @@
 variable "virtual_media_policies" {
   default = {
     default = {
-      description     = ""
-      enabled         = true
-      encryption      = true
-      low_power_usb   = false
-      organization    = "default"
-      tags            = []
-      vmedia_mappings = []
+      description                     = ""
+      enabled                         = true
+      enable_low_power_usb            = false
+      enable_virtual_media_encryption = true
+      organization                    = "default"
+      tags                            = []
+      vmedia_mappings                 = []
     }
   }
   description = <<-EOT
   key - Name of the Virtual Media Policy.
   * description - Description to Assign to the Policy.
-  * enabled - Flag to Enable or Disable the Policy.
-  * encryption - If enabled, allows encryption of all Virtual Media communications.
-  * low_power_usb - If enabled, the virtual drives appear on the boot selection menu after mapping the image and rebooting the host.
+  * enabled - Default is true.  Flag to Enable or Disable the Policy.
+  * enable_low_power_usb - Default is false.  If enabled, the virtual drives appear on the boot selection menu after mapping the image and rebooting the host.
+  * enable_virtual_media_encryption - Default is true.  If enabled, allows encryption of all Virtual Media communications.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
@@ -29,13 +29,13 @@ variable "virtual_media_policies" {
   EOT
   type = map(object(
     {
-      description     = optional(string)
-      enabled         = optional(bool)
-      encryption      = optional(bool)
-      low_power_usb   = optional(bool)
-      organization    = optional(string)
-      tags            = optional(list(map(string)))
-      vmedia_mappings = optional(list(map(string)))
+      description                     = optional(string)
+      enabled                         = optional(bool)
+      enable_low_power_usb            = optional(bool)
+      enable_virtual_media_encryption = optional(bool)
+      organization                    = optional(string)
+      tags                            = optional(list(map(string)))
+      vmedia_mappings                 = optional(list(map(string)))
     }
   ))
 }
@@ -52,12 +52,12 @@ module "virtual_media_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source        = "terraform-cisco-modules/imm/intersight//modules/virtual_media_policies"
+  source        = "../../../terraform-intersight-imm/modules/virtual_media_policies"
   for_each      = local.virtual_media_policies
   description   = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy."
   enabled       = each.value.enabled
-  encryption    = each.value.encryption
-  low_power_usb = each.value.low_power_usb
+  enable_virtual_media_encryption    = each.value.enable_virtual_media_encryption
+  enable_low_power_usb = each.value.enable_low_power_usb
   mappings      = each.value.vmedia_mappings
   name          = each.key
   org_moid      = local.org_moids[each.value.organization].moid
@@ -65,6 +65,6 @@ module "virtual_media_policies" {
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.virtual_media_policies == each.key
+    if local.ucs_server_profiles[s].profile.virtual_media_policy == each.key
   ]
 }

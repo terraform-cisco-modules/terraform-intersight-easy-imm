@@ -4,6 +4,13 @@
 #______________________________________________
 
 ipmi_over_lan_policies = {
+  "Asgard_ipmi" = {
+    description  = ""
+    enabled      = true
+    privilege    = "admin"
+    organization = "Asgard"
+    tags         = []
+  }
   "IPMI-OSB3-DID" = {
     description  = ""
     enabled      = true

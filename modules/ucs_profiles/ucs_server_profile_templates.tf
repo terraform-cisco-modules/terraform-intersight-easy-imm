@@ -14,7 +14,7 @@ variable "ucs_server_profile_templates" {
       ipmi_over_lan_policy        = ""
       lan_connectivity_policy     = ""
       ldap_policy                 = ""
-      local_users_policy          = ""
+      local_user_policy           = ""
       network_connectivity_policy = ""
       ntp_policy                  = ""
       operating_system            = "VMware"
@@ -45,7 +45,7 @@ variable "ucs_server_profile_templates" {
   * ipmi_over_lan_policy - Name of the IPMI over LAN Policy to assign to the Template.
   * lan_connectivity_policy - Name of the LAN Connectivity Policy to assign to the Template.
   * ldap_policy - Name of the LDAP Policy to assign to the Template.
-  * local_users_policy - Name of the Local Users Policy to assign to the Template.
+  * local_user_policy - Name of the Local Users Policy to assign to the Template.
   * network_connectivity_policy - Name of the Network Connectivity Policy to assign to the Template.
   * ntp_policy - Name of the NTP Policy to assign to the Template.
   * operating_system - Operating System to Install on the Server.  Options are:
@@ -81,7 +81,7 @@ variable "ucs_server_profile_templates" {
       ipmi_over_lan_policy        = optional(string)
       lan_connectivity_policy     = optional(string)
       ldap_policy                 = optional(string)
-      local_users_policy          = optional(string)
+      local_user_policy           = optional(string)
       network_connectivity_policy = optional(string)
       ntp_policy                  = optional(string)
       operating_system            = optional(string)
