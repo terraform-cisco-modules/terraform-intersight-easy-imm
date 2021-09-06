@@ -1,6 +1,6 @@
 #______________________________________________
 #
-# Ethernet (vNIC) Network Control Policies
+# Ethernet Network Control Policy Variables
 #______________________________________________
 
 ethernet_network_control_policies = {

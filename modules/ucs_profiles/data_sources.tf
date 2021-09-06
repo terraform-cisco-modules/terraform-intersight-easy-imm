@@ -39,13 +39,13 @@ data "intersight_organization_organization" "org_moid" {
 #   Operate > Servers > Copy the Serial from the Column.
 #____________________________________________________________
 
-# data "intersight_compute_physical_summary" "server" {
-#   for_each = {
-#     for k, v in local.ucs_server_profiles : k => v
-#     if v.profile.assign_server == true
-#   }
-#   serial = each.key
-# }
+data "intersight_compute_physical_summary" "server" {
+  for_each = {
+    for k, v in local.ucs_server_profiles : k => v
+    if v.profile.assign_server == true
+  }
+  serial = each.key
+}
 
 
 #____________________________________________________________

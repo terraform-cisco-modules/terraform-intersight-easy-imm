@@ -163,7 +163,7 @@ module "san_connectivity_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_policies"
+  source              = "../../../terraform-intersight-imm/modules/san_connectivity_policies"
   for_each            = local.san_connectivity_policies
   description         = each.value.description != "" ? each.value.description : "${each.key} SAN Connectivity Policy."
   name                = each.key
@@ -195,7 +195,7 @@ module "san_connectivity_add_vhba_a" {
     module.fibre_channel_qos_policies,
     module.san_connectivity_policies,
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba"
+  source                  = "../../../terraform-intersight-imm/modules/san_connectivity_add_vhba"
   for_each                = local.san_connectivity_policies
   persistent_lun_bindings = each.value.vhba_persistent_lun_bindings
   placement_pci_link      = each.value.vhba_placement_pci_link_a
@@ -222,7 +222,7 @@ module "san_connectivity_add_vhba_b" {
     module.fibre_channel_qos_policies,
     module.san_connectivity_policies,
   ]
-  source                  = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba"
+  source                  = "../../../terraform-intersight-imm/modules/san_connectivity_add_vhba"
   for_each                = local.san_connectivity_policies
   persistent_lun_bindings = each.value.vhba_persistent_lun_bindings
   placement_pci_link      = each.value.vhba_placement_pci_link_b

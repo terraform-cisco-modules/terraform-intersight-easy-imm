@@ -514,7 +514,7 @@ locals {
       ) > 0 ? 1000 : v.receive_queue_count != null ? v.receive_queue_count : 4
       receive_ring_size = length(
         regexall("(Win-AzureStack)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? 4096 : v.receive_queue_count != null ? v.receive_queue_count : 512
+      ) > 0 ? 4096 : v.receive_ring_size != null ? v.receive_ring_size : 512
       receive_side_scaling_enable = length(
         regexall("(Linux|Solaris|VMware)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? false : v.adapter_template != null ? true : v.receive_side_scaling_enable != null ? v.receive_side_scaling_enable : true
@@ -1221,6 +1221,7 @@ locals {
         tags                        = v.tags != null ? v.tags : []
         target_platform             = value.target_platform != null ? value.target_platform : "FIAttached"
         type                        = "instance"
+        ucs_server_profile_template = v.ucs_server_profile_template != null ? v.ucs_server_profile_template : ""
         wait_for_completion         = v.wait_for_completion != null ? v.wait_for_completion : false
       } if v.ucs_server_profile_template == key
     }

@@ -1,6 +1,6 @@
 #______________________________________________
 #
-# Ethernet (vNIC) Adapter Policies
+# Ethernet Adapter Policy Variables
 #______________________________________________
 
 ethernet_adapter_policies = {
@@ -14,20 +14,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "default-adapter-policy"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = false
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -48,11 +44,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -67,20 +63,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-linux"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = false
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -101,11 +93,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -120,21 +112,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-NVMe-using-RDMA"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 256
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = true
-    roce_version                             = 1
     roce_memory_regions                      = 131072
-    roce_version                             = 1
     roce_queue_pairs                         = 1024
-    roce_version                             = 1
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_resource_groups                     = 8
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -155,11 +142,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -174,20 +161,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-VM-Multi-Queue-Connection-with-no-RDMA"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 256
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 8192
-    roce_version                             = 1
-    roce_queue_pairs                         = 64
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -208,11 +191,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -227,21 +210,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-MultiQueue-with-RDMA"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 512
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = true
-    roce_version                             = 1
     roce_memory_regions                      = 65536
-    roce_version                             = 1
     roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_resource_groups                     = 2
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -262,11 +240,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -281,21 +259,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-SMB-Client"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 8
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = true
-    roce_version                             = 1
     roce_memory_regions                      = 131072
-    roce_version                             = 1
     roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_resource_groups                     = 32
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -316,11 +289,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -335,21 +308,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-SMB-server"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 8
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = true
-    roce_version                             = 1
     roce_memory_regions                      = 131072
-    roce_version                             = 1
     roce_queue_pairs                         = 2048
-    roce_version                             = 1
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_resource_groups                     = 32
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -370,11 +338,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -389,20 +357,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-Solaris"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = false
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -423,11 +387,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -442,20 +406,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-Win8-SRIOV-VMFEX-PF"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 32
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -476,11 +436,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -495,20 +455,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-Win8-SRIOV-VMFEX-PF"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = false
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -529,11 +485,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -548,20 +504,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-usNIC-Connection"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 6
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -582,11 +534,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 0
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -601,20 +553,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-usNIC-Oracle-RAC-Connection"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 1024
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -635,11 +583,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 0
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -654,20 +602,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-VMWare"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = false
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -688,11 +632,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -707,20 +651,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-VMWare"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 18
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -741,11 +681,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -760,20 +700,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-VMWare-pass-thru--dynamic-vNIC-"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSI"
     interrupt_timer                          = 125
     interrupts                               = 12
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -794,11 +730,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -813,21 +749,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = true
     description                              = "Recommended-adapter-settings-for-Azure-Stack"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 256
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = true
-    roce_version                             = 1
     roce_memory_regions                      = 131072
-    roce_version                             = 1
     roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_resource_groups                     = 2
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -848,11 +779,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -867,20 +798,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = true
     description                              = "Recommended-adapter-settings-for-Windows-high-performance-and-networking"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 512
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -901,11 +828,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -920,21 +847,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = true
     description                              = "Recommended-adapter-settings-for-Windows-high-performance-and-networking-with-RoCE-V2"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 512
     organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
-    roce_version                             = 1
     roce_enable                              = true
-    roce_version                             = 1
     roce_memory_regions                      = 131072
-    roce_version                             = 1
     roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_resource_groups                     = 2
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -955,11 +877,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -974,20 +896,16 @@ ethernet_adapter_policies = {
     enable_nvgre_offload                     = false
     enable_vxlan_offload                     = false
     description                              = "Recommended-adapter-settings-for-Windows"
-    interrupt_coalescing_type                = "Min"
+    interrupt_coalescing_type                = "MIN"
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 8
     organization                             = "UCS-DEMO2"
-    roce_cos                                 = 6
-    roce_version                             = 1
+    roce_cos                                 = 5
     roce_enable                              = false
-    roce_version                             = 1
-    roce_memory_regions                      = 131072
-    roce_version                             = 1
-    roce_queue_pairs                         = 256
-    roce_version                             = 1
-    roce_version                             = 1
+    roce_memory_regions                      = 0
+    roce_queue_pairs                         = 0
+    roce_resource_groups                     = 0
     receive_side_scaling_enable              = true
     rss_enable_ipv4_hash                     = true
     rss_enable_ipv6_extensions_hash          = false
@@ -1008,11 +926,11 @@ ethernet_adapter_policies = {
     uplink_failback_timeout                  = 5
     tags = [
       {
-        key   = "easyucs_origin",
+        key = "easyucs_origin",
         value = "convert",
       },
       {
-        key   = "easyucs_version",
+        key = "easyucs_version",
         value = "0.9.8",
       },
     ]

@@ -29,6 +29,7 @@ network_connectivity_policies = {
     ]
     dns_servers_v6 = [
       "2001:420:44f0::1",
+      "::"
     ]
     tags = [
       {

@@ -1,6 +1,6 @@
 #______________________________________________
 #
-# Ethernet (vNIC) Network (VLAN) Group Policies
+# Ethernet Network Group Policy Variables
 #______________________________________________
 
 ethernet_network_group_policies = {

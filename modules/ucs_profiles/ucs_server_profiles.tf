@@ -55,19 +55,18 @@ module "ucs_server_profiles" {
   ]
   source   = "../../../terraform-intersight-imm/modules/ucs_server_profiles"
   for_each = local.ucs_server_profiles
-  # action              = each.value.profile.action
-  # description         = each.value.profile.description != "" ? each.value.profile.description : "${each.value.profile.organization} ${each.value.profile.name} Server Profile."
-  # name                = each.value.profile.name != "" ? each.value.profile.name : each.key
-  org_moid = ""
-  # org_moid            = local.org_moids[each.value.profile.organization].moid
-  # tags                = length(each.value.profile.tags) > 0 ? each.value.profile.tags : local.tags
-  # target_platform     = each.value.profile.target_platform == "Standalone" ? "Standalone" : "FIAttached"
-  # wait_for_completion = each.value.profile.wait_for_completion
-  # assigned_server = each.value.profile.assign_server == true ? [
-  #   {
-  #     moid        = data.intersight_compute_physical_summary.server[each.key].results[0].moid
-  #     object_type = data.intersight_compute_physical_summary.server[each.key].results[0].source_object_type
-  #   }
-  # ] : []
-  # src_template        = each.value.src_template
+  action              = each.value.profile.action
+  description         = each.value.profile.description != "" ? each.value.profile.description : "${each.value.profile.organization} ${each.value.profile.name} Server Profile."
+  name                = each.value.profile.name != "" ? each.value.profile.name : each.key
+  org_moid            = local.org_moids[each.value.profile.organization].moid
+  tags                = length(each.value.profile.tags) > 0 ? each.value.profile.tags : local.tags
+  target_platform     = each.value.profile.target_platform == "Standalone" ? "Standalone" : "FIAttached"
+  wait_for_completion = each.value.profile.wait_for_completion
+  assigned_server = each.value.profile.assign_server == true ? [
+    {
+      moid        = data.intersight_compute_physical_summary.server[each.key].results[0].moid
+      object_type = data.intersight_compute_physical_summary.server[each.key].results[0].source_object_type
+    }
+  ] : []
+  # src_template        = each.value.ucs_server_profile_template
 }
