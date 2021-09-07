@@ -1,6 +1,6 @@
 #______________________________________________
 #
-# UCS Server Profile Templates
+# UCS Server Profile Template Variables
 #______________________________________________
 
 ucs_server_profile_templates = {
@@ -39,7 +39,7 @@ ucs_server_profile_templates = {
     boot_policy                   = "ISCSI"
     certificate_management_policy = ""
     description                   = ""
-    imc_access_policy             = "ADMIN_inband"
+    imc_access_policy             = ""
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "ISCSI-BOOT"
     local_user_policy             = ""
@@ -52,7 +52,7 @@ ucs_server_profile_templates = {
     target_platform               = "FI-Attached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
-    virtual_media_policy          = "ESXI7.0"
+    virtual_media_policy          = ""
     tags = [
       {
         key   = "easyucs_origin",
@@ -69,7 +69,7 @@ ucs_server_profile_templates = {
     boot_policy                   = "VCF-iSCSI"
     certificate_management_policy = ""
     description                   = ""
-    imc_access_policy             = "ADMIN_inband"
+    imc_access_policy             = ""
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "ESXI-VCF-WLD_LCP"
     local_user_policy             = ""
@@ -82,7 +82,7 @@ ucs_server_profile_templates = {
     target_platform               = "FI-Attached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
-    virtual_media_policy          = "ESXI7.0"
+    virtual_media_policy          = ""
     tags = [
       {
         key   = "easyucs_origin",
@@ -99,7 +99,7 @@ ucs_server_profile_templates = {
     boot_policy                   = "FC"
     certificate_management_policy = ""
     description                   = ""
-    imc_access_policy             = "ADMIN_inband"
+    imc_access_policy             = ""
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "ESXI-VCF-WLD-FC_LCP"
     local_user_policy             = ""
@@ -129,7 +129,7 @@ ucs_server_profile_templates = {
     boot_policy                   = "default"
     certificate_management_policy = ""
     description                   = ""
-    imc_access_policy             = "ADMIN_inband"
+    imc_access_policy             = ""
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "TEST-PLACEMENT-TEMPLATE_LCP"
     local_user_policy             = ""
@@ -142,7 +142,7 @@ ucs_server_profile_templates = {
     target_platform               = "FI-Attached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
-    virtual_media_policy          = "ESXI7.0"
+    virtual_media_policy          = ""
     tags = [
       {
         key   = "easyucs_origin",

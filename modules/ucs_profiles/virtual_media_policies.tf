@@ -52,16 +52,16 @@ module "virtual_media_policies" {
     local.org_moids,
     module.ucs_server_profiles
   ]
-  source        = "../../../terraform-intersight-imm/modules/virtual_media_policies"
-  for_each      = local.virtual_media_policies
-  description   = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy."
-  enabled       = each.value.enabled
-  enable_virtual_media_encryption    = each.value.enable_virtual_media_encryption
-  enable_low_power_usb = each.value.enable_low_power_usb
-  mappings      = each.value.vmedia_mappings
-  name          = each.key
-  org_moid      = local.org_moids[each.value.organization].moid
-  tags          = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  source                          = "../../../terraform-intersight-imm/modules/virtual_media_policies"
+  for_each                        = local.virtual_media_policies
+  description                     = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy."
+  enabled                         = each.value.enabled
+  enable_virtual_media_encryption = each.value.enable_virtual_media_encryption
+  enable_low_power_usb            = each.value.enable_low_power_usb
+  mappings                        = each.value.vmedia_mappings
+  name                            = each.key
+  org_moid                        = local.org_moids[each.value.organization].moid
+  tags                            = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = [
     for s in sort(keys(local.ucs_server_profiles)) :
     module.ucs_server_profiles[s].moid

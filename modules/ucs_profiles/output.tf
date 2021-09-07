@@ -1,3 +1,3 @@
-# output "ucs_server_profiles" {
-#   value = local.ucs_server_profiles
+# output "lan_connectivity_vnics" {
+#   value = local.lan_connectivity_vnics
 # }

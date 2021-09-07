@@ -104,37 +104,39 @@ variable "iscsi_boot_policies" {
 
 module "iscsi_boot_policies" {
   depends_on = [
-    data.terraform_remote_state.pools,
+    # data.terraform_remote_state.pools,
     local.org_moids,
     module.iscsi_adapter_policies,
     module.iscsi_static_target_policies,
   ]
   source                           = "../../../terraform-intersight-imm/modules/iscsi_boot_policies"
-  for_each                         = local.iscsi_boot_policies
+  for_each                         = var.iscsi_boot_policies
   chap_password                    = each.value.chap_password == 1 ? var.chap_password_1 : ""
-  chap_user_id                     = each.value.chap_user_id
-  dhcp_vendor_id_iqn               = each.value.dhcp_vendor_id_iqn
-  description                      = each.value.description != "" ? each.value.description : "${each.key} iSCSI Boot Policy."
-  initiator_ip_source              = each.value.initiator_ip_source
-  initiator_static_default_gateway = each.value.initiator_static_default_gateway
-  initiator_static_ip_address      = each.value.initiator_static_ip_address
-  initiator_static_primary_dns     = each.value.initiator_static_primary_dns
-  initiator_static_secondary_dns   = each.value.initiator_static_secondary_dns
-  initiator_static_subnet_mask     = each.value.initiator_static_subnet_mask
+  chap_user_id                     = each.value.chap_user_id != null ? each.value.chap_user_id : ""
+  dhcp_vendor_id_iqn               = each.value.dhcp_vendor_id_iqn != null ? each.value.dhcp_vendor_id_iqn : ""
+  description                      = each.value.description != null ? each.value.description : "${each.key} iSCSI Boot Policy."
+  initiator_ip_source              = each.value.initiator_ip_source != null ? each.value.initiator_ip_source : ""
+  initiator_static_default_gateway = each.value.initiator_static_default_gateway != null ? each.value.initiator_static_default_gateway : ""
+  initiator_static_ip_address      = each.value.initiator_static_ip_address != null ? each.value.initiator_static_ip_address : ""
+  initiator_static_primary_dns     = each.value.initiator_static_primary_dns != null ? each.value.initiator_static_primary_dns : ""
+  initiator_static_secondary_dns   = each.value.initiator_static_secondary_dns != null ? each.value.initiator_static_secondary_dns : ""
+  initiator_static_subnet_mask     = each.value.initiator_static_subnet_mask != null ? each.value.initiator_static_subnet_mask : ""
   mschap_password                  = each.value.mschap_password == 1 ? var.mschap_password_1 : ""
-  mschap_user_id                   = each.value.mschap_user_id
+  mschap_user_id                   = each.value.mschap_user_id != null ? each.value.mschap_user_id : ""
   name                             = each.key
-  primary_target_policy_moid       = module.iscsi_static_target_policies[each.value.primary_target_policy].moid
-  target_source_type               = each.value.target_source_type
-  org_moid                         = local.org_moids[each.value.organization].moid
-  tags                             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  initiator_ip_pool                = length(
-    regexall("Pool" , each.value.initiator_ip_source)
-  ) > 0 ? [data.terraform_remote_state.pools.outputs.[each.value.initiator_ip_pool].moid] : []
-  iscsi_adapter_policy_moid        = length(
-    regexall("[a-zA-Z0-9]+" , each.value.iscsi_adapter_policy)
-  ) > 0 ? [module.iscsi_static_target_policies[each.value.iscsi_adapter_policy].moid] : []
-  secondary_target_policy_moid     = length(
-    regexall("[a-zA-Z0-9]+" , each.value.secondary_target_policy)
+  primary_target_policy_moid = length(
+    regexall("[a-zA-Z0-9]+", each.value.primary_target_policy)
+  ) > 0 ? [module.iscsi_static_target_policies[each.value.primary_target_policy].moid] : []
+  target_source_type = each.value.target_source_type != null ? each.value.target_source_type : "Auto"
+  org_moid           = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
+  tags               = each.value.tags != null ? each.value.tags : local.tags
+  initiator_ip_pool = length(
+    regexall("Pool", each.value.initiator_ip_source)
+  ) > 0 ? [local.ip_pools[each.value.initiator_ip_pool]] : []
+  iscsi_adapter_policy_moid = length(
+    regexall("[a-zA-Z0-9]+", each.value.iscsi_adapter_policy)
+  ) > 0 ? [module.iscsi_adapter_policies[each.value.iscsi_adapter_policy].moid] : []
+  secondary_target_policy_moid = length(
+    regexall("[a-zA-Z0-9]+", each.value.secondary_target_policy)
   ) > 0 ? [module.iscsi_static_target_policies[each.value.primary_target_policy].moid] : []
 }

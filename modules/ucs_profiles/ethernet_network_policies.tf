@@ -44,7 +44,7 @@ module "ethernet_network_policies" {
     local.org_moids
   ]
   source        = "../../../terraform-intersight-imm/modules/ethernet_network_policies"
-  for_each      = local.ethernet_network_policies
+  for_each      = var.ethernet_network_policies
   allowed_vlans = each.value.allowed_vlans
   description   = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Policy."
   mode          = each.value.mode

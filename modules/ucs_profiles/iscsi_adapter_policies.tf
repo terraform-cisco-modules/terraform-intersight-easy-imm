@@ -28,11 +28,11 @@ variable "iscsi_adapter_policies" {
   type = map(object(
     {
       description            = optional(string)
-      dhcp_timeout           = optional(string)
-      lun_busy_retry_count   = optional(string)
+      dhcp_timeout           = optional(number)
+      lun_busy_retry_count   = optional(number)
       organization           = optional(string)
       tags                   = optional(list(map(string)))
-      tcp_connection_timeout = optional(string)
+      tcp_connection_timeout = optional(number)
     }
   ))
 }
@@ -49,11 +49,11 @@ module "iscsi_adapter_policies" {
     local.org_moids
   ]
   source                 = "../../../terraform-intersight-imm/modules/iscsi_adapter_policies"
-  for_each               = local.iscsi_adapter_policies
-  description            = each.value.description != "" ? each.value.description : "${each.key} iSCSI Adapter Policy."
-  dhcp_timeout           = each.value.dhcp_timeout
-  lun_busy_retry_count   = each.value.lun_busy_retry_count
-  org_moid               = local.org_moids[each.value.organization].moid
-  tags                   = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  tcp_connection_timeout = each.value.tcp_connection_timeout
+  for_each               = var.iscsi_adapter_policies
+  description            = each.value.description != null ? each.value.description : "${each.key} iSCSI Adapter Policy."
+  dhcp_timeout           = each.value.dhcp_timeout != null ? each.value.dhcp_timeout : 60
+  lun_busy_retry_count   = each.value.lun_busy_retry_count != null ? each.value.lun_busy_retry_count : 15
+  org_moid               = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
+  tags                   = each.value.tags != null ? each.value.tags : local.tags
+  tcp_connection_timeout = each.value.tcp_connection_timeout != null ? each.value.tcp_connection_timeout : 15
 }

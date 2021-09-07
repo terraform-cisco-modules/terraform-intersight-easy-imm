@@ -792,6 +792,62 @@ locals {
 
   #__________________________________________________________
   #
+  # LAN Connectivity Policy Section Locals
+  #__________________________________________________________
+
+  lan_connectivity_policies = {
+    for k, v in var.lan_connectivity_policies : k => {
+      description                 = v.description != null ? v.description : ""
+      enable_azure_stack_host_qos = v.enable_azure_stack_host_qos != null ? v.enable_azure_stack_host_qos : false
+      iqn_allocation_type         = v.iqn_allocation_type != null ? v.iqn_allocation_type : "None"
+      iqn_pool                    = v.iqn_pool != null ? v.iqn_pool : []
+      iqn_static_identifier       = v.iqn_static_identifier != null ? v.iqn_static_identifier : ""
+      organization                = v.organization != null ? v.organization : "default"
+      tags                        = v.tags != null ? v.tags : []
+      target_platform             = v.target_platform != null ? v.target_platform : "FIAttached"
+      vnic_placement_mode         = v.vnic_placement_mode != null ? v.vnic_placement_mode : "custom"
+      vnics                       = v.vnics != null ? v.vnics : {}
+    }
+  }
+
+  vnics = flatten([
+    for key, value in var.lan_connectivity_policies : [
+      for v in value.vnics : {
+        cdn_source                             = v.cdn_source != null ? v.cdn_source : "vnic"
+        cdn_value                              = v.cdn_value != null ? v.cdn_value : ""
+        enable_failover                        = v.enable_failover != null ? v.enable_failover : false
+        ethernet_adapter_policy                = v.ethernet_adapter_policy != null ? v.ethernet_adapter_policy : ""
+        ethernet_network_control_policy        = v.ethernet_network_control_policy != null ? v.ethernet_network_control_policy : ""
+        ethernet_network_group_policy          = v.ethernet_network_group_policy != null ? v.ethernet_network_group_policy : ""
+        ethernet_network_policy                = v.ethernet_network_policy != null ? v.ethernet_network_policy : ""
+        ethernet_qos_policy                    = v.ethernet_qos_policy != null ? v.ethernet_qos_policy : ""
+        iscsi_boot_policy                      = v.iscsi_boot_policy != null ? v.iscsi_boot_policy : ""
+        lan_connectivity_policy                = key
+        mac_address_allocation_type            = v.mac_address_allocation_type != null ? v.mac_address_allocation_type : "POOL"
+        mac_address_pool                       = v.mac_address_pool != null ? v.mac_address_pool : ""
+        mac_address_static                     = v.mac_address_static != null ? v.mac_address_static : ""
+        name                                   = v.name
+        placement_pci_link                     = v.placement_pci_link != null ? v.placement_pci_link : 0
+        placement_pci_order                    = v.placement_pci_order != null ? v.placement_pci_order : 0
+        placement_slot_id                      = v.placement_slot_id != null ? v.placement_slot_id : "MLOM"
+        placement_switch_id                    = v.placement_switch_id != null ? v.placement_switch_id : "None"
+        placement_uplink_port                  = v.placement_uplink_port != null ? v.placement_uplink_port : 0
+        usnic_adapter_policy                   = v.usnic_adapter_policy != null ? v.usnic_adapter_policy : ""
+        usnic_class_of_service                 = v.usnic_class_of_service != null ? v.usnic_class_of_service : 5
+        usnic_number_of_usnics                 = v.usnic_number_of_usnics != null ? v.usnic_number_of_usnics : 0
+        vmq_enable_virtual_machine_multi_queue = v.vmq_enable_virtual_machine_multi_queue != null ? v.vmq_enable_virtual_machine_multi_queue : false
+        vmq_enabled                            = v.vmq_enabled != null ? v.vmq_enabled : false
+        vmq_number_of_interrupts               = v.vmq_number_of_interrupts != null ? v.vmq_number_of_interrupts : 16
+        vmq_number_of_sub_vnics                = v.vmq_number_of_sub_vnics != null ? v.vmq_number_of_sub_vnics : 64
+        vmq_number_of_virtual_machine_queues   = v.vmq_number_of_virtual_machine_queues != null ? v.vmq_number_of_virtual_machine_queues : 4
+        vmq_vmmq_adapter_policy                = v.vmq_vmmq_adapter_policy != null ? v.vmq_vmmq_adapter_policy : ""
+      }
+    ]
+  ])
+
+
+  #__________________________________________________________
+  #
   # LDAP Policy Section Locals
   #__________________________________________________________
 

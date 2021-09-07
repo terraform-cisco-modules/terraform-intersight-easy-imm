@@ -107,16 +107,7 @@ ethernet_qos_policies = {
     mtu                   = 9000
     organization          = "UCS-DEMO2"
     rate_limit            = 0
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                  = []
   }
   "default_mtu9000" = {
     burst                 = 10240
@@ -126,15 +117,6 @@ ethernet_qos_policies = {
     mtu                   = 9000
     organization          = "UCS-DEMO2"
     rate_limit            = 0
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                  = []
   }
 }

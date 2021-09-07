@@ -1,6 +1,6 @@
 #______________________________________________
 #
-# BIOS Policies
+# BIOS Policy Variables
 #______________________________________________
 
 bios_policies = {
@@ -2100,7 +2100,7 @@ bios_policies = {
     select_memory_ras_configuration = "maximum-performance",
   }
   "E57F56C058AD413" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    description  = ""
     name         = "E57F56C058AD413"
     organization = "UCS-DEMO2"
     tags = [
@@ -2219,7 +2219,7 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "ED91BDCB6A8E45A" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    description  = ""
     name         = "ED91BDCB6A8E45A"
     organization = "UCS-DEMO2"
     tags = [
@@ -2340,7 +2340,7 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "ESX" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    description  = ""
     name         = "ESX"
     organization = "UCS-DEMO2"
     tags = [
@@ -2363,7 +2363,7 @@ bios_policies = {
     intel_vtd_interrupt_remapping   = "enabled",
   }
   "ESXi" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    description  = ""
     name         = "ESXi"
     organization = "UCS-DEMO2"
     tags = [
@@ -2380,7 +2380,7 @@ bios_policies = {
     cdn_enable = "enabled",
   }
   "FBA2D5AA2296430" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    description  = ""
     name         = "FBA2D5AA2296430"
     organization = "UCS-DEMO2"
     tags = [
@@ -2501,7 +2501,7 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "HyperV" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    description  = ""
     name         = "HyperV"
     organization = "UCS-DEMO2"
     tags = [
@@ -2524,7 +2524,7 @@ bios_policies = {
     intel_vt_for_directed_io        = "enabled",
   }
   "SRIOV" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    description  = ""
     name         = "SRIOV"
     organization = "UCS-DEMO2"
     tags = [
@@ -2542,7 +2542,7 @@ bios_policies = {
     svm_mode             = "enabled",
   }
   "test" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    description  = ""
     name         = "test"
     organization = "UCS-DEMO2"
     tags = [
@@ -2590,7 +2590,7 @@ bios_policies = {
     select_memory_ras_configuration = "maximum-performance",
   }
   "Virtual-Host" = {
-    description  = "Recommended-bios-settings-for-usNIC-vNICs"
+    description  = ""
     name         = "Virtual-Host"
     organization = "UCS-DEMO2"
     tags = [
