@@ -104,7 +104,7 @@ module "fibre_channel_adapter_policies" {
   depends_on = [
     local.org_moids
   ]
-  source                            = "../../../terraform-intersight-imm/modules/fibre_channel_adapter_policies"
+  source                            = "terraform-cisco-modules/imm/intersight//modules/fibre_channel_adapter_policies"
   for_each                          = local.fibre_channel_adapter_policies
   description                       = each.value.description != "" ? each.value.description : "${each.key} Fibre Channel Adapter Policy."
   error_detection_timeout           = each.value.error_detection_timeout

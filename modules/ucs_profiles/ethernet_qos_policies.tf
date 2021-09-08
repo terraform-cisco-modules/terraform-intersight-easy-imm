@@ -56,7 +56,7 @@ module "ethernet_qos_policies" {
   depends_on = [
     local.org_moids
   ]
-  source                = "../../../terraform-intersight-imm/modules/ethernet_qos_policies"
+  source                = "terraform-cisco-modules/imm/intersight//modules/ethernet_qos_policies"
   for_each              = local.ethernet_qos_policies
   description           = each.value.description != "" ? each.value.description : "${each.key} Ethernet QoS Policy."
   enable_trust_host_cos = each.value.enable_trust_host_cos

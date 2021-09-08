@@ -52,7 +52,7 @@ module "virtual_media_policies" {
     local.org_moids,
     # module.ucs_server_profiles
   ]
-  source                          = "../../../terraform-intersight-imm/modules/virtual_media_policies"
+  source                          = "terraform-cisco-modules/imm/intersight//modules/virtual_media_policies"
   for_each                        = local.virtual_media_policies
   description                     = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy."
   enabled                         = each.value.enabled

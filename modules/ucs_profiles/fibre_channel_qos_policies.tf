@@ -44,7 +44,7 @@ module "fibre_channel_qos_policies" {
   depends_on = [
     local.org_moids
   ]
-  source              = "../../../terraform-intersight-imm/modules/fibre_channel_qos_policies"
+  source              = "terraform-cisco-modules/imm/intersight//modules/fibre_channel_qos_policies"
   for_each            = local.fibre_channel_qos_policies
   burst               = each.value.burst
   cos                 = each.value.cos

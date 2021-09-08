@@ -2713,7 +2713,7 @@ module "bios_policies" {
     module.ucs_server_profiles,
     module.ucs_server_profile_templates
   ]
-  source      = "../../../terraform-intersight-imm/modules/bios_policies"
+  source      = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each    = local.bios_policies
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
   name        = each.key

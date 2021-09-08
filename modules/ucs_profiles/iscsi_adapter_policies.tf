@@ -48,7 +48,7 @@ module "iscsi_adapter_policies" {
   depends_on = [
     local.org_moids
   ]
-  source                 = "../../../terraform-intersight-imm/modules/iscsi_adapter_policies"
+  source                 = "terraform-cisco-modules/imm/intersight//modules/iscsi_adapter_policies"
   for_each               = var.iscsi_adapter_policies
   description            = each.value.description != null ? each.value.description : "${each.key} iSCSI Adapter Policy."
   dhcp_timeout           = each.value.dhcp_timeout != null ? each.value.dhcp_timeout : 60

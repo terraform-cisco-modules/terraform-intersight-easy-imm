@@ -38,7 +38,7 @@ module "ethernet_network_group_policies" {
   depends_on = [
     local.org_moids
   ]
-  source        = "../../../terraform-intersight-imm/modules/ethernet_network_group_policies"
+  source        = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_group_policies"
   for_each      = local.ethernet_network_group_policies
   allowed_vlans = each.value.allowed_vlans
   description   = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Group Policy."

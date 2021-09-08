@@ -163,7 +163,7 @@ module "lan_connectivity_policies" {
     module.ucs_server_profiles,
     module.ucs_server_profile_templates
   ]
-  source                      = "../../../terraform-intersight-imm/modules/lan_connectivity_policies"
+  source                      = "terraform-cisco-modules/imm/intersight//modules/lan_connectivity_policies"
   for_each                    = var.lan_connectivity_policies
   description                 = each.value.description != "" ? each.value.description : "${each.key} LAN Connectivity Policy."
   enable_azure_stack_host_qos = each.value.enable_azure_stack_host_qos
@@ -202,7 +202,7 @@ module "lan_connectivity_vnics" {
     module.iscsi_boot_policies,
     module.lan_connectivity_policies
   ]
-  source                                 = "../../../terraform-intersight-imm/modules/lan_connectivity_add_vnic"
+  source                                 = "terraform-cisco-modules/imm/intersight//modules/lan_connectivity_add_vnic"
   for_each                               = toset(keys({ for k, v in local.vnics : k => v }))
   cdn_source                             = local.vnics[each.value].cdn_source
   cdn_value                              = local.vnics[each.value].cdn_source == "user" ? local.vnics[each.value].cdn_value : local.vnics[each.value].name

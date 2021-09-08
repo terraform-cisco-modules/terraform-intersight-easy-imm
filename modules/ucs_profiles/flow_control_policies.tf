@@ -54,7 +54,7 @@ module "flow_control_policies" {
   depends_on = [
     local.org_moids
   ]
-  source                     = "../../../terraform-intersight-imm/modules/flow_control_policies"
+  source                     = "terraform-cisco-modules/imm/intersight//modules/flow_control_policies"
   for_each                   = local.flow_control_policies
   description                = each.value.description != "" ? each.value.description : "${each.key} Flow Control Policy."
   name                       = each.key

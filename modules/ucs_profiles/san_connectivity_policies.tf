@@ -122,7 +122,7 @@ module "san_connectivity_policies" {
     module.ucs_server_profiles,
     module.ucs_server_profile_templates
   ]
-  source               = "../../../terraform-intersight-imm/modules/san_connectivity_policies"
+  source               = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_policies"
   for_each             = local.san_connectivity_policies
   description          = each.value.description != "" ? each.value.description : "${each.key} SAN Connectivity Policy."
   name                 = each.key
@@ -157,7 +157,7 @@ module "san_connectivity_vhbas" {
     module.fibre_channel_qos_policies,
     module.san_connectivity_policies
   ]
-  source                       = "../../../terraform-intersight-imm/modules/san_connectivity_add_vhba"
+  source                       = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba"
   for_each                     = toset(keys({ for k, v in local.vhbas : k => v }))
   fc_adapter_policy_moid       = module.fibre_channel_adapter_policies[local.vhbas[each.value].fibre_channel_adapter_policy].moid
   fc_network_policy_moid       = module.fibre_channel_network_policies[local.vhbas[each.value].fibre_channel_network_policy].moid

@@ -56,7 +56,7 @@ module "syslog_policies" {
     module.ucs_server_profiles,
     module.ucs_server_profile_templates
   ]
-  source             = "../../../terraform-intersight-imm/modules/syslog_policies"
+  source             = "terraform-cisco-modules/imm/intersight//modules/syslog_policies"
   for_each           = local.syslog_policies
   description        = each.value.description != "" ? each.value.description : "${each.key} Syslog Policy."
   name               = each.key

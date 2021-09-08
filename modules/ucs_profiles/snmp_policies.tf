@@ -295,7 +295,7 @@ module "snmp_policies" {
     module.ucs_server_profile_templates
   ]
   for_each = local.snmp_policies
-  source   = "../../../terraform-intersight-imm/modules/snmp_policies"
+  source   = "terraform-cisco-modules/imm/intersight//modules/snmp_policies"
   access_community_string = length(
     regexall("1", each.value.access_community_string)
     ) > 0 ? var.access_community_string_1 : length(

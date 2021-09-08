@@ -47,7 +47,7 @@ module "link_aggregation_policies" {
   depends_on = [
     local.org_moids
   ]
-  source             = "../../../terraform-intersight-imm/modules/link_aggregation_policies"
+  source             = "terraform-cisco-modules/imm/intersight//modules/link_aggregation_policies"
   for_each           = local.link_aggregation_policies
   description        = each.value.description != "" ? each.value.description : "${each.key} Link Aggregation Policy."
   lacp_rate          = each.value.lacp_rate

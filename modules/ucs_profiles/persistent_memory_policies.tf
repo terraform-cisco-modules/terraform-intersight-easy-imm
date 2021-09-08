@@ -67,7 +67,7 @@ module "persistent_memory_policies" {
     module.ucs_server_profiles,
     module.ucs_server_profile_templates
   ]
-  source                       = "../../../terraform-intersight-imm/modules/persistent_memory_policies"
+  source                       = "terraform-cisco-modules/imm/intersight//modules/persistent_memory_policies"
   for_each                     = local.persistent_memory_policies
   description                  = each.value.description != "" ? each.value.description : "${each.key} Persistent Memory Policy."
   goals_memory_percentage      = each.value.goals_memory_percentage

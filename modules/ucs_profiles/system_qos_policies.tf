@@ -93,7 +93,7 @@ module "system_qos_policies" {
     local.org_moids,
     module.ucs_domain_switches
   ]
-  source      = "../../../terraform-intersight-imm/modules/system_qos_policies"
+  source      = "terraform-cisco-modules/imm/intersight//modules/system_qos_policies"
   for_each    = var.system_qos_policies
   classes     = each.value.classes != null ? each.value.classes : {}
   description = each.value.description != null ? each.value.description : "${each.key} System QoS Policy."

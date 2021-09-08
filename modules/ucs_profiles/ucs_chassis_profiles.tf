@@ -71,7 +71,7 @@ module "ucs_chassis_profiles" {
   depends_on = [
     local.org_moids
   ]
-  source              = "../../../terraform-intersight-imm/modules/ucs_chassis_profiles"
+  source              = "terraform-cisco-modules/imm/intersight//modules/ucs_chassis_profiles"
   for_each            = local.ucs_chassis_profiles
   action              = each.value.action
   description         = each.value.description != "" ? each.value.description : "${each.key} Chassis Profile."

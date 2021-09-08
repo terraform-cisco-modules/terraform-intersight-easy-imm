@@ -109,7 +109,7 @@ module "iscsi_boot_policies" {
     module.iscsi_adapter_policies,
     module.iscsi_static_target_policies,
   ]
-  source                           = "../../../terraform-intersight-imm/modules/iscsi_boot_policies"
+  source                           = "terraform-cisco-modules/imm/intersight//modules/iscsi_boot_policies"
   for_each                         = var.iscsi_boot_policies
   chap_password                    = each.value.chap_password == 1 ? var.chap_password_1 : ""
   chap_user_id                     = each.value.chap_user_id != null ? each.value.chap_user_id : ""

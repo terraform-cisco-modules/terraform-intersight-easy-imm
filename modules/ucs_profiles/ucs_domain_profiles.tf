@@ -108,7 +108,7 @@ module "ucs_domain_switches" {
     local.org_moids,
     module.ucs_domain_profiles
   ]
-  source          = "../../../terraform-intersight-imm/modules/ucs_domain_switches"
+  source          = "terraform-cisco-modules/imm/intersight//modules/ucs_domain_switches"
   for_each        = local.merged_ucs_switches
   action          = each.value.action
   assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fis[each.key].results.0.moid] : []

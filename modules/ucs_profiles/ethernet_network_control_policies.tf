@@ -63,7 +63,7 @@ module "ethernet_network_control_policies" {
   depends_on = [
     local.org_moids
   ]
-  source                = "../../../terraform-intersight-imm/modules/ethernet_network_control_policies"
+  source                = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_control_policies"
   for_each              = local.ethernet_network_control_policies
   action_on_uplink_fail = each.value.action_on_uplink_fail
   cdp_enable            = each.value.cdp_enable

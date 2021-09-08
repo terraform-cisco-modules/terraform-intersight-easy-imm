@@ -61,7 +61,7 @@ module "network_connectivity_policies" {
     module.ucs_server_profiles,
     module.ucs_server_profile_templates
   ]
-  source         = "../../../terraform-intersight-imm/modules/network_connectivity_policies"
+  source         = "terraform-cisco-modules/imm/intersight//modules/network_connectivity_policies"
   for_each       = local.network_connectivity_policies
   description    = each.value.description != "" ? each.value.description : "${each.key} Network Connectivity (DNS) Policy."
   dns_servers_v4 = each.value.dns_servers_v4
