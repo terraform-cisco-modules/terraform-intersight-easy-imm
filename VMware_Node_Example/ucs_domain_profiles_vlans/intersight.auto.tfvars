@@ -27,45 +27,7 @@ organizations = ["#Organization#"]
 
 #__________________________________________________________
 #
-# Kubernetes Policy Variables
+# Intersight Policy Variables
 #__________________________________________________________
 
 tags = [{ key = "Module", value = "terraform-intersight-easy-imm" }, { key = "Owner", value = "Admin" }]
-
-#______________________________________________
-#
-# UCS Domain VLAN Variables
-#______________________________________________
-
-# policies_multicast = {
-#   "Asgard_multicast" = {
-#     description    = ""
-#     organization   = "Asgard"
-#     querier_ip     = ""
-#     querier_state  = "Disabled"
-#     snooping_state = "Enabled"
-#     tags           = []
-#   }
-# }
-#
-# policies_vlan = {
-#   "Asgard_vlangroup_1" = {
-#     auto_allow_on_uplinks = true
-#     description           = ""
-#     multicast_policy      = "Asgard_multicast"
-#     organization          = "Asgard"
-#     vlan_list             = "101-199,201-299,1100-1299,1700-1799"
-#     vlan_native           = 1
-#     vlan_prefix           = "asgard"
-#     vlan_map = [
-#       {
-#         prefix  = "mgmt"
-#         vlan_id = 10
-#       },
-#       {
-#         prefix  = "storage"
-#         vlan_id = 20
-#       }
-#     ]
-#   }
-# }
