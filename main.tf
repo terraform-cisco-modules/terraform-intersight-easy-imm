@@ -65,47 +65,131 @@ module "sensitive_snmp_variables" {
   ]
   for_each = {
     for k, v in local.workspaces : k => v
-    if length(regexall("(chassis|domain|server)", local.workspaces[k].workspace_type)) > 0
+    if length(regexall("(profiles)", local.workspaces[k].workspace_type)) > 0
   }
   category     = "terraform"
   workspace_id = module.workspaces[each.key].workspace.id
   variable_list = {
-    snmp_community = {
+    access_community_string_1 = {
       description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
-      key         = "snmp_community"
+      key         = "access_community_string_1"
       sensitive   = true
-      value       = var.snmp_community
+      value       = var.access_community_string_1
     },
-    snmp_trap_community = {
+    access_community_string_2 = {
       description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
-      key         = "snmp_trap_community"
+      key         = "access_community_string_2"
       sensitive   = true
-      value       = var.snmp_trap_community
+      value       = var.access_community_string_2
     },
-    snmp_user_1_auth_password = {
-      description = "Authorization password for the user."
-      key         = "snmp_user_1_auth_password"
+    access_community_string_3 = {
+      description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+      key         = "access_community_string_3"
       sensitive   = true
-      value       = var.snmp_user_1_auth_password
+      value       = var.access_community_string_3
     },
-    snmp_user_1_privacy_password = {
-      description = "Privacy password for the user."
-      key         = "snmp_user_1_privacy_password"
+    access_community_string_4 = {
+      description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+      key         = "access_community_string_4"
       sensitive   = true
-      value       = var.snmp_user_1_privacy_password
+      value       = var.access_community_string_4
     },
-    snmp_user_2_auth_password = {
-      description = "Authorization password for the user."
-      key         = "snmp_user_2_auth_password"
+    access_community_string_5 = {
+      description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+      key         = "access_community_string_5"
       sensitive   = true
-      value       = var.snmp_user_2_auth_password
+      value       = var.access_community_string_5
     },
-    snmp_user_2_privacy_password = {
-      description = "Privacy password for the user."
-      key         = "snmp_user_2_privacy_password"
+    snmp_auth_password_1 = {
+      description = "SNMPv3 User Authentication Password."
+      key         = "snmp_auth_password_1"
       sensitive   = true
-      value       = var.snmp_user_2_privacy_password
-    }
+      value       = var.snmp_auth_password_1
+    },
+    snmp_auth_password_2 = {
+      description = "SNMPv3 User Authentication Password."
+      key         = "snmp_auth_password_2"
+      sensitive   = true
+      value       = var.snmp_auth_password_2
+    },
+    snmp_auth_password_3 = {
+      description = "SNMPv3 User Authentication Password."
+      key         = "snmp_auth_password_3"
+      sensitive   = true
+      value       = var.snmp_auth_password_3
+    },
+    snmp_auth_password_4 = {
+      description = "SNMPv3 User Authentication Password."
+      key         = "snmp_auth_password_4"
+      sensitive   = true
+      value       = var.snmp_auth_password_4
+    },
+    snmp_auth_password_5 = {
+      description = "SNMPv3 User Authentication Password."
+      key         = "snmp_auth_password_5"
+      sensitive   = true
+      value       = var.snmp_auth_password_5
+    },
+    snmp_privacy_password_1 = {
+      description = "SNMPv3 User Privacy Password."
+      key         = "snmp_privacy_password_1"
+      sensitive   = true
+      value       = var.snmp_privacy_password_1
+    },
+    snmp_privacy_password_2 = {
+      description = "SNMPv3 User Privacy Password."
+      key         = "snmp_privacy_password_2"
+      sensitive   = true
+      value       = var.snmp_privacy_password_2
+    },
+    snmp_privacy_password_3 = {
+      description = "SNMPv3 User Privacy Password."
+      key         = "snmp_privacy_password_3"
+      sensitive   = true
+      value       = var.snmp_privacy_password_3
+    },
+    snmp_privacy_password_4 = {
+      description = "SNMPv3 User Privacy Password."
+      key         = "snmp_privacy_password_4"
+      sensitive   = true
+      value       = var.snmp_privacy_password_4
+    },
+    snmp_privacy_password_5 = {
+      description = "SNMPv3 User Privacy Password."
+      key         = "snmp_privacy_password_5"
+      sensitive   = true
+      value       = var.snmp_privacy_password_5
+    },
+    snmp_trap_community_1 = {
+      description = "Community for a Trap Destination."
+      key         = "snmp_trap_community_1"
+      sensitive   = true
+      value       = var.snmp_trap_community_1
+    },
+    snmp_trap_community_2 = {
+      description = "Community for a Trap Destination."
+      key         = "snmp_trap_community_2"
+      sensitive   = true
+      value       = var.snmp_trap_community_2
+    },
+    snmp_trap_community_3 = {
+      description = "Community for a Trap Destination."
+      key         = "snmp_trap_community_3"
+      sensitive   = true
+      value       = var.snmp_trap_community_3
+    },
+    snmp_trap_community_4 = {
+      description = "Community for a Trap Destination."
+      key         = "snmp_trap_community_4"
+      sensitive   = true
+      value       = var.snmp_trap_community_4
+    },
+    snmp_trap_community_5 = {
+      description = "Community for a Trap Destination."
+      key         = "snmp_trap_community_5"
+      sensitive   = true
+      value       = var.snmp_trap_community_5
+    },
   }
 }
 
@@ -122,7 +206,7 @@ module "sensitive_server_variables" {
   ]
   for_each = {
     for k, v in local.workspaces : k => v
-    if length(regexall("(server)", local.workspaces[k].workspace_type)) > 0
+    if length(regexall("(profiles)", local.workspaces[k].workspace_type)) > 0
   }
   category     = "terraform"
   workspace_id = module.workspaces[each.key].workspace.id

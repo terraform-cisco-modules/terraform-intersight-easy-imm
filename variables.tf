@@ -138,44 +138,177 @@ variable "persistent_passphrase" {
 # SNMP Policy Sensitive Variables
 #__________________________________________________________
 
-variable "snmp_community" {
+variable "access_community_string_1" {
   default     = ""
   description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
   sensitive   = true
   type        = string
 }
 
-variable "snmp_trap_community" {
+variable "access_community_string_2" {
   default     = ""
   description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
   sensitive   = true
   type        = string
 }
 
-variable "snmp_user_1_auth_password" {
+variable "access_community_string_3" {
   default     = ""
-  description = "Authorization password for the user."
+  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
   sensitive   = true
   type        = string
 }
 
-variable "snmp_user_1_privacy_password" {
+variable "access_community_string_4" {
   default     = ""
-  description = "Privacy password for the user."
+  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
   sensitive   = true
   type        = string
 }
 
-variable "snmp_user_2_auth_password" {
+variable "access_community_string_5" {
   default     = ""
-  description = "Authorization password for the user."
+  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
   sensitive   = true
   type        = string
 }
 
-variable "snmp_user_2_privacy_password" {
+variable "snmp_auth_password_1" {
   default     = ""
-  description = "Privacy password for the user."
+  description = "SNMPv3 User Authentication Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_auth_password_2" {
+  default     = ""
+  description = "SNMPv3 User Authentication Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_auth_password_3" {
+  default     = ""
+  description = "SNMPv3 User Authentication Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_auth_password_4" {
+  default     = ""
+  description = "SNMPv3 User Authentication Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_auth_password_5" {
+  default     = ""
+  description = "SNMPv3 User Authentication Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_privacy_password_1" {
+  default     = ""
+  description = "SNMPv3 User Privacy Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_privacy_password_2" {
+  default     = ""
+  description = "SNMPv3 User Privacy Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_privacy_password_3" {
+  default     = ""
+  description = "SNMPv3 User Privacy Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_privacy_password_4" {
+  default     = ""
+  description = "SNMPv3 User Privacy Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_privacy_password_5" {
+  default     = ""
+  description = "SNMPv3 User Privacy Password."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_trap_community_1" {
+  default     = ""
+  description = "Community for a Trap Destination."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_trap_community_2" {
+  default     = ""
+  description = "Community for a Trap Destination."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_trap_community_3" {
+  default     = ""
+  description = "Community for a Trap Destination."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_trap_community_4" {
+  default     = ""
+  description = "Community for a Trap Destination."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_trap_community_5" {
+  default     = ""
+  description = "Community for a Trap Destination."
+  sensitive   = true
+  type        = string
+}
+
+variable "trap_community_string_1" {
+  default     = ""
+  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+  sensitive   = true
+  type        = string
+}
+
+variable "trap_community_string_2" {
+  default     = ""
+  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+  sensitive   = true
+  type        = string
+}
+
+variable "trap_community_string_3" {
+  default     = ""
+  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+  sensitive   = true
+  type        = string
+}
+
+variable "trap_community_string_4" {
+  default     = ""
+  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
+  sensitive   = true
+  type        = string
+}
+
+variable "trap_community_string_5" {
+  default     = ""
+  description = "The default SNMPv1, SNMPv2c community name or SNMPv3 username to include on any trap messages sent to the SNMP host. The name can be 18 characters long."
   sensitive   = true
   type        = string
 }
