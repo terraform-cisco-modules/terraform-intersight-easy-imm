@@ -10,7 +10,7 @@ variable "lan_connectivity_policies" {
       description                 = ""
       enable_azure_stack_host_qos = false
       iqn_allocation_type         = "None"
-      iqn_pool                    = []
+      iqn_pool                    = ""
       iqn_static_identifier       = ""
       organization                = "default"
       tags                        = []
@@ -109,7 +109,7 @@ variable "lan_connectivity_policies" {
       description                 = optional(string)
       enable_azure_stack_host_qos = optional(bool)
       iqn_allocation_type         = optional(string)
-      iqn_pool                    = optional(set(string))
+      iqn_pool                    = optional(string)
       iqn_static_identifier       = optional(string)
       organization                = optional(string)
       tags                        = optional(list(map(string)))
@@ -169,7 +169,7 @@ module "lan_connectivity_policies" {
   enable_azure_stack_host_qos = each.value.enable_azure_stack_host_qos
   iqn_allocation_type         = each.value.iqn_allocation_type
   iqn_static_identifier       = each.value.iqn_allocation_type == "Static" ? each.value.iqn_static_identifier : ""
-  iqn_pool                    = each.value.iqn_allocation_type == "Pool" ? local.iqn_pools[each.value.iqn_pool] : []
+  iqn_pool                    = each.value.iqn_allocation_type == "Pool" ? [local.iqn_pools[each.value.iqn_pool]] : []
   name                        = each.key
   org_moid                    = local.org_moids[each.value.organization].moid
   vnic_placement_mode         = each.value.vnic_placement_mode

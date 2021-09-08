@@ -54,6 +54,7 @@ locals {
       auto_cc_state                         = v.auto_cc_state != null ? v.auto_cc_state : "platform-default"
       autonumous_cstate_enable              = v.autonumous_cstate_enable != null ? v.autonumous_cstate_enable : "platform-default"
       baud_rate                             = v.baud_rate != null ? v.baud_rate : "platform-default"
+      bios_template                         = v.bios_template != null ? v.bios_template : ""
       bme_dma_mitigation                    = v.bme_dma_mitigation != null ? v.bme_dma_mitigation : "platform-default"
       boot_option_num_retry                 = v.boot_option_num_retry != null ? v.boot_option_num_retry : "platform-default"
       boot_option_re_cool_down              = v.boot_option_re_cool_down != null ? v.boot_option_re_cool_down : "platform-default"
@@ -800,7 +801,7 @@ locals {
       description                 = v.description != null ? v.description : ""
       enable_azure_stack_host_qos = v.enable_azure_stack_host_qos != null ? v.enable_azure_stack_host_qos : false
       iqn_allocation_type         = v.iqn_allocation_type != null ? v.iqn_allocation_type : "None"
-      iqn_pool                    = v.iqn_pool != null ? v.iqn_pool : []
+      iqn_pool                    = v.iqn_pool != null ? v.iqn_pool : ""
       iqn_static_identifier       = v.iqn_static_identifier != null ? v.iqn_static_identifier : ""
       organization                = v.organization != null ? v.organization : "default"
       tags                        = v.tags != null ? v.tags : []
