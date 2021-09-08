@@ -1,6 +1,6 @@
 #______________________________________________
 #
-# VSAN Policies
+# VSAN Policy Variables
 #______________________________________________
 
 vsan_policies = {
@@ -18,26 +18,26 @@ vsan_policies = {
         value = "0.9.8",
       },
     ]
-    vsans = [
-      {
-        fcoe_vlan_id   = 4048,
-        vsan_id        = 1,
-        name           = "default",
+    vsans = {
+      1 = {
+        fcoe_vlan_id   = 4048
+        vsan_id        = 1
+        name           = "default"
         default_zoning = "Disabled"
       },
-      {
-        fcoe_vlan_id   = 1010,
-        vsan_id        = 10,
-        name           = "PROD",
+      10 = {
+        fcoe_vlan_id   = 1010
+        vsan_id        = 10
+        name           = "PROD"
         default_zoning = "Disabled"
       },
-      {
-        fcoe_vlan_id   = 1020,
-        vsan_id        = 20,
-        name           = "BACKUP",
+      20 = {
+        fcoe_vlan_id   = 1020
+        vsan_id        = 20
+        name           = "BACKUP"
         default_zoning = "Disabled"
       },
-    ]
+    }
   }
   "UCS-DEMO2-B" = {
     description     = ""
@@ -53,31 +53,31 @@ vsan_policies = {
         value = "0.9.8",
       },
     ]
-    vsans = [
-      {
-        fcoe_vlan_id   = 4048,
-        vsan_id        = 1,
-        name           = "default",
+    vsans = {
+      1 = {
+        fcoe_vlan_id   = 4048
+        vsan_id        = 1
+        name           = "default"
         default_zoning = "Disabled"
       },
-      {
-        fcoe_vlan_id   = 1011,
-        vsan_id        = 11,
-        name           = "PROD",
+      11 = {
+        fcoe_vlan_id   = 1011
+        vsan_id        = 11
+        name           = "PROD"
         default_zoning = "Disabled"
       },
-      {
-        fcoe_vlan_id   = 1020,
-        vsan_id        = 20,
-        name           = "VSAN-20",
+      20 = {
+        fcoe_vlan_id   = 1020
+        vsan_id        = 20
+        name           = "VSAN-20"
         default_zoning = "Disabled"
       },
-      {
-        fcoe_vlan_id   = 1021,
-        vsan_id        = 21,
-        name           = "BACKUP",
+      21 = {
+        fcoe_vlan_id   = 1021
+        vsan_id        = 21
+        name           = "BACKUP"
         default_zoning = "Disabled"
       },
-    ]
+    }
   }
 }

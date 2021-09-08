@@ -4,14 +4,21 @@
 #__________________________________________________________
 
 data "terraform_remote_state" "domain" {
-  backend = "remote"
+  backend = "local"
   config = {
-    organization = var.tfc_organization
-    workspaces = {
-      name = var.ws_domain
-    }
+    path = "../ucs_profiles/terraform.tfstate"
   }
 }
+
+# data "terraform_remote_state" "domain" {
+#   backend = "remote"
+#   config = {
+#     organization = var.tfc_organization
+#     workspaces = {
+#       name = var.ws_domain
+#     }
+#   }
+# }
 
 
 #____________________________________________________________

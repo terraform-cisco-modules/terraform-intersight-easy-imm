@@ -57,7 +57,8 @@ variable "serial_over_lan_policies" {
 module "serial_over_lan_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_server_profiles,
+    module.ucs_server_profile_templates
   ]
   source      = "../../../terraform-intersight-imm/modules/serial_over_lan_policies"
   for_each    = local.serial_over_lan_policies
@@ -69,11 +70,13 @@ module "serial_over_lan_policies" {
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.serial_over_lan_policy == each.key
-  ]
+  profiles = {
+    for k, v in local.merged_server_moids : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merged_server_moids[k].serial_over_lan_policy == each.key
+  }
 }
 
 

@@ -27,7 +27,7 @@ iscsi_static_target_policies = {
       },
     ]
   }
-  "ESXI-OCB-POC_ISCSI-BOOT-B_2" = {
+  "ESXI-OCB-POC_ISCSI-BOOT-B_1" = {
     description = ""
     ip_address  = "192.168.31.20"
     port        = 3260

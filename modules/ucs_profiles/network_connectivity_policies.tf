@@ -57,7 +57,9 @@ variable "network_connectivity_policies" {
 module "network_connectivity_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_domain_switches,
+    module.ucs_server_profiles,
+    module.ucs_server_profile_templates
   ]
   source         = "../../../terraform-intersight-imm/modules/network_connectivity_policies"
   for_each       = local.network_connectivity_policies
@@ -70,12 +72,11 @@ module "network_connectivity_policies" {
   org_moid       = local.org_moids[each.value.organization].moid
   tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
   update_domain  = each.value.update_domain
-  profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    {
-      moid = module.ucs_server_profiles[s].moid
-      type = "server"
+  profiles = {
+    for k, v in local.merge_all_moids : k => {
+      moid        = v.moid
+      object_type = v.object_type
     }
-    if local.ucs_server_profiles[s].profile.network_connectivity_policy == each.key
-  ]
+    if local.merge_all_moids[k].network_connectivity_policy == each.key
+  }
 }

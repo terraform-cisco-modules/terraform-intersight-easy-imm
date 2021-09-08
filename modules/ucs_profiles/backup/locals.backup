@@ -1,0 +1,38 @@
+#__________________________________________________________
+#
+# Local Variables Section
+#__________________________________________________________
+
+locals {
+  #__________________________________________________________
+  #
+  # Boot Order Policy Section Locals
+  #__________________________________________________________
+
+  boot_order_policies_templates = {
+    for k, v in var.boot_order_policies_templates : k => {
+      boot_policy  = (v.boot_policy != null ? v.boot_policy : "uefi_m2_raid")
+      boot_secure  = (v.boot_secure != null ? v.boot_secure : true)
+      description  = (v.description != null ? v.description : "")
+      organization = (v.organization != null ? v.organization : "default")
+      tags         = (v.tags != null ? v.tags : [])
+    }
+  }
+
+  #______________________________________________
+  #
+  # Ethernet Port-Channel Policy Variables
+  #______________________________________________
+  policies_port_channel_lan = {
+    for k, v in var.policies_port_channel_lan : k => {
+      lan_pc_breakoutswport     = (v.lan_pc_breakoutswport != null ? v.lan_pc_breakoutswport : 0)
+      lan_pc_ports              = (v.lan_pc_ports != null ? v.lan_pc_ports : [49, 50])
+      lan_pc_speed              = (v.lan_pc_speed != null ? v.lan_pc_speed : "Auto")
+      lan_pc_slot_id            = (v.lan_pc_slot_id != null ? v.lan_pc_slot_id : 1)
+      policies_flow_control     = (v.policies_flow_control != null ? v.policies_flow_control : "")
+      policies_link_aggregation = (v.policies_link_aggregation != null ? v.policies_link_aggregation : "")
+      policies_link_control     = (v.policies_link_control != null ? v.policies_link_control : "")
+      tags                      = (v.tags != null ? v.tags : [])
+      ucs_domain_profile        = (v.ucs_domain_profile != null ? v.ucs_domain_profile : "")
+    }
+  }

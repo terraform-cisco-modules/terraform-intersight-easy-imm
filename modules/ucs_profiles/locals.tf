@@ -826,7 +826,7 @@ locals {
         mac_address_allocation_type            = v.mac_address_allocation_type != null ? v.mac_address_allocation_type : "POOL"
         mac_address_pool                       = v.mac_address_pool != null ? v.mac_address_pool : ""
         mac_address_static                     = v.mac_address_static != null ? v.mac_address_static : ""
-        name                                   = v.name
+        name                                   = v.name != null ? v.name : "vnic"
         placement_pci_link                     = v.placement_pci_link != null ? v.placement_pci_link : 0
         placement_pci_order                    = v.placement_pci_order != null ? v.placement_pci_order : 0
         placement_slot_id                      = v.placement_slot_id != null ? v.placement_slot_id : "MLOM"
@@ -1065,6 +1065,48 @@ locals {
 
   #__________________________________________________________
   #
+  # SAN Connectivity Policy Section Locals
+  #__________________________________________________________
+
+  san_connectivity_policies = {
+    for k, v in var.san_connectivity_policies : k => {
+      description          = v.description != null ? v.description : ""
+      organization         = v.organization != null ? v.organization : "default"
+      tags                 = v.tags != null ? v.tags : []
+      target_platform      = v.target_platform != null ? v.target_platform : "FIAttached"
+      vhba_placement_mode  = v.vhba_placement_mode != null ? v.vhba_placement_mode : "custom"
+      vhbas                = v.vhbas != null ? v.vhbas : {}
+      wwnn_allocation_type = v.wwnn_allocation_type != null ? v.wwnn_allocation_type : "UP2YOU"
+      wwnn_pool            = v.wwnn_pool != null ? v.wwnn_pool : ""
+      wwnn_static_address  = v.wwnn_static_address != null ? v.wwnn_static_address : ""
+    }
+  }
+
+  vhbas = flatten([
+    for key, value in var.san_connectivity_policies : [
+      for v in value.vhbas : {
+        fibre_channel_adapter_policy = v.fibre_channel_adapter_policy != null ? v.fibre_channel_adapter_policy : ""
+        fibre_channel_network_policy = v.fibre_channel_network_policy != null ? v.fibre_channel_network_policy : ""
+        fibre_channel_qos_policy     = v.fibre_channel_qos_policy != null ? v.fibre_channel_qos_policy : ""
+        name                         = v.name != null ? v.name : "vhba"
+        persistent_lun_bindings      = v.persistent_lun_bindings != null ? v.persistent_lun_bindings : false
+        placement_pci_link           = v.placement_pci_link != null ? v.placement_pci_link : 0
+        placement_pci_order          = v.placement_pci_order != null ? v.placement_pci_order : 0
+        placement_slot_id            = v.placement_slot_id != null ? v.placement_slot_id : "MLOM"
+        placement_switch_id          = v.placement_switch_id != null ? v.placement_switch_id : "None"
+        placement_uplink_port        = v.placement_uplink_port != null ? v.placement_uplink_port : 0
+        san_connectivity_policy      = key
+        vhba_type                    = v.vhba_type != null ? v.vhba_type : "fc-initiator"
+        wwpn_allocation_type         = v.wwpn_allocation_type != null ? v.wwpn_allocation_type : "POOL"
+        wwpn_pool                    = v.wwpn_pool != null ? v.wwpn_pool : ""
+        wwpn_static_address          = v.wwpn_static_address != null ? v.wwpn_static_address : ""
+      }
+    ]
+  ])
+
+
+  #__________________________________________________________
+  #
   # SD Card Policy Section Locals
   #__________________________________________________________
 
@@ -1116,6 +1158,29 @@ locals {
       smtp_recipients = v.smtp_recipients != null ? v.smtp_recipients : []
       smtp_server     = v.smtp_server != null ? v.smtp_server : ""
       tags            = v.tags != null ? v.tags : []
+    }
+  }
+
+  #__________________________________________________________
+  #
+  # SNMP Policy Section - Locals
+  #__________________________________________________________
+
+  snmp_policies = {
+    for k, v in var.snmp_policies : k => {
+      access_community_string = v.access_community_string != null ? v.access_community_string : 0
+      description             = v.description != null ? v.description : ""
+      enable_snmp             = v.enable_snmp != null ? v.enable_snmp : true
+      organization            = v.organization != null ? v.organization : "default"
+      snmp_community_access   = v.snmp_community_access != null ? v.snmp_community_access : "Disabled"
+      snmp_engine_input_id    = v.snmp_engine_input_id != null ? v.snmp_engine_input_id : ""
+      snmp_port               = v.snmp_port != null ? v.snmp_port : 161
+      snmp_trap_destinations  = v.snmp_trap_destinations != null ? v.snmp_trap_destinations : {}
+      snmp_users              = v.snmp_users != null ? v.snmp_users : {}
+      system_contact          = v.system_contact != null ? v.system_contact : ""
+      system_location         = v.system_location != null ? v.system_location : ""
+      tags                    = v.tags != null ? v.tags : []
+      trap_community_string   = v.trap_community_string != null ? v.trap_community_string : 0
     }
   }
 
@@ -1187,10 +1252,10 @@ locals {
   }
 
 
-  #______________________________________________
+  #__________________________________________________________
   #
-  # UCS Chassis Profiles Variables
-  #______________________________________________
+  # UCS Chassis Profiles Section - Locals
+  #__________________________________________________________
   ucs_chassis_profiles = {
     for k, v in var.ucs_chassis_profiles : k => {
       action              = v.action != null ? v.action : "No-op"
@@ -1209,15 +1274,17 @@ locals {
   }
 
 
-  #______________________________________________
+  #__________________________________________________________
   #
-  # UCS Domain Variables
-  #______________________________________________
+  # UCS Domain Profiles Section - Locals
+  #__________________________________________________________
   ucs_domain_profiles = {
     for k, v in var.ucs_domain_profiles : k => {
-      action                      = v.action != null ? v.action : "No-op"
-      assign_switches             = v.assign_switches != null ? v.assign_switches : false
-      device_model                = v.device_model != null ? v.device_model : "UCS-FI-6454"
+      action          = v.action != null ? v.action : "No-op"
+      assign_switches = v.assign_switches != null ? v.assign_switches : false
+      device_model = length(
+        regexall("(UCS-FI-6454|UCS-FI-64108)", coalesce(v.device_model, "EMPTY"))
+      ) > 0 ? v.device_model : "UCS-FI-6454"
       description                 = v.description != null ? v.description : ""
       network_connectivity_policy = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
       ntp_policy                  = v.ntp_policy != null ? v.ntp_policy : ""
@@ -1236,52 +1303,275 @@ locals {
     }
   }
 
-
-  #______________________________________________
-  #
-  # UCS Domain Variables
-  #______________________________________________
-  ucs_server_profiles = {
-    for k, v in var.ucs_server_profiles : k =>
-    {
-      for key, value in var.ucs_server_profile_templates : "profile" =>
-      {
-        action                      = v.action != null ? v.action : "No-op"
-        assign_server               = v.assign_server != null ? v.assign_server : false
-        description                 = v.description != null ? v.description : ""
-        name                        = v.name != null ? v.name : ""
-        operating_system            = value.operating_system != null ? value.operating_system : "vmware"
-        organization                = value.organization != null ? value.organization : "default"
-        bios_policy                 = value.bios_policy != null ? value.bios_policy : ""
-        boot_order_policy           = value.boot_order_policy != null ? value.boot_order_policy : ""
-        device_connector_policy     = value.device_connector_policy != null ? value.device_connector_policy : ""
-        imc_access_policy           = value.imc_access_policy != null ? value.imc_access_policy : ""
-        ipmi_over_lan_policy        = value.ipmi_over_lan_policy != null ? value.ipmi_over_lan_policy : ""
-        lan_connectivity_policy     = value.lan_connectivity_policy != null ? value.lan_connectivity_policy : ""
-        ldap_policy                 = value.ldap_policy != null ? value.ldap_policy : ""
-        local_user_policy           = value.local_user_policy != null ? value.local_user_policy : ""
-        network_connectivity_policy = value.network_connectivity_policy != null ? value.network_connectivity_policy : ""
-        ntp_policy                  = value.ntp_policy != null ? value.ntp_policy : ""
-        persistent_memory_policy    = value.persistent_memory_policy != null ? value.persistent_memory_policy : ""
-        power_policy                = value.power_policy != null ? value.power_policy : ""
-        san_connectivity_policy     = value.san_connectivity_policy != null ? value.san_connectivity_policy : ""
-        sd_card_policy              = value.sd_card_policy != null ? value.sd_card_policy : ""
-        serial_over_lan_policy      = value.serial_over_lan_policy != null ? value.serial_over_lan_policy : ""
-        smtp_policy                 = value.smtp_policy != null ? value.smtp_policy : ""
-        snmp_policy                 = value.snmp_policy != null ? value.snmp_policy : ""
-        ssh_policy                  = value.ssh_policy != null ? value.ssh_policy : ""
-        storage_policy              = value.storage_policy != null ? value.storage_policy : ""
-        syslog_policy               = value.syslog_policy != null ? value.syslog_policy : ""
-        virtual_kvm_policy          = value.virtual_kvm_policy != null ? value.virtual_kvm_policy : ""
-        virtual_media_policy        = value.virtual_media_policy != null ? value.virtual_media_policy : ""
-        tags                        = v.tags != null ? v.tags : []
-        target_platform             = value.target_platform != null ? value.target_platform : "FIAttached"
-        type                        = "instance"
-        ucs_server_profile_template = v.ucs_server_profile_template != null ? v.ucs_server_profile_template : ""
-        wait_for_completion         = v.wait_for_completion != null ? v.wait_for_completion : false
-      } if v.ucs_server_profile_template == key
+  ucs_domain_switch_a = {
+    for k, v in local.ucs_domain_profiles : "${k}_A_SIDE" => {
+      action                      = v.action
+      assign_switches             = v.assign_switches
+      device_model                = v.device_model
+      description                 = v.description
+      domain_profile              = k
+      fabric                      = "A"
+      network_connectivity_policy = v.network_connectivity_policy
+      ntp_policy                  = v.ntp_policy
+      organization                = v.organization
+      serial_number               = v.serial_number_fabric_a
+      snmp_policy                 = v.snmp_policy
+      switch_control_policy       = v.switch_control_policy
+      syslog_policy               = v.syslog_policy
+      system_qos_policy           = v.system_qos_policy
+      tags                        = v.tags
+      vlan_policy                 = v.vlan_policy_fabric_a
+      vsan_policy                 = v.vsan_policy_fabric_a
     }
   }
+
+  ucs_domain_switch_b = {
+    for k, v in local.ucs_domain_profiles : "${k}_B_SIDE" => {
+      action                      = v.action
+      assign_switches             = v.assign_switches
+      device_model                = v.device_model
+      description                 = v.description
+      domain_profile              = k
+      fabric                      = "B"
+      network_connectivity_policy = v.network_connectivity_policy
+      ntp_policy                  = v.ntp_policy
+      organization                = v.organization
+      serial_number               = v.serial_number_fabric_b
+      snmp_policy                 = v.snmp_policy
+      switch_control_policy       = v.switch_control_policy
+      syslog_policy               = v.syslog_policy
+      system_qos_policy           = v.system_qos_policy
+      tags                        = v.tags
+      vlan_policy                 = v.vlan_policy_fabric_b
+      vsan_policy                 = v.vsan_policy_fabric_b
+    }
+  }
+
+  merged_ucs_switches = merge(local.ucs_domain_switch_a, local.ucs_domain_switch_b)
+
+
+  #__________________________________________________________
+  #
+  # UCS Server Profiles Section - Locals
+  #__________________________________________________________
+  ucs_server_profiles = {
+    for k, v in var.ucs_server_profiles : k => {
+      action                        = v.action != null ? v.action : "No-op"
+      adapter_policy                = v.adapter_policy != null ? v.adapter_policy : ""
+      assign_server                 = v.assign_server != null ? v.assign_server : false
+      bios_policy                   = v.bios_policy != null ? v.bios_policy : ""
+      boot_order_policy             = v.boot_order_policy != null ? v.boot_order_policy : ""
+      certificate_management_policy = v.certificate_management_policy != null ? v.certificate_management_policy : ""
+      description                   = v.description != null ? v.description : ""
+      device_connector_policy       = v.device_connector_policy != null ? v.device_connector_policy : ""
+      imc_access_policy             = v.imc_access_policy != null ? v.imc_access_policy : ""
+      ipmi_over_lan_policy          = v.ipmi_over_lan_policy != null ? v.ipmi_over_lan_policy : ""
+      lan_connectivity_policy       = v.lan_connectivity_policy != null ? v.lan_connectivity_policy : ""
+      ldap_policy                   = v.ldap_policy != null ? v.ldap_policy : ""
+      local_user_policy             = v.local_user_policy != null ? v.local_user_policy : ""
+      network_connectivity_policy   = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
+      ntp_policy                    = v.ntp_policy != null ? v.ntp_policy : ""
+      organization                  = v.organization != null ? v.organization : "default"
+      persistent_memory_policy      = v.persistent_memory_policy != null ? v.persistent_memory_policy : ""
+      power_policy                  = v.power_policy != null ? v.power_policy : ""
+      san_connectivity_policy       = v.san_connectivity_policy != null ? v.san_connectivity_policy : ""
+      sd_card_policy                = v.sd_card_policy != null ? v.sd_card_policy : ""
+      serial_number                 = v.serial_number != null ? v.serial_number : ""
+      serial_over_lan_policy        = v.serial_over_lan_policy != null ? v.serial_over_lan_policy : ""
+      smtp_policy                   = v.smtp_policy != null ? v.smtp_policy : ""
+      snmp_policy                   = v.snmp_policy != null ? v.snmp_policy : ""
+      ssh_policy                    = v.ssh_policy != null ? v.ssh_policy : ""
+      storage_policy                = v.storage_policy != null ? v.storage_policy : ""
+      syslog_policy                 = v.syslog_policy != null ? v.syslog_policy : ""
+      tags                          = v.tags != null ? v.tags : []
+      target_platform               = v.target_platform != null ? v.target_platform : "FIAttached"
+      ucs_server_profile_template   = v.ucs_server_profile_template != null ? v.ucs_server_profile_template : ""
+      virtual_kvm_policy            = v.virtual_kvm_policy != null ? v.virtual_kvm_policy : ""
+      virtual_media_policy          = v.virtual_media_policy != null ? v.virtual_media_policy : ""
+      wait_for_completion           = v.wait_for_completion != null ? v.wait_for_completion : false
+    }
+  }
+
+
+  #__________________________________________________________
+  #
+  # UCS Server Profile Templates Section - Locals
+  #__________________________________________________________
+  ucs_server_profile_templates = {
+    for k, v in var.ucs_server_profile_templates : k => {
+      adapter_policy                = v.adapter_policy != null ? v.adapter_policy : ""
+      bios_policy                   = v.bios_policy != null ? v.bios_policy : ""
+      boot_order_policy             = v.boot_order_policy != null ? v.boot_order_policy : ""
+      certificate_management_policy = v.certificate_management_policy != null ? v.certificate_management_policy : ""
+      description                   = v.description != null ? v.description : ""
+      device_connector_policy       = v.device_connector_policy != null ? v.device_connector_policy : ""
+      imc_access_policy             = v.imc_access_policy != null ? v.imc_access_policy : ""
+      ipmi_over_lan_policy          = v.ipmi_over_lan_policy != null ? v.ipmi_over_lan_policy : ""
+      lan_connectivity_policy       = v.lan_connectivity_policy != null ? v.lan_connectivity_policy : ""
+      ldap_policy                   = v.ldap_policy != null ? v.ldap_policy : ""
+      local_user_policy             = v.local_user_policy != null ? v.local_user_policy : ""
+      network_connectivity_policy   = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
+      ntp_policy                    = v.ntp_policy != null ? v.ntp_policy : ""
+      operating_system              = v.operating_system != null ? v.operating_system : "VMware"
+      organization                  = v.organization != null ? v.organization : "default"
+      persistent_memory_policy      = v.persistent_memory_policy != null ? v.persistent_memory_policy : ""
+      power_policy                  = v.power_policy != null ? v.power_policy : ""
+      san_connectivity_policy       = v.san_connectivity_policy != null ? v.san_connectivity_policy : ""
+      sd_card_policy                = v.sd_card_policy != null ? v.sd_card_policy : ""
+      serial_over_lan_policy        = v.serial_over_lan_policy != null ? v.serial_over_lan_policy : ""
+      smtp_policy                   = v.smtp_policy != null ? v.smtp_policy : ""
+      snmp_policy                   = v.snmp_policy != null ? v.snmp_policy : ""
+      ssh_policy                    = v.ssh_policy != null ? v.ssh_policy : ""
+      storage_policy                = v.storage_policy != null ? v.storage_policy : ""
+      syslog_policy                 = v.syslog_policy != null ? v.syslog_policy : ""
+      tags                          = v.tags != null ? v.tags : []
+      target_platform               = v.target_platform != null ? v.target_platform : "FIAttached"
+      virtual_kvm_policy            = v.virtual_kvm_policy != null ? v.virtual_kvm_policy : ""
+      virtual_media_policy          = v.virtual_media_policy != null ? v.virtual_media_policy : ""
+    }
+  }
+
+  #__________________________________________________________
+  #
+  # Preparing Data for Profile Association - Locals
+  #__________________________________________________________
+  ucs_chassis_moids = {
+    for k, v in local.ucs_chassis_profiles : k => {
+      imc_access_policy           = v.imc_access_policy
+      moid                        = module.ucs_chassis_profiles[k].moid
+      network_connectivity_policy = ""
+      ntp_policy                  = ""
+      object_type                 = "chassis.Profile"
+      organization                = v.organization
+      snmp_policy                 = v.snmp_policy
+      power_policy                = v.power_policy
+      syslog_policy               = ""
+      switch_control_policy       = ""
+      system_qos_policy           = ""
+      vlan_policy                 = ""
+      vsan_policy                 = ""
+    }
+  }
+
+  ucs_domain_switch_a_moids = {
+    for k, v in local.ucs_domain_switch_a : k => {
+      imc_access_policy           = ""
+      moid                        = module.ucs_domain_switches[k].moid
+      network_connectivity_policy = v.network_connectivity_policy
+      ntp_policy                  = v.ntp_policy
+      object_type                 = "fabric.SwitchProfile"
+      organization                = v.organization
+      power_policy                = ""
+      snmp_policy                 = v.snmp_policy
+      switch_control_policy       = v.switch_control_policy
+      syslog_policy               = v.syslog_policy
+      system_qos_policy           = v.system_qos_policy
+      vlan_policy                 = v.vlan_policy
+      vsan_policy                 = v.vsan_policy
+    }
+  }
+
+  ucs_domain_switch_b_moids = {
+    for k, v in local.ucs_domain_switch_b : k => {
+      imc_access_policy           = ""
+      moid                        = module.ucs_domain_switches[k].moid
+      network_connectivity_policy = v.network_connectivity_policy
+      ntp_policy                  = v.ntp_policy
+      object_type                 = "fabric.SwitchProfile"
+      organization                = v.organization
+      power_policy                = ""
+      snmp_policy                 = v.snmp_policy
+      switch_control_policy       = v.switch_control_policy
+      syslog_policy               = v.syslog_policy
+      system_qos_policy           = v.system_qos_policy
+      vlan_policy                 = v.vlan_policy
+      vsan_policy                 = v.vsan_policy
+    }
+  }
+
+  ucs_server_moids = {
+    for k, v in local.ucs_server_profiles : k => {
+      adapter_policy                = v.adapter_policy
+      bios_policy                   = v.bios_policy
+      boot_order_policy             = v.boot_order_policy
+      certificate_management_policy = v.certificate_management_policy
+      device_connector_policy       = v.device_connector_policy
+      imc_access_policy             = v.imc_access_policy
+      ipmi_over_lan_policy          = v.ipmi_over_lan_policy
+      lan_connectivity_policy       = v.lan_connectivity_policy
+      ldap_policy                   = v.ldap_policy
+      local_user_policy             = v.local_user_policy
+      moid                          = module.ucs_server_profiles[k].moid
+      network_connectivity_policy   = v.network_connectivity_policy
+      ntp_policy                    = v.ntp_policy
+      object_type                   = "server.Profile"
+      organization                  = v.organization
+      persistent_memory_policy      = v.persistent_memory_policy
+      power_policy                  = v.power_policy
+      san_connectivity_policy       = v.san_connectivity_policy
+      sd_card_policy                = v.sd_card_policy
+      serial_over_lan_policy        = v.serial_over_lan_policy
+      snmp_policy                   = v.snmp_policy
+      smtp_policy                   = v.smtp_policy
+      ssh_policy                    = v.ssh_policy
+      storage_policy                = v.storage_policy
+      switch_control_policy         = ""
+      syslog_policy                 = v.syslog_policy
+      system_qos_policy             = ""
+      target_platform               = v.target_platform
+      virtual_kvm_policy            = v.virtual_kvm_policy
+      virtual_media_policy          = v.virtual_media_policy
+      vlan_policy                   = ""
+      vsan_policy                   = ""
+    } if v.ucs_server_profile_template == ""
+  }
+
+  ucs_template_moids = {
+    for k, v in local.ucs_server_profile_templates : k => {
+      adapter_policy                = v.adapter_policy
+      bios_policy                   = v.bios_policy
+      boot_order_policy             = v.boot_order_policy
+      certificate_management_policy = v.certificate_management_policy
+      device_connector_policy       = v.device_connector_policy
+      imc_access_policy             = v.imc_access_policy
+      ipmi_over_lan_policy          = v.ipmi_over_lan_policy
+      lan_connectivity_policy       = v.lan_connectivity_policy
+      ldap_policy                   = v.ldap_policy
+      local_user_policy             = v.local_user_policy
+      moid                          = module.ucs_server_profile_templates[k].moid
+      network_connectivity_policy   = v.network_connectivity_policy
+      ntp_policy                    = v.ntp_policy
+      object_type                   = "server.ProfileTemplate"
+      organization                  = v.organization
+      persistent_memory_policy      = v.persistent_memory_policy
+      power_policy                  = v.power_policy
+      san_connectivity_policy       = v.san_connectivity_policy
+      sd_card_policy                = v.sd_card_policy
+      serial_over_lan_policy        = v.serial_over_lan_policy
+      snmp_policy                   = v.snmp_policy
+      smtp_policy                   = v.smtp_policy
+      ssh_policy                    = v.ssh_policy
+      storage_policy                = v.storage_policy
+      switch_control_policy         = ""
+      syslog_policy                 = v.syslog_policy
+      system_qos_policy             = ""
+      target_platform               = v.target_platform
+      virtual_kvm_policy            = v.virtual_kvm_policy
+      virtual_media_policy          = v.virtual_media_policy
+      vlan_policy                   = ""
+      vsan_policy                   = ""
+    }
+  }
+
+  merged_server_moids = merge(local.ucs_server_moids, local.ucs_template_moids)
+
+  merge_all_moids = merge(
+    local.ucs_chassis_moids,
+    local.ucs_domain_switch_a_moids,
+    local.ucs_domain_switch_b_moids,
+    local.ucs_server_moids,
+    local.ucs_template_moids
+  )
 
 
   #__________________________________________________________
@@ -1319,4 +1609,32 @@ locals {
       vmedia_mappings                 = v.vmedia_mappings != null ? v.vmedia_mappings : []
     }
   }
+
+
+  #__________________________________________________________
+  #
+  # VSAN Policy Section Locals
+  #__________________________________________________________
+
+  vsan_policies = {
+    for k, v in var.vsan_policies : k => {
+      description     = v.description != null ? v.description : ""
+      organization    = v.organization != null ? v.organization : "default"
+      tags            = v.tags != null ? v.tags : []
+      uplink_trunking = v.uplink_trunking != null ? v.uplink_trunking : false
+      vsans           = v.vsans != null ? v.vsans : {}
+    }
+  }
+
+  vsans = flatten([
+    for key, value in var.vsan_policies : [
+      for v in value.vsans : {
+        default_zoning = v.default_zoning != null ? v.default_zoning : "Disabled"
+        fcoe_vlan_id   = v.fcoe_vlan_id != null ? v.fcoe_vlan_id : 4
+        name           = v.name != null ? v.name : "vsan-${v.vsan_id}"
+        vsan_id        = v.vsan_id != null ? v.vsan_id : 4
+        vsan_policy    = key
+      }
+    ]
+  ])
 }

@@ -103,7 +103,6 @@ variable "lan_connectivity_policies" {
     - vmq_number_of_sub_vnics -  Default is 64.  The number of sub vNICs to be created.  Range is 0-64.
     - vmq_number_of_virtual_machine_queues -  Default is 4.  The number of hardware Virtual Machine Queues to be allocated. The number of VMQs per adapter must be one more than the maximum number of VM NICs.  Range is 1-128.
     - vmq_vmmq_adapter_policy -  Ethernet Adapter policy to be associated with the VMQ vNICs. The Transmit Queue and Receive Queue resource value of VMMQ adapter policy should be greater than or equal to the configured number of sub vNICs.
-
   EOT
   type = map(object(
     {
@@ -161,7 +160,8 @@ variable "lan_connectivity_policies" {
 module "lan_connectivity_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_server_profiles,
+    module.ucs_server_profile_templates
   ]
   source                      = "../../../terraform-intersight-imm/modules/lan_connectivity_policies"
   for_each                    = var.lan_connectivity_policies
@@ -175,11 +175,13 @@ module "lan_connectivity_policies" {
   vnic_placement_mode         = each.value.vnic_placement_mode
   tags                        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform             = each.value.target_platform
-  profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.lan_connectivity_policy == each.key
-  ]
+  profiles = {
+    for k, v in local.merged_server_moids : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merged_server_moids[k].lan_connectivity_policy == each.key
+  }
 }
 
 
@@ -197,7 +199,7 @@ module "lan_connectivity_vnics" {
     module.ethernet_network_group_policies,
     module.ethernet_network_policies,
     module.ethernet_qos_policies,
-    # module.iscsi_boot_policies,
+    module.iscsi_boot_policies,
     module.lan_connectivity_policies
   ]
   source                                 = "../../../terraform-intersight-imm/modules/lan_connectivity_add_vnic"
@@ -231,9 +233,9 @@ module "lan_connectivity_vnics" {
   eth_network_policy_moid = length(
     regexall("[a-zA-Z0-9]+", local.vnics[each.value].ethernet_network_policy)
   ) > 0 ? [module.ethernet_network_policies[local.vnics[each.value].ethernet_network_policy].moid] : []
-  # iscsi_boot_policy_moid                 = length(
-  #   regexall("[a-zA-Z0-9]+", local.vnics[each.value].iscsi_boot_policy)
-  # ) > 0 ? [module.iscsi_boot_policies[local.vnics[each.value].iscsi_boot_policy].moid] : []
+  iscsi_boot_policy_moid = length(
+    regexall("[a-zA-Z0-9]+", local.vnics[each.value].iscsi_boot_policy)
+  ) > 0 ? [module.iscsi_boot_policies[local.vnics[each.value].iscsi_boot_policy].moid] : []
   usnic_adapter_policy_moid = length(
     regexall("[a-zA-Z0-9]+", local.vnics[each.value].usnic_adapter_policy)
   ) > 0 ? module.ethernet_adapter_policies[local.vnics[each.value].usnic_adapter_policy].moid : ""

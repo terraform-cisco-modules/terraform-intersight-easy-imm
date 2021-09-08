@@ -48,7 +48,9 @@ variable "ntp_policies" {
 module "ntp_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_domain_switches,
+    module.ucs_server_profiles,
+    module.ucs_server_profile_templates
   ]
   source      = "../../../terraform-intersight-imm/modules/ntp_policies"
   for_each    = local.ntp_policies
@@ -59,9 +61,11 @@ module "ntp_policies" {
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   timezone    = each.value.timezone
-  profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.ntp_policy == each.key
-  ]
+  profiles = {
+    for k, v in local.merge_all_moids : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merge_all_moids[k].ntp_policy == each.key
+  }
 }

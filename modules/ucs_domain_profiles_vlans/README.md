@@ -33,11 +33,9 @@ This module will Create a Multicast Policy and assign it to VLANs in a VLAN poli
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_multicast_policies"></a> [multicast\_policies](#module\_multicast\_policies) | terraform-cisco-modules/imm/intersight//modules/multicast_policies | n/a |
-| <a name="module_vlan_policies"></a> [vlan\_policies](#module\_vlan\_policies) | terraform-cisco-modules/imm/intersight//modules/vlan_policies | n/a |
-| <a name="module_vlan_policy_add_vlan"></a> [vlan\_policy\_add\_vlan](#module\_vlan\_policy\_add\_vlan) | terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan | n/a |
-| <a name="module_vlan_policy_add_vlan_list"></a> [vlan\_policy\_add\_vlan\_list](#module\_vlan\_policy\_add\_vlan\_list) | terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list | n/a |
-| <a name="module_vlan_policy_add_vlan_map"></a> [vlan\_policy\_add\_vlan\_map](#module\_vlan\_policy\_add\_vlan\_map) | terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_map | n/a |
+| <a name="module_multicast_policies"></a> [multicast\_policies](#module\_multicast\_policies) | ../../../terraform-intersight-imm/modules/multicast_policies | n/a |
+| <a name="module_vlan_policies"></a> [vlan\_policies](#module\_vlan\_policies) | ../../../terraform-intersight-imm/modules/vlan_policies | n/a |
+| <a name="module_vlan_policies_add_vlans"></a> [vlan\_policies\_add\_vlans](#module\_vlan\_policies\_add\_vlans) | ../../../terraform-intersight-imm/modules/vlan_policy_add_vlan | n/a |
 
 ## Resources
 
@@ -57,16 +55,10 @@ This module will Create a Multicast Policy and assign it to VLANs in a VLAN poli
 | <a name="input_secretkey"></a> [secretkey](#input\_secretkey) | Intersight Secret Key. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of Key/Value Pairs to Assign as Attributes to the Policy. | `list(map(string))` | `[]` | no |
 | <a name="input_tfc_organization"></a> [tfc\_organization](#input\_tfc\_organization) | Terraform Cloud Organization Name. | `string` | n/a | yes |
-| <a name="input_vlan_policies"></a> [vlan\_policies](#input\_vlan\_policies) | key - Name of the VLAN Policy.<br>* auto\_allow\_on\_uplinks =<br>* description - Description to Assign to the Policy.<br>* multicast\_policy - Name of the Multicast Policy to Assign to the VLAN Group.<br>* organization - Name of the Intersight Organization to assign this Policy to.<br>  - https://intersight.com/an/settings/organizations/<br>* tags - List of Key/Value Pairs to Assign as Attributes to the Policy.<br>* vlan\_list - List of VLANs to assign to the VLAN Policy.  The VLAN list will use the vlan\_prefix-vl{vlan\_id} as the name of the vlan.<br>* vlan\_map - This VLAN Map should contain key/value pairs of prefix and vlan\_id.  In Example:<br>vlan\_map = [<br>  {<br>    prefix  = "test"<br>    vlan\_id = 123<br>  },<br>  {<br>    prefix  = "test"<br>    vlan\_id = 124<br>  }<br>]<br>This will be configured as test-vl0123 and test-vl0124 in intersight.<br>* vlan\_native - The Native VLAN to assign to the policy.<br>* vlan\_prefix - Prefix to Assign to the VLANs in the VLAN Map. | <pre>map(object(<br>    {<br>      auto_allow_on_uplinks = optional(bool)<br>      description           = optional(string)<br>      multicast_policy      = string<br>      organization          = optional(string)<br>      tags                  = optional(list(map(string)))<br>      vlan_list             = optional(string)<br>      vlan_map              = optional(list(map(string)))<br>      vlan_native           = optional(number)<br>      vlan_prefix           = optional(string)<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "auto_allow_on_uplinks": true,<br>    "description": "",<br>    "multicast_policy": "",<br>    "organization": "default",<br>    "tags": [],<br>    "vlan_list": null,<br>    "vlan_map": [],<br>    "vlan_native": null,<br>    "vlan_prefix": "{organization}"<br>  }<br>}</pre> | no |
+| <a name="input_vlan_policies"></a> [vlan\_policies](#input\_vlan\_policies) | key - Name of the VLAN Policy.<br>* description - Description to Assign to the Policy.<br>* organization - Name of the Intersight Organization to assign this Policy to.<br>  - https://intersight.com/an/settings/organizations/<br>* tags - List of Key/Value Pairs to Assign as Attributes to the Policy.<br>* vlans - List of VSANs to add to the VSAN Policy.<br>  - auto\_allow\_on\_uplinks - Default is true.  Used to determine whether this VLAN will be allowed on all uplink ports and PCs in this FI.<br>  - multicast\_policy - Name of the Multicast Policy to assign to the VLAN.<br>  - name - The 'name' used to identify this VLAN.<br>  - native\_vlan - Default is false.  Used to define whether this VLAN is to be classified as 'native' for traffic in this FI.<br>  - vlan\_id - (REQUIRED).  The identifier for this Virtual LAN. | <pre>map(object(<br>    {<br>      description  = optional(string)<br>      organization = optional(string)<br>      tags         = optional(list(map(string)))<br>      vlans = optional(map(object(<br>        {<br>          auto_allow_on_uplinks = optional(bool)<br>          multicast_policy      = string<br>          name                  = optional(string)<br>          native_vlan           = optional(bool)<br>          vlan_id               = number<br>        }<br>      )))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "description": "",<br>    "organization": "default",<br>    "tags": [],<br>    "vlans": {<br>      "default": {<br>        "auto_allow_on_uplinks": true,<br>        "multicast_policy": "",<br>        "name": "vlan-{vlan_id}",<br>        "native_vlan": false,<br>        "vlan_id": null<br>      }<br>    }<br>  }<br>}</pre> | no |
 | <a name="input_ws_domain"></a> [ws\_domain](#input\_ws\_domain) | Name of the domain workspace. | `string` | `"Kubernetes_Policies"` | no |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_policies_multicast"></a> [policies\_multicast](#output\_policies\_multicast) | n/a |
-| <a name="output_policies_vlan"></a> [policies\_vlan](#output\_policies\_vlan) | n/a |
-| <a name="output_policies_vlan_list"></a> [policies\_vlan\_list](#output\_policies\_vlan\_list) | n/a |
-| <a name="output_policies_vlan_map"></a> [policies\_vlan\_map](#output\_policies\_vlan\_map) | n/a |
-| <a name="output_policies_vlan_native"></a> [policies\_vlan\_native](#output\_policies\_vlan\_native) | n/a |
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

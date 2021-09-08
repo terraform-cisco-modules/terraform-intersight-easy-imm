@@ -58,8 +58,7 @@ variable "switch_control_policies" {
 module "switch_control_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_switches_a,
-    module.ucs_domain_switches_b
+    module.ucs_domain_switches
   ]
   source                = "../../../terraform-intersight-imm/modules/switch_control_policies"
   for_each              = local.switch_control_policies
@@ -72,11 +71,18 @@ module "switch_control_policies" {
   vlan_optimization     = each.value.vlan_port_count_optimization
   org_moid              = local.org_moids[each.value.organization].moid
   tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = flatten([
-    for s in sort(keys(local.ucs_domain_profiles)) :
-    [module.ucs_domain_switches_a[s].moid, module.ucs_domain_switches_b[s].moid]
-    if local.ucs_domain_profiles[s].switch_control_policy == each.key
-  ])
+  profiles = {
+    for k, v in local.merge_all_moids : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merge_all_moids[k].switch_control_policy == each.key
+  }
+  # profiles = flatten([
+  #   for s in sort(keys(local.ucs_domain_profiles)) :
+  #   [module.ucs_domain_switches_a[s].moid, module.ucs_domain_switches_b[s].moid]
+  #   if local.ucs_domain_profiles[s].switch_control_policy == each.key
+  # ])
 }
 
 

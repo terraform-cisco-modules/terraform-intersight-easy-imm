@@ -42,9 +42,9 @@ data "intersight_organization_organization" "org_moid" {
 data "intersight_compute_physical_summary" "server" {
   for_each = {
     for k, v in local.ucs_server_profiles : k => v
-    if v.profile.assign_server == true
+    if v.assign_server == true
   }
-  serial = each.key
+  serial = each.value.serial_number
 }
 
 
@@ -72,18 +72,10 @@ data "intersight_equipment_chassis" "chassis" {
 #   Interconnect > General Tab > Details Left Column > Serial
 #____________________________________________________________
 
-data "intersight_network_element_summary" "fi_a" {
+data "intersight_network_element_summary" "fis" {
   for_each = {
-    for assign, serial in local.ucs_domain_profiles : assign => serial
-    if serial.assign_switches == true
+    for k, v in local.merged_ucs_switches : k => v
+    if v.assign_switches == true
   }
-  serial = each.value.domain_serial_a
-}
-
-data "intersight_network_element_summary" "fi_b" {
-  for_each = {
-    for assign, serial in local.ucs_domain_profiles : assign => serial
-    if serial.assign_switches == true
-  }
-  serial = each.value.domain_serial_b
+  serial = each.value.serial_number
 }

@@ -49,3 +49,5 @@ organizations = ["Asgard", "UCS-DEMO2"]
 #__________________________________________________________
 
 tags = [{ key = "Module", value = "terraform-intersight-easy-imm" }, { key = "Owner", value = "tyscott" }]
+
+assign_profiles_to_templates = false

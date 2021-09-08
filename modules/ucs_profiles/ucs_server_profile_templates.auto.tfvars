@@ -6,7 +6,7 @@
 ucs_server_profile_templates = {
   "ESXI-ISCSI-AUTO" = {
     bios_policy                   = ""
-    boot_policy                   = "ISCSI"
+    boot_order_policy             = "ISCSI"
     certificate_management_policy = ""
     description                   = ""
     imc_access_policy             = "ADMIN_inband"
@@ -36,7 +36,7 @@ ucs_server_profile_templates = {
   }
   "ESXI-OCB-POC" = {
     bios_policy                   = ""
-    boot_policy                   = "ISCSI"
+    boot_order_policy             = "ISCSI"
     certificate_management_policy = ""
     description                   = ""
     imc_access_policy             = ""
@@ -66,7 +66,7 @@ ucs_server_profile_templates = {
   }
   "ESXI-VCF-WLD" = {
     bios_policy                   = ""
-    boot_policy                   = "VCF-iSCSI"
+    boot_order_policy             = "VCF-iSCSI"
     certificate_management_policy = ""
     description                   = ""
     imc_access_policy             = ""
@@ -96,7 +96,7 @@ ucs_server_profile_templates = {
   }
   "ESXI-VCF-WLD-FC" = {
     bios_policy                   = ""
-    boot_policy                   = "FC"
+    boot_order_policy             = "FC"
     certificate_management_policy = ""
     description                   = ""
     imc_access_policy             = ""
@@ -126,7 +126,7 @@ ucs_server_profile_templates = {
   }
   "TEST-PLACEMENT-TEMPLATE" = {
     bios_policy                   = ""
-    boot_policy                   = "default"
+    boot_order_policy             = "default"
     certificate_management_policy = ""
     description                   = ""
     imc_access_policy             = ""

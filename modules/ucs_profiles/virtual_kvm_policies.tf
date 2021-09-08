@@ -53,7 +53,7 @@ variable "virtual_kvm_policies" {
 module "virtual_kvm_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    # module.ucs_server_profiles
   ]
   source                    = "../../../terraform-intersight-imm/modules/virtual_kvm_policies"
   for_each                  = local.virtual_kvm_policies
@@ -66,9 +66,11 @@ module "virtual_kvm_policies" {
   org_moid                  = local.org_moids[each.value.organization].moid
   remote_port               = each.value.remote_port
   tags                      = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.virtual_kvm_policy == each.key
-  ]
+  profiles = {
+    for k, v in local.merged_server_moids : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merged_server_moids[k].virtual_kvm_policy == each.key
+  }
 }

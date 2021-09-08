@@ -102,44 +102,18 @@ module "ucs_domain_profiles" {
 # Create Fabric Interconnect A Switch Profile
 #______________________________________________
 
-module "ucs_domain_switches_a" {
+module "ucs_domain_switches" {
   depends_on = [
-    data.intersight_network_element_summary.fi_a,
+    data.intersight_network_element_summary.fis,
     local.org_moids,
     module.ucs_domain_profiles
   ]
   source          = "../../../terraform-intersight-imm/modules/ucs_domain_switches"
-  for_each        = local.ucs_domain_profiles
+  for_each        = local.merged_ucs_switches
   action          = each.value.action
-  assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fi_a[each.key].results.0.moid] : []
-  cluster_moid    = module.ucs_domain_profiles[each.key].moid
-  description     = "${each.key} Fabric Interconnect A Profile."
-  name            = "${each.key}-a"
-  # policies_bucket   = each.value.policies_bucket
-  tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fis[each.key].results.0.moid] : []
+  cluster_moid    = module.ucs_domain_profiles[each.value.domain_profile].moid
+  description     = "${each.key} Fabric Interconnect ${each.value.fabric}."
+  name            = "${each.key}-${each.value.fabric}"
+  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
 }
-
-
-#______________________________________________
-#
-# Create Fabric Interconnect B Switch Profile
-#______________________________________________
-
-module "ucs_domain_switches_b" {
-  depends_on = [
-    data.intersight_network_element_summary.fi_b,
-    local.org_moids,
-    module.ucs_domain_profiles
-  ]
-  source          = "../../../terraform-intersight-imm/modules/ucs_domain_switches"
-  for_each        = local.ucs_domain_profiles
-  action          = each.value.action
-  assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fi_b[each.key].results.0.moid] : []
-  cluster_moid    = module.ucs_domain_profiles[each.key].moid
-  description     = "${each.key} Fabric Interconnect B Profile."
-  name            = "${each.key}-b"
-  # policies_bucket   = each.value.policies_bucket
-  tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
-}
-
-

@@ -18,41 +18,48 @@ locals {
   tags = var.tags
 
   # UCS Domain Outputs
-  profiles_ucs_domain   = data.terraform_remote_state.domain.outputs.profiles_ucs_domain
-  ucs_domain_profiles   = data.terraform_remote_state.domain.outputs.ucs_domain_profiles
-  ucs_domain_profiles_a = data.terraform_remote_state.domain.outputs.ucs_domain_profiles_a
-  ucs_domain_profiles_b = data.terraform_remote_state.domain.outputs.ucs_domain_profiles_b
+  merge_all_moids = data.terraform_remote_state.domain.outputs.merge_all_moids
 
   #______________________________________________
   #
   # Multicast Variables Locals
   #______________________________________________
-  policies_multicast = {
-    for k, v in var.policies_multicast : k => {
-      description    = (v.description != null ? v.description : "")
-      organization   = (v.organization != null ? v.organization : "default")
-      querier_ip     = (v.querier_ip != null ? v.querier_ip : "")
-      querier_state  = (v.querier_state != null ? v.querier_state : "Disabled")
-      snooping_state = (v.snooping_state != null ? v.snooping_state : "Enabled")
-      tags           = (v.tags != null ? v.tags : [])
+  multicast_policies = {
+    for k, v in var.multicast_policies : k => {
+      description             = v.description != null ? v.description : ""
+      organization            = v.organization != null ? v.organization : "default"
+      querier_ip_address      = v.querier_ip_address != null ? v.querier_ip_address : ""
+      querier_ip_address_peer = v.querier_ip_address_peer != null ? v.querier_ip_address_peer : ""
+      querier_state           = v.querier_state != null ? v.querier_state : "Disabled"
+      snooping_state          = v.snooping_state != null ? v.snooping_state : "Enabled"
+      tags                    = v.tags != null ? v.tags : []
     }
   }
 
-  #______________________________________________
+  #__________________________________________________________
   #
-  # VLAN Policy Variables Locals
-  #______________________________________________
-  policies_vlan = {
-    for k, v in var.policies_vlan : k => {
-      auto_allow_on_uplinks = (v.auto_allow_on_uplinks != null ? v.auto_allow_on_uplinks : true)
-      description           = (v.description != null ? v.description : "")
-      multicast_policy      = (v.multicast_policy != null ? v.multicast_policy : null)
-      organization          = (v.organization != null ? v.organization : "default")
-      tags                  = (v.tags != null ? v.tags : [])
-      vlan_list             = (v.vlan_list != null ? v.vlan_list : "")
-      vlan_map              = (v.vlan_map != null ? v.vlan_map : [])
-      vlan_native           = (v.vlan_native != null ? v.vlan_native : null)
-      vlan_prefix           = (v.vlan_prefix != null ? v.vlan_prefix : v.organization)
+  # VSAN Policy Section Locals
+  #__________________________________________________________
+
+  vlan_policies = {
+    for k, v in var.vlan_policies : k => {
+      description  = v.description != null ? v.description : ""
+      organization = v.organization != null ? v.organization : "default"
+      tags         = v.tags != null ? v.tags : []
+      vlans        = v.vlans != null ? v.vlans : {}
     }
   }
+
+  vlans = flatten([
+    for key, value in var.vlan_policies : [
+      for v in value.vlans : {
+        auto_allow_on_uplinks = v.auto_allow_on_uplinks != null ? v.auto_allow_on_uplinks : true
+        multicast_policy      = v.multicast_policy != null ? v.multicast_policy : 4
+        name                  = v.name != null ? v.name : "vlan-${v.vlan_id}"
+        native_vlan           = v.native_vlan != null ? v.native_vlan : false
+        vlan_id               = v.vlan_id != null ? v.vlan_id : 4
+        vlan_policy           = key
+      }
+    ]
+  ])
 }

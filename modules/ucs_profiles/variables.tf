@@ -66,3 +66,8 @@ variable "tags" {
 }
 
 
+variable "assign_profiles_to_templates" {
+  default     = false
+  description = "Flag to associate disable assigning UCS Server Profiles to Templates until Policies are assigned to Templates."
+  type        = bool
+}

@@ -112,7 +112,8 @@ variable "local_user_policies" {
 module "local_user_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles
+    module.ucs_server_profiles,
+    module.ucs_server_profile_templates
   ]
   source                   = "../../../terraform-intersight-imm/modules/local_user_policies"
   for_each                 = local.local_user_policies
@@ -127,11 +128,13 @@ module "local_user_policies" {
   password_expiry_duration = each.value.password_expiry_duration
   password_history         = each.value.password_history
   tags                     = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = [
-    for s in sort(keys(local.ucs_server_profiles)) :
-    module.ucs_server_profiles[s].moid
-    if local.ucs_server_profiles[s].profile.local_user_policy == each.key
-  ]
+  profiles = {
+    for k, v in local.merged_server_moids : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merged_server_moids[k].local_user_policy == each.key
+  }
 }
 
 
