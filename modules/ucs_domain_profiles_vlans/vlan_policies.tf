@@ -64,7 +64,7 @@ module "vlan_policies" {
   depends_on = [
     local.org_moids,
   ]
-  source      = "../../../terraform-intersight-imm/modules/vlan_policies"
+  source      = "terraform-cisco-modules/imm/intersight//modules/vlan_policies"
   for_each    = var.vlan_policies
   description = each.value.description != "" ? each.value.description : "${each.key} VLAN Policy."
   name        = each.key
@@ -90,7 +90,7 @@ module "vlan_policies_add_vlans" {
     module.multicast_policies,
     module.vlan_policies
   ]
-  source                = "../../../terraform-intersight-imm/modules/vlan_policy_add_vlan"
+  source                = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan"
   for_each              = toset(keys({ for k, v in local.vlans : k => v }))
   auto_allow_on_uplinks = local.vlans[each.value].auto_allow_on_uplinks
   multicast_policy_moid = module.multicast_policies[local.vlans[each.value].multicast_policy].moid

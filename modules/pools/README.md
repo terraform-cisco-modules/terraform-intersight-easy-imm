@@ -32,12 +32,12 @@ This module will create Pool resources in Intersight.  These pools can be assign
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ip_pools"></a> [ip\_pools](#module\_ip\_pools) | ../../../terraform-intersight-imm/modules/ip_pools | n/a |
-| <a name="module_iqn_pools"></a> [iqn\_pools](#module\_iqn\_pools) | ../../../terraform-intersight-imm/modules/iqn_pools | n/a |
-| <a name="module_mac_pools"></a> [mac\_pools](#module\_mac\_pools) | ../../../terraform-intersight-imm/modules/mac_pools | n/a |
-| <a name="module_uuid_pools"></a> [uuid\_pools](#module\_uuid\_pools) | ../../../terraform-intersight-imm/modules/uuid_pools | n/a |
-| <a name="module_wwnn_pools"></a> [wwnn\_pools](#module\_wwnn\_pools) | ../../../terraform-intersight-imm/modules/fc_pools | n/a |
-| <a name="module_wwpn_pools"></a> [wwpn\_pools](#module\_wwpn\_pools) | ../../../terraform-intersight-imm/modules/fc_pools | n/a |
+| <a name="module_ip_pools"></a> [ip\_pools](#module\_ip\_pools) | terraform-cisco-modules/imm/intersight//modules/ip_pools | n/a |
+| <a name="module_iqn_pools"></a> [iqn\_pools](#module\_iqn\_pools) | terraform-cisco-modules/imm/intersight//modules/iqn_pools | n/a |
+| <a name="module_mac_pools"></a> [mac\_pools](#module\_mac\_pools) | terraform-cisco-modules/imm/intersight//modules/mac_pools | n/a |
+| <a name="module_uuid_pools"></a> [uuid\_pools](#module\_uuid\_pools) | terraform-cisco-modules/imm/intersight//modules/uuid_pools | n/a |
+| <a name="module_wwnn_pools"></a> [wwnn\_pools](#module\_wwnn\_pools) | terraform-cisco-modules/imm/intersight//modules/fc_pools | n/a |
+| <a name="module_wwpn_pools"></a> [wwpn\_pools](#module\_wwpn\_pools) | terraform-cisco-modules/imm/intersight//modules/fc_pools | n/a |
 
 ## Resources
 
