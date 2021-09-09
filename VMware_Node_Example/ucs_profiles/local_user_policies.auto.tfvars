@@ -15,6 +15,6 @@ local_user_policies = {
     password_expiry_duration = 90
     password_history         = 5
     tags                     = []
-    users = {}
+    users                    = {}
   }
 }

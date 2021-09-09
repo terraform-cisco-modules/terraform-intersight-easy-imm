@@ -77,6 +77,12 @@ module "boot_order_policies_templates" {
       name                  = "KVM_DVD",
       object_type           = "boot.VirtualMedia",
     },
+      {
+        additional_properties = jsonencode({ Subtype = "cimc-mapped-dvd" })
+        enabled               = true,
+        name                  = "3",
+        object_type           = "boot.VirtualMedia"
+      },
     {
       additional_properties = jsonencode(
         {
@@ -88,7 +94,6 @@ module "boot_order_policies_templates" {
             Path        = "\\EFI\\BOOT\\"
           },
           Lun = 0
-
         }
       )
       enabled     = true,

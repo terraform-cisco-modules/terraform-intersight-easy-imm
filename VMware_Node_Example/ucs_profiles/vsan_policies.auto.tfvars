@@ -11,9 +11,9 @@ vsan_policies = {
     tags            = []
     vsans = {
       100 = {
-        fcoe_vlan_id   = 100
-        vsan_id        = 100
-        name           = "Fabric_A"
+        fcoe_vlan_id = 100
+        vsan_id      = 100
+        name         = "Fabric_A"
       },
     }
   }
@@ -24,9 +24,9 @@ vsan_policies = {
     tags            = []
     vsans = {
       200 = {
-        fcoe_vlan_id   = 200
-        vsan_id        = 200
-        name           = "Fabric_B"
+        fcoe_vlan_id = 200
+        vsan_id      = 200
+        name         = "Fabric_B"
       },
     }
   }

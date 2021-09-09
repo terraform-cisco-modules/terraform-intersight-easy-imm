@@ -2755,9 +2755,9 @@ module "bios_policies" {
   #+++++++++++++++++++++++++++++++
   # Intel Directed IO Section
   #+++++++++++++++++++++++++++++++
-  intel_vt_for_directed_io = length( # Intel VT for Directed IO
+  intel_vt_for_directed_io = length(
     regexall("(DSS|HPC|Java)", each.value.bios_template)
-  ) ? "disabled" : each.value.intel_vt_for_directed_io
+  ) > 0 ? "disabled" : each.value.intel_vt_for_directed_io                           # Intel VT for Directed IO
   intel_vtd_coherency_support        = each.value.intel_vtd_coherency_support        # Intel(R) VT-d Coherency Support
   intel_vtd_interrupt_remapping      = each.value.intel_vtd_interrupt_remapping      # Intel(R) VT-d interrupt Remapping
   intel_vtd_pass_through_dma_support = each.value.intel_vtd_pass_through_dma_support # Intel(R) VT-d PassThrough DMA Support
@@ -3045,9 +3045,9 @@ module "bios_policies" {
   cpu_energy_performance            = each.value.cpu_energy_performance            # Energy Performance
   cpu_frequency_floor               = each.value.cpu_frequency_floor               # Frequency Floor Override
   cpu_performance                   = each.value.cpu_performance                   # CPU Performance
-  cpu_power_management = length(                                                   # Power Technology
+  cpu_power_management = length(
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) ? "custom" : each.value.cpu_power_management
+  ) > 0 ? "custom" : each.value.cpu_power_management                         # Power Technology
   demand_scrub                   = each.value.demand_scrub                   # Demand Scrub
   direct_cache_access            = each.value.direct_cache_access            # Direct Cache Access Support
   dram_clock_throttling          = each.value.dram_clock_throttling          # DRAM Clock Throttling
@@ -3062,14 +3062,14 @@ module "bios_policies" {
   hwpm_enable                    = each.value.hwpm_enable                    # CPU Hardware Power Management
   imc_interleave                 = each.value.imc_interleave                 # IMC Interleaving
   intel_dynamic_speed_select     = each.value.intel_dynamic_speed_select     # Intel Dynamic Speed Select
-  intel_hyper_threading_tech = length(                                       # Intel HyperThreading Tech
+  intel_hyper_threading_tech = length(
     regexall("(HPC)", each.value.bios_template)
-  ) ? "disabled" : each.value.intel_hyper_threading_tech
+  ) > 0 ? "disabled" : each.value.intel_hyper_threading_tech # Intel HyperThreading Tech
   intel_speed_select     = each.value.intel_speed_select     # Intel Speed Select
   intel_turbo_boost_tech = each.value.intel_turbo_boost_tech # Intel Turbo Boost Tech
   intel_virtualization_technology = length(                  # Intel(R) VT
     regexall("(HPC|Java)", each.value.bios_template)
-  ) ? "disabled" : each.value.intel_virtualization_technology
+  ) > 0 ? "disabled" : each.value.intel_virtualization_technology
   ioh_error_enable      = each.value.ioh_error_enable      # IIO Error Enable
   ip_prefetch           = each.value.ip_prefetch           # DCU IP Prefetcher
   kti_prefetch          = each.value.kti_prefetch          # KTI Prefetch
@@ -3080,16 +3080,16 @@ module "bios_policies" {
   patrol_scrub_duration = each.value.patrol_scrub_duration # Patrol Scrub Interval
   processor_c1e = length(                                  # Processor C1E
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) ? "Disabled" : each.value.processor_c1e
-  processor_c3report = length( # Processor C3 Report
+  ) > 0 ? "Disabled" : each.value.processor_c1e
+  processor_c3report = length(
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) ? "Disabled" : each.value.processor_c3report
-  processor_c6report = length( # Processor C6 Report
+  ) > 0 ? "Disabled" : each.value.processor_c3report # Processor C3 Report
+  processor_c6report = length(
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) ? "Disabled" : each.value.processor_c6report
-  processor_cstate = length( # CPU C State
+  ) > 0 ? "Disabled" : each.value.processor_c6report # Processor C6 Report
+  processor_cstate = length(
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) ? "Disabled" : each.value.processor_cstate
+  ) > 0 ? "Disabled" : each.value.processor_cstate   # CPU C State
   pstate_coord_type  = each.value.pstate_coord_type  # P-State Coordination
   pwr_perf_tuning    = each.value.pwr_perf_tuning    # Power Performance Tuning
   qpi_link_speed     = each.value.qpi_link_speed     # UPI Link Frequency Select
@@ -3102,7 +3102,7 @@ module "bios_policies" {
   ufs_disable        = each.value.ufs_disable        # Uncore Frequency Scaling
   work_load_config = length(                         # Workload Configuration
     regexall("(HPC)", each.value.bios_template)
-  ) ? "Balanced" : each.value.work_load_config
+  ) > 0 ? "Balanced" : each.value.work_load_config
   xpt_prefetch = each.value.xpt_prefetch # XPT Prefetch
   #+++++++++++++++++++++++++++++++
   # QPI Section

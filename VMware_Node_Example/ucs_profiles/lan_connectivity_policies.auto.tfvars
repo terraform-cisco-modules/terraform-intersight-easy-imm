@@ -5,11 +5,11 @@
 
 lan_connectivity_policies = {
   "#Organization#_Virtualization" = {
-    description                 = "#Organization# LAN Connectivity Policy."
-    organization                = "#Organization#"
-    vnic_placement_mode         = "custom"
-    target_platform             = "FIAttached"
-    tags                        = []
+    description         = "#Organization# LAN Connectivity Policy."
+    organization        = "#Organization#"
+    vnic_placement_mode = "custom"
+    target_platform     = "FIAttached"
+    tags                = []
     vnics = {
       "MANAGEMENT-A" = {
         ethernet_adapter_policy         = "#Organization#_eth_Virtualization"

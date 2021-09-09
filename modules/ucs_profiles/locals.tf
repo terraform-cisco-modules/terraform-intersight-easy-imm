@@ -421,6 +421,163 @@ locals {
 
   #__________________________________________________________
   #
+  # Boot Order Policy Section - Locals
+  #__________________________________________________________
+
+  boot_order_policies = {
+    for k, v in var.boot_policies : k => {
+      boot_devices       = v.boot_devices != null ? v.boot_devices : {}
+      boot_mode          = v.boot_mode != null ? v.boot_mode : "Uefi"
+      description        = v.description != null ? v.description : ""
+      enable_secure_boot = v.enable_secure_boot != null ? v.enable_secure_boot : false
+      organization       = v.organization != null ? v.organization : "default"
+      tags               = v.tags != null ? v.tags : []
+    }
+  }
+
+  boot_devices_loop_1 = flatten([
+    for k, v in local.boot_order_policies : [
+      for key, value in v.boot_devices : {
+        additional_properties = v.boot_mode == "Uefi" && value.object_type == "boot.Iscsi" ? jsonencode(
+          {
+            Bootloader = {
+              Description = value.bootloader_description,
+              Name        = value.bootloader_name,
+              ObjectType  = "boot.Bootloader",
+              Path        = value.bootloader_path
+            },
+            InterfaceName = value.InterfaceName,
+            Port          = value.Port,
+            Slot          = value.Slot
+          }
+          ) : value.object_type == "boot.Iscsi" ? jsonencode(
+          {
+            InterfaceName = value.InterfaceName,
+            Port          = value.Port,
+            Slot          = value.Slot
+          }
+          ) : v.boot_mode == "Uefi" && value.object_type == "boot.LocalDisk" ? jsonencode(
+          {
+            Bootloader = {
+              Description = value.bootloader_description,
+              Name        = value.bootloader_name,
+              ObjectType  = "boot.Bootloader",
+              Path        = value.bootloader_path
+            },
+            Slot = value.Slot
+          }
+          ) : value.object_type == "boot.LocalDisk" ? jsonencode(
+          {
+            Slot = value.Slot
+          }
+          ) : v.boot_mode == "Uefi" && value.object_type == "boot.Nvme" ? jsonencode(
+          {
+            Bootloader = {
+              Description = value.bootloader_description,
+              Name        = value.bootloader_name,
+              ObjectType  = "boot.Bootloader",
+              Path        = value.bootloader_path
+            },
+          }
+          ) : v.boot_mode == "Uefi" && value.object_type == "boot.PchStorage" ? jsonencode(
+          {
+            Bootloader = {
+              Description = value.bootloader_description,
+              Name        = value.bootloader_name,
+              ObjectType  = "boot.Bootloader",
+              Path        = value.bootloader_path
+            },
+            Lun = value.Lun
+          }
+          ) : value.object_type == "boot.PchStorage" ? jsonencode(
+          {
+            Lun = value.Lun
+          }
+          ) : v.boot_mode == "Uefi" && value.object_type == "boot.Pxe" ? jsonencode(
+          {
+            InterfaceName   = value.InterfaceName,
+            InterfaceSource = value.InterfaceSource,
+            IpType          = value.IpType,
+            Port            = value.Port,
+            Slot            = value.Slot
+          }
+          ) : v.boot_mode == "Uefi" && value.object_type == "boot.San" ? jsonencode(
+          {
+            Bootloader = {
+              Description = value.bootloader_description,
+              Name        = value.bootloader_name,
+              ObjectType  = "boot.Bootloader",
+              Path        = value.bootloader_path
+            },
+            InterfaceName = value.InterfaceName,
+            Lun           = value.Lun,
+            Port          = value.Port,
+            Slot          = value.Slot
+            Wwpn          = value.Wwpn
+          }
+          ) : value.object_type == "boot.San" ? jsonencode(
+          {
+            InterfaceName = value.InterfaceName,
+            Lun           = value.Lun,
+            Port          = value.Port,
+            Slot          = value.Slot
+            Wwpn          = value.Wwpn
+          }
+          ) : v.boot_mode == "Uefi" && value.object_type == "boot.SdCard" ? jsonencode(
+          {
+            Bootloader = {
+              Description = value.bootloader_description,
+              Name        = value.bootloader_name,
+              ObjectType  = "boot.Bootloader",
+              Path        = value.bootloader_path
+            },
+            Lun     = value.Lun,
+            Subtype = value.Subtype
+          }
+          ) : value.object_type == "boot.SdCard" ? jsonencode(
+          {
+            Lun     = value.Lun,
+            Subtype = value.Subtype
+          }
+          ) : value.object_type == "boot.Usb" ? jsonencode(
+          {
+            Subtype = value.Subtype
+          }
+          ) : value.object_type == "boot.VirtualMedia" ? jsonencode(
+          {
+            Subtype = value.Subtype
+          }
+        ) : ""
+        boot_order_policy = k
+        enabled           = value.enabled
+        key               = "${k}_${key}"
+        name              = key
+        object_type       = value.object_type
+      }
+    ]
+  ])
+
+  # bootloader_out = local.boot_order_expanded
+  boot_devices_loop_2 = {
+    for k, v in local.boot_devices_loop_1 : "${v.boot_order_policy}_${v.name}" => v
+  }
+
+  formatted_boot_order_policies = {
+    for k, v in local.boot_order_policies : k => {
+      boot_devices = {
+        for key, value in local.boot_devices_loop_2 : value.name => value if value.boot_order_policy == k
+      }
+      boot_mode          = v.boot_mode
+      description        = v.description
+      enable_secure_boot = v.enable_secure_boot
+      organization       = v.organization
+      tags               = v.tags
+    }
+  }
+
+
+  #__________________________________________________________
+  #
   # Device Connector Policy Section - Locals
   #__________________________________________________________
 
