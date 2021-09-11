@@ -155,6 +155,6 @@ module "boot_order_policies" {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_server_moids[k].device_connector_policy == each.key
+    if local.merged_server_moids[k].boot_order_policy == each.key
   }
 }
