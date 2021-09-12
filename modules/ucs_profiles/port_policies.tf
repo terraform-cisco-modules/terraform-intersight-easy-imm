@@ -14,11 +14,11 @@ variable "port_policies" {
       port_channel_ethernet_uplinks = {}
       port_channel_fc_uplinks       = {}
       port_channel_fcoe_uplinks     = {}
-      port_modes                    = {}
+      port_modes                    = []
       port_role_appliances          = {}
       port_role_ethernet_uplinks    = {}
       port_role_fc_uplinks          = {}
-      port_role_fcoe_uplinks   = {}
+      port_role_fcoe_uplinks        = {}
       port_role_servers             = {}
       tags                          = []
     }
@@ -41,13 +41,15 @@ variable "port_policies" {
       * 25Gbps - Admin configurable speed 25Gbps.
       * 40Gbps - Admin configurable speed 40Gbps.
       * 100Gbps - Admin configurable speed 100Gbps.
-    - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
     - ethernet_network_control_policy - Name of the Ethernet Network Control policy.
     - ethernet_network_group_policy - Name of the Ethernet Network Group policy.
+    interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
+      - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+      - port_id - Port ID to Assign to the LAN Port-Channel Policy.
+      - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
     - mode - Port mode to be set on the appliance Port-Channel.
       * access - Access Mode Switch Port Type.
       * trunk (default) - Trunk Mode Switch Port Type.
-    - port_list - Default is [49, 50].  List of Ports to Assign to the LAN Port-Channel Policy.
     - priority - The 'name' of the System QoS Class.
       * Best Effort - (Default).  QoS Priority for Best-effort traffic.
       * Bronze - QoS Priority for Bronze traffic.
@@ -55,7 +57,6 @@ variable "port_policies" {
       * Gold - QoS Priority for Gold traffic.
       * Platinum - QoS Priority for Platinum traffic.
       * Silver - QoS Priority for Silver traffic.
-    - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * port_channel_ethernet_uplinks - Use this Map to Configure Ports for Ethernet Port-Channels.
     key - Port-Channel Identifier.
     - admin_speed - Admin configured speed for the port.
@@ -65,12 +66,13 @@ variable "port_policies" {
       * 25Gbps - Admin configurable speed 25Gbps.
       * 40Gbps - Admin configurable speed 40Gbps.
       * 100Gbps - Admin configurable speed 100Gbps.
-    - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
     - flow_control_policy - Name of the Flow Control policy.
+    interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
+      - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+      - port_id - Port ID to Assign to the LAN Port-Channel Policy.
+      - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
     - link_aggregation_policy - Name of the Link Aggregation policy.
     - link_control_policy - Name of the Link Control policy.
-    - port_list - Default is [49, 50].  List of Ports to Assign to the LAN Port-Channel Policy.
-    - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * port_channel_fc_uplinks - Use this Map to Configure Ports for Fibre-Channel Port-Channels.
     key - Port-Channel Identifier.
     - admin_speed - Admin configured speed for the port.
@@ -78,12 +80,13 @@ variable "port_policies" {
       * 8Gbps - Admin configurable speed 8Gbps.
       * 16Gbps - (default).  Admin configurable speed 16Gbps.
       * 32Gbps - Admin configurable speed 32Gbps.
-    - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
     - fill_pattern - Fill pattern to differentiate the configs in NPIV.
       * Arbff - Fc Fill Pattern type Arbff.
       * Idle - Fc Fill Pattern type Idle.
-    - port_list - Default is [49, 50].  List of Ports to Assign to the LAN Port-Channel Policy.
-    - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
+    interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
+      - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+      - port_id - Port ID to Assign to the LAN Port-Channel Policy.
+      - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * port_channel_fcoe_uplinks - Use this Map to Configure Ports for Appliance Port-Channels.
     key - Port-Channel Identifier.
     - admin_speed - Admin configured speed for the port.
@@ -93,11 +96,12 @@ variable "port_policies" {
       * 25Gbps - Admin configurable speed 25Gbps.
       * 40Gbps - Admin configurable speed 40Gbps.
       * 100Gbps - Admin configurable speed 100Gbps.
-    - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+    interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
+      - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+      - port_id - Port ID to Assign to the LAN Port-Channel Policy.
+      - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
     - link_aggregation_policy - Name of the Link Aggregation policy.
     - link_control_policy - Name of the Link Control policy.
-    - port_list - Default is [49, 50].  List of Ports to Assign to the LAN Port-Channel Policy.
-    - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * port_modes - List of Ports to change the default Mode (Breakout Mode|Unified Mode).
     - custom_mode - Custom Port Mode specified for the port range.
         * FibreChannel - (Default).  Fibre Channel Port Types.
@@ -200,9 +204,9 @@ variable "port_policies" {
           ethernet_network_group_policy   = string
           interfaces = optional(list(object(
             {
-             breakout_port_id = optional(number)
-             port_id          = number
-             slot_id          = number
+              breakout_port_id = optional(number)
+              port_id          = number
+              slot_id          = number
             }
           )))
           mode     = optional(string)
@@ -211,13 +215,13 @@ variable "port_policies" {
       )))
       port_channel_ethernet_uplinks = optional(map(object(
         {
-          admin_speed             = optional(string)
-          flow_control_policy     = optional(string)
+          admin_speed         = optional(string)
+          flow_control_policy = optional(string)
           interfaces = optional(list(object(
             {
-             breakout_port_id = optional(number)
-             port_id          = number
-             slot_id          = number
+              breakout_port_id = optional(number)
+              port_id          = number
+              slot_id          = number
             }
           )))
           link_aggregation_policy = optional(string)
@@ -230,29 +234,29 @@ variable "port_policies" {
           fill_pattern = optional(string)
           interfaces = optional(list(object(
             {
-             breakout_port_id = optional(number)
-             port_id          = number
-             slot_id          = number
+              breakout_port_id = optional(number)
+              port_id          = number
+              slot_id          = number
             }
           )))
-          vsan_id      = number
+          vsan_id = number
         }
       )))
       port_channel_fcoe_uplinks = optional(map(object(
         {
-          admin_speed             = optional(string)
+          admin_speed = optional(string)
           interfaces = optional(list(object(
             {
-             breakout_port_id = optional(number)
-             port_id          = number
-             slot_id          = number
+              breakout_port_id = optional(number)
+              port_id          = number
+              slot_id          = number
             }
           )))
           link_aggregation_policy = optional(string)
           link_control_policy     = optional(string)
         }
       )))
-      port_modes = optional(map(object(
+      port_modes = optional(list(object(
         {
           custom_mode = optional(string)
           port_list   = list(number)
@@ -267,7 +271,7 @@ variable "port_policies" {
           ethernet_network_group_policy   = string
           fec                             = optional(string)
           mode                            = optional(string)
-          port_list                       = list(number)
+          port_list                       = string
           priority                        = optional(string)
           slot_id                         = optional(number)
         }
@@ -279,7 +283,7 @@ variable "port_policies" {
           fec                 = optional(string)
           flow_control_policy = optional(string)
           link_control_policy = optional(string)
-          port_list           = list(number)
+          port_list           = string
           slot_id             = optional(number)
         }
       )))
@@ -288,7 +292,7 @@ variable "port_policies" {
           admin_speed      = optional(string)
           breakout_port_id = optional(number)
           fill_pattern     = optional(string)
-          port_list        = list(number)
+          port_list        = string
           slot_id          = optional(number)
           vsan_id          = number
         }
@@ -299,14 +303,14 @@ variable "port_policies" {
           breakout_port_id    = optional(number)
           fec                 = optional(string)
           link_control_policy = optional(string)
-          port_list           = list(number)
+          port_list           = string
           slot_id             = optional(number)
         }
       )))
       port_role_servers = optional(map(object(
         {
           breakout_port_id = optional(number)
-          port_list        = list(number)
+          port_list        = string
           slot_id          = optional(number)
         }
       )))
@@ -325,22 +329,22 @@ variable "port_policies" {
 module "port_policies" {
   depends_on = [
     local.org_moids,
-    # module.ucs_domain_switches
+    module.ucs_domain_switches
   ]
-  source       = "../../../../terraform-intersight-imm/modules/port_policies"
+  source       = "../../../terraform-intersight-imm/modules/port_policies"
   for_each     = local.port_policies
   description  = each.value.description != "" ? each.value.description : "${each.key} Port Policy."
   device_model = each.value.device_model
   name         = each.key
   org_moid     = local.org_moids[each.value.organization].moid
   tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  # profiles = {
-  #   for k, v in local.merge_all_moids : k => {
-  #     moid        = v.moid
-  #     object_type = v.object_type
-  #   }
-  #   if local.merge_all_moids[k].vsan_policy == each.key
-  # }
+  profiles = {
+    for k, v in local.merge_all_moids : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merge_all_moids[k].vsan_policy == each.key
+  }
 }
 
 #_________________________________________________________________________
@@ -354,7 +358,7 @@ module "port_modes" {
     local.org_moids,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_modes"
+  source           = "../../../terraform-intersight-imm/modules/port_modes"
   for_each         = local.port_modes
   custom_mode      = each.value.custom_mode
   port_list        = each.value.port_list
@@ -376,16 +380,14 @@ module "port_channel_appliances" {
     module.ethernet_network_group_policies,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_channel_appliances"
+  source           = "../../../terraform-intersight-imm/modules/port_channel_appliances"
   for_each         = local.port_channel_appliances
   admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
-  pc_id            = each.key
+  interfaces       = each.value.interfaces
+  pc_id            = each.value.pc_id
   mode             = each.value.mode
-  port_list        = each.value.port_list
   port_policy_moid = module.port_policies[each.value.port_policy].moid
   priority         = each.value.priority
-  slot_id          = each.value.slot_id
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
   ethernet_network_control_policy_moid = each.value.ethernet_network_control_policy != "" ? [
     module.ethernet_network_control_policies[each.value.ethernet_network_control_policy].moid
@@ -410,14 +412,12 @@ module "port_channel_ethernet_uplinks" {
     module.link_control_policies,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_channel_ethernet_uplinks"
+  source           = "../../../terraform-intersight-imm/modules/port_channel_ethernet_uplinks"
   for_each         = local.port_channel_ethernet_uplinks
   admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
-  pc_id            = each.key
-  port_list        = each.value.port_list
+  interfaces       = each.value.interfaces
+  pc_id            = each.value.pc_id
   port_policy_moid = module.port_policies[each.value.port_policy].moid
-  slot_id          = each.value.slot_id
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
   flow_control_policy_moid = each.value.flow_control_policy != "" ? [
     module.flow_control_policies[each.value.flow_control_policy].moid
@@ -443,15 +443,13 @@ module "port_channel_fc_uplinks" {
     module.port_modes,
     module.port_policies
   ]
-  source           = "terraform-cisco-modules/imm/intersight//modules/port_channel_fc_uplinks"
+  source           = "../../../terraform-intersight-imm/modules/port_channel_fc_uplinks"
   for_each         = local.port_channel_fc_uplinks
   admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
   fill_pattern     = each.value.fill_pattern
+  interfaces       = each.value.interfaces
   pc_id            = each.value.pc_id
-  port_list        = each.value.port_list
   port_policy_moid = module.port_policies[each.value.port_policy].moid
-  slot_id          = each.value.slot_id
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
   vsan_id          = each.value.vsan_id
 }
@@ -470,14 +468,12 @@ module "port_channel_fcoe_uplinks" {
     module.link_control_policies,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_channel_fcoe_uplinks"
+  source           = "../../../terraform-intersight-imm/modules/port_channel_fcoe_uplinks"
   for_each         = local.port_channel_fcoe_uplinks
   admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
-  pc_id            = each.key
-  port_list        = each.value.port_list
+  interfaces       = each.value.interfaces
+  pc_id            = each.value.pc_id
   port_policy_moid = module.port_policies[each.value.port_policy].moid
-  slot_id          = each.value.slot_id
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
   link_aggregation_policy_moid = each.value.link_aggregation_policy != "" ? [
     module.link_aggregation_policies[each.value.link_aggregation_policy].moid
@@ -501,7 +497,7 @@ module "port_role_appliances" {
     module.ethernet_network_group_policies,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_role_appliances"
+  source           = "../../../terraform-intersight-imm/modules/port_role_appliances"
   for_each         = local.port_role_appliances
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
@@ -530,9 +526,11 @@ module "port_role_appliances" {
 module "port_role_ethernet_uplinks" {
   depends_on = [
     local.org_moids,
+    module.flow_control_policies,
+    module.link_control_policies,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_role_ethernet_uplinks"
+  source           = "../../../terraform-intersight-imm/modules/port_role_ethernet_uplinks"
   for_each         = local.port_role_ethernet_uplinks
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
@@ -561,7 +559,7 @@ module "port_role_fc_uplinks" {
     local.org_moids,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_role_fc_uplinks"
+  source           = "../../../terraform-intersight-imm/modules/port_role_fc_uplinks"
   for_each         = local.port_role_fc_uplinks
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
@@ -583,9 +581,10 @@ module "port_role_fc_uplinks" {
 module "port_role_fcoe_uplinks" {
   depends_on = [
     local.org_moids,
+    module.link_control_policies,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_role_fcoe_uplinks"
+  source           = "../../../terraform-intersight-imm/modules/port_role_fcoe_uplinks"
   for_each         = local.port_role_fcoe_uplinks
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
@@ -611,7 +610,7 @@ module "port_role_servers" {
     local.org_moids,
     module.port_policies
   ]
-  source           = "../../../../terraform-intersight-imm/modules/port_role_servers"
+  source           = "../../../terraform-intersight-imm/modules/port_role_servers"
   for_each         = local.port_role_servers
   breakout_port_id = each.value.breakout_port_id
   port_list        = each.value.port_list
