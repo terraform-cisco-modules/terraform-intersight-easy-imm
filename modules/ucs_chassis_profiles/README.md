@@ -1,13 +1,13 @@
-# Intersight UCS Chassis Profiles Deployment Module
+# ucs_chassis_profiles - Intersight UCS Chassis Profiles Deployment Module
 
 ## Use this module to create UCS Chassis Profiles in Intersight
 
 ## Usage
 
 ```hcl
-module "profiles_chassis" {
+module "ucs_chassis_profiles" {
 
-  source = "terraform-cisco-modules/easy-imm/intersight//modules/profiles_chassis"
+  source = "terraform-cisco-modules/easy-imm/intersight//modules/ucs_chassis_profiles"
 
   # omitted...
 }

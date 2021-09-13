@@ -1,13 +1,13 @@
-# Intersight UCS Domain Profiles Deployment Module
+# ucs_domain_profiles - Intersight UCS Domain Profiles Deployment Module
 
 ## Use this module to create UCS Domain Profiles in Intersight
 
 ## Usage
 
 ```hcl
-module "profiles_domains" {
+module "ucs_domain_profiles" {
 
-  source = "terraform-cisco-modules/easy-imm/intersight//modules/profiles_domains"
+  source = "terraform-cisco-modules/easy-imm/intersight//modules/ucs_domain_profiles"
 
   # omitted...
 }

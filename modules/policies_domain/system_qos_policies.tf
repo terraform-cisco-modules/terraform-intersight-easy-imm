@@ -107,9 +107,4 @@ module "system_qos_policies" {
     }
     if local.merge_all_moids[k].system_qos_policy == each.key
   }
-  # profiles = flatten([
-  #   for s in sort(keys(local.ucs_domain_profiles)) :
-  #   [module.ucs_domain_switches_a[s].moid, module.ucs_domain_switches_b[s].moid]
-  #   if local.ucs_domain_profiles[s].system_qos_policy == each.key
-  # ])
 }

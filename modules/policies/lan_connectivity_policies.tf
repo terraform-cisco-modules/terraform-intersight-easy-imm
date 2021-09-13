@@ -204,42 +204,42 @@ module "lan_connectivity_vnics" {
   ]
   source                                 = "terraform-cisco-modules/imm/intersight//modules/lan_connectivity_add_vnic"
   for_each                               = toset(keys({ for k, v in local.vnics : k => v }))
-  cdn_source                             = local.vnics[each.value].cdn_source
-  cdn_value                              = local.vnics[each.value].cdn_source == "user" ? local.vnics[each.value].cdn_value : local.vnics[each.value].name
-  enable_failover                        = local.vnics[each.value].enable_failover
-  eth_adapter_policy_moid                = module.ethernet_adapter_policies[local.vnics[each.value].ethernet_adapter_policy].moid
-  eth_network_control_policy_moid        = module.ethernet_network_control_policies[local.vnics[each.value].ethernet_network_control_policy].moid
-  eth_qos_policy_moid                    = module.ethernet_qos_policies[local.vnics[each.value].ethernet_qos_policy].moid
-  lan_connectivity_policy_moid           = module.lan_connectivity_policies[local.vnics[each.value].lan_connectivity_policy].moid
-  mac_address_allocation_type            = local.vnics[each.value].mac_address_allocation_type
-  mac_address_pool_moid                  = local.vnics[each.value].mac_address_allocation_type == "POOL" ? [local.mac_pools[local.vnics[each.value].mac_address_pool]] : []
-  mac_address_static                     = local.vnics[each.value].mac_address_allocation_type == "STATIC" ? local.vnics[each.value].mac_address_static : null
-  name                                   = local.vnics[each.value].name
-  placement_pci_link                     = local.vnics[each.value].placement_pci_link
-  placement_pci_order                    = local.vnics[each.value].placement_pci_order
-  placement_slot_id                      = local.vnics[each.value].placement_slot_id
-  placement_switch_id                    = local.vnics[each.value].placement_switch_id
-  placement_uplink_port                  = local.vnics[each.value].placement_uplink_port
-  usnic_class_of_service                 = local.vnics[each.value].usnic_class_of_service
-  usnic_number_of_usnics                 = local.vnics[each.value].usnic_number_of_usnics
-  vmq_enabled                            = local.vnics[each.value].vmq_enabled
-  vmq_enable_virtual_machine_multi_queue = local.vnics[each.value].vmq_enable_virtual_machine_multi_queue
-  vmq_number_of_interrupts               = local.vnics[each.value].vmq_number_of_interrupts
-  vmq_number_of_virtual_machine_queues   = local.vnics[each.value].vmq_number_of_virtual_machine_queues
-  vmq_number_of_sub_vnics                = local.vnics[each.value].vmq_number_of_sub_vnics
+  cdn_source                             = each.value.cdn_source
+  cdn_value                              = each.value.cdn_source == "user" ? each.value.cdn_value : each.value.name
+  enable_failover                        = each.value.enable_failover
+  eth_adapter_policy_moid                = module.ethernet_adapter_policies[each.value.ethernet_adapter_policy].moid
+  eth_network_control_policy_moid        = module.ethernet_network_control_policies[each.value.ethernet_network_control_policy].moid
+  eth_qos_policy_moid                    = module.ethernet_qos_policies[each.value.ethernet_qos_policy].moid
+  lan_connectivity_policy_moid           = module.lan_connectivity_policies[each.value.lan_connectivity_policy].moid
+  mac_address_allocation_type            = each.value.mac_address_allocation_type
+  mac_address_pool_moid                  = each.value.mac_address_allocation_type == "POOL" ? [local.mac_pools[each.value.mac_address_pool]] : []
+  mac_address_static                     = each.value.mac_address_allocation_type == "STATIC" ? each.value.mac_address_static : null
+  name                                   = each.value.name
+  placement_pci_link                     = each.value.placement_pci_link
+  placement_pci_order                    = each.value.placement_pci_order
+  placement_slot_id                      = each.value.placement_slot_id
+  placement_switch_id                    = each.value.placement_switch_id
+  placement_uplink_port                  = each.value.placement_uplink_port
+  usnic_class_of_service                 = each.value.usnic_class_of_service
+  usnic_number_of_usnics                 = each.value.usnic_number_of_usnics
+  vmq_enabled                            = each.value.vmq_enabled
+  vmq_enable_virtual_machine_multi_queue = each.value.vmq_enable_virtual_machine_multi_queue
+  vmq_number_of_interrupts               = each.value.vmq_number_of_interrupts
+  vmq_number_of_virtual_machine_queues   = each.value.vmq_number_of_virtual_machine_queues
+  vmq_number_of_sub_vnics                = each.value.vmq_number_of_sub_vnics
   eth_network_group_policy_moid = length(
-    regexall("[a-zA-Z0-9]+", local.vnics[each.value]["ethernet_network_group_policy"])
-  ) > 0 ? [module.ethernet_network_group_policies[local.vnics[each.value].ethernet_network_group_policy].moid] : []
+    regexall("[a-zA-Z0-9]+", each.value["ethernet_network_group_policy"])
+  ) > 0 ? [module.ethernet_network_group_policies[each.value.ethernet_network_group_policy].moid] : []
   eth_network_policy_moid = length(
-    regexall("[a-zA-Z0-9]+", local.vnics[each.value].ethernet_network_policy)
-  ) > 0 ? [module.ethernet_network_policies[local.vnics[each.value].ethernet_network_policy].moid] : []
+    regexall("[a-zA-Z0-9]+", each.value.ethernet_network_policy)
+  ) > 0 ? [module.ethernet_network_policies[each.value.ethernet_network_policy].moid] : []
   iscsi_boot_policy_moid = length(
-    regexall("[a-zA-Z0-9]+", local.vnics[each.value].iscsi_boot_policy)
-  ) > 0 ? [module.iscsi_boot_policies[local.vnics[each.value].iscsi_boot_policy].moid] : []
+    regexall("[a-zA-Z0-9]+", each.value.iscsi_boot_policy)
+  ) > 0 ? [module.iscsi_boot_policies[each.value.iscsi_boot_policy].moid] : []
   usnic_adapter_policy_moid = length(
-    regexall("[a-zA-Z0-9]+", local.vnics[each.value].usnic_adapter_policy)
-  ) > 0 ? module.ethernet_adapter_policies[local.vnics[each.value].usnic_adapter_policy].moid : ""
+    regexall("[a-zA-Z0-9]+", each.value.usnic_adapter_policy)
+  ) > 0 ? module.ethernet_adapter_policies[each.value.usnic_adapter_policy].moid : ""
   vmq_vmmq_adapter_policy_moid = length(
-    regexall("[a-zA-Z0-9]+", local.vnics[each.value].vmq_vmmq_adapter_policy)
-  ) > 0 ? module.ethernet_adapter_policies[local.vnics[each.value].vmq_vmmq_adapter_policy].moid : ""
+    regexall("[a-zA-Z0-9]+", each.value.vmq_vmmq_adapter_policy)
+  ) > 0 ? module.ethernet_adapter_policies[each.value.vmq_vmmq_adapter_policy].moid : ""
 }

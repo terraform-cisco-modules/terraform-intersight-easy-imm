@@ -85,6 +85,7 @@ variable "bios_policies" {
       crfastgo_config                       = "platform-default"
       dcpmm_firmware_downgrade              = "platform-default"
       demand_scrub                          = "platform-default"
+      description                           = ""
       direct_cache_access                   = "platform-default"
       dram_clock_throttling                 = "platform-default"
       dram_refresh_rate                     = "platform-default"

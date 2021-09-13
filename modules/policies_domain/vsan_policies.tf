@@ -95,11 +95,11 @@ module "vsan_policies_add_vsans" {
     module.vsan_policies
   ]
   source           = "../../../terraform-intersight-imm/modules/vsan_policy_add_vsan"
-  for_each         = toset(keys({ for k, v in local.vsans : k => v }))
-  default_zoning   = local.vsans[each.value].default_zoning
-  fcoe_vlan_id     = local.vsans[each.value].fcoe_vlan_id
-  name             = local.vsans[each.value].name
-  vsan_id          = local.vsans[each.value].vsan_id
-  vsan_policy_moid = module.vsan_policies[local.vsans[each.value].vsan_policy].moid
+  for_each         = local.vsans
+  default_zoning   = each.value.default_zoning
+  fcoe_vlan_id     = each.value.fcoe_vlan_id
+  name             = each.value.name
+  vsan_id          = each.value.vsan_id
+  vsan_policy_moid = module.vsan_policies[each.value.vsan_policy].moid
   # fc_zone_sharing_mode = local.vsans[each.value].fc_zone_sharing_mode
 }

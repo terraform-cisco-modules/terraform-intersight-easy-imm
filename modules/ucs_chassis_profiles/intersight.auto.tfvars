@@ -3,8 +3,24 @@
 # Terraform Cloud Variables
 #__________________________________________________________
 
+# agent_pool        = "Richfield_Agents"
+# terraform_version = "1.0.3"
+# tfc_email         = "tyscott@cisco.com"
 tfc_organization = "Cisco-Richfield-Lab"
-ws_domain        = "Asgard_domain_profiles"
+# vcs_repo         = "scotttyso/terraform-intersight-easy-imm"
+/*
+  We highly recommend that for the terraform_cloud_token you use an environment variable for input:
+  - export TF_VAR_terraform_cloud_token="abcdefghijklmnopqrstuvwxyz.0123456789"
+  If you still want to move forward with it in this file, uncomment the line below, and input your value.
+*/
+# terraform_cloud_token = "value"
+/*
+  We highly recommend that for the tfc_oath_token you use an environment variable for input; Like:
+  - export TF_VAR_tfc_oath_token="abcdefghijklmnopqrstuvwxyz.0123456789"
+  If you still want to move forward with it in this file, uncomment the line below, and input your value.
+*/
+# tfc_oath_token = "value"
+
 
 #__________________________________________________________
 #
@@ -13,6 +29,7 @@ ws_domain        = "Asgard_domain_profiles"
 
 # endpoint     = "https://intersight.com"
 organizations = ["Asgard", "UCS-DEMO2"]
+
 # secretkey    = "../../../../intersight.secret"
 /*
   To export the Secret Key via an Environment Variable the format is as follows (Note: they are not quotation marks, but escape characters):
@@ -27,45 +44,7 @@ organizations = ["Asgard", "UCS-DEMO2"]
 
 #__________________________________________________________
 #
-# Kubernetes Policy Variables
+# Intersight Policy Variables
 #__________________________________________________________
 
 tags = [{ key = "Module", value = "terraform-intersight-easy-imm" }, { key = "Owner", value = "tyscott" }]
-
-#______________________________________________
-#
-# UCS Domain VLAN Variables
-#______________________________________________
-
-# policies_multicast = {
-#   "Asgard_multicast" = {
-#     description    = ""
-#     organization   = "Asgard"
-#     querier_ip     = ""
-#     querier_state  = "Disabled"
-#     snooping_state = "Enabled"
-#     tags           = []
-#   }
-# }
-#
-# policies_vlan = {
-#   "Asgard_vlangroup_1" = {
-#     auto_allow_on_uplinks = true
-#     description           = ""
-#     multicast_policy      = "Asgard_multicast"
-#     organization          = "Asgard"
-#     vlan_list             = "101-199,201-299,1100-1299,1700-1799"
-#     vlan_native           = 1
-#     vlan_prefix           = "asgard"
-#     vlan_map = [
-#       {
-#         prefix  = "mgmt"
-#         vlan_id = 10
-#       },
-#       {
-#         prefix  = "storage"
-#         vlan_id = 20
-#       }
-#     ]
-#   }
-# }

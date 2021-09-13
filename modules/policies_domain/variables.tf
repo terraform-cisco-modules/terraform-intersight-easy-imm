@@ -4,25 +4,19 @@ terraform {
 
 #__________________________________________________________
 #
-# Terraform Cloud Organization
+# Terraform Cloud Variables
 #__________________________________________________________
 
 variable "tfc_organization" {
-  description = "Terraform Cloud Organization."
+  description = "Terraform Cloud Organization Name."
   type        = string
 }
 
-
-#______________________________________________
-#
-# Terraform Cloud domain_workspace Workspace
-#______________________________________________
-
-variable "ws_pools" {
-  description = "Pools Workspace Name."
+variable "ws_domain" {
+  default     = "ucs_domain_profile"
+  description = "Name of the domain workspace."
   type        = string
 }
-
 
 #__________________________________________________________
 #

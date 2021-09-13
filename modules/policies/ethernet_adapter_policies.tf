@@ -17,7 +17,7 @@ variable "ethernet_adapter_policies" {
       enable_interrupt_scaling                 = false
       enable_nvgre_offload                     = false
       enable_vxlan_offload                     = false
-      interrupt_coalescing_type                = "Min"
+      interrupt_coalescing_type                = "MIN"
       interrupt_mode                           = "MSIx"
       interrupt_timer                          = 125
       interrupts                               = 4

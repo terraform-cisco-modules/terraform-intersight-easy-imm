@@ -4,6 +4,15 @@
 #______________________________________________
 
 multicast_policies = {
+  "Asgard_multicast" = {
+    description             = ""
+    organization            = "Asgard"
+    querier_ip_address      = ""
+    querier_ip_address_peer = ""
+    querier_state           = "Disabled"
+    snooping_state          = "Enabled"
+    tags                    = []
+  }
   "UCS-DEMO2" = {
     description             = ""
     organization            = "UCS-DEMO2"

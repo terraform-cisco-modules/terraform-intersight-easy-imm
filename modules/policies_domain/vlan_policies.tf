@@ -16,7 +16,7 @@ variable "vlan_policies" {
           multicast_policy      = ""
           name                  = "vlan-{vlan_id}"
           native_vlan           = false
-          vlan_id               = null
+          vlan_list             = ""
         }
       }
     }
@@ -30,9 +30,9 @@ variable "vlan_policies" {
   * vlans - List of VSANs to add to the VSAN Policy.
     - auto_allow_on_uplinks - Default is true.  Used to determine whether this VLAN will be allowed on all uplink ports and PCs in this FI.
     - multicast_policy - Name of the Multicast Policy to assign to the VLAN.
-    - name - The 'name' used to identify this VLAN.
+    - name - The 'name' used to identify this VLAN.  When configuring a single VLAN this will be used as the Name.  When configuring multiple VLANs in a list the name will be used as a Name Prefix.
     - native_vlan - Default is false.  Used to define whether this VLAN is to be classified as 'native' for traffic in this FI.
-    - vlan_id - (REQUIRED).  The identifier for this Virtual LAN.
+    - vlan_list - (REQUIRED).  The identifier for this Virtual LAN.  This can either be one vlan like "10" or a list of VLANs: "1,10,20-30".
   EOT
   type = map(object(
     {
@@ -45,7 +45,7 @@ variable "vlan_policies" {
           multicast_policy      = string
           name                  = optional(string)
           native_vlan           = optional(bool)
-          vlan_id               = number
+          vlan_list             = string
         }
       )))
     }
@@ -90,12 +90,12 @@ module "vlan_policies_add_vlans" {
     module.multicast_policies,
     module.vlan_policies
   ]
-  source                = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan"
-  for_each              = toset(keys({ for k, v in local.vlans : k => v }))
-  auto_allow_on_uplinks = local.vlans[each.value].auto_allow_on_uplinks
-  multicast_policy_moid = module.multicast_policies[local.vlans[each.value].multicast_policy].moid
-  name                  = local.vlans[each.value].name
-  native_vlan           = local.vlans[each.value].native_vlan
-  vlan_id               = local.vlans[each.value].vlan_id
-  vlan_policy_moid      = module.vlan_policies[local.vlans[each.value].vlan_policy].moid
+  source                = "../../../terraform-intersight-imm/modules/vlan_policy_add_vlan_list"
+  for_each              = local.vlans
+  auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
+  multicast_policy_moid = module.multicast_policies[each.value.multicast_policy].moid
+  name                  = each.value.name != "" ? each.value.name : "VLAN"
+  native_vlan           = each.value.native_vlan
+  vlan_list             = each.value.vlan_list
+  vlan_policy_moid      = module.vlan_policies[each.value.vlan_policy].moid
 }

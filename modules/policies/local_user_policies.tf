@@ -153,7 +153,15 @@ module "local_users" {
   source           = "terraform-cisco-modules/imm/intersight//modules/local_user_add_users"
   org_moid         = local.org_moids[each.value.organization].moid
   user_enabled     = each.value.enabled
-  user_password    = each.value.password == 1 ? var.local_user_password_1 : each.value.password == 2 ? var.local_user_password_1 : each.value.password == 3 ? var.local_user_password_1 : each.value.password == 4 ? var.local_user_password_1 : var.local_user_password_1
+  user_password    = length(
+    regexall("^1$", each.value.password)
+  ) > 0 ? var.local_user_password_1 : length(
+    regexall("^2$", each.value.password)
+  ) > 0 ? var.local_user_password_2 : length(
+    regexall("^3$", each.value.password)
+  ) > 0 ? var.local_user_password_3 : length(
+    regexall("^4$", each.value.password)
+  ) > 0 ? var.local_user_password_4 : var.local_user_password_5
   user_policy_moid = module.local_user_policies[each.value.policy].moid
   user_role        = each.value.role
   username         = each.value.username

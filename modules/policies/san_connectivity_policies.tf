@@ -158,19 +158,19 @@ module "san_connectivity_vhbas" {
     module.san_connectivity_policies
   ]
   source                       = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba"
-  for_each                     = toset(keys({ for k, v in local.vhbas : k => v }))
-  fc_adapter_policy_moid       = module.fibre_channel_adapter_policies[local.vhbas[each.value].fibre_channel_adapter_policy].moid
-  fc_network_policy_moid       = module.fibre_channel_network_policies[local.vhbas[each.value].fibre_channel_network_policy].moid
-  fc_qos_policy_moid           = module.fibre_channel_qos_policies[local.vhbas[each.value].fibre_channel_qos_policy].moid
-  name                         = local.vhbas[each.value].name
-  persistent_lun_bindings      = local.vhbas[each.value].persistent_lun_bindings
-  placement_pci_link           = local.vhbas[each.value].placement_pci_link
-  placement_pci_order          = local.vhbas[each.value].placement_pci_order
-  placement_slot_id            = local.vhbas[each.value].placement_slot_id
-  placement_switch_id          = local.vhbas[each.value].placement_switch_id
-  placement_uplink_port        = local.vhbas[each.value].placement_uplink_port
-  san_connectivity_policy_moid = module.san_connectivity_policies[local.vhbas[each.value].san_connectivity_policy].moid
-  wwpn_allocation_type         = local.vhbas[each.value].wwpn_allocation_type
-  wwpn_pool_moid               = local.vhbas[each.value].wwpn_allocation_type == "POOL" ? [local.wwpn_pools[local.vhbas[each.value].wwpn_pool]] : []
-  wwpn_static_address          = local.vhbas[each.value].wwpn_allocation_type == "STATIC" ? local.vhbas[each.value].wwpn_static_address : ""
+  for_each                     = local.vhbas
+  fc_adapter_policy_moid       = module.fibre_channel_adapter_policies[each.value.fibre_channel_adapter_policy].moid
+  fc_network_policy_moid       = module.fibre_channel_network_policies[each.value.fibre_channel_network_policy].moid
+  fc_qos_policy_moid           = module.fibre_channel_qos_policies[each.value.fibre_channel_qos_policy].moid
+  name                         = each.value.name
+  persistent_lun_bindings      = each.value.persistent_lun_bindings
+  placement_pci_link           = each.value.placement_pci_link
+  placement_pci_order          = each.value.placement_pci_order
+  placement_slot_id            = each.value.placement_slot_id
+  placement_switch_id          = each.value.placement_switch_id
+  placement_uplink_port        = each.value.placement_uplink_port
+  san_connectivity_policy_moid = module.san_connectivity_policies[each.value.san_connectivity_policy].moid
+  wwpn_allocation_type         = each.value.wwpn_allocation_type
+  wwpn_pool_moid               = each.value.wwpn_allocation_type == "POOL" ? [local.wwpn_pools[each.value.wwpn_pool]] : []
+  wwpn_static_address          = each.value.wwpn_allocation_type == "STATIC" ? each.value.wwpn_static_address : ""
 }

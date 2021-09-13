@@ -4,19 +4,25 @@ terraform {
 
 #__________________________________________________________
 #
-# Terraform Cloud Variables
+# Terraform Cloud Organization
 #__________________________________________________________
 
 variable "tfc_organization" {
-  description = "Terraform Cloud Organization Name."
+  description = "Terraform Cloud Organization."
   type        = string
 }
 
-variable "ws_domain" {
-  default     = "Kubernetes_Policies"
-  description = "Name of the domain workspace."
+
+#______________________________________________
+#
+# Terraform Cloud domain_workspace Workspace
+#______________________________________________
+
+variable "ws_pools" {
+  description = "Pools Workspace Name."
   type        = string
 }
+
 
 #__________________________________________________________
 #
@@ -58,5 +64,3 @@ variable "tags" {
   description = "List of Key/Value Pairs to Assign as Attributes to the Policy."
   type        = list(map(string))
 }
-
-
