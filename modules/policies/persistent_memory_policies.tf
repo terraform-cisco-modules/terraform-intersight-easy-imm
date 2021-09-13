@@ -64,8 +64,7 @@ variable "persistent_memory_policies" {
 module "persistent_memory_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles,
-    module.ucs_server_profile_templates
+    local.merged_profile_policies,
   ]
   source                       = "terraform-cisco-modules/imm/intersight//modules/persistent_memory_policies"
   for_each                     = local.persistent_memory_policies
@@ -80,11 +79,11 @@ module "persistent_memory_policies" {
   secure_passphrase            = var.persistent_passphrase
   tags                         = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
-    for k, v in local.merged_server_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_server_moids[k].persistent_memory_policy == each.key
+    if local.merged_profile_policies[k].persistent_memory_policy == each.key
   }
 }
 

@@ -57,9 +57,7 @@ variable "network_connectivity_policies" {
 module "network_connectivity_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_switches,
-    module.ucs_server_profiles,
-    module.ucs_server_profile_templates
+    local.merged_profile_policies,
   ]
   source         = "terraform-cisco-modules/imm/intersight//modules/network_connectivity_policies"
   for_each       = local.network_connectivity_policies
@@ -73,10 +71,10 @@ module "network_connectivity_policies" {
   tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
   update_domain  = each.value.update_domain
   profiles = {
-    for k, v in local.merge_all_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merge_all_moids[k].network_connectivity_policy == each.key
+    if local.merged_profile_policies[k].network_connectivity_policy == each.key
   }
 }

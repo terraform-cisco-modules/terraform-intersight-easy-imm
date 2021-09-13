@@ -289,10 +289,7 @@ variable "snmp_policies" {
 module "snmp_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_chassis_profiles,
-    module.ucs_domain_switches,
-    module.ucs_server_profiles,
-    module.ucs_server_profile_templates
+    local.merged_profile_policies,
   ]
   for_each = local.snmp_policies
   source   = "terraform-cisco-modules/imm/intersight//modules/snmp_policies"
@@ -348,10 +345,10 @@ module "snmp_policies" {
   v2_enabled = length(regexall("[1-5]", each.value.access_community_string)) > 0 ? true : false
   v3_enabled = length(each.value.snmp_users) > 0 ? true : false
   profiles = {
-    for k, v in local.merge_all_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merge_all_moids[k].snmp_policy == each.key
+    if local.merged_profile_policies[k].snmp_policy == each.key
   }
 }

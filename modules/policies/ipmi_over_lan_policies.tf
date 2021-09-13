@@ -57,8 +57,7 @@ variable "ipmi_over_lan_policies" {
 module "ipmi_over_lan_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles,
-    module.ucs_server_profile_templates
+    local.merged_profile_policies,
   ]
   source         = "terraform-cisco-modules/imm/intersight//modules/ipmi_over_lan_policies"
   for_each       = local.ipmi_over_lan_policies
@@ -70,10 +69,10 @@ module "ipmi_over_lan_policies" {
   org_moid       = local.org_moids[each.value.organization].moid
   tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
-    for k, v in local.merged_server_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_server_moids[k].ipmi_over_lan_policy == each.key
+    if local.merged_profile_policies[k].ipmi_over_lan_policy == each.key
   }
 }

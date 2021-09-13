@@ -61,8 +61,7 @@ variable "smtp_policies" {
 module "smtp_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles,
-    module.ucs_server_profile_templates
+    local.merged_profile_policies,
   ]
   source          = "terraform-cisco-modules/imm/intersight//modules/smtp_policies"
   for_each        = local.smtp_policies
@@ -76,11 +75,11 @@ module "smtp_policies" {
   smtp_server     = each.value.smtp_server
   tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
-    for k, v in local.merged_server_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_server_moids[k].smtp_policy == each.key
+    if local.merged_profile_policies[k].smtp_policy == each.key
   }
 }
 

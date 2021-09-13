@@ -138,8 +138,7 @@ variable "boot_policies" {
 module "boot_order_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles,
-    module.ucs_server_profile_templates
+    local.merged_profile_policies,
   ]
   source             = "../../../terraform-intersight-imm/modules/boot_order_policies"
   for_each           = local.formatted_boot_order_policies
@@ -151,10 +150,10 @@ module "boot_order_policies" {
   org_moid           = local.org_moids[each.value.organization].moid
   tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
-    for k, v in local.merged_server_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_server_moids[k].boot_order_policy == each.key
+    if local.merged_profile_policies[k].boot_order_policy == each.key
   }
 }

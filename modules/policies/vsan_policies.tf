@@ -66,7 +66,7 @@ variable "vsan_policies" {
 module "vsan_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_switches
+    local.merged_profile_policies,
   ]
   source          = "../../../terraform-intersight-imm/modules/vsan_policies"
   for_each        = var.vsan_policies
@@ -76,11 +76,11 @@ module "vsan_policies" {
   org_moid        = local.org_moids[each.value.organization].moid
   tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
-    for k, v in local.merge_all_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merge_all_moids[k].vsan_policy == each.key
+    if local.merged_profile_policies[k].vsan_policy == each.key
   }
 }
 

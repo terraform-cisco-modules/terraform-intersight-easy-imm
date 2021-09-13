@@ -63,6 +63,7 @@ variable "vlan_policies" {
 module "vlan_policies" {
   depends_on = [
     local.org_moids,
+    local.merged_profile_policies
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/vlan_policies"
   for_each    = var.vlan_policies
@@ -71,11 +72,11 @@ module "vlan_policies" {
   org_moid    = local.org_moids[each.value.organization].moid
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
-    for k, v in local.merge_all_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merge_all_moids[k].vlan_policy == each.key
+    if local.merged_profile_policies[k].vlan_policy == each.key
   }
 }
 

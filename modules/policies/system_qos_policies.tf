@@ -91,7 +91,7 @@ variable "system_qos_policies" {
 module "system_qos_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_switches
+    local.merged_profile_policies,
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/system_qos_policies"
   for_each    = var.system_qos_policies
@@ -101,10 +101,10 @@ module "system_qos_policies" {
   org_moid    = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
   tags        = each.value.tags != null ? each.value.tags : []
   profiles = {
-    for k, v in local.merge_all_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merge_all_moids[k].system_qos_policy == each.key
+    if local.merged_profile_policies[k].system_qos_policy == each.key
   }
 }

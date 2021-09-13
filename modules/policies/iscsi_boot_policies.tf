@@ -104,7 +104,7 @@ variable "iscsi_boot_policies" {
 
 module "iscsi_boot_policies" {
   depends_on = [
-    # data.terraform_remote_state.pools,
+    data.terraform_remote_state.pools,
     local.org_moids,
     module.iscsi_adapter_policies,
     module.iscsi_static_target_policies,

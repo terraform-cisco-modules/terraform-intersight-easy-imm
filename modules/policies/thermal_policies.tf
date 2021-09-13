@@ -46,7 +46,7 @@ variable "thermal_policies" {
 module "thermal_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_chassis_profiles
+    local.merged_profile_policies,
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/thermal_policies"
   for_each         = local.thermal_policies
@@ -55,9 +55,11 @@ module "thermal_policies" {
   name             = each.key
   org_moid         = local.org_moids[each.value.organization].moid
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = [
-    for s in sort(keys(local.ucs_chassis_profiles)) :
-    module.ucs_chassis_profiles[s].moid
-    if local.ucs_chassis_profiles[s].thermal_policy == each.key
-  ]
+  profiles = {
+    for k, v in local.merged_profile_policies : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merged_profile_policies[k].thermal_policy == each.key
+  }
 }

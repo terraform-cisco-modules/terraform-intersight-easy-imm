@@ -58,7 +58,7 @@ variable "switch_control_policies" {
 module "switch_control_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_domain_switches
+    local.merged_profile_policies,
   ]
   source                = "terraform-cisco-modules/imm/intersight//modules/switch_control_policies"
   for_each              = local.switch_control_policies
@@ -72,17 +72,12 @@ module "switch_control_policies" {
   org_moid              = local.org_moids[each.value.organization].moid
   tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
-    for k, v in local.merge_all_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merge_all_moids[k].switch_control_policy == each.key
+    if local.merged_profile_policies[k].switch_control_policy == each.key
   }
-  # profiles = flatten([
-  #   for s in sort(keys(local.ucs_domain_profiles)) :
-  #   [module.ucs_domain_switches_a[s].moid, module.ucs_domain_switches_b[s].moid]
-  #   if local.ucs_domain_profiles[s].switch_control_policy == each.key
-  # ])
 }
 
 

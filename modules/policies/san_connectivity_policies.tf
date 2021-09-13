@@ -119,8 +119,7 @@ variable "san_connectivity_policies" {
 module "san_connectivity_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles,
-    module.ucs_server_profile_templates
+    local.merged_profile_policies
   ]
   source               = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_policies"
   for_each             = local.san_connectivity_policies
@@ -134,11 +133,11 @@ module "san_connectivity_policies" {
   wwnn_allocation_type = each.value.wwnn_allocation_type
   wwnn_static_address  = each.value.wwnn_allocation_type == "STATIC" ? each.value.wwnn_static_address : ""
   profiles = {
-    for k, v in local.merged_server_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_server_moids[k].san_connectivity_policy == each.key
+    if local.merged_profile_policies[k].san_connectivity_policy == each.key
   }
 }
 

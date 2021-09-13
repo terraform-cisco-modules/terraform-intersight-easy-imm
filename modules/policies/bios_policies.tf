@@ -2720,8 +2720,7 @@ variable "bios_policies" {
 module "bios_policies" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profiles,
-    module.ucs_server_profile_templates
+    local.merged_profile_policies,
   ]
   source      = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each    = local.bios_policies
@@ -2729,11 +2728,11 @@ module "bios_policies" {
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   profiles = {
-    for k, v in local.merged_server_moids : k => {
+    for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_server_moids[k].bios_policy == each.key
+    if local.merged_profile_policies[k].bios_policy == each.key
   }
   tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
   #+++++++++++++++++++++++++++++++

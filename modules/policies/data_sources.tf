@@ -3,22 +3,43 @@
 # Get outputs from the Intersight Pools Workspace
 #__________________________________________________________
 
-# data "terraform_remote_state" "pools" {
-#   backend = "local"
-#   config = {
-#     path = "../pools/terraform.tfstate"
-#   }
-# }
-
-data "terraform_remote_state" "pools" {
-  backend = "remote"
+data "terraform_remote_state" "ucs_chassis_profiles" {
+  backend = "local"
   config = {
-    organization = var.tfc_organization
-    workspaces = {
-      name = var.ws_pools
-    }
+    path = "../ucs_chassis_profiles/terraform.tfstate"
   }
 }
+
+data "terraform_remote_state" "ucs_domain_profiles" {
+  backend = "local"
+  config = {
+    path = "../ucs_domain_profiles/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "ucs_server_profiles" {
+  backend = "local"
+  config = {
+    path = "../ucs_server_profiles/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "pools" {
+  backend = "local"
+  config = {
+    path = "../pools/terraform.tfstate"
+  }
+}
+
+#data "terraform_remote_state" "pools" {
+#  backend = "remote"
+#  config = {
+#    organization = var.tfc_organization
+#    workspaces = {
+#      name = var.ws_pools
+#    }
+#  }
+#}
 
 
 #____________________________________________________________
@@ -30,52 +51,4 @@ data "terraform_remote_state" "pools" {
 data "intersight_organization_organization" "org_moid" {
   for_each = local.organizations
   name     = each.value
-}
-
-#____________________________________________________________
-#
-# Server Moid Data Source
-# GUI Location:
-#   Operate > Servers > Copy the Serial from the Column.
-#____________________________________________________________
-
-data "intersight_compute_physical_summary" "server" {
-  for_each = {
-    for k, v in local.ucs_server_profiles : k => v
-    if v.assign_server == true
-  }
-  serial = each.value.serial_number
-}
-
-
-#____________________________________________________________
-#
-# Chassis Moid Data Source
-# GUI Location:
-#   Operate > Chassis > Copy the Serial from the Column.
-#____________________________________________________________
-
-data "intersight_equipment_chassis" "chassis" {
-  for_each = {
-    for k, v in local.ucs_chassis_profiles : k => v
-    if v.assign_chassis == true
-  }
-  serial = each.value.serial_number
-}
-
-
-#____________________________________________________________
-#
-# Fabric Interconnects Moid Data Source
-# GUI Location:
-#   Operate > Fabric Interconnects > Click the Desired Fabric
-#   Interconnect > General Tab > Details Left Column > Serial
-#____________________________________________________________
-
-data "intersight_network_element_summary" "fis" {
-  for_each = {
-    for k, v in local.merged_ucs_switches : k => v
-    if v.assign_switches == true
-  }
-  serial = each.value.serial_number
 }
