@@ -5,9 +5,9 @@
 
 vlan_policies = {
   "Asgard_vlangroup_1" = {
-    description           = ""
-    organization          = "Asgard"
-    tags                  = []
+    description  = ""
+    organization = "Asgard"
+    tags         = []
     vlans = {
       0 = {
         auto_allow_on_uplinks = true
@@ -30,11 +30,11 @@ vlan_policies = {
     organization = "UCS-DEMO2"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]
@@ -1250,11 +1250,11 @@ vlan_policies = {
     organization = "UCS-DEMO2"
     tags = [
       {
-        key = "easyucs_origin",
+        key   = "easyucs_origin",
         value = "convert",
       },
       {
-        key = "easyucs_version",
+        key   = "easyucs_version",
         value = "0.9.8",
       },
     ]

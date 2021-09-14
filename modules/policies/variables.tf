@@ -53,6 +53,12 @@ variable "secretkey" {
 # Global Variables
 #__________________________________________________________
 
+variable "assign_profiles_to_templates" {
+  default     = false
+  description = "Flag to associate disable assigning UCS Server Profiles to Templates until Policies are assigned to Templates."
+  type        = bool
+}
+
 variable "organizations" {
   default     = ["default"]
   description = "Intersight Organization Names."

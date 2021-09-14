@@ -30,6 +30,8 @@ locals {
       network_connectivity_policy = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
       ntp_policy                  = v.ntp_policy != null ? v.ntp_policy : ""
       organization                = v.organization != null ? v.organization : "default"
+      port_policy_fabric_a        = v.port_policy_fabric_a != null ? v.port_policy_fabric_a : ""
+      port_policy_fabric_b        = v.port_policy_fabric_b != null ? v.port_policy_fabric_b : ""
       serial_number_fabric_a      = v.serial_number_fabric_a != null ? v.serial_number_fabric_a : ""
       serial_number_fabric_b      = v.serial_number_fabric_b != null ? v.serial_number_fabric_b : ""
       snmp_policy                 = v.snmp_policy != null ? v.snmp_policy : ""
@@ -55,6 +57,7 @@ locals {
       network_connectivity_policy = v.network_connectivity_policy
       ntp_policy                  = v.ntp_policy
       organization                = v.organization
+      port_policy                 = v.port_policy_fabric_a
       serial_number               = v.serial_number_fabric_a
       snmp_policy                 = v.snmp_policy
       switch_control_policy       = v.switch_control_policy
@@ -77,6 +80,7 @@ locals {
       network_connectivity_policy = v.network_connectivity_policy
       ntp_policy                  = v.ntp_policy
       organization                = v.organization
+      port_policy                 = v.port_policy_fabric_b
       serial_number               = v.serial_number_fabric_b
       snmp_policy                 = v.snmp_policy
       switch_control_policy       = v.switch_control_policy

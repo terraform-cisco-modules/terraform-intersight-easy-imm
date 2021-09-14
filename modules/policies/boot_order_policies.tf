@@ -62,7 +62,9 @@ variable "boot_policies" {
       - boot.UefiShell
       - boot.Usb
       - boot.VirtualMedia
-    * Port - Used only by boot.Pxe.  The Port ID of the adapter on which the underlying virtual ethernet interface is present. If no port is specified, the default value is -1. Supported values are -1 to 255.
+    * Port -  Used by iSCSI and PXE.
+        * boot.Iscsi - Default is 0.  Port ID of the ISCSI boot device.  Supported values are (0-255).
+        * boot.Pxe - Default is -1.  The Port ID of the adapter on which the underlying virtual ethernet interface is present. If no port is specified, the default value is -1. Supported values are -1 to 255.
     * Slot - The PCIe slot ID of the adapter on which the underlying virtual ethernet interface is present.
       - The Following Boot Order Types utilize the Slot Attribute:
         * boot.Iscsi - Supported values are (1-255, MLOM, L, L1, L2, OCP).

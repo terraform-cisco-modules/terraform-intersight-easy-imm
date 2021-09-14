@@ -202,7 +202,7 @@ module "lan_connectivity_vnics" {
     module.lan_connectivity_policies
   ]
   source                                 = "terraform-cisco-modules/imm/intersight//modules/lan_connectivity_add_vnic"
-  for_each                               = toset(keys({ for k, v in local.vnics : k => v }))
+  for_each                               = local.vnics
   cdn_source                             = each.value.cdn_source
   cdn_value                              = each.value.cdn_source == "user" ? each.value.cdn_value : each.value.name
   enable_failover                        = each.value.enable_failover
