@@ -68,7 +68,7 @@ variable "fibre_channel_adapter_policies" {
   * resource_allocation_timeout - Default is 10000.  Resource Allocation Timeout, also referred to as RATOV, is the number of milliseconds to wait before the system assumes that a resource cannot be properly allocated.  Range is 5000-100000.
   * scsi_io_queue_count - Default is 1.  The number of SCSI I/O queue resources the system should allocate.  Range is 1-245.
   * scsi_io_ring_size - Default is 512.  The number of descriptors in each SCSI I/O queue.  Range is 64-512.
-  * tags - Defualt is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * tags - Default is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
   * transmit_ring_size - Default is 64.  The number of descriptors in each queue.  Range is 64-2048.
   EOT
   type = map(object(

@@ -25,7 +25,7 @@ variable "ethernet_network_policies" {
   * native_vlan - Default is 0.  Native VLAN ID of the virtual interface or the corresponding vethernet on the peer Fabric Interconnect to which the virtual interface is connected. Setting the ID to 0 will not associate any native VLAN to the traffic on the virtual interface.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  * tags - Defualt is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * tags - Default is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

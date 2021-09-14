@@ -111,7 +111,7 @@ variable "ethernet_adapter_policies" {
   * rss_enable_tcp_and_ipv6_hash - Default is true.  When enabled, both the IPv6 address and TCP port number are used for traffic distribution.
   * rss_enable_udp_and_ipv4_hash - Default is false.  When enabled, both the IPv4 address and UDP port number are used for traffic distribution.
   * rss_enable_udp_and_ipv6_hash - Default is false.  When enabled, both the IPv6 address and UDP port number are used for traffic distribution.
-  * tags - Defualt is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * tags - Default is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
   * tcp_offload_large_recieve - Default is true.  Enables the reassembly of segmented packets in hardware before sending them to the CPU.
   * tcp_offload_large_send - Default is true.  Enables the CPU to send large packets to the hardware for segmentation.
   * tcp_offload_rx_checksum - Default is true.  When enabled, the CPU sends all packet checksums to the hardware for validation.

@@ -26,7 +26,7 @@ variable "virtual_kvm_policies" {
   * maximum_sessions - Default is 4.  The maximum number of concurrent KVM sessions allowed. Range is 1 to 4.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  * remote_port - Defualt is 2068.  The port used for KVM communication. Range is 1 to 65535.
+  * remote_port - Default is 2068.  The port used for KVM communication. Range is 1 to 65535.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
