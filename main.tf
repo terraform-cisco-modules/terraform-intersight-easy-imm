@@ -4,17 +4,22 @@
 #__________________________________________________________
 
 module "workspaces" {
-  source              = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
-  for_each            = local.workspaces
-  auto_apply          = each.value.auto_apply
-  description         = each.value.description
-  global_remote_state = each.value.remote_state
-  name                = each.key
-  terraform_version   = var.terraform_version
-  tfc_oauth_token     = var.tfc_oauth_token
-  tfc_org_name        = var.tfc_organization
-  vcs_repo            = var.vcs_repo
-  working_directory   = each.value.working_directory
+  source                    = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
+  for_each                  = local.workspaces
+  allow_destroy_plan        = each.value.allow_destroy_plan
+  auto_apply                = each.value.auto_apply
+  branch                    = each.value.branch
+  description               = each.value.description
+  global_remote_state       = each.value.global_remote_state
+  name                      = each.key
+  queue_all_runs            = each.value.queue_all_runs
+  remote_state_consumer_ids = each.value.remote_state_consumer_ids
+  speculative_enabled       = each.value.speculative_enabled
+  terraform_version         = var.terraform_version
+  tfc_oauth_token           = var.tfc_oauth_token
+  tfc_org_name              = var.tfc_organization
+  vcs_repo                  = var.vcs_repo
+  working_directory         = each.value.working_directory
 }
 
 output "workspaces" {
@@ -65,7 +70,7 @@ module "sensitive_snmp_variables" {
   ]
   for_each = {
     for k, v in local.workspaces : k => v
-    if length(regexall("(profiles)", local.workspaces[k].workspace_type)) > 0
+    if length(regexall("(policies)", local.workspaces[k].workspace_type)) > 0
   }
   category     = "terraform"
   workspace_id = module.workspaces[each.key].workspace.id
@@ -206,7 +211,7 @@ module "sensitive_server_variables" {
   ]
   for_each = {
     for k, v in local.workspaces : k => v
-    if length(regexall("(profiles)", local.workspaces[k].workspace_type)) > 0
+    if length(regexall("(policies)", local.workspaces[k].workspace_type)) > 0
   }
   category     = "terraform"
   workspace_id = module.workspaces[each.key].workspace.id

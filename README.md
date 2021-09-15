@@ -3,10 +3,12 @@
 ## Use Cases
 
 * Build Workspaces in TFCB to support Infrastructure as Code Provisioning.
-* Use TFCB to provision Intersight Pools.
-* Use TFCB to provision Intersight IMM Policies.
-* Use TFCB to provision UCS Domains in IMM Mode.
-* Use TFCB to provision UCS Server Profiles in IMM Mode.
+* Use Terraform/TFCB to provision Intersight Pools.
+* Use Terraform/TFCB to provision Intersight UCS Policies.
+* Use Terraform/TFCB to provision UCS Chassis Profiles in IMM Mode.
+* Use Terraform/TFCB to provision UCS Domains in IMM Mode.
+* Use Terraform/TFCB to provision UCS Server Profiles in IMM Mode.
+* Use Terraform/TFCB to provision Operation Systems on Baremetal UCS Servers.
 
 ### Pools - module/pools
 
@@ -16,32 +18,31 @@
 * MAC Pools
 * UUID Pools
 
-### Domain Policies - module/domains and module/domain_vlans
+### Domain Policies
 
-* Ethernet Network Control (CDP/LLDP)
-* Ethernet Network Group (VLAN Groups)
-* Flow Control
-* Link Aggregation
-* Link Control
-* Multicast
-* Network Connectivity (DNS)
-* NTP
-* Port
-* SNMP
-* Switch Control
-* Syslog
-* System QoS
-* VLAN
-* VSAN
+* Ethernet Network Control (CDP/LLDP) - module/policies
+* Ethernet Network Group (VLAN Groups) - module/policies
+* Flow Control - module/policies
+* Link Aggregation - module/policies
+* Link Control - module/policies
+* Multicast - module/policies_vlans
+* Network Connectivity (DNS) - module/policies
+* NTP - module/policies
+* Port - module/policies
+* SNMP - module/policies
+* Switch Control - module/policies
+* Syslog - module/policies
+* System QoS - module/policies
+* VLAN - module/policies_vlans
+* VSAN - module/policies
 
-### Server Policies - module/policies
+### Chassis/Server Policies - module/policies
 
 * Adapter Configuration (Standalone Servers)
 * BIOS
 * Boot Order
 * Certificate Management (under development)
 * Device Connector
-* Disk Group
 * Ethernet Adapter (vnIC Adapter Policy)
 * Ethernet Network (Standalone Servers)
 * Ethernet Network Control (CDP/LLDP)
@@ -70,8 +71,21 @@
 * SSH
 * Storage
 * Syslog
+* Thermal
 * Virtual KVM
 * Virtual Media
+
+### UCS Chassis Profiles - module/ucs_chassis_profiles
+
+* ucs_chassis_profiles
+
+### UCS Domain Profiles - module/ucs_domain_profiles
+
+* ucs_domain_profiles
+
+### UCS Server Profiles - module/ucs_server_profiles
+
+* ucs_server_profiles
 
 ### Pre-requisites and Guidelines
 

@@ -316,16 +316,28 @@ variable "trap_community_string_5" {
 variable "workspaces" {
   default = {
     default = {
-      auto_apply        = true
-      description       = ""
-      working_directory = "modules/pools"
-      workspace_type    = "pool"
+      allow_destroy_plan        = true
+      auto_apply                = false
+      branch                    = "master"
+      description               = ""
+      global_remote_state       = false
+      queue_all_runs            = false
+      remote_state_consumer_ids = []
+      speculative_enabled       = true
+      working_directory         = ""
+      workspace_type            = ""
     }
   }
   description = <<-EOT
   Map of Workspaces to create in Terraform Cloud.
   key - Name of the Workspace to Create.
+  * allow_destroy_plan - Default is true.
+  * auto_apply - Defualt is false.  Automatically apply changes when a Terraform plan is successful. Plans that have no changes will not be applied. If this workspace is linked to version control, a push to the default branch of the linked repository will trigger a plan and apply.
+  * branch - Default is "master".  The repository branch that Terraform will execute from. Default to master.
   * description - A Description for the Workspace.
+  * global_remote_state - Whether the workspace allows all workspaces in the organization to access its state data during runs. If false, then only specifically approved workspaces can access its state (remote_state_consumer_ids)..
+  * queue_all_runs - needs description.
+  * remote_state_consumer_ids - The set of workspace IDs set as explicit remote state consumers for the given workspace.
   * working_directory - The Directory of the Version Control Repository that contains the Terraform code for UCS Domain Profiles for this Workspace.
   * workspace_type - What Type of Workspace will this Create.  Options are:
     - chassis
@@ -336,10 +348,16 @@ variable "workspaces" {
   EOT
   type = map(object(
     {
-      auto_apply        = optional(bool)
-      description       = optional(string)
-      working_directory = optional(string)
-      workspace_type    = optional(string)
+      allow_destroy_plan        = optional(bool)
+      auto_apply                = optional(bool)
+      branch                    = optional(string)
+      description               = optional(string)
+      global_remote_state       = optional(bool)
+      queue_all_runs            = optional(bool)
+      remote_state_consumer_ids = optional(list(string))
+      speculative_enabled       = optional(bool)
+      working_directory         = string
+      workspace_type            = string
     }
   ))
 }

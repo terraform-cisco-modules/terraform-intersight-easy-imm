@@ -1871,9 +1871,9 @@ locals {
   drive_span_loop = flatten([
     for key, value in local.manual_drive_group : [
       for k, v in value.drive_array_spans : {
-        key                  = k
-        slots                = v.slots != null ? v.slots : ""
-        manual_drive_group   = key
+        key                = k
+        slots              = v.slots != null ? v.slots : ""
+        manual_drive_group = key
       }
     ]
   ])
@@ -1884,8 +1884,8 @@ locals {
 
   drive_group = {
     for k, v in local.drive_group_level_1 : k => {
-      automatic_drive_group = { for key, value in local.automatic_drive_group : key => value if value.drive_group == k}
-      manual_drive_group    = {
+      automatic_drive_group = { for key, value in local.automatic_drive_group : key => value if value.drive_group == k }
+      manual_drive_group = {
         for key, value in local.manual_drive_group : key => {
           dedicated_hot_spares = value.dedicated_hot_spares
           drive_array_spans = [
@@ -1898,11 +1898,11 @@ locals {
           ]
         } if value.drive_group == k
       }
-      organization          = v.organization
-      raid_level            = v.raid_level
-      storage_policy        = v.storage_policy
-      tags                  = v.tags
-      virtual_drives        = v.virtual_drives
+      organization   = v.organization
+      raid_level     = v.raid_level
+      storage_policy = v.storage_policy
+      tags           = v.tags
+      virtual_drives = v.virtual_drives
     }
   }
 
