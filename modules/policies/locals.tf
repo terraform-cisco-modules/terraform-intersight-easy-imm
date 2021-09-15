@@ -1798,6 +1798,117 @@ locals {
 
   #__________________________________________________________
   #
+  # Storage Policy Section - Locals
+  #__________________________________________________________
+
+  storage_policies = {
+    for k, v in var.storage_policies : k => {
+      description                     = v.description != null ? v.description : ""
+      drive_group                     = v.drive_group != null ? v.drive_group : {}
+      global_hot_spares               = v.global_hot_spares != null ? v.global_hot_spares : ""
+      organization                    = v.organization != null ? v.organization : "default"
+      m2_configuration                = v.m2_configuration != null ? v.m2_configuration : {}
+      single_drive_raid_configuration = v.single_drive_raid_configuration != null ? v.single_drive_raid_configuration : {}
+      tags                            = v.tags != null ? v.tags : []
+      unused_disks_state              = v.unused_disks_state != null ? v.unused_disks_state : "NoChange"
+      use_jbod_for_vd_creation        = v.use_jbod_for_vd_creation != null ? v.use_jbod_for_vd_creation : false
+    }
+  }
+
+  drive_group_loop = flatten([
+    for key, value in local.storage_policies : [
+      for k, v in value.drive_group : {
+        automatic_drive_group = v.automatic_drive_group != null ? v.automatic_drive_group : {}
+        organization          = value.organization != null ? value.organization : "default"
+        manual_drive_group    = v.manual_drive_group != null ? v.manual_drive_group : {}
+        storage_policy        = key
+        key                   = k
+        raid_level            = v.raid_level != null ? v.raid_level : null
+        tags                  = value.tags != null ? value.tags : []
+        virtual_drives        = v.virtual_drives != null ? v.virtual_drives : {}
+      }
+    ]
+  ])
+
+  drive_group_level_1 = {
+    for k, v in local.drive_group_loop : v.key => v
+  }
+
+  automatic_drive_group_loop = flatten([
+    for key, value in local.drive_group_level_1 : [
+      for k, v in value.automatic_drive_group : {
+        key                      = k
+        drive_group              = key
+        drives_per_span          = v.drives_per_span != null ? v.drives_per_span : 2
+        drive_type               = v.drive_type != null ? v.drive_type : "SSD"
+        minimum_drive_size       = v.minimum_drive_size != null ? v.minimum_drive_size : 100
+        num_dedicated_hot_spares = v.num_dedicated_hot_spares != null ? v.num_dedicated_hot_spares : ""
+        number_of_spans          = v.number_of_spans != null ? v.number_of_spans : 1
+        use_remaining_drives     = v.use_remaining_drives != null ? v.use_remaining_drives : false
+      }
+    ]
+  ])
+
+  automatic_drive_group = {
+    for k, v in local.automatic_drive_group_loop : v.key => v
+  }
+
+  manual_drive_group_loop = flatten([
+    for key, value in local.drive_group_level_1 : [
+      for k, v in value.manual_drive_group : {
+        key                  = k
+        dedicated_hot_spares = v.dedicated_hot_spares != null ? v.dedicated_hot_spares : ""
+        drive_array_spans    = v.drive_array_spans != null ? v.drive_array_spans : {}
+        drive_group          = key
+      }
+    ]
+  ])
+
+  manual_drive_group = {
+    for k, v in local.manual_drive_group_loop : v.key => v
+  }
+
+  drive_span_loop = flatten([
+    for key, value in local.manual_drive_group : [
+      for k, v in value.drive_array_spans : {
+        key                  = k
+        slots                = v.slots != null ? v.slots : ""
+        manual_drive_group   = key
+      }
+    ]
+  ])
+
+  drive_array_spans = {
+    for k, v in local.drive_span_loop : v.key => v
+  }
+
+  drive_group = {
+    for k, v in local.drive_group_level_1 : k => {
+      automatic_drive_group = { for key, value in local.automatic_drive_group : key => value if value.drive_group == k}
+      manual_drive_group    = {
+        for key, value in local.manual_drive_group : key => {
+          dedicated_hot_spares = value.dedicated_hot_spares
+          drive_array_spans = [
+            for y, z in local.drive_array_spans : {
+              additional_properties = ""
+              class_id              = "storage.SpanDrives"
+              object_type           = "storage.SpanDrives"
+              slots                 = z.slots
+            } if z.manual_drive_group == key
+          ]
+        } if value.drive_group == k
+      }
+      organization          = v.organization
+      raid_level            = v.raid_level
+      storage_policy        = v.storage_policy
+      tags                  = v.tags
+      virtual_drives        = v.virtual_drives
+    }
+  }
+
+
+  #__________________________________________________________
+  #
   # Switch Control Policy Section - Locals
   #__________________________________________________________
 

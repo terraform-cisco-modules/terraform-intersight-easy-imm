@@ -140,7 +140,7 @@ variable "ucs_server_profiles" {
 module "ucs_server_profiles" {
   depends_on = [
     local.org_moids,
-    module.ucs_server_profile_templates
+    # module.ucs_server_profile_templates
   ]
   source              = "terraform-cisco-modules/imm/intersight//modules/ucs_server_profiles"
   for_each            = local.ucs_server_profiles
@@ -151,7 +151,7 @@ module "ucs_server_profiles" {
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
   wait_for_completion = each.value.wait_for_completion
-  src_template        = each.value.ucs_server_profile_template != "" && var.assign_profiles_to_templates == true ? [module.ucs_server_profile_templates[each.value.ucs_server_profile_template].moid] : []
+  # src_template        = each.value.ucs_server_profile_template != "" && var.assign_profiles_to_templates == true ? [module.ucs_server_profile_templates[each.value.ucs_server_profile_template].moid] : []
   assigned_server = each.value.assign_server == true ? [
     {
       moid        = data.intersight_compute_physical_summary.server[each.key].results[0].moid

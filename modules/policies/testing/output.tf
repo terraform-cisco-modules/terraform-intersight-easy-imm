@@ -1,7 +1,15 @@
-output "port_channel_appliances" {
-  value = local.port_channel_appliances
+output "storage_policies" {
+  value = local.storage_policies
 }
 
-output "port_role_fcoe_uplinks" {
-  value = local.port_role_fcoe_uplinks
+# output "drive_group_level_1" {
+#   value = local.drive_group_level_1
+# }
+#
+# output "automatic_drive_group" {
+#   value = local.automatic_drive_group
+# }
+
+output "drive_group" {
+  value = local.drive_group
 }

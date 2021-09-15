@@ -7,20 +7,20 @@
 variable "storage_policies" {
   default = {
     default = {
-      description              = ""
-      global_hot_spares        = ""
-      m2_configuration         = {}
-      organization             = "default"
-      raid0_drive              = {}
-      tags                     = []
-      unused_disks_state       = "NoChange"
-      use_jbod_for_vd_creation = false
+      description                     = ""
+      global_hot_spares               = ""
+      m2_configuration                = {}
+      organization                    = "default"
+      single_drive_raid_configuration = {}
+      tags                            = []
+      unused_disks_state              = "NoChange"
+      use_jbod_for_vd_creation        = false
       drive_group = {
         default = {
-          automatic_drive_group  = {}
-          manual_drive_selection = {}
-          raid_level             = "Raid1"
-          virtual_drives         = {}
+          automatic_drive_group = {}
+          manual_drive_group    = {}
+          raid_level            = "Raid1"
+          virtual_drives        = {}
         }
       }
     }
@@ -29,15 +29,14 @@ variable "storage_policies" {
   key - Name for the Storage Policy.
   * description - Description to Assign to the Policy.
   * global_hot_spares - A collection of disks that is to be used as hot spares, globally, for all the RAID groups. Allowed value is a number range separated by a comma or a hyphen.
-  * m2_configuration - Virtual Drive configuration for M.2 RAID controller. This complex property has following sub-properties:
-    - controller_slot - Select the M.2 RAID controller slot on which the virtual drive is to be created. For example:
+  * m2_configuration - Slot of the M.2 RAID controller for virtual drive creation.
       * MSTOR-RAID-1 - Virtual drive will be created on the M.2 RAID controller in the first slot.
       * MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in the second slot, if available.
       * MSTOR-RAID-1,MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in both the slots, if available.
     - enable - If enabled, this will create a virtual drive on the M.2 RAID controller.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  * raid0_drive - This complex property has following sub-properties:
+  * single_drive_raid_configuration - M.2 Virtual Drive Configuration.
     - access_policy - Access policy that host has on this virtual drive.
       * Default - Use platform default access mode.
       * ReadWrite - Enables host to perform read-write on the VD.
@@ -55,11 +54,11 @@ variable "storage_policies" {
       * ReadAhead - Use read ahead mode for the policy.
       * NoReadAhead - Do not use read ahead mode for the policy.
     - strip_size - Desired strip size - Allowed values are 64KiB, 128KiB, 256KiB, 512KiB, 1024KiB.
-      * 64 - Number of bytes in a strip is 64 Kibibytes.
-      * 128 - Number of bytes in a strip is 128 Kibibytes.
-      * 256 - Number of bytes in a strip is 256 Kibibytes.
-      * 512 - Number of bytes in a strip is 512 Kibibytes.
-      * 1024 - Number of bytes in a strip is 1024 Kibibytes or 1 Mebibyte.
+      * 64KiB - Number of bytes in a strip is 64 Kibibytes.
+      * 128KiB - Number of bytes in a strip is 128 Kibibytes.
+      * 256KiB - Number of bytes in a strip is 256 Kibibytes.
+      * 512KiB - Number of bytes in a strip is 512 Kibibytes.
+      * 1MiB - Number of bytes in a strip is 1024 Kibibytes or 1 Mebibyte.
     - write_policy:(string) Write mode to be used to write data to this virtual drive.
       * Default - Use platform default write mode.
       * WriteThrough - Data is written through the cache and to the physical drives. Performance is improved, because subsequent reads of that data can be satisfied from the cache.
@@ -85,7 +84,7 @@ variable "storage_policies" {
       * num_dedicated_hot_spares - Number of dedicated hot spare disks for this RAID group. Allowed value is a comma or hyphen separated number range.
       * number_of_spans - Number of span groups to be created for this RAID group. Non-nested RAID levels have a single span.
       * use_remaining_drives - This flag enables the drive group to use all the remaining drives on the server.
-    - manual_drive_selection - This drive group is created by specifying the drive slots to be used. This complex property has following sub-properties:
+    - manual_drive_group - This drive group is created by specifying the drive slots to be used. This complex property has following sub-properties:
       * dedicated_hot_spares:(string) A collection of drives to be used as hot spares for this Drive Group.
       * slots:(string) Collection of local disks that are part of this span group. Allowed value is a comma or hyphen separated number range. The minimum number of disks needed in a span group varies based on RAID level.
         - RAID0 requires at least one disk,
@@ -122,11 +121,11 @@ variable "storage_policies" {
         - ReadAhead - Use read ahead mode for the policy.
         - NoReadAhead - Do not use read ahead mode for the policy.
       * strip_size:(int) Desired strip size - Allowed values are 64KiB, 128KiB, 256KiB, 512KiB, 1024KiB.
-        - 64 - Number of bytes in a strip is 64 Kibibytes.
-        - 128 - Number of bytes in a strip is 128 Kibibytes.
-        - 256 - Number of bytes in a strip is 256 Kibibytes.
-        - 512 - Number of bytes in a strip is 512 Kibibytes.
-        - 1024 - Number of bytes in a strip is 1024 Kibibytes or 1 Mebibyte.
+        - 64KiB - Number of bytes in a strip is 64 Kibibytes.
+        - 128KiB - Number of bytes in a strip is 128 Kibibytes.
+        - 256KiB - Number of bytes in a strip is 256 Kibibytes.
+        - 512KiB - Number of bytes in a strip is 512 Kibibytes.
+        - 1MiB - Number of bytes in a strip is 1024 Kibibytes or 1 Mebibyte.
       * write_policy:(string) Write mode to be used to write data to this virtual drive.
         - Default - Use platform default write mode.
         - WriteThrough - Data is written through the cache and to the physical drives. Performance is improved, because subsequent reads of that data can be satisfied from the cache.
@@ -144,14 +143,14 @@ variable "storage_policies" {
         }
       )))
       organization = optional(string)
-      raid0_drive = optional(map(object(
+      single_drive_raid_configuration = optional(map(object(
         {
           access_policy = string
           drive_cache   = string
           drive_slots   = string
           enable        = bool
           read_policy   = string
-          strip_size    = number
+          strip_size    = string
           write_policy  = string
         }
       )))
@@ -170,10 +169,14 @@ variable "storage_policies" {
               use_remaining_drives     = optional(bool)
             }
           )))
-          manual_drive_selection = optional(map(object(
+          manual_drive_group = optional(map(object(
             {
               dedicated_hot_spares = optional(string)
-              slots                = string
+              drive_array_spans = map(object(
+                {
+                  slots = string
+                }
+              ))
             }
           )))
           raid_level = optional(string)
@@ -185,7 +188,7 @@ variable "storage_policies" {
               expand_to_available = bool
               read_policy         = string
               size                = number
-              strip_size          = number
+              strip_size          = string
               write_policy        = string
             }
           )))
@@ -205,19 +208,19 @@ variable "storage_policies" {
 module "storage_policies" {
   depends_on = [
     local.org_moids,
-    # module.ucs_server_profiles,
+    local.merged_profile_policies,
   ]
   source                   = "../../../terraform-intersight-imm/modules/storage_policies"
   for_each                 = local.storage_policies
   description              = each.value.description != "" ? each.value.description : "${each.key} Storage Policy."
   global_hot_spares        = each.value.global_hot_spares
-  m2_virtual_drive         = each.value.m2_virtual_drive
+  m2_configuration         = each.value.m2_configuration
   name                     = each.key
-  raid0_drive              = each.value.raid0_drive
+  org_moid                 = local.org_moids[each.value.organization].moid
+  raid0_drive              = each.value.single_drive_raid_configuration
+  tags                     = length(each.value.tags) > 0 ? each.value.tags : local.tags
   unused_disks_state       = each.value.unused_disks_state
   use_jbod_for_vd_creation = each.value.use_jbod_for_vd_creation
-  org_moid                 = local.org_moids[each.value.organization].moid
-  tags                     = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
     for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
@@ -239,14 +242,12 @@ module "storage_drive_group" {
     module.storage_policies
   ]
   source                = "../../../terraform-intersight-imm/modules/storage_drive_group"
-  for_each              = local.storage_drive_group
+  for_each              = local.drive_group
   automatic_drive_group = each.value.automatic_drive_group
   manual_drive_group    = each.value.manual_drive_group
   name                  = each.key
   raid_level            = each.value.raid_level
   storage_moid          = module.storage_policies[each.value.storage_policy].moid
-  use_jbods             = each.value.use_jbods
-  org_moid              = local.org_moids[each.value.organization].moid
   tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
   virtual_drives        = each.value.virtual_drives
 }
