@@ -210,7 +210,7 @@ module "storage_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
-  source                   = "../../../terraform-intersight-imm/modules/storage_policies"
+  source                   = "terraform-cisco-modules/imm/intersight//modules/storage_policies"
   for_each                 = local.storage_policies
   description              = each.value.description != "" ? each.value.description : "${each.key} Storage Policy."
   global_hot_spares        = each.value.global_hot_spares
@@ -241,7 +241,7 @@ module "storage_drive_group" {
     local.org_moids,
     module.storage_policies
   ]
-  source                = "../../../terraform-intersight-imm/modules/storage_drive_group"
+  source                = "terraform-cisco-modules/imm/intersight//modules/storage_drive_group"
   for_each              = local.drive_group
   automatic_drive_group = each.value.automatic_drive_group
   manual_drive_group    = each.value.manual_drive_group

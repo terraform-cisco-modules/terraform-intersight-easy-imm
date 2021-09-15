@@ -331,7 +331,7 @@ module "port_policies" {
     local.org_moids,
     local.merged_profile_policies
   ]
-  source       = "../../../terraform-intersight-imm/modules/port_policies"
+  source       = "terraform-cisco-modules/imm/intersight//modules/terraform-intersight-imm/modules/port_policies"
   for_each     = local.port_policies
   description  = each.value.description != "" ? each.value.description : "${each.key} Port Policy."
   device_model = each.value.device_model
@@ -358,7 +358,7 @@ module "port_modes" {
     local.org_moids,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_modes"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_modes"
   for_each         = local.port_modes
   custom_mode      = each.value.custom_mode
   port_list        = each.value.port_list
@@ -380,7 +380,7 @@ module "port_channel_appliances" {
     module.ethernet_network_group_policies,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_channel_appliances"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_channel_appliances"
   for_each         = local.port_channel_appliances
   admin_speed      = each.value.admin_speed
   interfaces       = each.value.interfaces
@@ -412,7 +412,7 @@ module "port_channel_ethernet_uplinks" {
     module.link_control_policies,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_channel_ethernet_uplinks"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_channel_ethernet_uplinks"
   for_each         = local.port_channel_ethernet_uplinks
   admin_speed      = each.value.admin_speed
   interfaces       = each.value.interfaces
@@ -443,7 +443,7 @@ module "port_channel_fc_uplinks" {
     module.port_modes,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_channel_fc_uplinks"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_channel_fc_uplinks"
   for_each         = local.port_channel_fc_uplinks
   admin_speed      = each.value.admin_speed
   fill_pattern     = each.value.fill_pattern
@@ -468,7 +468,7 @@ module "port_channel_fcoe_uplinks" {
     module.link_control_policies,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_channel_fcoe_uplinks"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_channel_fcoe_uplinks"
   for_each         = local.port_channel_fcoe_uplinks
   admin_speed      = each.value.admin_speed
   interfaces       = each.value.interfaces
@@ -497,7 +497,7 @@ module "port_role_appliances" {
     module.ethernet_network_group_policies,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_role_appliances"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_appliances"
   for_each         = local.port_role_appliances
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
@@ -530,7 +530,7 @@ module "port_role_ethernet_uplinks" {
     module.link_control_policies,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_role_ethernet_uplinks"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_ethernet_uplinks"
   for_each         = local.port_role_ethernet_uplinks
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
@@ -559,7 +559,7 @@ module "port_role_fc_uplinks" {
     local.org_moids,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_role_fc_uplinks"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_fc_uplinks"
   for_each         = local.port_role_fc_uplinks
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
@@ -584,7 +584,7 @@ module "port_role_fcoe_uplinks" {
     module.link_control_policies,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_role_fcoe_uplinks"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_fcoe_uplinks"
   for_each         = local.port_role_fcoe_uplinks
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
@@ -610,7 +610,7 @@ module "port_role_servers" {
     local.org_moids,
     module.port_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/port_role_servers"
+  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_servers"
   for_each         = local.port_role_servers
   breakout_port_id = each.value.breakout_port_id
   port_list        = each.value.port_list

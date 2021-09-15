@@ -94,7 +94,7 @@ module "vsan_policies_add_vsans" {
     local.org_moids,
     module.vsan_policies
   ]
-  source           = "../../../terraform-intersight-imm/modules/vsan_policy_add_vsan"
+  source           = "terraform-cisco-modules/imm/intersight//modules/vsan_policy_add_vsan"
   for_each         = local.vsans
   default_zoning   = each.value.default_zoning
   fcoe_vlan_id     = each.value.fcoe_vlan_id
