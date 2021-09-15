@@ -32,7 +32,6 @@ This module will create UCS Server Profiles and Server Profile Templates in Inte
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ucs_server_profile_templates"></a> [ucs\_server\_profile\_templates](#module\_ucs\_server\_profile\_templates) | terraform-cisco-modules/imm/intersight//modules/ucs_server_templates | n/a |
 | <a name="module_ucs_server_profiles"></a> [ucs\_server\_profiles](#module\_ucs\_server\_profiles) | terraform-cisco-modules/imm/intersight//modules/ucs_server_profiles | n/a |
 
 ## Resources
@@ -60,6 +59,5 @@ This module will create UCS Server Profiles and Server Profile Templates in Inte
 | Name | Description |
 |------|-------------|
 | <a name="output_moids"></a> [moids](#output\_moids) | n/a |
-| <a name="output_ucs_server_profile_templates"></a> [ucs\_server\_profile\_templates](#output\_ucs\_server\_profile\_templates) | n/a |
 | <a name="output_ucs_server_profiles"></a> [ucs\_server\_profiles](#output\_ucs\_server\_profiles) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
