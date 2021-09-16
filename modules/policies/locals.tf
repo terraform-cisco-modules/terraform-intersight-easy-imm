@@ -1210,29 +1210,33 @@ locals {
     }
   }
 
-  ldap_servers = {
-    for k, v in var.ldap_policies : "ldap_servers" =>
-    {
-      for key, value in v.ldap_servers : "${k}_${key}" =>
-      {
+  ldap_server_loop = flatten([
+    for k, v in var.ldap_policies : [
+      for key, value in v.ldap_servers : {
         ldap_port   = value.ldap_port != null ? value.ldap_port : 389
         ldap_server = value.ldap_server != null ? value.ldap_server : 1
         policy      = k
       }
-    }
+    ]
+  ])
+
+  ldap_servers = {
+    for k, v in local.ldap_server_loop : "${v.policy}_${v.ldap_server}" => v
   }
 
-  ldap_groups = {
-    for k, v in var.ldap_policies : "ldap_groups" =>
-    {
-      for key, value in v.ldap_groups : "${k}_${key}" =>
-      {
+  ldap_group_loop = flatten([
+    for k, v in var.ldap_policies : [
+      for key, value in v.ldap_groups : {
         group_role  = value.group_role != null ? value.group_role : "admin"
         ldap_domain = v.ldap_domain != null ? v.ldap_domain : "example.com"
         ldap_group  = key
         policy      = k
       }
-    }
+    ]
+  ])
+
+  ldap_groups = {
+    for k, v in local.ldap_group_loop : "${v.policy}_${v.ldap_group}" => v
   }
 
 

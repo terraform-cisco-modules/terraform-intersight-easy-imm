@@ -192,7 +192,7 @@ module "ldap_provider" {
     local.org_moids,
     module.ldap_policies
   ]
-  for_each         = local.ldap_servers.ldap_servers
+  for_each         = local.ldap_servers
   source           = "terraform-cisco-modules/imm/intersight//modules/ldap_add_server"
   ldap_policy_moid = module.ldap_policies[each.value.policy].moid
   ldap_port        = each.value.ldap_port
@@ -210,7 +210,7 @@ module "ldap_groups" {
     module.ldap_policies
   ]
   source           = "terraform-cisco-modules/imm/intersight//modules/ldap_add_group"
-  for_each         = local.ldap_groups.ldap_groups
+  for_each         = local.ldap_groups
   group_role       = each.value.group_role
   ldap_domain      = each.value.ldap_domain
   ldap_group       = each.value.ldap_group
