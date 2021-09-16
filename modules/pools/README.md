@@ -20,13 +20,13 @@ This module will create Pool resources in Intersight.  These pools can be assign
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | 1.0.12 |
+| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | 1.0.13 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.12 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.13 |
 
 ## Modules
 
@@ -43,7 +43,7 @@ This module will create Pool resources in Intersight.  These pools can be assign
 
 | Name | Type |
 |------|------|
-| [intersight_organization_organization.org_moid](https://registry.terraform.io/providers/CiscoDevNet/intersight/1.0.12/docs/data-sources/organization_organization) | data source |
+| [intersight_organization_organization.org_moid](https://registry.terraform.io/providers/CiscoDevNet/intersight/1.0.13/docs/data-sources/organization_organization) | data source |
 
 ## Inputs
 
