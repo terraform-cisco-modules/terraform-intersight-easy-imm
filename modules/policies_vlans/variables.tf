@@ -12,9 +12,9 @@ variable "tfc_organization" {
   type        = string
 }
 
-variable "ws_domain" {
-  default     = "ucs_domain_profile"
-  description = "Name of the domain workspace."
+variable "ws_ucs_domain_profiles" {
+  default     = "ucs_domain_profiles"
+  description = "Name of the UCS Domain Profiles workspace."
   type        = string
 }
 

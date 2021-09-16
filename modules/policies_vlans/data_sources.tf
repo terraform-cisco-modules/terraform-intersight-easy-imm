@@ -15,7 +15,7 @@ data "terraform_remote_state" "domain" {
   config = {
     organization = var.tfc_organization
     workspaces = {
-      name = var.ws_domain
+      name = var.ws_ucs_domain_profiles
     }
   }
 }
