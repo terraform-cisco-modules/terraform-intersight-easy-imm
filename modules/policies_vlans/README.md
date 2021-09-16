@@ -35,7 +35,7 @@ This module will Create a Multicast Policy and assign it to VLANs in a VLAN poli
 |------|--------|---------|
 | <a name="module_multicast_policies"></a> [multicast\_policies](#module\_multicast\_policies) | terraform-cisco-modules/imm/intersight//modules/multicast_policies | n/a |
 | <a name="module_vlan_policies"></a> [vlan\_policies](#module\_vlan\_policies) | terraform-cisco-modules/imm/intersight//modules/vlan_policies | n/a |
-| <a name="module_vlan_policies_add_vlans"></a> [vlan\_policies\_add\_vlans](#module\_vlan\_policies\_add\_vlans) | ../../../terraform-intersight-imm/modules/vlan_policy_add_vlan_list | n/a |
+| <a name="module_vlan_policies_add_vlans"></a> [vlan\_policies\_add\_vlans](#module\_vlan\_policies\_add\_vlans) | terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list | n/a |
 
 ## Resources
 

@@ -91,7 +91,7 @@ module "vlan_policies_add_vlans" {
     module.multicast_policies,
     module.vlan_policies
   ]
-  source                = "../../../terraform-intersight-imm/modules/vlan_policy_add_vlan_list"
+  source                = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list"
   for_each              = local.vlans
   auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
   multicast_policy_moid = module.multicast_policies[each.value.multicast_policy].moid
