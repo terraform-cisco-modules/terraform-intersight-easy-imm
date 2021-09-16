@@ -67,7 +67,7 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="module_port_channel_fc_uplinks"></a> [port\_channel\_fc\_uplinks](#module\_port\_channel\_fc\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_channel_fc_uplinks | n/a |
 | <a name="module_port_channel_fcoe_uplinks"></a> [port\_channel\_fcoe\_uplinks](#module\_port\_channel\_fcoe\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_channel_fcoe_uplinks | n/a |
 | <a name="module_port_modes"></a> [port\_modes](#module\_port\_modes) | terraform-cisco-modules/imm/intersight//modules/port_modes | n/a |
-| <a name="module_port_policies"></a> [port\_policies](#module\_port\_policies) | terraform-cisco-modules/imm/intersight//modules/terraform-intersight-imm/modules/port_policies | n/a |
+| <a name="module_port_policies"></a> [port\_policies](#module\_port\_policies) | terraform-cisco-modules/imm/intersight//modules/port_policies | n/a |
 | <a name="module_port_role_appliances"></a> [port\_role\_appliances](#module\_port\_role\_appliances) | terraform-cisco-modules/imm/intersight//modules/port_role_appliances | n/a |
 | <a name="module_port_role_ethernet_uplinks"></a> [port\_role\_ethernet\_uplinks](#module\_port\_role\_ethernet\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_ethernet_uplinks | n/a |
 | <a name="module_port_role_fc_uplinks"></a> [port\_role\_fc\_uplinks](#module\_port\_role\_fc\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fc_uplinks | n/a |

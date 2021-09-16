@@ -331,7 +331,7 @@ module "port_policies" {
     local.org_moids,
     local.merged_profile_policies
   ]
-  source       = "terraform-cisco-modules/imm/intersight//modules/terraform-intersight-imm/modules/port_policies"
+  source       = "terraform-cisco-modules/imm/intersight//modules/port_policies"
   for_each     = local.port_policies
   description  = each.value.description != "" ? each.value.description : "${each.key} Port Policy."
   device_model = each.value.device_model
