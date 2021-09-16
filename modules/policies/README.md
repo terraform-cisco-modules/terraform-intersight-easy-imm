@@ -88,10 +88,10 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="module_switch_control_policies"></a> [switch\_control\_policies](#module\_switch\_control\_policies) | terraform-cisco-modules/imm/intersight//modules/switch_control_policies | n/a |
 | <a name="module_syslog_policies"></a> [syslog\_policies](#module\_syslog\_policies) | terraform-cisco-modules/imm/intersight//modules/syslog_policies | n/a |
 | <a name="module_system_qos_policies"></a> [system\_qos\_policies](#module\_system\_qos\_policies) | terraform-cisco-modules/imm/intersight//modules/system_qos_policies | n/a |
-| <a name="module_thermal_policies"></a> [thermal\_policies](#module\_thermal\_policies) | ../../../terraform-intersight-imm/modules/thermal_policies | n/a |
+| <a name="module_thermal_policies"></a> [thermal\_policies](#module\_thermal\_policies) | terraform-cisco-modules/imm/intersight//modules/thermal_policies | n/a |
 | <a name="module_virtual_kvm_policies"></a> [virtual\_kvm\_policies](#module\_virtual\_kvm\_policies) | terraform-cisco-modules/imm/intersight//modules/virtual_kvm_policies | n/a |
 | <a name="module_virtual_media_policies"></a> [virtual\_media\_policies](#module\_virtual\_media\_policies) | terraform-cisco-modules/imm/intersight//modules/virtual_media_policies | n/a |
-| <a name="module_vsan_policies"></a> [vsan\_policies](#module\_vsan\_policies) | ../../../terraform-intersight-imm/modules/vsan_policies | n/a |
+| <a name="module_vsan_policies"></a> [vsan\_policies](#module\_vsan\_policies) | terraform-cisco-modules/imm/intersight//modules/vsan_policies | n/a |
 | <a name="module_vsan_policies_add_vsans"></a> [vsan\_policies\_add\_vsans](#module\_vsan\_policies\_add\_vsans) | terraform-cisco-modules/imm/intersight//modules/vsan_policy_add_vsan | n/a |
 
 ## Resources

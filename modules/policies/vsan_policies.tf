@@ -68,7 +68,7 @@ module "vsan_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
-  source          = "../../../terraform-intersight-imm/modules/vsan_policies"
+  source          = "terraform-cisco-modules/imm/intersight//modules/vsan_policies"
   for_each        = var.vsan_policies
   description     = each.value.description != "" ? each.value.description : "${each.key} VSAN Policy."
   uplink_trunking = each.value.uplink_trunking

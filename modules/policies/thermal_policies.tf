@@ -48,7 +48,7 @@ module "thermal_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
-  source           = "../../../terraform-intersight-imm/modules/thermal_policies"
+  source           = "terraform-cisco-modules/imm/intersight//modules/thermal_policies"
   for_each         = local.thermal_policies
   description      = each.value.description != "" ? each.value.description : "${each.key} Thermal Policy."
   fan_control_mode = each.value.fan_control_mode
