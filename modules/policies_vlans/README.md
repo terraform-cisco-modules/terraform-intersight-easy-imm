@@ -62,7 +62,7 @@ This module will Create a Multicast Policy and assign it to VLANs in a VLAN poli
 
 | Name | Description |
 |------|-------------|
-| <a name="output_domain_policies"></a> [domain\_policies](#output\_domain\_policies) | n/a |
-| <a name="output_merged_domain_moids"></a> [merged\_domain\_moids](#output\_merged\_domain\_moids) | n/a |
+| <a name="output_merged_profile_policies"></a> [merged\_profile\_policies](#output\_merged\_profile\_policies) | n/a |
+| <a name="output_ucs_domain_policies"></a> [ucs\_domain\_policies](#output\_ucs\_domain\_policies) | n/a |
 | <a name="output_ucs_domain_switches"></a> [ucs\_domain\_switches](#output\_ucs\_domain\_switches) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

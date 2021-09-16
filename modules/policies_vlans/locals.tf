@@ -18,7 +18,7 @@ locals {
   tags = var.tags
 
   # Terraform Cloud Remote Resources - Profiles
-  ucs_domain_policies = data.terraform_remote_state.domain.outputs.domain_policies
+  ucs_domain_policies = data.terraform_remote_state.domain.outputs.ucs_domain_profiles
   ucs_domain_switches = data.terraform_remote_state.domain.outputs.moids
 
   merged_profile_policies = {
