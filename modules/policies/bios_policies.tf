@@ -3080,16 +3080,16 @@ module "bios_policies" {
   patrol_scrub_duration = each.value.patrol_scrub_duration # Patrol Scrub Interval
   processor_c1e = length(                                  # Processor C1E
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "Disabled" : each.value.processor_c1e
+  ) > 0 ? "disabled" : each.value.processor_c1e
   processor_c3report = length(
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "Disabled" : each.value.processor_c3report # Processor C3 Report
+  ) > 0 ? "disabled" : each.value.processor_c3report # Processor C3 Report
   processor_c6report = length(
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "Disabled" : each.value.processor_c6report # Processor C6 Report
+  ) > 0 ? "disabled" : each.value.processor_c6report # Processor C6 Report
   processor_cstate = length(
     regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "Disabled" : each.value.processor_cstate   # CPU C State
+  ) > 0 ? "disabled" : each.value.processor_cstate   # CPU C State
   pstate_coord_type  = each.value.pstate_coord_type  # P-State Coordination
   pwr_perf_tuning    = each.value.pwr_perf_tuning    # Power Performance Tuning
   qpi_link_speed     = each.value.qpi_link_speed     # UPI Link Frequency Select
