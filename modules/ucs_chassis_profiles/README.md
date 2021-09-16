@@ -26,7 +26,7 @@ This module will create UCS Chassis Profiles in Intersight.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.15 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.13 |
 
 ## Modules
 

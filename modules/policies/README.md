@@ -26,7 +26,7 @@ This module will create UCS Server Profiles in Intersight.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.15 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.13 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -34,7 +34,7 @@ This module will create UCS Server Profiles in Intersight.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_bios_policies"></a> [bios\_policies](#module\_bios\_policies) | terraform-cisco-modules/imm/intersight//modules/bios_policies | n/a |
-| <a name="module_boot_order_policies"></a> [boot\_order\_policies](#module\_boot\_order\_policies) | ../../../terraform-intersight-imm/modules/boot_order_policies | n/a |
+| <a name="module_boot_order_policies"></a> [boot\_order\_policies](#module\_boot\_order\_policies) | terraform-cisco-modules/imm/intersight//modules/boot_order_policies | n/a |
 | <a name="module_device_connector_policies"></a> [device\_connector\_policies](#module\_device\_connector\_policies) | terraform-cisco-modules/imm/intersight//modules/device_connector_policies | n/a |
 | <a name="module_ethernet_adapter_policies"></a> [ethernet\_adapter\_policies](#module\_ethernet\_adapter\_policies) | terraform-cisco-modules/imm/intersight//modules/ethernet_adapter_policies | n/a |
 | <a name="module_ethernet_network_control_policies"></a> [ethernet\_network\_control\_policies](#module\_ethernet\_network\_control\_policies) | terraform-cisco-modules/imm/intersight//modules/ethernet_network_control_policies | n/a |
@@ -62,17 +62,17 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="module_network_connectivity_policies"></a> [network\_connectivity\_policies](#module\_network\_connectivity\_policies) | terraform-cisco-modules/imm/intersight//modules/network_connectivity_policies | n/a |
 | <a name="module_ntp_policies"></a> [ntp\_policies](#module\_ntp\_policies) | terraform-cisco-modules/imm/intersight//modules/ntp_policies | n/a |
 | <a name="module_persistent_memory_policies"></a> [persistent\_memory\_policies](#module\_persistent\_memory\_policies) | terraform-cisco-modules/imm/intersight//modules/persistent_memory_policies | n/a |
-| <a name="module_port_channel_appliances"></a> [port\_channel\_appliances](#module\_port\_channel\_appliances) | ../../../terraform-intersight-imm/modules/port_channel_appliances | n/a |
-| <a name="module_port_channel_ethernet_uplinks"></a> [port\_channel\_ethernet\_uplinks](#module\_port\_channel\_ethernet\_uplinks) | ../../../terraform-intersight-imm/modules/port_channel_ethernet_uplinks | n/a |
-| <a name="module_port_channel_fc_uplinks"></a> [port\_channel\_fc\_uplinks](#module\_port\_channel\_fc\_uplinks) | ../../../terraform-intersight-imm/modules/port_channel_fc_uplinks | n/a |
-| <a name="module_port_channel_fcoe_uplinks"></a> [port\_channel\_fcoe\_uplinks](#module\_port\_channel\_fcoe\_uplinks) | ../../../terraform-intersight-imm/modules/port_channel_fcoe_uplinks | n/a |
-| <a name="module_port_modes"></a> [port\_modes](#module\_port\_modes) | ../../../terraform-intersight-imm/modules/port_modes | n/a |
-| <a name="module_port_policies"></a> [port\_policies](#module\_port\_policies) | ../../../terraform-intersight-imm/modules/port_policies | n/a |
-| <a name="module_port_role_appliances"></a> [port\_role\_appliances](#module\_port\_role\_appliances) | ../../../terraform-intersight-imm/modules/port_role_appliances | n/a |
-| <a name="module_port_role_ethernet_uplinks"></a> [port\_role\_ethernet\_uplinks](#module\_port\_role\_ethernet\_uplinks) | ../../../terraform-intersight-imm/modules/port_role_ethernet_uplinks | n/a |
-| <a name="module_port_role_fc_uplinks"></a> [port\_role\_fc\_uplinks](#module\_port\_role\_fc\_uplinks) | ../../../terraform-intersight-imm/modules/port_role_fc_uplinks | n/a |
-| <a name="module_port_role_fcoe_uplinks"></a> [port\_role\_fcoe\_uplinks](#module\_port\_role\_fcoe\_uplinks) | ../../../terraform-intersight-imm/modules/port_role_fcoe_uplinks | n/a |
-| <a name="module_port_role_servers"></a> [port\_role\_servers](#module\_port\_role\_servers) | ../../../terraform-intersight-imm/modules/port_role_servers | n/a |
+| <a name="module_port_channel_appliances"></a> [port\_channel\_appliances](#module\_port\_channel\_appliances) | terraform-cisco-modules/imm/intersight//modules/port_channel_appliances | n/a |
+| <a name="module_port_channel_ethernet_uplinks"></a> [port\_channel\_ethernet\_uplinks](#module\_port\_channel\_ethernet\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_channel_ethernet_uplinks | n/a |
+| <a name="module_port_channel_fc_uplinks"></a> [port\_channel\_fc\_uplinks](#module\_port\_channel\_fc\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_channel_fc_uplinks | n/a |
+| <a name="module_port_channel_fcoe_uplinks"></a> [port\_channel\_fcoe\_uplinks](#module\_port\_channel\_fcoe\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_channel_fcoe_uplinks | n/a |
+| <a name="module_port_modes"></a> [port\_modes](#module\_port\_modes) | terraform-cisco-modules/imm/intersight//modules/port_modes | n/a |
+| <a name="module_port_policies"></a> [port\_policies](#module\_port\_policies) | terraform-cisco-modules/imm/intersight//modules/terraform-intersight-imm/modules/port_policies | n/a |
+| <a name="module_port_role_appliances"></a> [port\_role\_appliances](#module\_port\_role\_appliances) | terraform-cisco-modules/imm/intersight//modules/port_role_appliances | n/a |
+| <a name="module_port_role_ethernet_uplinks"></a> [port\_role\_ethernet\_uplinks](#module\_port\_role\_ethernet\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_ethernet_uplinks | n/a |
+| <a name="module_port_role_fc_uplinks"></a> [port\_role\_fc\_uplinks](#module\_port\_role\_fc\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fc_uplinks | n/a |
+| <a name="module_port_role_fcoe_uplinks"></a> [port\_role\_fcoe\_uplinks](#module\_port\_role\_fcoe\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fcoe_uplinks | n/a |
+| <a name="module_port_role_servers"></a> [port\_role\_servers](#module\_port\_role\_servers) | terraform-cisco-modules/imm/intersight//modules/port_role_servers | n/a |
 | <a name="module_power_policies"></a> [power\_policies](#module\_power\_policies) | terraform-cisco-modules/imm/intersight//modules/power_policies | n/a |
 | <a name="module_san_connectivity_policies"></a> [san\_connectivity\_policies](#module\_san\_connectivity\_policies) | terraform-cisco-modules/imm/intersight//modules/san_connectivity_policies | n/a |
 | <a name="module_san_connectivity_vhbas"></a> [san\_connectivity\_vhbas](#module\_san\_connectivity\_vhbas) | terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba | n/a |
@@ -83,8 +83,8 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="module_smtp_policies"></a> [smtp\_policies](#module\_smtp\_policies) | terraform-cisco-modules/imm/intersight//modules/smtp_policies | n/a |
 | <a name="module_snmp_policies"></a> [snmp\_policies](#module\_snmp\_policies) | terraform-cisco-modules/imm/intersight//modules/snmp_policies | n/a |
 | <a name="module_ssh_policies"></a> [ssh\_policies](#module\_ssh\_policies) | terraform-cisco-modules/imm/intersight//modules/ssh_policies | n/a |
-| <a name="module_storage_drive_group"></a> [storage\_drive\_group](#module\_storage\_drive\_group) | ../../../terraform-intersight-imm/modules/storage_drive_group | n/a |
-| <a name="module_storage_policies"></a> [storage\_policies](#module\_storage\_policies) | ../../../terraform-intersight-imm/modules/storage_policies | n/a |
+| <a name="module_storage_drive_group"></a> [storage\_drive\_group](#module\_storage\_drive\_group) | terraform-cisco-modules/imm/intersight//modules/storage_drive_group | n/a |
+| <a name="module_storage_policies"></a> [storage\_policies](#module\_storage\_policies) | terraform-cisco-modules/imm/intersight//modules/storage_policies | n/a |
 | <a name="module_switch_control_policies"></a> [switch\_control\_policies](#module\_switch\_control\_policies) | terraform-cisco-modules/imm/intersight//modules/switch_control_policies | n/a |
 | <a name="module_syslog_policies"></a> [syslog\_policies](#module\_syslog\_policies) | terraform-cisco-modules/imm/intersight//modules/syslog_policies | n/a |
 | <a name="module_system_qos_policies"></a> [system\_qos\_policies](#module\_system\_qos\_policies) | terraform-cisco-modules/imm/intersight//modules/system_qos_policies | n/a |
@@ -92,7 +92,7 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="module_virtual_kvm_policies"></a> [virtual\_kvm\_policies](#module\_virtual\_kvm\_policies) | terraform-cisco-modules/imm/intersight//modules/virtual_kvm_policies | n/a |
 | <a name="module_virtual_media_policies"></a> [virtual\_media\_policies](#module\_virtual\_media\_policies) | terraform-cisco-modules/imm/intersight//modules/virtual_media_policies | n/a |
 | <a name="module_vsan_policies"></a> [vsan\_policies](#module\_vsan\_policies) | ../../../terraform-intersight-imm/modules/vsan_policies | n/a |
-| <a name="module_vsan_policies_add_vsans"></a> [vsan\_policies\_add\_vsans](#module\_vsan\_policies\_add\_vsans) | ../../../terraform-intersight-imm/modules/vsan_policy_add_vsan | n/a |
+| <a name="module_vsan_policies_add_vsans"></a> [vsan\_policies\_add\_vsans](#module\_vsan\_policies\_add\_vsans) | terraform-cisco-modules/imm/intersight//modules/vsan_policy_add_vsan | n/a |
 
 ## Resources
 
@@ -192,6 +192,9 @@ This module will create UCS Server Profiles in Intersight.
 | <a name="input_virtual_media_policies"></a> [virtual\_media\_policies](#input\_virtual\_media\_policies) | key - Name of the Virtual Media Policy.<br>* description - Description to Assign to the Policy.<br>* enabled - Default is true.  Flag to Enable or Disable the Policy.<br>* enable\_low\_power\_usb - Default is false.  If enabled, the virtual drives appear on the boot selection menu after mapping the image and rebooting the host.<br>* enable\_virtual\_media\_encryption - Default is true.  If enabled, allows encryption of all Virtual Media communications.<br>* organization - Name of the Intersight Organization to assign this Policy to.<br>  - https://intersight.com/an/settings/organizations/<br>* tags - List of Key/Value Pairs to Assign as Attributes to the Policy.<br>* vmedia\_mappings - List of Properties to Assign to the Policy. | <pre>map(object(<br>    {<br>      description                     = optional(string)<br>      enabled                         = optional(bool)<br>      enable_low_power_usb            = optional(bool)<br>      enable_virtual_media_encryption = optional(bool)<br>      organization                    = optional(string)<br>      tags                            = optional(list(map(string)))<br>      vmedia_mappings                 = optional(list(map(string)))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "description": "",<br>    "enable_low_power_usb": false,<br>    "enable_virtual_media_encryption": true,<br>    "enabled": true,<br>    "organization": "default",<br>    "tags": [],<br>    "vmedia_mappings": []<br>  }<br>}</pre> | no |
 | <a name="input_vsan_policies"></a> [vsan\_policies](#input\_vsan\_policies) | key - Name of the VSAN Policy.<br>* description - Description to Assign to the Policy.<br>* organization - Name of the Intersight Organization to assign this Policy to.<br>  - https://intersight.com/an/settings/organizations/<br>* tags - List of Key/Value Pairs to Assign as Attributes to the Policy.<br>* uplink\_trunking - Default is false.  Enable or Disable Trunking on all of configured FC uplink ports.<br>* vsans - List of VSANs to add to the VSAN Policy.<br>  - default\_zoning - Enables or Disables the default zoning state.<br>    1. Enabled - Admin configured Enabled State.<br>    2. Disabled (Default) - Admin configured Disabled State.<br>  - fc\_zone\_sharing\_mode - Logical grouping mode for fc ports.  Not used at this time.<br>  - fcoe\_vlan\_id - (REQUIRED).  FCoE VLAN Identifier to Assign to the VSAN Policy.<br>  - name - Name for the VSAN.<br>  - vsan\_id - (REQUIRED).  VSAN Identifier to Assign to the VSAN Policy. | <pre>map(object(<br>    {<br>      description     = optional(string)<br>      organization    = optional(string)<br>      tags            = optional(list(map(string)))<br>      uplink_trunking = optional(bool)<br>      vsans = optional(map(object(<br>        {<br>          default_zoning = optional(string)<br>          fcoe_vlan_id   = number<br>          name           = string<br>          vsan_id        = number<br>        }<br>      )))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "description": "",<br>    "organization": "default",<br>    "tags": [],<br>    "uplink_trunking": false,<br>    "vsans": {<br>      "default": {<br>        "default_zoning": "Disabled",<br>        "fcoe_vlan_id": null,<br>        "name": "vsan",<br>        "vsan_id": null<br>      }<br>    }<br>  }<br>}</pre> | no |
 | <a name="input_ws_pools"></a> [ws\_pools](#input\_ws\_pools) | Pools Workspace Name. | `string` | n/a | yes |
+| <a name="input_ws_ucs_chassis_profiles"></a> [ws\_ucs\_chassis\_profiles](#input\_ws\_ucs\_chassis\_profiles) | UCS Chassis Profiles Workspace Name. | `string` | n/a | yes |
+| <a name="input_ws_ucs_domain_profiles"></a> [ws\_ucs\_domain\_profiles](#input\_ws\_ucs\_domain\_profiles) | UCS Domain Profiles Workspace Name. | `string` | n/a | yes |
+| <a name="input_ws_ucs_server_profiles"></a> [ws\_ucs\_server\_profiles](#input\_ws\_ucs\_server\_profiles) | UCS Server Profiles Workspace Name. | `string` | n/a | yes |
 
 ## Outputs
 

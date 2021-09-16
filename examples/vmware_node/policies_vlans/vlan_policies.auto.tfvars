@@ -14,25 +14,25 @@ vlan_policies = {
         multicast_policy      = "#Organization#_multicast",
         name                  = "vlan-1",
         native_vlan           = true
-        vlan_id               = 1,
+        vlan_list             = "1",
       },
       2 = {
         auto_allow_on_uplinks = true
         multicast_policy      = "#Organization#_multicast",
         name                  = "vlan-2",
-        vlan_id               = 2,
+        vlan_list             = "2",
       },
       3 = {
         auto_allow_on_uplinks = true
         multicast_policy      = "#Organization#_multicast",
         name                  = "vlan-3",
-        vlan_id               = 3,
+        vlan_id               = "3",
       },
-      4 = {
+      "vlan_list" = {
         auto_allow_on_uplinks = true
         multicast_policy      = "#Organization#_multicast",
-        name                  = "vlan-4",
-        vlan_id               = 4,
+        name                  = "#Organization#",
+        vlan_list             = "5-100,200-211",
       },
     }
   }

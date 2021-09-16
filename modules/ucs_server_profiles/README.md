@@ -26,7 +26,7 @@ This module will create UCS Server Profiles and Server Profile Templates in Inte
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.15 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.13 |
 
 ## Modules
 
