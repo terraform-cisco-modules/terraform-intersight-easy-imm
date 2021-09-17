@@ -226,7 +226,7 @@ module "storage_policies" {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_profile_policies[k].boot_order_policy == each.key
+    if local.merged_profile_policies[k].storage_policy == each.key
   }
 }
 
