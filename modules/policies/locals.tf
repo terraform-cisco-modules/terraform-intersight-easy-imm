@@ -149,51 +149,13 @@ locals {
       virtual_media_policy          = v.virtual_media_policy != null ? v.virtual_media_policy : ""
       vlan_policy                   = ""
       vsan_policy                   = ""
-    } if v.ucs_server_profile_template == ""
+    }
   }
-
-  #  ucs_template_moids = {
-  #    for k, v in local.ucs_server_profile_templates : k => {
-  #      adapter_policy                = v.adapter_policy
-  #      bios_policy                   = v.bios_policy
-  #      boot_order_policy             = v.boot_order_policy
-  #      certificate_management_policy = v.certificate_management_policy
-  #      device_connector_policy       = v.device_connector_policy
-  #      imc_access_policy             = v.imc_access_policy
-  #      ipmi_over_lan_policy          = v.ipmi_over_lan_policy
-  #      lan_connectivity_policy       = v.lan_connectivity_policy
-  #      ldap_policy                   = v.ldap_policy
-  #      local_user_policy             = v.local_user_policy
-  #      moid                          = module.ucs_server_profile_templates[k].moid
-  #      network_connectivity_policy   = v.network_connectivity_policy
-  #      ntp_policy                    = v.ntp_policy
-  #      object_type                   = "server.ProfileTemplate"
-  #      organization                  = v.organization
-  #      persistent_memory_policy      = v.persistent_memory_policy
-  #      power_policy                  = v.power_policy
-  #      san_connectivity_policy       = v.san_connectivity_policy
-  #      sd_card_policy                = v.sd_card_policy
-  #      serial_over_lan_policy        = v.serial_over_lan_policy
-  #      snmp_policy                   = v.snmp_policy
-  #      smtp_policy                   = v.smtp_policy
-  #      ssh_policy                    = v.ssh_policy
-  #      storage_policy                = v.storage_policy
-  #      switch_control_policy         = ""
-  #      syslog_policy                 = v.syslog_policy
-  #      system_qos_policy             = ""
-  #      target_platform               = v.target_platform
-  #      virtual_kvm_policy            = v.virtual_kvm_policy
-  #      virtual_media_policy          = v.virtual_media_policy
-  #      vlan_policy                   = ""
-  #      vsan_policy                   = ""
-  #    }
-  #  }
 
   merged_profile_policies = merge(
     local.ucs_chassis_policies,
     local.ucs_domain_policies,
     local.ucs_server_policies,
-    # local.ucs_template_policies,
   )
 
 
