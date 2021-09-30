@@ -22,7 +22,7 @@ variable "sd_card_policies" {
   * description - Description to Assign to the Policy.
   * When two cards are present in the Cisco FlexFlash controller and Operating System is chosen in the SD card policy, the configured OS partition is mirrored. If only single card is available in the Cisco FlexFlash controller, the configured OS partition is non-RAID. The utility partitions are always set as non-RAID.
   * Note:
-    - This policy is currently not supported on M6 servers.
+    - This policy is not supported on M6 servers.
     - You can enable up to two utility virtual drives on M5 servers, and any number of supported utility virtual drives on M4 servers.
     - Diagnostics is supported only for the M5 servers.
     - UserPartition drives can be renamed only on the M4 servers.

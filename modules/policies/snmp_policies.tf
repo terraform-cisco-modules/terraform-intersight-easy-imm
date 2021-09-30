@@ -109,6 +109,41 @@ variable "snmp_privacy_password_5" {
   type        = string
 }
 
+variable "snmp_community_string_1" {
+  default     = ""
+  description = "SNMP Trap Destination Community."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_community_string_2" {
+  default     = ""
+  description = "SNMP Trap Destination Community."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_community_string_3" {
+  default     = ""
+  description = "SNMP Trap Destination Community."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_community_string_4" {
+  default     = ""
+  description = "SNMP Trap Destination Community."
+  sensitive   = true
+  type        = string
+}
+
+variable "snmp_community_string_5" {
+  default     = ""
+  description = "SNMP Trap Destination Community."
+  sensitive   = true
+  type        = string
+}
+
 variable "snmp_trap_community_1" {
   default     = ""
   description = "Community for a Trap Destination."
@@ -204,8 +239,8 @@ variable "snmp_policies" {
   * enable_snmp - State of the SNMP Policy on the endpoint. If enabled, the endpoint sends SNMP traps to the designated host.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  * snmp_community_access - Controls access to the information in the inventory tables. Applicable only for SNMPv1 and SNMPv2c users.
-    - Disabled - Blocks access to the information in the inventory tables.
+  * snmp_community_access - Controls access to the information in the inventory tables. Applicable only for SNMPv1 and SNMPv2c.
+    - Disabled - (Defualt) - Blocks access to the information in the inventory tables.
     - Full - Full access to read the information in the inventory tables.
     - Limited - Partial access to read the information in the inventory tables.
   * snmp_engine_input_id - Unique string to identify the device for administration purpose. This is generated from the SNMP Input Engine ID if it is already defined, else it is derived from the BMC serial number.
@@ -222,7 +257,7 @@ variable "snmp_policies" {
   * snmp_users - List of SNMP Users to Assign to the SNMP Policy.
     key - Name of the SNMP User.
     - auth_password - Default is 0.  A number Between 1-5 to denote to use one of the variables snmp_auth_password_[1-5].  Any other number means no authentication password.
-    - Authorization protocol for authenticating the user.  Currently Options are:
+    - auth_type - Authorization protocol for authenticating the user.  Currently Options are:
       1. MD5
       2. SHA (Default)
     - Note: In the future these options will be added.
@@ -241,7 +276,7 @@ variable "snmp_policies" {
       2. AuthPriv (Default) - The user requires both an authorization password and a privacy password.
       3. NoAuthNoPriv - The user does not require an authorization or privacy password.
   * system_contact - Contact person responsible for the SNMP implementation. Enter a string up to 64 characters, such as an email address or a name and telephone number.
-  * system_location - Location of host on which the SNMP agent (server) runs.
+  * system_location - Location of the host on which the SNMP agent (server) runs.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * trap_community_string - Default is 0.  A number Between 1-5 to denote to use one of the variables trap_community_string_[1-5].  Any other number means no community string.
   EOT

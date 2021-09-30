@@ -128,7 +128,7 @@ variable "port_policies" {
     - mode - Port mode to be set on the appliance port.
       * access - Access Mode Switch Port Type.
       * trunk (default) - Trunk Mode Switch Port Type.
-    - port_list - Default is [49, 50].  List of Ports to Assign to the LAN Port-Channel Policy.
+    - port_list - Default is [49, 50].  List of Ports to Assign to the Appliance Port Policy.
     - priority - The 'name' of the System QoS Class.
       * Best Effort - (Default).  QoS Priority for Best-effort traffic.
       * Bronze - QoS Priority for Bronze traffic.
@@ -153,7 +153,7 @@ variable "port_policies" {
       * Cl74 - Forward error correction option 'cl74'.
     - flow_control_policy - Name of the Flow Control policy.
     - link_control_policy - Name of the Link Control policy.
-    - port_list - Default is [49].  List of Ports to Assign to the Ethernet Uplink Port Policy.
+    - port_list - Ports to Assign to the Ethernet Uplink Port Policy.
     - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * port_role_fc_uplinks - Use this Map to Configure Ports for FC Uplinks.
     key - Unique Identifier.
@@ -166,7 +166,7 @@ variable "port_policies" {
     - fill_pattern - Fill pattern to differentiate the configs in NPIV.
       * Arbff - Fc Fill Pattern type Arbff.
       * Idle - Fc Fill Pattern type Idle.
-    - port_list - Default is [49].  List of Ports to Assign to the Ethernet Uplink Port Policy.
+    - port_list - Ports to Assign to the Fibre Channel Uplink Port Policy.
     - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * port_role_fcoe_uplinks - Use this Map to Configure Ports for FCoE Uplinks.
     key - Unique Identifier.
@@ -183,12 +183,12 @@ variable "port_policies" {
       * Cl91 - Forward error correction option 'cl91'.
       * Cl74 - Forward error correction option 'cl74'.
     - link_control_policy - Name of the Link Control policy.
-    - port_list - Default is [49].  List of Ports to Assign to the Ethernet Uplink Port Policy.
+    - port_list - Ports to Assign to the FCoE Uplink Port Policy.
     - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * port_role_servers - Use this Map to Configure Ports for Servers.
     key - Unique Identifier.
     - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
-    - port_list - Default is [49].  List of Ports to Assign to the Ethernet Uplink Port Policy.
+        - port_list - Ports to Assign to the Server Port Policy.
     - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
