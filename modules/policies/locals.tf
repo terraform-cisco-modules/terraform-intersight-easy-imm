@@ -1241,17 +1241,17 @@ locals {
 
   local_user_policies = {
     for k, v in var.local_user_policies : k => {
-      description              = v.description != null ? v.description : ""
-      enforce_strong_password  = v.enforce_strong_password != null ? v.enforce_strong_password : true
-      force_send_password      = v.force_send_password != null ? v.force_send_password : false
-      grace_period             = v.grace_period != null ? v.grace_period : 0
-      notification_period      = v.notification_period != null ? v.notification_period : 15
-      organization             = v.organization != null ? v.organization : "default"
-      password_expiry          = v.password_expiry != null ? v.password_expiry : false
-      password_expiry_duration = v.password_expiry_duration != null ? v.password_expiry_duration : 90
-      password_history         = v.password_history != null ? v.password_history : 5
-      tags                     = v.tags != null ? v.tags : []
-      users                    = v.users != null ? v.users : {}
+      always_send_user_password = v.always_send_user_password != null ? v.always_send_user_password : false
+      description               = v.description != null ? v.description : ""
+      enable_password_expiry    = v.enable_password_expiry != null ? v.enable_password_expiry : false
+      enforce_strong_password   = v.enforce_strong_password != null ? v.enforce_strong_password : true
+      grace_period              = v.grace_period != null ? v.grace_period : 0
+      notification_period       = v.notification_period != null ? v.notification_period : 15
+      organization              = v.organization != null ? v.organization : "default"
+      password_expiry_duration  = v.password_expiry_duration != null ? v.password_expiry_duration : 90
+      password_history          = v.password_history != null ? v.password_history : 5
+      tags                      = v.tags != null ? v.tags : []
+      users                     = v.users != null ? v.users : {}
     }
   }
 

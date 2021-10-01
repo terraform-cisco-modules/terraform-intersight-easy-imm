@@ -42,10 +42,16 @@ variable "local_user_password_5" {
 variable "local_user_policies" {
   default = {
     default = {
-      description             = ""
-      enforce_strong_password = true
-      force_send_password     = false
-      grace_period            = 0
+      always_send_user_password = false
+      description               = ""
+      enable_password_expiry    = false
+      enforce_strong_password   = true
+      grace_period              = 0
+      notification_period       = 15
+      organization              = "default"
+      password_expiry_duration  = 90
+      password_history          = 5
+      tags                      = []
       users = {
         default = {
           enabled  = true
@@ -53,18 +59,13 @@ variable "local_user_policies" {
           role     = "admin"
         }
       }
-      notification_period      = 15
-      organization             = "default"
-      password_expiry          = false
-      password_expiry_duration = 90
-      password_history         = 5
-      tags                     = []
     }
   }
   description = <<-EOT
   key - Name of the Local User Policy.
+  * always_send_user_password - User password will always be sent to endpoint device. If the option is not selected, then user password will be sent to endpoint device for new users and if user password is changed for existing users.
   * description - Description to Assign to the Policy.
-  * force_send_password - User password will always be sent to endpoint device. If the option is not selected, then user password will be sent to endpoint device for new users and if user password is changed for existing users.
+  * enable_password_expiry - Enables password expiry on the endpoint.
   * grace_period - Time period until when you can use the existing password, after it expires.
   * users - Map of users to add to the local user policy.
     - key - Username
@@ -74,17 +75,22 @@ variable "local_user_policies" {
   * notification_period - The duration after which the password will expire.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
-  * password_expiry - Enables password expiry on the endpoint.
   * password_expiry_duration - Set time period for password expiration. Value should be greater than notification period and grace period.
   * password_history - Tracks password change history. Specifies in number of instances, that the new password was already used.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
-      description             = optional(string)
-      enforce_strong_password = optional(bool)
-      force_send_password     = optional(bool)
-      grace_period            = optional(number)
+      always_send_user_password = optional(bool)
+      description               = optional(string)
+      enable_password_expiry    = optional(bool)
+      enforce_strong_password   = optional(bool)
+      grace_period              = optional(number)
+      notification_period       = optional(number)
+      organization              = optional(string)
+      password_expiry_duration  = optional(number)
+      password_history          = optional(number)
+      tags                      = optional(list(map(string)))
       users = optional(map(object(
         {
           enabled  = optional(bool)
@@ -92,12 +98,6 @@ variable "local_user_policies" {
           role     = optional(string)
         }
       )))
-      notification_period      = optional(number)
-      organization             = optional(string)
-      password_expiry          = optional(bool)
-      password_expiry_duration = optional(number)
-      password_history         = optional(number)
-      tags                     = optional(list(map(string)))
     }
   ))
 }
@@ -114,19 +114,19 @@ module "local_user_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
-  source                   = "terraform-cisco-modules/imm/intersight//modules/local_user_policies"
-  for_each                 = local.local_user_policies
-  description              = each.value.description != "" ? each.value.description : "${each.key} Local User Policy."
-  enable_password_expiry   = each.value.password_expiry
-  enforce_strong_password  = each.value.enforce_strong_password
-  force_send_password      = each.value.force_send_password
-  grace_period             = each.value.grace_period
-  name                     = each.key
-  notification_period      = each.value.notification_period
-  org_moid                 = local.org_moids[each.value.organization].moid
-  password_expiry_duration = each.value.password_expiry_duration
-  password_history         = each.value.password_history
-  tags                     = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  source                    = "terraform-cisco-modules/imm/intersight//modules/local_user_policies"
+  for_each                  = local.local_user_policies
+  always_send_user_password = each.value.always_send_user_password
+  description               = each.value.description != "" ? each.value.description : "${each.key} Local User Policy."
+  enable_password_expiry    = each.value.enable_password_expiry
+  enforce_strong_password   = each.value.enforce_strong_password
+  grace_period              = each.value.grace_period
+  name                      = each.key
+  notification_period       = each.value.notification_period
+  org_moid                  = local.org_moids[each.value.organization].moid
+  password_expiry_duration  = each.value.password_expiry_duration
+  password_history          = each.value.password_history
+  tags                      = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
     for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
