@@ -1149,56 +1149,61 @@ locals {
 
   ldap_policies = {
     for k, v in var.ldap_policies : k => {
-      description                     = v.description != null ? v.description : ""
-      ldap_attribute                  = v.ldap_attribute != null ? v.ldap_attribute : "CiscoAvPair"
-      ldap_base_dn                    = v.ldap_base_dn != null ? v.ldap_base_dn : "dc=example,dc=com"
-      ldap_bind_dn                    = v.ldap_bind_dn != null ? v.ldap_bind_dn : ""
-      ldap_bind_method                = v.ldap_bind_method != null ? v.ldap_bind_method : "LoginCredentials"
-      ldap_domain                     = v.ldap_domain != null ? v.ldap_domain : "example.com"
-      ldap_enable_dns                 = v.ldap_enable_dns != null ? v.ldap_enable_dns : false
-      ldap_enable_encryption          = v.ldap_enable_encryption != null ? v.ldap_enable_encryption : false
-      ldap_enable_group_authorization = v.ldap_enable_group_authorization != null ? v.ldap_enable_group_authorization : false
-      ldap_enabled                    = v.ldap_enabled != null ? v.ldap_enabled : true
-      ldap_filter                     = v.ldap_filter != null ? v.ldap_filter : "samAccountName"
-      ldap_group_attribute            = v.ldap_group_attribute != null ? v.ldap_group_attribute : "memberOf"
-      ldap_nested_group_search_depth  = v.ldap_nested_group_search_depth != null ? v.ldap_nested_group_search_depth : 128
-      ldap_nr_source                  = v.ldap_nr_source != null ? v.ldap_nr_source : "Extracted"
-      ldap_search_domain              = v.ldap_search_domain != null ? v.ldap_search_domain : ""
-      ldap_search_forest              = v.ldap_search_forest != null ? v.ldap_search_forest : ""
-      ldap_timeout                    = v.ldap_timeout != null ? v.ldap_timeout : 0
-      ldap_user_search_precedence     = v.ldap_user_search_precedence != null ? v.ldap_user_search_precedence : "LocalUserDb"
-      organization                    = v.organization != null ? v.organization : "default"
-      tags                            = v.tags != null ? v.tags : []
+      description = v.description != null ? v.description : ""
+      base_settings = {
+        base_dn = v.base_settings.base_dn
+        domain  = v.base_settings.domain
+        timeout = v.base_settings.timeout != null ? v.base_settings.timeout : 0
+      }
+      binding_parameters = {
+        bind_dn     = v.binding_parameters.bind_dn != null ? v.binding_parameters.bind_dn : ""
+        bind_method = v.binding_parameters.bind_method != null ? v.binding_parameters.bind_method : "LoginCredentials"
+      }
+      enable_encryption          = v.enable_encryption != null ? v.enable_encryption : false
+      enable_group_authorization = v.enable_group_authorization != null ? v.enable_group_authorization : false
+      enable_ldap                = v.enable_ldap != null ? v.enable_ldap : true
+      ldap_from_dns              = v.ldap_from_dns != null ? v.ldap_from_dns : {}
+      ldap_groups                = v.ldap_groups != null ? v.ldap_groups : {}
+      ldap_servers               = v.ldap_servers != null ? v.ldap_servers : {}
+      nested_group_search_depth  = v.nested_group_search_depth != null ? v.nested_group_search_depth : 128
+      organization               = v.organization != null ? v.organization : "default"
+      search_parameters = {
+        attribute       = v.search_parameters.attribute != null ? v.search_parameters.attribute : "CiscoAvPair"
+        filter          = v.search_parameters.filter != null ? v.search_parameters.filter : "samAccountName"
+        group_attribute = v.search_parameters.group_attribute != null ? v.search_parameters.group_attribute : "memberOf"
+      }
+      tags                   = []
+      user_search_precedence = v.user_search_precedence != null ? v.user_search_precedence : "LocalUserDb"
     }
   }
 
   ldap_server_loop = flatten([
     for k, v in var.ldap_policies : [
       for key, value in v.ldap_servers : {
-        ldap_port   = value.ldap_port != null ? value.ldap_port : 389
-        ldap_server = value.ldap_server != null ? value.ldap_server : 1
-        policy      = k
+        policy = k
+        port   = value.port != null ? value.port : 389
+        server = key
       }
     ]
   ])
 
   ldap_servers = {
-    for k, v in local.ldap_server_loop : "${v.policy}_${v.ldap_server}" => v
+    for k, v in local.ldap_server_loop : "${v.policy}_${v.server}" => v
   }
 
   ldap_group_loop = flatten([
     for k, v in var.ldap_policies : [
       for key, value in v.ldap_groups : {
-        group_role  = value.group_role != null ? value.group_role : "admin"
-        ldap_domain = v.ldap_domain != null ? v.ldap_domain : "example.com"
-        ldap_group  = key
-        policy      = k
+        domain = v.base_settings.domain
+        name   = key
+        policy = k
+        role   = value.role != null ? value.role : "admin"
       }
     ]
   ])
 
   ldap_groups = {
-    for k, v in local.ldap_group_loop : "${v.policy}_${v.ldap_group}" => v
+    for k, v in local.ldap_group_loop : "${v.policy}_${v.name}" => v
   }
 
 
@@ -1314,14 +1319,14 @@ locals {
 
   persistent_memory_policies = {
     for k, v in var.persistent_memory_policies : k => {
-      description                  = v.description != null ? v.description : ""
-      goals_memory_percentage      = v.goals_memory_percentage != null ? v.goals_memory_percentage : 0
-      goals_persistent_memory_type = v.goals_persistent_memory_type != null ? v.goals_persistent_memory_type : "app-direct"
-      logical_namespaces           = v.logical_namespaces != null ? v.logical_namespaces : []
-      management_mode              = v.management_mode != null ? v.management_mode : "configured-from-intersight"
-      organization                 = v.organization != null ? v.organization : "default"
-      retain_namespaces            = v.retain_namespaces != null ? v.retain_namespaces : true
-      tags                         = v.tags != null ? v.tags : []
+      description            = v.description != null ? v.description : ""
+      management_mode        = v.management_mode != null ? v.management_mode : "configured-from-intersight"
+      memory_mode_percentage = v.memory_mode_percentage != null ? v.memory_mode_percentage : 0
+      namespaces             = v.namespaces != null ? v.namespaces : {}
+      organization           = v.organization != null ? v.organization : "default"
+      persistent_memory_type = v.persistent_memory_type != null ? v.persistent_memory_type : "app-direct"
+      retain_namespaces      = v.retain_namespaces != null ? v.retain_namespaces : true
+      tags                   = v.tags != null ? v.tags : []
     }
   }
 
@@ -1709,15 +1714,15 @@ locals {
 
   smtp_policies = {
     for k, v in var.smtp_policies : k => {
-      description     = v.description != null ? v.description : ""
-      enabled         = v.enabled != null ? v.enabled : true
-      min_severity    = v.min_severity != null ? v.min_severity : "critical"
-      organization    = v.organization != null ? v.organization : "default"
-      sender_email    = v.sender_email != null ? v.sender_email : ""
-      smtp_port       = v.smtp_port != null ? v.smtp_port : 25
-      smtp_recipients = v.smtp_recipients != null ? v.smtp_recipients : []
-      smtp_server     = v.smtp_server != null ? v.smtp_server : ""
-      tags            = v.tags != null ? v.tags : []
+      description               = v.description != null ? v.description : ""
+      enable_smtp               = v.enable_smtp != null ? v.enable_smtp : true
+      mail_alert_recipients     = v.mail_alert_recipients != null ? v.mail_alert_recipients : []
+      minimum_severity          = v.minimum_severity != null ? v.minimum_severity : "critical"
+      organization              = v.organization != null ? v.organization : "default"
+      smtp_alert_sender_address = v.smtp_alert_sender_address != null ? v.smtp_alert_sender_address : ""
+      smtp_port                 = v.smtp_port != null ? v.smtp_port : 25
+      smtp_server_address       = v.smtp_server_address != null ? v.smtp_server_address : ""
+      tags                      = v.tags != null ? v.tags : []
     }
   }
 
@@ -1753,11 +1758,11 @@ locals {
   ssh_policies = {
     for k, v in var.ssh_policies : k => {
       description  = v.description != null ? v.description : ""
-      enabled      = v.enabled != null ? v.enabled : true
+      enable_ssh   = v.enable_ssh != null ? v.enable_ssh : true
       organization = v.organization != null ? v.organization : "default"
       ssh_port     = v.ssh_port != null ? v.ssh_port : 22
+      ssh_timeout  = v.ssh_timeout != null ? v.ssh_timeout : 1800
       tags         = v.tags != null ? v.tags : []
-      timeout      = v.timeout != null ? v.timeout : 1800
     }
   }
 

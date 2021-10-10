@@ -8,31 +8,31 @@ variable "ssh_policies" {
   default = {
     default = {
       description  = ""
-      enabled      = true
+      enable_ssh   = true
       organization = "default"
       ssh_port     = 22
+      ssh_timeout  = 1800
       tags         = []
-      timeout      = 1800
     }
   }
   description = <<-EOT
   key - Name of the SSH Policy.
   * description - Description to Assign to the Policy.
-  * enabled - State of SSH service on the endpoint.
+  * enable_ssh - State of SSH service on the endpoint.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
   * ssh_port - Port used for secure shell access.  Valid range is between 1-65535.
+  * ssh_timeout - Number of seconds to wait before the system considers a SSH request to have timed out.  Valid range is between 60-10800.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  * timeout - Number of seconds to wait before the system considers a SSH request to have timed out.  Valid range is between 60-10800.
   EOT
   type = map(object(
     {
       description  = optional(string)
-      enabled      = optional(bool)
+      enable_ssh   = optional(bool)
       organization = optional(string)
       ssh_port     = optional(number)
+      ssh_timeout  = optional(number)
       tags         = optional(list(map(string)))
-      timeout      = optional(number)
     }
   ))
 }
@@ -52,12 +52,12 @@ module "ssh_policies" {
   source      = "terraform-cisco-modules/imm/intersight//modules/ssh_policies"
   for_each    = local.ssh_policies
   description = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
-  enabled     = each.value.enabled
+  enable_ssh  = each.value.enable_ssh
   name        = each.key
   org_moid    = local.org_moids[each.value.organization].moid
   ssh_port    = each.value.ssh_port
+  ssh_timeout = each.value.ssh_timeout
   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  timeout     = each.value.timeout
   profiles = {
     for k, v in local.merged_profile_policies : k => {
       moid        = v.moid

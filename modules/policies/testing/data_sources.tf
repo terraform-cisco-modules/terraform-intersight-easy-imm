@@ -24,4 +24,3 @@ data "intersight_organization_organization" "org_moid" {
   for_each = local.organizations
   name     = each.value
 }
-

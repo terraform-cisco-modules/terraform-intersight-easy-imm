@@ -63,21 +63,30 @@ variable "local_user_policies" {
   }
   description = <<-EOT
   key - Name of the Local User Policy.
-  * always_send_user_password - User password will always be sent to endpoint device. If the option is not selected, then user password will be sent to endpoint device for new users and if user password is changed for existing users.
+  * always_send_user_password - If the option is not set to true, user passwords will only be sent to endpoint devices for new users and if a user password is changed for existing users.
   * description - Description to Assign to the Policy.
   * enable_password_expiry - Enables password expiry on the endpoint.
-  * grace_period - Time period until when you can use the existing password, after it expires.
+  * enforce_strong_password - Enables a strong password policy. Strong password requirements:
+    A. The password must have a minimum of 8 and a maximum of 20 characters.
+    B. The password must not contain the User's Name.
+    C. The password must contain characters from three of the following four categories.
+      1. English uppercase characters (A through Z).
+      2. English lowercase characters (a through z).
+      3. Base 10 digits (0 through 9).
+      4. Non-alphabetic characters (! , @, #, $, %, ^, &, *, -, _, +, =).
+  * grace_period - Time, in days, after the password is expired that a user can continue to use their expired password.  The allowed grace period is between 0 to 5 days.  With 0 being no grace period.
+  * notification_period - Number of days, between 0 to 15 (0 being disabled), that a user is notified to change their password before it expires.
+  * organization - Name of the Intersight Organization to assign this Policy to.
+    - https://intersight.com/an/settings/organizations/
+  * password_expiry_duration - When Password Expiry is Enabled, this sets the duration of time (in days) a password may be valid.  The password expiry duration must be greater than notification period + grace period.  Range is 1-3650.
+    Note:  The
+  * password_history - Password change history. Specifies the number of previous passwords that are stored and compared to a new password.  Range is 0 to 5.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * users - Map of users to add to the local user policy.
     - key - Username
     - enabled - Enables the user account on the endpoint.
     - password - This is a key to signify the variable "local_user_password_[key]" to be used.  i.e. 1 for variable "local_user_password_1".
     - role - The Role to Assign to the User.  Valid Options are {admin|readonly|user}.
-  * notification_period - The duration after which the password will expire.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
-  * password_expiry_duration - Set time period for password expiration. Value should be greater than notification period and grace period.
-  * password_history - Tracks password change history. Specifies in number of instances, that the new password was already used.
-  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {

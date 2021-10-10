@@ -42,8 +42,8 @@ variable "san_connectivity_policies" {
     - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * target_platform - The platform for which the server profile is applicable. It can either be:
-    - Standalone - a server that is operating independently
     - FIAttached (Default) - A Server attached to a Intersight Managed Domain.
+    - Standalone - a server that is operating independently
   * vhba_placement_mode - The mode used for placement of vNICs on network adapters. It can either be Auto or Custom.
     - auto - The placement of the vNICs / vHBAs on network adapters is automatically determined by the system.
     - custom (Default) - The placement of the vNICs / vHBAs on network adapters is manually chosen by the user.

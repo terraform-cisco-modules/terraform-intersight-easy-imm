@@ -74,15 +74,15 @@ module "iqn_pools" {
   depends_on = [
     local.org_moids
   ]
-  source            = "terraform-cisco-modules/imm/intersight//modules/iqn_pools"
-  for_each          = local.iqn_pools
-  assignment_order  = each.value.assignment_order
-  description       = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} IQN Pool."
-  iqn_prefix        = each.value.iqn_prefix
-  iqn_suffix_blocks = each.value.iqn_suffix_blocks
-  name              = each.key
-  org_moid          = local.org_moids[each.value.organization].moid
-  tags              = each.value.tags != [] ? each.value.tags : local.tags
+  source           = "terraform-cisco-modules/imm/intersight//modules/iqn_pools"
+  for_each         = local.iqn_pools
+  assignment_order = each.value.assignment_order
+  description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} IQN Pool."
+  prefix           = each.value.prefix
+  iqn_blocks       = each.value.iqn_blocks
+  name             = each.key
+  org_moid         = local.org_moids[each.value.organization].moid
+  tags             = each.value.tags != [] ? each.value.tags : local.tags
 }
 
 
@@ -115,13 +115,13 @@ module "uuid_pools" {
   depends_on = [
     local.org_moids
   ]
-  source             = "terraform-cisco-modules/imm/intersight//modules/uuid_pools"
-  for_each           = local.uuid_pools
-  assignment_order   = each.value.assignment_order
-  description        = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} UUID Pool."
-  name               = each.key
-  org_moid           = local.org_moids[each.value.organization].moid
-  prefix             = each.value.prefix
-  tags               = each.value.tags != [] ? each.value.tags : local.tags
-  uuid_suffix_blocks = each.value.uuid_suffix_blocks
+  source           = "terraform-cisco-modules/imm/intersight//modules/uuid_pools"
+  for_each         = local.uuid_pools
+  assignment_order = each.value.assignment_order
+  description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} UUID Pool."
+  name             = each.key
+  org_moid         = local.org_moids[each.value.organization].moid
+  prefix           = each.value.prefix
+  tags             = each.value.tags != [] ? each.value.tags : local.tags
+  uuid_blocks      = each.value.uuid_blocks
 }
