@@ -153,7 +153,7 @@ variable "ldap_policies" {
 module "ldap_policies" {
   depends_on = [
     local.org_moids,
-    # local.merged_profile_policies,
+    local.merged_profile_policies,
   ]
   source                     = "terraform-cisco-modules/imm/intersight//modules/ldap_policies"
   for_each                   = local.ldap_policies
@@ -170,13 +170,13 @@ module "ldap_policies" {
   search_parameters          = each.value.search_parameters
   tags                       = length(each.value.tags) > 0 ? each.value.tags : local.tags
   user_search_precedence     = each.value.user_search_precedence
-  # profiles = {
-  #   for k, v in local.merged_profile_policies : k => {
-  #     moid        = v.moid
-  #     object_type = v.object_type
-  #   }
-  #   if local.merged_profile_policies[k].ldap_policy == each.key
-  # }
+  profiles = {
+    for k, v in local.merged_profile_policies : k => {
+      moid        = v.moid
+      object_type = v.object_type
+    }
+    if local.merged_profile_policies[k].ldap_policy == each.key
+  }
 }
 
 #______________________________________________

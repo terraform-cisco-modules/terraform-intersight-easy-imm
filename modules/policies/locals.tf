@@ -158,10 +158,31 @@ locals {
     local.ucs_server_policies,
   )
 
+  #_______________________________________________________________
+  #
+  # Adapter Configuration Policy
+  # GUI Location: Policies > Create Policy: Adapter Configuration
+  #_______________________________________________________________
+
+  adapter_configuration_policies = {
+    for k, v in var.adapter_configuration_policies : k => {
+      description         = v.description != null ? v.description : ""
+      enable_fip          = v.enable_fip != null ? v.enable_fip : true
+      enable_lldp         = v.enable_lldp != null ? v.enable_lldp : true
+      enable_port_channel = v.enable_port_channel != null ? v.enable_port_channel : true
+      fec_mode_1          = v.fec_mode_1 != null ? v.fec_mode_1 : "cl91"
+      fec_mode_2          = v.fec_mode_2 != null ? v.fec_mode_2 : "cl91"
+      fec_mode_3          = v.fec_mode_3 != null ? v.fec_mode_3 : "cl91"
+      fec_mode_4          = v.fec_mode_4 != null ? v.fec_mode_4 : "cl91"
+      organization        = v.organization != null ? v.organization : "default"
+      tags                = v.tags != null ? v.tags : []
+    }
+  }
+
 
   #____________________________________________________________
   #
-  # BIOS Policy - Custom BIOS Policy
+  # BIOS Policy
   # GUI Location: Policies > Create Policy: BIOS
   #____________________________________________________________
 
@@ -921,9 +942,25 @@ locals {
   # Ethernet Network Group Policy Section - Locals
   #__________________________________________________________
 
+  ethernet_network_policies = {
+    for k, v in var.ethernet_network_policies : k => {
+      allowed_vlans = v.allowed_vlans != null ? v.allowed_vlans : ""
+      description   = v.description != null ? v.description : ""
+      native_vlan   = v.native_vlan != null ? v.native_vlan : 0
+      organization  = v.organization != null ? v.organization : "default"
+      tags          = v.tags != null ? v.tags : []
+      vlan_mode     = v.vlan_mode != null ? v.vlan_mode : "ACCESS"
+    }
+  }
+
+  #__________________________________________________________
+  #
+  # Ethernet Network Group Policy Section - Locals
+  #__________________________________________________________
+
   ethernet_network_group_policies = {
     for k, v in var.ethernet_network_group_policies : k => {
-      allowed_vlans = v.allowed_vlans != null ? v.allowed_vlans : "auto"
+      allowed_vlans = v.allowed_vlans != null ? v.allowed_vlans : ""
       description   = v.description != null ? v.description : ""
       native_vlan   = v.native_vlan != null ? v.native_vlan : null
       organization  = v.organization != null ? v.organization : "default"
@@ -1955,12 +1992,12 @@ locals {
   virtual_media_policies = {
     for k, v in var.virtual_media_policies : k => {
       description                     = v.description != null ? v.description : ""
-      enabled                         = v.enabled != null ? v.enabled : true
       enable_low_power_usb            = v.enable_low_power_usb != null ? v.enable_low_power_usb : false
+      enable_virtual_media            = v.enable_virtual_media != null ? v.enable_virtual_media : true
       enable_virtual_media_encryption = v.enable_virtual_media_encryption != null ? v.enable_virtual_media_encryption : true
       organization                    = v.organization != null ? v.organization : "default"
       tags                            = v.tags != null ? v.tags : []
-      vmedia_mappings                 = v.vmedia_mappings != null ? v.vmedia_mappings : []
+      vmedia_mappings                 = v.vmedia_mappings != null ? v.vmedia_mappings : {}
     }
   }
 

@@ -7,26 +7,26 @@
 variable "device_connector_policies" {
   default = {
     default = {
-      description  = ""
-      lockout      = false
-      organization = "default"
-      tags         = []
+      configuration_lockout = false
+      description           = ""
+      organization          = "default"
+      tags                  = []
     }
   }
   description = <<-EOT
   key - Name of the Device Connector Policy.
+  * configuration_lockout - Locks Down Configuration to Intersight Only.
   * description - Description to Assign to the Policy.
-  * lockout - Enables configuration lockout on the endpoint.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
-      description  = optional(string)
-      lockout      = optional(bool)
-      organization = optional(string)
-      tags         = optional(list(map(string)))
+      configuration_lockout = optional(bool)
+      description           = optional(string)
+      organization          = optional(string)
+      tags                  = optional(list(map(string)))
     }
   ))
 }
@@ -43,13 +43,13 @@ module "device_connector_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
-  source      = "terraform-cisco-modules/imm/intersight//modules/device_connector_policies"
-  for_each    = local.device_connector_policies
-  description = each.value.description != "" ? each.value.description : "${each.key} Device Connector Policy."
-  lockout     = each.value.lockout
-  name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  source                = "terraform-cisco-modules/imm/intersight//modules/device_connector_policies"
+  for_each              = local.device_connector_policies
+  configuration_lockout = each.value.configuration_lockout
+  description           = each.value.description != "" ? each.value.description : "${each.key} Device Connector Policy."
+  name                  = each.key
+  org_moid              = local.org_moids[each.value.organization].moid
+  tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
     for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
