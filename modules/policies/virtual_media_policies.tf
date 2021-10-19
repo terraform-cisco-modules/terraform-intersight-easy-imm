@@ -77,7 +77,7 @@ variable "virtual_media_policies" {
       enable_virtual_media_encryption = optional(bool)
       organization                    = optional(string)
       tags                            = optional(list(map(string)))
-      vmedia_mappings                 = optional(map(object(
+      vmedia_mappings = optional(map(object(
         {
           authentication_protocol = optional(string)
           device_type             = optional(string)

@@ -7,7 +7,7 @@
 variable "ucs_server_profile_templates" {
   default = {
     default = {
-      adapter_policy                = ""
+      adapter_configuration_policy  = ""
       bios_policy                   = ""
       boot_order_policy             = ""
       certificate_management_policy = ""
@@ -40,7 +40,7 @@ variable "ucs_server_profile_templates" {
   }
   description = <<-EOT
   key - Name of the UCS Server Profile Template
-  * adapter_policy - Name of the Adapter Configuration Policy to assign to the Template.
+  * adapter_configuration_policy - Name of the Adapter Configuration Policy to assign to the Template.
   * bios_policy - Name of the BIOS Policy to assign to the Template.
   * boot_order_policy - Name of the Boot Order Policy to assign to the Template.
   * certificate_management_policy - Name of the Certificate Management Policy to assign to the Template.
@@ -78,7 +78,7 @@ variable "ucs_server_profile_templates" {
   EOT
   type = map(object(
     {
-      adapter_policy                = optional(string)
+      adapter_configuration_policy  = optional(string)
       bios_policy                   = optional(string)
       boot_order_policy             = optional(string)
       certificate_management_policy = optional(string)

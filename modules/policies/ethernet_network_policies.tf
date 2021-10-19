@@ -7,11 +7,11 @@
 variable "ethernet_network_policies" {
   default = {
     default = {
-      default_vlan  = 0
-      description   = ""
-      organization  = "default"
-      tags          = []
-      vlan_mode     = "ACCESS"
+      default_vlan = 0
+      description  = ""
+      organization = "default"
+      tags         = []
+      vlan_mode    = "ACCESS"
     }
   }
   description = <<-EOT
@@ -27,11 +27,11 @@ variable "ethernet_network_policies" {
   EOT
   type = map(object(
     {
-      default_vlan  = optional(number)
-      description   = optional(string)
-      organization  = optional(string)
-      tags          = optional(list(map(string)))
-      vlan_mode     = optional(string)
+      default_vlan = optional(number)
+      description  = optional(string)
+      organization = optional(string)
+      tags         = optional(list(map(string)))
+      vlan_mode    = optional(string)
     }
   ))
 }
@@ -40,12 +40,12 @@ module "ethernet_network_policies" {
   depends_on = [
     local.org_moids
   ]
-  source        = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_policies"
-  for_each      = local.ethernet_network_policies
-  description   = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Policy."
-  name          = each.key
-  default_vlan  = each.value.default_vlan
-  org_moid      = local.org_moids[each.value.organization].moid
-  tags          = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vlan_mode     = each.value.vlan_mode
+  source       = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_policies"
+  for_each     = local.ethernet_network_policies
+  description  = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Policy."
+  name         = each.key
+  default_vlan = each.value.default_vlan
+  org_moid     = local.org_moids[each.value.organization].moid
+  tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  vlan_mode    = each.value.vlan_mode
 }

@@ -8,7 +8,7 @@ variable "ucs_server_profiles" {
   default = {
     default = {
       action                        = "No-op"
-      adapter_policy                = ""
+      adapter_configuration_policy  = ""
       assign_server                 = false
       bios_policy                   = ""
       boot_order_policy             = ""
@@ -50,7 +50,7 @@ variable "ucs_server_profiles" {
     - Deploy
     - No-op
     - Unassign
-  * adapter_policy - Name of the Adapter Configuration Policy to assign to the Profile.
+  * adapter_configuration_policy - Name of the Adapter Configuration Policy to assign to the Profile.
   * assign_server - Flag to determine if a physical server should be assigned to the server profile or not.  Default is false.
   * bios_policy - Name of the BIOS Policy to assign to the Profile.
   * boot_order_policy - Name of the Boot Order Policy to assign to the Profile.
@@ -91,7 +91,7 @@ variable "ucs_server_profiles" {
   type = map(object(
     {
       action                        = optional(string)
-      adapter_policy                = optional(string)
+      adapter_configuration_policy  = optional(string)
       assign_server                 = optional(bool)
       bios_policy                   = optional(string)
       boot_order_policy             = optional(string)
@@ -142,6 +142,7 @@ module "ucs_server_profiles" {
     local.org_moids,
     # module.ucs_server_profile_templates
   ]
+  # src_template        = each.value.ucs_server_profile_template != "" && var.assign_profiles_to_templates == true ? [module.ucs_server_profile_templates[each.value.ucs_server_profile_template].moid] : []
   source              = "terraform-cisco-modules/imm/intersight//modules/ucs_server_profiles"
   for_each            = local.ucs_server_profiles
   action              = each.value.action
@@ -151,7 +152,6 @@ module "ucs_server_profiles" {
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
   wait_for_completion = each.value.wait_for_completion
-  # src_template        = each.value.ucs_server_profile_template != "" && var.assign_profiles_to_templates == true ? [module.ucs_server_profile_templates[each.value.ucs_server_profile_template].moid] : []
   assigned_server = each.value.assign_server == true ? [
     {
       moid        = data.intersight_compute_physical_summary.server[each.key].results[0].moid
