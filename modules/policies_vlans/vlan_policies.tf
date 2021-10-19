@@ -12,7 +12,7 @@ variable "vlan_policies" {
       tags         = []
       vlans = {
         default = {
-          auto_allow_on_uplinks = true
+          auto_allow_on_uplinks = false
           multicast_policy      = ""
           name                  = "vlan-{vlan_id}"
           native_vlan           = false
@@ -28,7 +28,7 @@ variable "vlan_policies" {
     - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * vlans - List of VSANs to add to the VSAN Policy.
-    - auto_allow_on_uplinks - Default is true.  Used to determine whether this VLAN will be allowed on all uplink ports and PCs in this FI.
+    - auto_allow_on_uplinks - Default is false.  Used to determine whether this VLAN will be allowed on all uplink ports and PCs in this FI.
     - multicast_policy - Name of the Multicast Policy to assign to the VLAN.
     - name - The 'name' used to identify this VLAN.  When configuring a single VLAN this will be used as the Name.  When configuring multiple VLANs in a list the name will be used as a Name Prefix.
     - native_vlan - Default is false.  Used to define whether this VLAN is to be classified as 'native' for traffic in this FI.

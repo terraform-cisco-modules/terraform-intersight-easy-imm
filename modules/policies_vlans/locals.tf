@@ -71,7 +71,7 @@ locals {
   vlans_loop = flatten([
     for key, value in var.vlan_policies : [
       for v in value.vlans : {
-        auto_allow_on_uplinks = v.auto_allow_on_uplinks != null ? v.auto_allow_on_uplinks : true
+        auto_allow_on_uplinks = v.auto_allow_on_uplinks != null ? v.auto_allow_on_uplinks : false
         multicast_policy      = v.multicast_policy != null ? v.multicast_policy : ""
         name                  = v.name != null ? v.name : ""
         native_vlan           = v.native_vlan != null ? v.native_vlan : false

@@ -1,5 +1,7 @@
 # Intersight Module - Easy Intersight Managed Mode
 
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/terraform-cisco-modules/terraform-intersight-easy-imm)
+
 ## Use Cases
 
 * Build Workspaces in TFCB to support Infrastructure as Code Provisioning.

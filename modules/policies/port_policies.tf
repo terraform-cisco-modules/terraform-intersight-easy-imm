@@ -66,8 +66,9 @@ variable "port_policies" {
       * 25Gbps - Admin configurable speed 25Gbps.
       * 40Gbps - Admin configurable speed 40Gbps.
       * 100Gbps - Admin configurable speed 100Gbps.
+    - ethernet_network_group_policy - Name of the Ethernet Network Group policy.
     - flow_control_policy - Name of the Flow Control policy.
-    interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
+    - interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
       - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
       - port_id - Port ID to Assign to the LAN Port-Channel Policy.
       - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
@@ -147,6 +148,7 @@ variable "port_policies" {
       * 40Gbps - Admin configurable speed 40Gbps.
       * 100Gbps - Admin configurable speed 100Gbps.
     - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+    - ethernet_network_group_policy - Name of the Ethernet Network Group policy.
     - fec - Forward error correction configuration for the port.
       * Auto - (Default).  Forward error correction option 'Auto'.
       * Cl91 - Forward error correction option 'cl91'.
@@ -215,8 +217,9 @@ variable "port_policies" {
       )))
       port_channel_ethernet_uplinks = optional(map(object(
         {
-          admin_speed         = optional(string)
-          flow_control_policy = optional(string)
+          admin_speed                   = optional(string)
+          ethernet_network_group_policy = string
+          flow_control_policy           = optional(string)
           interfaces = optional(list(object(
             {
               breakout_port_id = optional(number)
@@ -278,13 +281,14 @@ variable "port_policies" {
       )))
       port_role_ethernet_uplinks = optional(map(object(
         {
-          admin_speed         = optional(string)
-          breakout_port_id    = optional(number)
-          fec                 = optional(string)
-          flow_control_policy = optional(string)
-          link_control_policy = optional(string)
-          port_list           = string
-          slot_id             = optional(number)
+          admin_speed                   = optional(string)
+          breakout_port_id              = optional(number)
+          ethernet_network_group_policy = string
+          fec                           = optional(string)
+          flow_control_policy           = optional(string)
+          link_control_policy           = optional(string)
+          port_list                     = string
+          slot_id                       = optional(number)
         }
       )))
       port_role_fc_uplinks = optional(map(object(
@@ -419,6 +423,9 @@ module "port_channel_ethernet_uplinks" {
   pc_id            = each.value.pc_id
   port_policy_moid = module.port_policies[each.value.port_policy].moid
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  ethernet_network_group_policy_moid = each.value.ethernet_network_group_policy != "" ? [
+    module.ethernet_network_group_policies[each.value.ethernet_network_group_policy].moid
+  ] : []
   flow_control_policy_moid = each.value.flow_control_policy != "" ? [
     module.flow_control_policies[each.value.flow_control_policy].moid
   ] : []
@@ -539,6 +546,9 @@ module "port_role_ethernet_uplinks" {
   port_policy_moid = module.port_policies[each.value.port_policy].moid
   slot_id          = each.value.slot_id
   tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  ethernet_network_group_policy_moid = each.value.ethernet_network_group_policy != "" ? [
+    module.ethernet_network_group_policies[each.value.ethernet_network_group_policy].moid
+  ] : []
   flow_control_policy_moid = each.value.flow_control_policy != "" ? [
     module.flow_control_policies[each.value.flow_control_policy].moid
   ] : []
