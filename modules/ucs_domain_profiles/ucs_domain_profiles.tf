@@ -89,7 +89,7 @@ module "ucs_domain_profiles" {
   depends_on = [
     local.org_moids
   ]
-  source      = "../../../terraform-intersight-imm/modules/ucs_domain_profiles"
+  source      = "terraform-cisco-modules/imm/intersight//modules/ucs_domain_profiles"
   for_each    = local.ucs_domain_profiles
   description = each.value.description != "" ? each.value.description : "${each.key} UCS Domain."
   name        = each.key

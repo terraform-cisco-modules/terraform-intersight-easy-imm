@@ -1,10 +1,10 @@
 #____________________________________________________________________________
 #
-# Intersight Adapter Configuration Policies Variables
-# GUI Location: Configure > Policies > Create Policy > Adapter Configuration
+# Intersight Certificate Management Policies Variables
+# GUI Location: Configure > Policies > Create Policy > Certificate Management
 #____________________________________________________________________________
 
-variable "adapter_configuration_policies" {
+variable "certificate_management_policies" {
   default = {
     default = {
       description         = ""
@@ -62,7 +62,7 @@ variable "adapter_configuration_policies" {
 # GUI Location: Configure > Policies > Create Policy > Adapter Configuration
 #_________________________________________________________________________
 
-module "adapter_configuration_policies" {
+module "certificate_management_policies" {
   depends_on = [
     local.org_moids,
     local.merged_profile_policies,

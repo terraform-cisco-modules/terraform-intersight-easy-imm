@@ -22,7 +22,7 @@ locals {
   ucs_server_loop_1 = {
     for k, v in var.ucs_server_profiles : k => {
       action                        = v.action != null ? v.action : "No-op"
-      adapter_policy                = v.adapter_policy != null ? v.adapter_policy : null
+      adapter_configuration_policy  = v.adapter_configuration_policy != null ? v.adapter_configuration_policy : null
       assign_server                 = v.assign_server != null ? v.assign_server : false
       bios_policy                   = v.bios_policy != null ? v.bios_policy : null
       boot_order_policy             = v.boot_order_policy != null ? v.boot_order_policy : null
@@ -64,7 +64,7 @@ locals {
   #__________________________________________________________
   ucs_server_profile_templates = {
     for k, v in var.ucs_server_profile_templates : k => {
-      adapter_policy                = v.adapter_policy != null ? v.adapter_policy : ""
+      adapter_configuration_policy  = v.adapter_configuration_policy != null ? v.adapter_configuration_policy : ""
       bios_policy                   = v.bios_policy != null ? v.bios_policy : ""
       boot_order_policy             = v.boot_order_policy != null ? v.boot_order_policy : ""
       certificate_management_policy = v.certificate_management_policy != null ? v.certificate_management_policy : ""
@@ -100,9 +100,9 @@ locals {
     for k, v in local.ucs_server_loop_1 : [
       for key, value in local.ucs_server_profile_templates : {
         action = v.action
-        adapter_policy = length(
-          regexall("^[a-zA-Z0-9]", coalesce(v.adapter_policy, "_EMPTY"))
-        ) > 0 ? v.adapter_policy : v.ucs_server_profile_template != "" ? value.adapter_policy : ""
+        adapter_configuration_policy = length(
+          regexall("^[a-zA-Z0-9]", coalesce(v.adapter_configuration_policy, "_EMPTY"))
+        ) > 0 ? v.adapter_configuration_policy : v.ucs_server_profile_template != "" ? value.adapter_configuration_policy : ""
         assign_server = v.assign_server
         bios_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.bios_policy, "_EMPTY"))
@@ -173,9 +173,8 @@ locals {
         syslog_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.syslog_policy, "_EMPTY"))
         ) > 0 ? v.syslog_policy : v.ucs_server_profile_template != "" ? value.syslog_policy : ""
-        tags = length(
-          regexall("^[a-zA-Z0-9]", coalesce(v.tags, "_EMPTY"))
-        ) > 0 ? v.tags : v.ucs_server_profile_template != "" ? value.tags : ""
+        tags = length(v.tags
+        ) > 0 ? v.tags : v.ucs_server_profile_template != [] ? value.tags : []
         target_platform = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.target_platform, "_EMPTY"))
         ) > 0 ? v.target_platform : v.ucs_server_profile_template != "" ? value.target_platform : ""

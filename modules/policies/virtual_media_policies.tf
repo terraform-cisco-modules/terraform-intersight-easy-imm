@@ -147,7 +147,7 @@ module "virtual_media_policies" {
   name                            = each.key
   org_moid                        = local.org_moids[each.value.organization].moid
   tags                            = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vmedia_mappings                 = each.value.vmedia_mappings
+  vmedia_mounts                   = each.value.vmedia_mappings
   vmedia_password_1               = var.vmedia_password_1
   vmedia_password_2               = var.vmedia_password_2
   vmedia_password_3               = var.vmedia_password_3

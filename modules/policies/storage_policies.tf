@@ -30,6 +30,7 @@ variable "storage_policies" {
   * description - Description to Assign to the Policy.
   * global_hot_spares - A collection of disks that is to be used as hot spares, globally, for all the RAID groups. Allowed value is a number range separated by a comma or a hyphen.
   * m2_configuration - Slot of the M.2 RAID controller for virtual drive creation.
+    - controller_slot - Options are:
       * MSTOR-RAID-1 - Virtual drive will be created on the M.2 RAID controller in the first slot.
       * MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in the second slot, if available.
       * MSTOR-RAID-1,MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in both the slots, if available.
@@ -183,12 +184,12 @@ variable "storage_policies" {
           virtual_drives = optional(map(object(
             {
               access_policy       = string
-              boot_drive          = string
+              boot_drive          = bool
               disk_cache          = string
               expand_to_available = bool
               read_policy         = string
               size                = number
-              strip_size          = string
+              strip_size          = number
               write_policy        = string
             }
           )))
