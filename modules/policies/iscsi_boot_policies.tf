@@ -19,7 +19,13 @@ variable "iscsi_boot_policies" {
       description                   = ""
       initiator_ip_pool             = ""
       initiator_ip_source           = "Pool"
-      initiator_static_ip_v4_config = {}
+      initiator_static_ip_v4_config = {
+        default_gateway = "If Configuring static field is **REQUIRED**"
+        ip_address      = "If Configuring static field is **REQUIRED**"
+        subnet_mask     = "If Configuring static field is **REQUIRED**"
+        primary_dns     = ""
+        secondary_dns   = ""
+      }
       iscsi_adapter_policy          = ""
       password                      = 0
       primary_target_policy         = ""
