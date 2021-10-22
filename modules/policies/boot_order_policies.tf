@@ -4,7 +4,7 @@
 # GUI Location: Configure > Policies > Create Policy > Boot Order
 #_________________________________________________________________________
 
-variable "boot_policies" {
+variable "boot_order_policies" {
   default = {
     default = {
       boot_devices       = {}

@@ -155,21 +155,22 @@ module "ldap_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
-  source                     = "terraform-cisco-modules/imm/intersight//modules/ldap_policies"
-  for_each                   = local.ldap_policies
-  base_settings              = each.value.base_settings
-  binding_parameters         = each.value.binding_parameters
-  description                = each.value.description != "" ? each.value.description : "${each.key} LDAP Policy."
-  enable_encryption          = each.value.enable_encryption
-  enable_group_authorization = each.value.enable_group_authorization
-  enable_ldap                = each.value.enable_ldap
-  ldap_from_dns              = each.value.ldap_from_dns
-  name                       = each.key
-  nested_group_search_depth  = each.value.nested_group_search_depth
-  org_moid                   = local.org_moids[each.value.organization].moid
-  search_parameters          = each.value.search_parameters
-  tags                       = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  user_search_precedence     = each.value.user_search_precedence
+  source                      = "terraform-cisco-modules/imm/intersight//modules/ldap_policies"
+  for_each                    = local.ldap_policies
+  base_settings               = each.value.base_settings
+  binding_parameters          = each.value.binding_parameters
+  binding_parameters_password = var.binding_parameters_password
+  description                 = each.value.description != "" ? each.value.description : "${each.key} LDAP Policy."
+  enable_encryption           = each.value.enable_encryption
+  enable_group_authorization  = each.value.enable_group_authorization
+  enable_ldap                 = each.value.enable_ldap
+  ldap_from_dns               = each.value.ldap_from_dns
+  name                        = each.key
+  nested_group_search_depth   = each.value.nested_group_search_depth
+  org_moid                    = local.org_moids[each.value.organization].moid
+  search_parameters           = each.value.search_parameters
+  tags                        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  user_search_precedence      = each.value.user_search_precedence
   profiles = {
     for k, v in local.merged_profile_policies : k => {
       moid        = v.moid

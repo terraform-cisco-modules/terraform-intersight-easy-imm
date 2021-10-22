@@ -581,7 +581,7 @@ locals {
   #__________________________________________________________
 
   boot_order_policies = {
-    for k, v in var.boot_policies : k => {
+    for k, v in var.boot_order_policies : k => {
       boot_devices       = v.boot_devices != null ? v.boot_devices : {}
       boot_mode          = v.boot_mode != null ? v.boot_mode : "Uefi"
       description        = v.description != null ? v.description : ""
