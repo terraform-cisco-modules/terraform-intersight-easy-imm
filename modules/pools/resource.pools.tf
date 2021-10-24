@@ -31,7 +31,7 @@ variable "resource_pools" {
   * resource_type - The type of the resource present in the pool, example 'server' its combination of RackUnit and Blade.
     - None - The resource cannot consider for Resource Pool.
     - Server - Resource Pool holds the server kind of resources, example - RackServer, Blade.
-  * serial_number_list - A List of Compute Serial Numbers to assign to the policy.
+  * serial_number_list - A List of Compute Serial Numbers to assign to the policy.  These must be the same type of server. Cannot be some blades and some rackmounts.
   * server_type - The Server type to add to the selection filter field.
     - Blades - A Blade Server.
     - RackUnits - A Rackmount Server.
