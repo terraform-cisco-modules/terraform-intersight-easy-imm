@@ -32,7 +32,7 @@ This module will create UCS Domain Profiles in Intersight.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ucs_domain_profiles"></a> [ucs\_domain\_profiles](#module\_ucs\_domain\_profiles) | ../../../terraform-intersight-imm/modules/ucs_domain_profiles | n/a |
+| <a name="module_ucs_domain_profiles"></a> [ucs\_domain\_profiles](#module\_ucs\_domain\_profiles) | terraform-cisco-modules/imm/intersight//modules/ucs_domain_profiles | n/a |
 | <a name="module_ucs_domain_switches"></a> [ucs\_domain\_switches](#module\_ucs\_domain\_switches) | terraform-cisco-modules/imm/intersight//modules/ucs_domain_switches | n/a |
 
 ## Resources

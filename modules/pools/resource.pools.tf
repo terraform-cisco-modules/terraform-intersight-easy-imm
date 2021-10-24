@@ -7,20 +7,14 @@
 variable "resource_pools" {
   default = {
     default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
-      assignment_order = "default"
-      description      = ""
-      organization     = "default"
-      pool_type        = "Static"
-      resource_type    = "Server"
+      assignment_order   = "default"
+      description        = ""
+      organization       = "default"
+      pool_type          = "Static"
+      resource_type      = "Server"
       serial_number_list = ["**REQUIRED**"]
-      server_type      = "Blades"
-      tags             = []
-      mac_blocks = [
-        {
-          from = "00:25:B5:0a:00:00"
-          to   = "00:25:B5:0a:00:ff"
-        }
-      ]
+      server_type        = "Blades"
+      tags               = []
     }
   }
   description = <<-EOT
@@ -45,14 +39,14 @@ variable "resource_pools" {
   EOT
   type = map(object(
     {
-      assignment_order = optional(string)
-      description      = optional(string)
-      organization     = optional(string)
-      pool_type        = optional(string)
-      resource_type    = optional(string)
+      assignment_order   = optional(string)
+      description        = optional(string)
+      organization       = optional(string)
+      pool_type          = optional(string)
+      resource_type      = optional(string)
       serial_number_list = set(string)
-      server_type      = optional(string)
-      tags             = optional(list(map(string)))
+      server_type        = optional(string)
+      tags               = optional(list(map(string)))
     }
   ))
 }
@@ -73,15 +67,16 @@ module "resource_pools" {
   depends_on = [
     local.org_moids
   ]
-  source           = "terraform-cisco-modules/imm/intersight//modules/resource_pools"
-  for_each         = local.resource_pools
-  assignment_order = each.value.assignment_order
-  description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} Resource Pool."
-  moid_list       = each.value.moid_list
-  name             = each.key
-  org_moid         = local.org_moids[each.value.organization].moid
-  pool_type       = each.value.pool_type
-  resource_type       = each.value.resource_type
-  server_type       = each.value.server_type
-  tags             = each.value.tags != [] ? each.value.tags : local.tags
+  source             = "terraform-cisco-modules/imm/intersight//modules/resource_pools"
+  for_each           = local.resource_pools
+  assignment_order   = each.value.assignment_order
+  description        = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} Resource Pool."
+  moid_list          = each.value.moid_list
+  name               = each.key
+  org_moid           = local.org_moids[each.value.organization].moid
+  pool_type          = each.value.pool_type
+  resource_type      = each.value.resource_type
+  serial_number_list = each.value.serial_number_list
+  server_type        = each.value.server_type
+  tags               = each.value.tags != [] ? each.value.tags : local.tags
 }

@@ -17,30 +17,7 @@ locals {
   # Tags for Deployment
   tags = var.tags
 
-  #______________________________________________
-  #
-  # Fibre-Channel Pools
-  #______________________________________________
-  wwnn_pools = {
-    for k, v in var.wwnn_pools : k => {
-      assignment_order = v.assignment_order != null ? v.assignment_order : "default"
-      description      = v.description != null ? v.description : ""
-      id_blocks        = v.id_blocks != null ? v.id_blocks : [{ from = "20:00:00:25:B5:00:00:00", to = "20:00:00:25:B5:00:00:ff" }]
-      organization     = v.organization != null ? v.organization : "default"
-      pool_purpose     = v.pool_purpose != null ? v.pool_purpose : "WWPN"
-      tags             = v.tags != null ? v.tags : []
-    }
-  }
-  wwpn_pools = {
-    for k, v in var.wwpn_pools : k => {
-      assignment_order = v.assignment_order != null ? v.assignment_order : "default"
-      description      = v.description != null ? v.description : ""
-      id_blocks        = v.id_blocks != null ? v.id_blocks : [{ from = "20:00:00:25:B5:0a:00:00", to = "20:00:00:25:B5:0a:00:ff" }]
-      organization     = v.organization != null ? v.organization : "default"
-      pool_purpose     = v.pool_purpose != null ? v.pool_purpose : "WWPN"
-      tags             = v.tags != null ? v.tags : []
-    }
-  }
+
   #______________________________________________
   #
   # IP Pools
@@ -57,6 +34,8 @@ locals {
       tags             = v.tags != null ? v.tags : []
     }
   }
+
+
   #______________________________________________
   #
   # IQN Pools
@@ -71,6 +50,8 @@ locals {
       tags             = v.tags != null ? v.tags : []
     }
   }
+
+
   #______________________________________________
   #
   # MAC Pools
@@ -84,6 +65,25 @@ locals {
       tags             = v.tags != null ? v.tags : []
     }
   }
+
+
+  #______________________________________________
+  #
+  # Resource Pools
+  #______________________________________________
+  resource_pools = {
+    for k, v in var.resource_pools : k => {
+      assignment_order   = v.assignment_order != null ? v.assignment_order : "default"
+      description        = v.description != null ? v.description : ""
+      organization       = v.organization != null ? v.organization : "default"
+      pool_type          = v.pool_type != null ? v.pool_type : "Static"
+      resource_type      = v.resource_type != null ? v.resource_type : "Server"
+      serial_number_list = v.serial_number_list
+      server_type        = v.server_type != null ? v.server_type : "Blades"
+      tags               = v.tags != null ? v.tags : []
+    }
+  }
+
   #______________________________________________
   #
   # UUID Pools
@@ -96,6 +96,38 @@ locals {
       organization     = v.organization != null ? v.organization : "default"
       tags             = v.tags != null ? v.tags : []
       uuid_blocks      = v.uuid_blocks != null ? v.uuid_blocks : [{ from = "0000-000000000000", size = 1000 }]
+    }
+  }
+
+
+  #______________________________________________
+  #
+  # WWNN Pools
+  #______________________________________________
+  wwnn_pools = {
+    for k, v in var.wwnn_pools : k => {
+      assignment_order = v.assignment_order != null ? v.assignment_order : "default"
+      description      = v.description != null ? v.description : ""
+      id_blocks        = v.id_blocks != null ? v.id_blocks : [{ from = "20:00:00:25:B5:00:00:00", to = "20:00:00:25:B5:00:00:ff" }]
+      organization     = v.organization != null ? v.organization : "default"
+      pool_purpose     = v.pool_purpose != null ? v.pool_purpose : "WWPN"
+      tags             = v.tags != null ? v.tags : []
+    }
+  }
+
+
+  #______________________________________________
+  #
+  # WWPN Pools
+  #______________________________________________
+  wwpn_pools = {
+    for k, v in var.wwpn_pools : k => {
+      assignment_order = v.assignment_order != null ? v.assignment_order : "default"
+      description      = v.description != null ? v.description : ""
+      id_blocks        = v.id_blocks != null ? v.id_blocks : [{ from = "20:00:00:25:B5:0a:00:00", to = "20:00:00:25:B5:0a:00:ff" }]
+      organization     = v.organization != null ? v.organization : "default"
+      pool_purpose     = v.pool_purpose != null ? v.pool_purpose : "WWPN"
+      tags             = v.tags != null ? v.tags : []
     }
   }
 }
