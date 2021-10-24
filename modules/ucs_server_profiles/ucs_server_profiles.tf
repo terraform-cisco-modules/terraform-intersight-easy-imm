@@ -31,13 +31,13 @@ variable "ucs_server_profiles" {
       serial_over_lan_policy        = ""
       smtp_policy                   = ""
       snmp_policy                   = ""
-      snmp_1_user_policy            = ""
-      snmp_2_users_policy           = ""
       ssh_policy                    = ""
+      static_uuid_address           = ""
       storage_policy                = ""
       syslog_policy                 = ""
       tags                          = []
       target_platform               = "FIAttached"
+      uuid_pool                     = ""
       ucs_server_profile_template   = ""
       virtual_kvm_policy            = ""
       virtual_media_policy          = ""
@@ -74,15 +74,15 @@ variable "ucs_server_profiles" {
   * serial_over_lan_policy - Name of the Serial over LAN Policy to assign to the Profile.
   * smtp_policy - Name of the SMTP Policy to assign to the Profile.
   * snmp_policy - Name of the SNMP Policy to assign to the Profile.
-  * snmp_1_user_policy - Name of the SNMP single user Policy to assign to the Profile.
-  * snmp_2_users_policy - Name of the SNMP two user Policy to assign to the Profile.
   * ssh_policy - Name of the SSH Policy to assign to the Profile.
+  * static_uuid_address - The UUID address for the server must include UUID prefix xxxxxxxx-xxxx-xxxx along with the UUID suffix of format xxxx-xxxxxxxxxxxx.  Joined with a "="
   * storage_policy - Name of the Storage Policy to assign to the Profile.
   * syslog_policy - Name of the Syslog Policy to assign to the Profile.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * target_platform - The platform for which the server profile is applicable. It can either be a server that is operating in standalone mode or which is attached to a Fabric Interconnect managed by Intersight.
     - FIAttached - (Default) - Servers which are connected to a Fabric Interconnect that is managed by Intersight.
     - Standalone - Servers which are operating in standalone mode i.e. not connected to a Fabric Interconnected.
+  * uuid_pool - Name of a UUID Pool to Assign to the Policy.
   * ucs_server_profile_template - Name of the server template to apply to the server profile.
   * virtual_kvm_policy - Name of the Virtual KVM Policy to assign to the Profile.
   * virtual_media_policy - Name of the Virtual Media Policy to assign to the Profile.
@@ -115,19 +115,25 @@ variable "ucs_server_profiles" {
       serial_over_lan_policy        = optional(string)
       smtp_policy                   = optional(string)
       snmp_policy                   = optional(string)
-      snmp_1_user_policy            = optional(string)
-      snmp_2_users_policy           = optional(string)
       ssh_policy                    = optional(string)
+      static_uuid_address           = optional(string)
       storage_policy                = optional(string)
       syslog_policy                 = optional(string)
       tags                          = optional(list(map(string)))
       target_platform               = optional(string)
+      uuid_pool                     = optional(string)
+      ucs_server_profile_template   = optional(string)
       virtual_kvm_policy            = optional(string)
       virtual_media_policy          = optional(string)
-      ucs_server_profile_template   = optional(string)
       wait_for_completion           = optional(bool)
     }
   ))
+}
+
+variable "static_uuid_address" {
+  default     = ""
+  description = "The UUID address for the server must include UUID prefix xxxxxxxx-xxxx-xxxx along with the UUID suffix of format xxxx-xxxxxxxxxxxx."
+  type        = string
 }
 
 
@@ -149,8 +155,10 @@ module "ucs_server_profiles" {
   description         = each.value.description != "" ? each.value.description : "${each.key} Server Profile."
   name                = each.key
   org_moid            = local.org_moids[each.value.organization].moid
+  static_uuid_address = each.value.static_uuid_address
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
+  uuid_pool           = each.value.uuid_pool
   wait_for_completion = each.value.wait_for_completion
   assigned_server = each.value.assign_server == true ? [
     {

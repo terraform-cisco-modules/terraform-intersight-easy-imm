@@ -12,6 +12,9 @@ locals {
     }
   }
 
+  # Terraform Cloud Remote Resources - IP Pools
+  uuid_pools = lookup(data.terraform_remote_state.pools.outputs, "uuid_pools", {})
+
   # Tags for Deployment
   tags = var.tags
 
@@ -46,11 +49,13 @@ locals {
       smtp_policy                   = v.smtp_policy != null ? v.smtp_policy : null
       snmp_policy                   = v.snmp_policy != null ? v.snmp_policy : null
       ssh_policy                    = v.ssh_policy != null ? v.ssh_policy : null
+      static_uuid_address           = v.static_uuid_address != null ? v.static_uuid_address : ""
       storage_policy                = v.storage_policy != null ? v.storage_policy : null
       syslog_policy                 = v.syslog_policy != null ? v.syslog_policy : null
       tags                          = v.tags != null ? v.tags : []
       target_platform               = v.target_platform != null ? v.target_platform : "FIAttached"
       ucs_server_profile_template   = v.ucs_server_profile_template != null ? v.ucs_server_profile_template : ""
+      uuid_pool                     = v.uuid_pool != null ? v.uuid_pool : ""
       virtual_kvm_policy            = v.virtual_kvm_policy != null ? v.virtual_kvm_policy : null
       virtual_media_policy          = v.virtual_media_policy != null ? v.virtual_media_policy : null
       wait_for_completion           = v.wait_for_completion != null ? v.wait_for_completion : false
@@ -91,6 +96,7 @@ locals {
       syslog_policy                 = v.syslog_policy != null ? v.syslog_policy : ""
       tags                          = v.tags != null ? v.tags : []
       target_platform               = v.target_platform != null ? v.target_platform : "FIAttached"
+      uuid_pool                     = v.uuid_pool != null ? v.uuid_pool : ""
       virtual_kvm_policy            = v.virtual_kvm_policy != null ? v.virtual_kvm_policy : ""
       virtual_media_policy          = v.virtual_media_policy != null ? v.virtual_media_policy : ""
     }
@@ -167,6 +173,9 @@ locals {
         ssh_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.ssh_policy, "_EMPTY"))
         ) > 0 ? v.ssh_policy : v.ucs_server_profile_template != "" ? value.ssh_policy : ""
+        static_uuid_address = length(
+          regexall("^[a-zA-Z0-9]", coalesce(v.static_uuid_address, "_EMPTY"))
+        ) > 0 ? v.static_uuid_address : ""
         storage_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.storage_policy, "_EMPTY"))
         ) > 0 ? v.storage_policy : v.ucs_server_profile_template != "" ? value.storage_policy : ""
@@ -179,6 +188,9 @@ locals {
           regexall("^[a-zA-Z0-9]", coalesce(v.target_platform, "_EMPTY"))
         ) > 0 ? v.target_platform : v.ucs_server_profile_template != "" ? value.target_platform : ""
         ucs_server_profile_template = v.ucs_server_profile_template
+        uuid_pool = length(
+          regexall("^[a-zA-Z0-9]", coalesce(v.uuid_pool, "_EMPTY"))
+        ) > 0 ? v.uuid_pool : v.ucs_server_profile_template != "" ? value.uuid_pool : ""
         virtual_kvm_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.virtual_kvm_policy, "_EMPTY"))
         ) > 0 ? v.virtual_kvm_policy : v.ucs_server_profile_template != "" ? value.virtual_kvm_policy : ""

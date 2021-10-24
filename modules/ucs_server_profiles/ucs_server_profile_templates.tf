@@ -34,6 +34,7 @@ variable "ucs_server_profile_templates" {
       syslog_policy                 = ""
       tags                          = []
       target_platform               = "FIAttached"
+      uuid_pool                     = ""
       virtual_kvm_policy            = ""
       virtual_media_policy          = ""
     }
@@ -73,6 +74,7 @@ variable "ucs_server_profile_templates" {
   * target_platform - The platform for which the server profile is applicable. It can either be a server that is operating in standalone mode or which is attached to a Fabric Interconnect managed by Intersight.
     - FIAttached - (Default) - Servers which are connected to a Fabric Interconnect that is managed by Intersight.
     - Standalone - Servers which are operating in standalone mode i.e. not connected to a Fabric Interconnected.
+  * uuid_pool - Name of a UUID Pool to Assign to the Policy.
   * virtual_kvm_policy - Name of the Virtual KVM Policy to assign to the Template.
   * virtual_media_policy - Name of the Virtual Media Policy to assign to the Template.
   EOT
@@ -104,6 +106,7 @@ variable "ucs_server_profile_templates" {
       storage_policy                = optional(string)
       syslog_policy                 = optional(string)
       tags                          = optional(list(map(string)))
+      uuid_pool                     = optional(string)
       target_platform               = optional(string)
       virtual_kvm_policy            = optional(string)
       virtual_media_policy          = optional(string)
