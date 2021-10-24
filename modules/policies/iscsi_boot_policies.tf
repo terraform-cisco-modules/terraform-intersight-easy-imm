@@ -14,11 +14,11 @@ variable "iscsi_boot_password" {
 variable "iscsi_boot_policies" {
   default = {
     default = {
-      authentication                = ""
-      dhcp_vendor_id_iqn            = ""
-      description                   = ""
-      initiator_ip_pool             = ""
-      initiator_ip_source           = "Pool"
+      authentication      = ""
+      dhcp_vendor_id_iqn  = ""
+      description         = ""
+      initiator_ip_pool   = ""
+      initiator_ip_source = "Pool"
       initiator_static_ip_v4_config = {
         default_gateway = "If Configuring static field is **REQUIRED**"
         ip_address      = "If Configuring static field is **REQUIRED**"
@@ -26,14 +26,14 @@ variable "iscsi_boot_policies" {
         primary_dns     = ""
         secondary_dns   = ""
       }
-      iscsi_adapter_policy          = ""
-      password                      = 0
-      primary_target_policy         = ""
-      organization                  = "default"
-      secondary_target_policy       = ""
-      target_source_type            = "Auto"
-      tags                          = []
-      username                      = ""
+      iscsi_adapter_policy    = ""
+      password                = 0
+      primary_target_policy   = ""
+      organization            = "default"
+      secondary_target_policy = ""
+      target_source_type      = "Auto"
+      tags                    = []
+      username                = ""
     }
   }
   description = <<-EOT

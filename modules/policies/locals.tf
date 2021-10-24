@@ -16,20 +16,20 @@ locals {
   tags = var.tags
 
   # Terraform Cloud Remote Resources - IP Pools
-  ip_pools   = data.terraform_remote_state.pools.outputs.ip_pools
-  iqn_pools  = data.terraform_remote_state.pools.outputs.iqn_pools
-  mac_pools  = data.terraform_remote_state.pools.outputs.mac_pools
-  uuid_pools = data.terraform_remote_state.pools.outputs.uuid_pools
-  wwnn_pools = data.terraform_remote_state.pools.outputs.wwnn_pools
-  wwpn_pools = data.terraform_remote_state.pools.outputs.wwpn_pools
+  ip_pools   = lookup(data.terraform_remote_state.pools.outputs, "ip_pools", {})
+  iqn_pools  = lookup(data.terraform_remote_state.pools.outputs, "iqn_pools", {})
+  mac_pools  = lookup(data.terraform_remote_state.pools.outputs, "mac_pools", {})
+  uuid_pools = lookup(data.terraform_remote_state.pools.outputs, "uuid_pools", {})
+  wwnn_pools = lookup(data.terraform_remote_state.pools.outputs, "wwnn_pools", {})
+  wwpn_pools = lookup(data.terraform_remote_state.pools.outputs, "wwpn_pools", {})
 
   # Terraform Cloud Remote Resources - Profiles
-  ucs_chassis_profiles = data.terraform_remote_state.ucs_chassis_profiles.outputs.ucs_chassis_profiles
-  ucs_chassis_moids    = data.terraform_remote_state.ucs_chassis_profiles.outputs.moids
-  ucs_domain_profiles  = data.terraform_remote_state.ucs_domain_profiles.outputs.ucs_domain_profiles
-  ucs_domain_moids     = data.terraform_remote_state.ucs_domain_profiles.outputs.moids
-  ucs_server_profiles  = data.terraform_remote_state.ucs_server_profiles.outputs.ucs_server_profiles
-  ucs_server_moids     = data.terraform_remote_state.ucs_server_profiles.outputs.moids
+  ucs_chassis_profiles = lookup(data.terraform_remote_state.ucs_chassis_profiles.outputs, "ucs_chassis_profiles", {})
+  ucs_chassis_moids    = lookup(data.terraform_remote_state.ucs_chassis_profiles.outputs, "moids", {})
+  ucs_domain_profiles  = lookup(data.terraform_remote_state.ucs_domain_profiles.outputs, "ucs_domain_profiles", {})
+  ucs_domain_moids     = lookup(data.terraform_remote_state.ucs_domain_profiles.outputs, "moids", {})
+  ucs_server_profiles  = lookup(data.terraform_remote_state.ucs_server_profiles.outputs, "ucs_server_profiles", {})
+  ucs_server_moids     = lookup(data.terraform_remote_state.ucs_server_profiles.outputs, "moids", {})
 
   #__________________________________________________________
   #
@@ -89,7 +89,7 @@ locals {
       lan_connectivity_policy       = ""
       ldap_policy                   = ""
       local_user_policy             = ""
-      network_connectivity_policy   = ""
+      network_connectivity_policy   = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
       ntp_policy                    = v.ntp_policy != null ? v.ntp_policy : ""
       persistent_memory_policy      = ""
       port_policy                   = v.port_policy != null ? v.port_policy : ""
@@ -98,11 +98,11 @@ locals {
       sd_card_policy                = ""
       serial_over_lan_policy        = ""
       smtp_policy                   = ""
-      snmp_policy                   = ""
+      snmp_policy                   = v.snmp_policy != null ? v.snmp_policy : ""
       ssh_policy                    = ""
       storage_policy                = ""
       switch_control_policy         = v.switch_control_policy != null ? v.switch_control_policy : ""
-      syslog_policy                 = ""
+      syslog_policy                 = v.syslog_policy != null ? v.syslog_policy : ""
       system_qos_policy             = v.system_qos_policy != null ? v.system_qos_policy : ""
       target_platform               = ""
       thermal_policy                = ""
@@ -118,7 +118,7 @@ locals {
       moid                          = local.ucs_server_moids[k]
       object_type                   = "server.Profile"
       organization                  = v.organization
-      adapter_policy                = v.adapter_policy != null ? v.adapter_policy : ""
+      adapter_configuration_policy  = v.adapter_configuration_policy != null ? v.adapter_configuration_policy : ""
       bios_policy                   = v.bios_policy != null ? v.bios_policy : ""
       boot_order_policy             = v.boot_order_policy != null ? v.boot_order_policy : ""
       certificate_management_policy = v.certificate_management_policy != null ? v.certificate_management_policy : ""
@@ -597,6 +597,7 @@ locals {
         additional_properties = v.boot_mode == "Uefi" && value.object_type == "boot.Iscsi" ? jsonencode(
           {
             Bootloader = {
+              ClassId     = "boot.Bootloader",
               Description = value.bootloader_description,
               Name        = value.bootloader_name,
               ObjectType  = "boot.Bootloader",
@@ -615,6 +616,7 @@ locals {
           ) : v.boot_mode == "Uefi" && value.object_type == "boot.LocalDisk" ? jsonencode(
           {
             Bootloader = {
+              ClassId     = "boot.Bootloader",
               Description = value.bootloader_description,
               Name        = value.bootloader_name,
               ObjectType  = "boot.Bootloader",
@@ -629,6 +631,7 @@ locals {
           ) : v.boot_mode == "Uefi" && value.object_type == "boot.Nvme" ? jsonencode(
           {
             Bootloader = {
+              ClassId     = "boot.Bootloader",
               Description = value.bootloader_description,
               Name        = value.bootloader_name,
               ObjectType  = "boot.Bootloader",
@@ -638,6 +641,7 @@ locals {
           ) : v.boot_mode == "Uefi" && value.object_type == "boot.PchStorage" ? jsonencode(
           {
             Bootloader = {
+              ClassId     = "boot.Bootloader",
               Description = value.bootloader_description,
               Name        = value.bootloader_name,
               ObjectType  = "boot.Bootloader",
@@ -665,6 +669,7 @@ locals {
           ) : v.boot_mode == "Uefi" && value.object_type == "boot.San" ? jsonencode(
           {
             Bootloader = {
+              ClassId     = "boot.Bootloader",
               Description = value.bootloader_description,
               Name        = value.bootloader_name,
               ObjectType  = "boot.Bootloader",
@@ -686,6 +691,7 @@ locals {
           ) : v.boot_mode == "Uefi" && value.object_type == "boot.SdCard" ? jsonencode(
           {
             Bootloader = {
+              ClassId     = "boot.Bootloader",
               Description = value.bootloader_description,
               Name        = value.bootloader_name,
               ObjectType  = "boot.Bootloader",
@@ -743,10 +749,10 @@ locals {
 
   device_connector_policies = {
     for k, v in var.device_connector_policies : k => {
-      description  = v.description != null ? v.description : ""
-      lockout      = v.lockout != null ? v.lockout : false
-      organization = v.organization != null ? v.organization : "default"
-      tags         = v.tags != null ? v.tags : []
+      description           = v.description != null ? v.description : ""
+      configuration_lockout = v.configuration_lockout != null ? v.configuration_lockout : false
+      organization          = v.organization != null ? v.organization : "default"
+      tags                  = v.tags != null ? v.tags : []
     }
   }
 
@@ -843,17 +849,17 @@ locals {
       roce_memory_regions = length(
         regexall("(MQ-SMBd)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 65536 : length(
         regexall("(Linux-NVMe-RoCE|SMBClient|SMBServer|Win-AzureStack|Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? 131072 : v.roce_memory_regions != null ? v.roce_memory_regions : 131072
+      ) > 0 ? 131072 : v.roce_memory_regions != null ? v.roce_memory_regions : v.roce_enable == true ? 131072 : 0
       roce_queue_pairs = length(
         regexall("(MQ-SMBd|SMBClient|Win-AzureStack|Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 256 : length(
         regexall("(Linux-NVMe-RoCE)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 1024 : length(
         regexall("(SMBServer)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? 2048 : v.roce_queue_pairs != null ? v.roce_queue_pairs : 256
+      ) > 0 ? 2048 : v.roce_queue_pairs != null ? v.roce_queue_pairs : v.roce_enable == true ? 256 : 0
       roce_resource_groups = length(
         regexall("(MQ-SMBd|Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 2 : length(
         regexall("(Linux-NVMe-RoCE)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 8 : length(
         regexall("(SMBClient|SMBServer)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? 32 : v.roce_resource_groups != null ? v.roce_resource_groups : 4
+      ) > 0 ? 32 : v.roce_resource_groups != null ? v.roce_resource_groups : v.roce_enable == true ? 4 : 0
       roce_version = length(
         regexall("(Linux-NVMe-RoCE|MQ-SMBd|Win-AzureStack|Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? 2 : v.roce_version != null ? v.roce_version : 1
