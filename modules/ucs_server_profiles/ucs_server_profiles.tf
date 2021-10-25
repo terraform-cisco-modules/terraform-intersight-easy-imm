@@ -52,7 +52,6 @@ variable "ucs_server_profiles" {
     - No-op
     - Unassign
   * adapter_configuration_policy - Name of the Adapter Configuration Policy to assign to the Profile.
-  * assign_server - Flag to determine if a physical server should be assigned to the server profile or not.  Default is false.
   * bios_policy - Name of the BIOS Policy to assign to the Profile.
   * boot_order_policy - Name of the Boot Order Policy to assign to the Profile.
   * certificate_management_policy - Name of the Certificate Management Policy to assign to the Profile.
@@ -98,7 +97,6 @@ variable "ucs_server_profiles" {
     {
       action                        = optional(string)
       adapter_configuration_policy  = optional(string)
-      assign_server                 = optional(bool)
       bios_policy                   = optional(string)
       boot_order_policy             = optional(string)
       certificate_management_policy = optional(string)
