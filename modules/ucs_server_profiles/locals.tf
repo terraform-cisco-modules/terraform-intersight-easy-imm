@@ -26,7 +26,6 @@ locals {
     for k, v in var.ucs_server_profiles : k => {
       action                        = v.action != null ? v.action : "No-op"
       adapter_configuration_policy  = v.adapter_configuration_policy != null ? v.adapter_configuration_policy : null
-      assign_server                 = v.assign_server != null ? v.assign_server : false
       bios_policy                   = v.bios_policy != null ? v.bios_policy : null
       boot_order_policy             = v.boot_order_policy != null ? v.boot_order_policy : null
       certificate_management_policy = v.certificate_management_policy != null ? v.certificate_management_policy : null
