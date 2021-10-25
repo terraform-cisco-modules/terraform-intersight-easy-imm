@@ -71,7 +71,6 @@ module "resource_pools" {
   for_each           = local.resource_pools
   assignment_order   = each.value.assignment_order
   description        = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} Resource Pool."
-  moid_list          = each.value.moid_list
   name               = each.key
   org_moid           = local.org_moids[each.value.organization].moid
   pool_type          = each.value.pool_type
