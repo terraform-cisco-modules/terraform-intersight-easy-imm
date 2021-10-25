@@ -9,7 +9,6 @@ variable "ucs_server_profiles" {
     default = {
       action                        = "No-op"
       adapter_configuration_policy  = ""
-      assign_server                 = false
       bios_policy                   = ""
       boot_order_policy             = ""
       certificate_management_policy = ""
@@ -25,10 +24,12 @@ variable "ucs_server_profiles" {
       organization                  = "default"
       persistent_memory_policy      = ""
       power_policy                  = ""
+      resource_pool                 = ""
       san_connectivity_policy       = ""
       sd_card_policy                = ""
       serial_number                 = ""
       serial_over_lan_policy        = ""
+      server_assignment_mode        = "None"
       smtp_policy                   = ""
       snmp_policy                   = ""
       ssh_policy                    = ""
@@ -68,10 +69,15 @@ variable "ucs_server_profiles" {
     -  https://intersight.com/an/settings/organizations/
   * persistent_memory_policy - Name of the Persistent Memory Policy to assign to the Profile.
   * power_policy - Name of the Power Policy to assign to the Profile.
+  * resource_pool - Name of the Server Resource Pool to assign to the Policy.
   * san_connectivity_policy - Name of the SAN Connectivity Policy to assign to the Profile.
   * sd_card_policy - Name of the SD Card Policy to assign to the Profile.
   * serial_number - Serial Number of the Physical Server.
   * serial_over_lan_policy - Name of the Serial over LAN Policy to assign to the Profile.
+  * server_assignment_mode - Source of the server assigned to the server profile. Values can be Static, Pool or None. Static is used if a server is attached directly to server profile. Pool is used if a resource pool is attached to server profile. None is used if no server or resource pool is attached to server profile.
+    - None - No server is assigned to the server profile.
+    - Pool - Server is assigned from a resource pool.
+    - Static - Server is directly assigned to server profile using assign server.
   * smtp_policy - Name of the SMTP Policy to assign to the Profile.
   * snmp_policy - Name of the SNMP Policy to assign to the Profile.
   * ssh_policy - Name of the SSH Policy to assign to the Profile.
@@ -109,10 +115,12 @@ variable "ucs_server_profiles" {
       organization                  = optional(string)
       persistent_memory_policy      = optional(string)
       power_policy                  = optional(string)
+      resource_pool                 = optional(string)
       san_connectivity_policy       = optional(string)
       sd_card_policy                = optional(string)
       serial_number                 = optional(string)
       serial_over_lan_policy        = optional(string)
+      server_assignment_mode        = optional(string)
       smtp_policy                   = optional(string)
       snmp_policy                   = optional(string)
       ssh_policy                    = optional(string)
@@ -146,9 +154,7 @@ variable "static_uuid_address" {
 module "ucs_server_profiles" {
   depends_on = [
     local.org_moids,
-    # module.ucs_server_profile_templates
   ]
-  # src_template        = each.value.ucs_server_profile_template != "" && var.assign_profiles_to_templates == true ? [module.ucs_server_profile_templates[each.value.ucs_server_profile_template].moid] : []
   source              = "terraform-cisco-modules/imm/intersight//modules/ucs_server_profiles"
   for_each            = local.ucs_server_profiles
   action              = each.value.action
@@ -158,12 +164,17 @@ module "ucs_server_profiles" {
   static_uuid_address = each.value.static_uuid_address
   tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
-  uuid_pool           = each.value.uuid_pool
+  uuid_pool           = each.value.uuid_pool != "" ? local.uuid_pools[each.value.uuid_pool] : ""
   wait_for_completion = each.value.wait_for_completion
-  assigned_server = each.value.assign_server == true ? [
+  assigned_server = each.value.server_assignment_mode == "Static" ? [
     {
       moid        = data.intersight_compute_physical_summary.server[each.key].results[0].moid
       object_type = data.intersight_compute_physical_summary.server[each.key].results[0].source_object_type
+    }
+  ] : []
+  associated_server_pool = each.value.server_assignment_mode == "Pool" ? [
+    {
+      moid = data.uuid_pools[each.value.resource_pool].moid
     }
   ] : []
 }

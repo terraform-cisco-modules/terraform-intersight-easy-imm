@@ -20,13 +20,13 @@ This module will Create a Multicast Policy and assign it to VLANs in a VLAN poli
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.11 |
+| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.16 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.11 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.16 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules

@@ -42,10 +42,12 @@ locals {
       organization                  = v.organization != null ? v.organization : "default"
       persistent_memory_policy      = v.persistent_memory_policy != null ? v.persistent_memory_policy : null
       power_policy                  = v.power_policy != null ? v.power_policy : null
+      resource_pool                 = v.resource_pool != null ? v.resource_pool : ""
       san_connectivity_policy       = v.san_connectivity_policy != null ? v.san_connectivity_policy : null
       sd_card_policy                = v.sd_card_policy != null ? v.sd_card_policy : null
       serial_number                 = v.serial_number != null ? v.serial_number : null
       serial_over_lan_policy        = v.serial_over_lan_policy != null ? v.serial_over_lan_policy : null
+      server_assignment_mode        = v.server_assignment_mode != null ? v.server_assignment_mode : "None"
       smtp_policy                   = v.smtp_policy != null ? v.smtp_policy : null
       snmp_policy                   = v.snmp_policy != null ? v.snmp_policy : null
       ssh_policy                    = v.ssh_policy != null ? v.ssh_policy : null

@@ -20,13 +20,13 @@ This module will create UCS Server Profiles in Intersight.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.13 |
+| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.16 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.13 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.16 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
