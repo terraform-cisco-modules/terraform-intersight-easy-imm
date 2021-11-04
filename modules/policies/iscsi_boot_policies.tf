@@ -117,8 +117,6 @@ module "iscsi_boot_policies" {
   source                        = "terraform-cisco-modules/imm/intersight//modules/iscsi_boot_policies"
   for_each                      = var.iscsi_boot_policies
   authentication                = each.value.authentication
-  chap_password                 = each.value.chap_password == 1 ? var.chap_password_1 : ""
-  chap_user_id                  = each.value.chap_user_id != null ? each.value.chap_user_id : ""
   dhcp_vendor_id_iqn            = each.value.dhcp_vendor_id_iqn != null ? each.value.dhcp_vendor_id_iqn : ""
   description                   = each.value.description != null ? each.value.description : "${each.key} iSCSI Boot Policy."
   initiator_ip_source           = each.value.initiator_ip_source != null ? each.value.initiator_ip_source : ""
