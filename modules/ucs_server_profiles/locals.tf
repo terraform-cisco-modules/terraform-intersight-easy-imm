@@ -12,7 +12,8 @@ locals {
     }
   }
 
-  # Terraform Cloud Remote Resources - IP Pools
+  # Terraform Cloud Remote Resources - Pools
+  resource_pools = lookup(data.terraform_remote_state.pools.outputs, "resource_pools", {})
   uuid_pools = lookup(data.terraform_remote_state.pools.outputs, "uuid_pools", {})
 
   # Tags for Deployment
@@ -54,7 +55,9 @@ locals {
       storage_policy                = v.storage_policy != null ? v.storage_policy : null
       syslog_policy                 = v.syslog_policy != null ? v.syslog_policy : null
       tags                          = v.tags != null ? v.tags : []
-      target_platform               = v.target_platform != null ? v.target_platform : "FIAttached"
+      target_platform               = v.target_platform != null && (
+        v.ucs_server_profile_template == null || v.ucs_server_profile_template == ""
+      ) ? v.target_platform : v.ucs_server_profile_template == null || v.ucs_server_profile_template == "" ? "FIAttached" : null
       ucs_server_profile_template   = v.ucs_server_profile_template != null ? v.ucs_server_profile_template : ""
       uuid_pool                     = v.uuid_pool != null ? v.uuid_pool : ""
       virtual_kvm_policy            = v.virtual_kvm_policy != null ? v.virtual_kvm_policy : null
@@ -110,7 +113,6 @@ locals {
         adapter_configuration_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.adapter_configuration_policy, "_EMPTY"))
         ) > 0 ? v.adapter_configuration_policy : v.ucs_server_profile_template != "" ? value.adapter_configuration_policy : ""
-        assign_server = v.assign_server
         bios_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.bios_policy, "_EMPTY"))
         ) > 0 ? v.bios_policy : v.ucs_server_profile_template != "" ? value.bios_policy : ""
@@ -165,6 +167,7 @@ locals {
         serial_over_lan_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.serial_over_lan_policy, "_EMPTY"))
         ) > 0 ? v.serial_over_lan_policy : v.ucs_server_profile_template != "" ? value.serial_over_lan_policy : ""
+        server_assignment_mode = v.server_assignment_mode
         smtp_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.smtp_policy, "_EMPTY"))
         ) > 0 ? v.smtp_policy : v.ucs_server_profile_template != "" ? value.smtp_policy : ""
@@ -187,7 +190,7 @@ locals {
         ) > 0 ? v.tags : v.ucs_server_profile_template != [] ? value.tags : []
         target_platform = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.target_platform, "_EMPTY"))
-        ) > 0 ? v.target_platform : v.ucs_server_profile_template != "" ? value.target_platform : ""
+        ) > 0 ? v.target_platform : v.ucs_server_profile_template != "" ? value.target_platform : "FIAttached"
         ucs_server_profile_template = v.ucs_server_profile_template
         uuid_pool = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.uuid_pool, "_EMPTY"))

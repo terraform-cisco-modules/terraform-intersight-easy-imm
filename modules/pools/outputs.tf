@@ -1,21 +1,5 @@
 #__________________________________________________________
 #
-# Fibre-Channel Pool Outputs
-#__________________________________________________________
-
-output "wwnn_pools" {
-  description = "moid of the Fibre-Channel WWNN Pools."
-  value       = var.wwnn_pools != {} ? { for v in sort(keys(module.wwnn_pools)) : v => module.wwnn_pools[v].moid } : {}
-}
-
-output "wwpn_pools" {
-  description = "moid of the Fibre-Channel WWPN Pools."
-  value       = var.wwpn_pools != {} ? { for v in sort(keys(module.wwpn_pools)) : v => module.wwpn_pools[v].moid } : {}
-}
-
-
-#__________________________________________________________
-#
 # IP Pool Outputs
 #__________________________________________________________
 
@@ -55,4 +39,37 @@ output "mac_pools" {
 output "uuid_pools" {
   description = "moid of the UUID Pools."
   value       = var.uuid_pools != {} ? { for v in sort(keys(module.uuid_pools)) : v => module.uuid_pools[v].moid } : {}
+}
+
+
+#__________________________________________________________
+#
+# Resource Pool Outputs
+#__________________________________________________________
+
+output "resource_pools" {
+  description = "moid of the UUID Pools."
+  value       = var.resource_pools != {} ? { for v in sort(keys(module.resource_pools)) : v => module.resource_pools[v].moid } : {}
+}
+
+
+#__________________________________________________________
+#
+# WWNN Pool Outputs
+#__________________________________________________________
+
+output "wwnn_pools" {
+  description = "moid of the Fibre-Channel WWNN Pools."
+  value       = var.wwnn_pools != {} ? { for v in sort(keys(module.wwnn_pools)) : v => module.wwnn_pools[v].moid } : {}
+}
+
+
+#__________________________________________________________
+#
+# WWPN Pool Outputs
+#__________________________________________________________
+
+output "wwpn_pools" {
+  description = "moid of the Fibre-Channel WWPN Pools."
+  value       = var.wwpn_pools != {} ? { for v in sort(keys(module.wwpn_pools)) : v => module.wwpn_pools[v].moid } : {}
 }

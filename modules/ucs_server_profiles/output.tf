@@ -13,7 +13,3 @@ output "moids" {
 output "ucs_server_profiles" {
   value = local.ucs_server_profiles
 }
-
-# output "ucs_server_profile_templates" {
-#   value = local.ucs_server_profile_templates
-# }

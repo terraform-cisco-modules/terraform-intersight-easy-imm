@@ -136,13 +136,6 @@ variable "ucs_server_profiles" {
   ))
 }
 
-variable "static_uuid_address" {
-  default     = ""
-  description = "The UUID address for the server must include UUID prefix xxxxxxxx-xxxx-xxxx along with the UUID suffix of format xxxx-xxxxxxxxxxxx."
-  type        = string
-}
-
-
 #_________________________________________________________________________
 #
 # Intersight UCS Server Profile Module
@@ -153,16 +146,21 @@ module "ucs_server_profiles" {
   depends_on = [
     local.org_moids,
   ]
-  source              = "terraform-cisco-modules/imm/intersight//modules/ucs_server_profiles"
-  for_each            = local.ucs_server_profiles
-  action              = each.value.action
-  description         = each.value.description != "" ? each.value.description : "${each.key} Server Profile."
-  name                = each.key
-  org_moid            = local.org_moids[each.value.organization].moid
-  static_uuid_address = each.value.static_uuid_address
-  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
-  uuid_pool           = each.value.uuid_pool != "" ? local.uuid_pools[each.value.uuid_pool] : ""
+  source                 = "terraform-cisco-modules/imm/intersight//modules/ucs_server_profiles"
+  for_each               = local.ucs_server_profiles
+  action                 = each.value.action
+  description            = each.value.description != "" ? each.value.description : "${each.key} Server Profile."
+  name                   = each.key
+  org_moid               = local.org_moids[each.value.organization].moid
+  server_assignment_mode = each.value.server_assignment_mode
+  static_uuid_address    = each.value.static_uuid_address
+  tags                   = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  target_platform        = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
+  uuid_pool              = each.value.uuid_pool != "" ? [
+    {
+      moid = local.uuid_pools[each.value.uuid_pool]
+    }
+   ] : []
   wait_for_completion = each.value.wait_for_completion
   assigned_server = each.value.server_assignment_mode == "Static" ? [
     {
@@ -172,7 +170,7 @@ module "ucs_server_profiles" {
   ] : []
   associated_server_pool = each.value.server_assignment_mode == "Pool" ? [
     {
-      moid = data.uuid_pools[each.value.resource_pool].moid
+      moid = local.resource_pools[each.value.resource_pool].moid
     }
   ] : []
 }

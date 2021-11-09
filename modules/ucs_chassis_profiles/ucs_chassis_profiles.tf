@@ -17,7 +17,6 @@ variable "ucs_chassis_profiles" {
       thermal_policy      = ""
       description         = ""
       serial_number       = ""
-      src_template        = ""
       tags                = []
       wait_for_completion = false
     }

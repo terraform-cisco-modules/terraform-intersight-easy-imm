@@ -28,6 +28,28 @@ variable "secretkey" {
 
 #__________________________________________________________
 #
+# Terraform Cloud Organization
+#__________________________________________________________
+
+variable "tfc_organization" {
+  description = "Terraform Cloud Organization."
+  type        = string
+}
+
+
+#______________________________________________
+#
+# Terraform Cloud domain_workspace Workspace
+#______________________________________________
+
+variable "ws_pools" {
+  description = "Pools Workspace Name."
+  type        = string
+}
+
+
+#__________________________________________________________
+#
 # Global Variables
 #__________________________________________________________
 
