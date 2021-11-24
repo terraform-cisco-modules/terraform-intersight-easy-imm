@@ -12,12 +12,13 @@ variable "uuid_pools" {
       organization     = "default"
       prefix           = "000025B5-0000-0000"
       tags             = []
-      uuid_blocks = [
-        {
+      uuid_blocks = {
+        default = {
           from = "0000-000000000000"
           size = 1000
+          to   = "0000-0000000003E7"
         }
-      ]
+      }
     }
   }
   description = <<-EOT
@@ -28,8 +29,9 @@ variable "uuid_pools" {
   * description - Description to Assign to the Pool.
   * prefix - Prefix to assign to the UUID Pool..  The default is "000025B5-0000-0000".
   * uuid_blocks - Map of Addresses to Assign to the Pool.
-    - from - Starting UUID Address.  Default is "0000-000000000000".
-    - size - Size of UUID Pool.  Default is "32768".
+    - from - Starting UUID Address.  An Example is "0000-000000000000".
+    - size - Size of UUID Pool.  An Example is 1000.
+    - to - Ending UUID Address.  An Example is "0000-0000000003E7".
   * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
     - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
@@ -41,7 +43,13 @@ variable "uuid_pools" {
       organization     = optional(string)
       prefix           = optional(string)
       tags             = optional(list(map(string)))
-      uuid_blocks      = optional(list(map(string)))
+      uuid_blocks = optional(map(object(
+        {
+          from = string
+          size = optional(number)
+          to   = optional(string)
+        }
+      )))
     }
   ))
 }

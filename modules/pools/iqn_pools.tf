@@ -12,13 +12,14 @@ variable "iqn_pools" {
       prefix           = "iqn.1984-12.com.cisco"
       organization     = "default"
       tags             = []
-      iqn_blocks = [
-        {
-          from   = 1
-          size   = 255
+      iqn_blocks = {
+        "default" = {
+          from   = 0
+          size   = 1000
           suffix = "ucs-host"
+          to     = 1000
         }
-      ]
+      }
     }
   }
   description = <<-EOT
@@ -28,9 +29,10 @@ variable "iqn_pools" {
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
   * iqn_blocks - Map of Addresses to Assign to the Pool.
-    - pool_size - staring WWxN Address.  Default is 255.
-    - starting_iqn - ending WWxN Address.  Default is 01.
-    - suffix - Suffix to assign to the IQN Pool.  Default is "ucs-host".
+    - from - Staring IQN Address.  An Exmaple is 0.
+    - size - Size of the IQN Pool.  An Exmaple is 1000.
+    - suffix - Suffix to assign to the IQN Pool.  An Exmaple is "ucs-host".
+    - to - Ending IQN Address.  An Exmaple is 1000.
   * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
     - https://intersight.com/an/settings/organizations/
   * prefix - The prefix for IQN blocks created for this pool.  The default is "iqn.1984-12.com.cisco".
@@ -40,10 +42,17 @@ variable "iqn_pools" {
     {
       assignment_order = optional(string)
       description      = optional(string)
-      iqn_blocks       = optional(list(map(string)))
-      organization     = optional(string)
-      prefix           = optional(string)
-      tags             = optional(list(map(string)))
+      iqn_blocks = optional(map(object(
+        {
+          from   = string
+          size   = optional(number)
+          suffix = string
+          to     = optional(string)
+        }
+      )))
+      organization = optional(string)
+      prefix       = optional(string)
+      tags         = optional(list(map(string)))
     }
   ))
 }

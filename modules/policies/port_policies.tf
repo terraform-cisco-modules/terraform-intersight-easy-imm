@@ -347,7 +347,7 @@ module "port_policies" {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_profile_policies[k].vsan_policy == each.key
+    if local.merged_profile_policies[k].port_policy == each.key
   }
 }
 

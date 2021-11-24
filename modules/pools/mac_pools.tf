@@ -11,12 +11,13 @@ variable "mac_pools" {
       description      = ""
       organization     = "default"
       tags             = []
-      mac_blocks = [
-        {
-          from = "00:25:B5:0a:00:00"
-          to   = "00:25:B5:0a:00:ff"
+      mac_blocks = {
+        default = {
+          from = "00:25:B5:0A:00:00"
+          size = 1000
+          to   = "00:25:B5:0A:03:E7"
         }
-      ]
+      }
     }
   }
   description = <<-EOT
@@ -26,8 +27,9 @@ variable "mac_pools" {
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
   * mac_blocks - Map of Addresses to Assign to the Pool.
-    - from - staring MAC Address.  Default is "00:25:B5:0a:00:00".
-    - to - ending MAC Address.  Default is "00:25:B5:0a:00:ff".
+    - from - Staring MAC Address.  An Example is "00:25:B5:0A:00:00".
+    - size - Size of MAC Address Pool.  An Example is 1000.
+    - to - Ending MAC Address.  An Example is "00:25:B5:0A:03:E7".
   * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
     - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
@@ -36,7 +38,13 @@ variable "mac_pools" {
     {
       assignment_order = optional(string)
       description      = optional(string)
-      mac_blocks       = optional(list(map(string)))
+      mac_blocks       = optional(map(object(
+        {
+          from = string
+          size = optional(number)
+          to   = optional(string)
+        }
+      )))
       organization     = optional(string)
       tags             = optional(list(map(string)))
     }

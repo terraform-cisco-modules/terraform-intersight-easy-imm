@@ -12,12 +12,13 @@ variable "wwnn_pools" {
       organization     = "default"
       pool_purpose     = "WWNN"
       tags             = []
-      id_blocks = [
-        {
+      id_blocks = {
+        default = {
           from = "20:00:00:25:B5:00:00:00"
-          to   = "20:00:00:25:B5:00:00:ff"
+          size = 1000
+          to   = "20:00:00:25:B5:00:03:E7"
         }
-      ]
+      }
     }
   }
   description = <<-EOT
@@ -27,8 +28,9 @@ variable "wwnn_pools" {
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
   * id_blocks - Map of Addresses to Assign to the Pool.
-    - from - staring WWxN Address.  Default is "20:00:00:25:B5:0a:00:00".
-    - to - ending WWxN Address.  Default is "20:00:00:25:B5:0a:00:ff".
+    - from - Staring WWxN Address.  An Example is "20:00:00:25:B5:00:00:00".
+    - size - Size of WWxN Pool.  An Example is 1000.
+    - to - Ending WWxN Address.  An Example is "20:00:00:25:B5:00:03:E7".
   * pool_purpose - What type of Fiber-Channel Pool is this.  Options are:
     - WWNN - (Default)
     - WWPN
@@ -40,10 +42,16 @@ variable "wwnn_pools" {
     {
       assignment_order = optional(string)
       description      = optional(string)
-      id_blocks        = optional(list(map(string)))
-      organization     = optional(string)
-      pool_purpose     = optional(string)
-      tags             = optional(list(map(string)))
+      id_blocks = optional(map(object(
+        {
+          from = string
+          size = optional(number)
+          to   = optional(string)
+        }
+      )))
+      organization = optional(string)
+      pool_purpose = optional(string)
+      tags         = optional(list(map(string)))
     }
   ))
 }
