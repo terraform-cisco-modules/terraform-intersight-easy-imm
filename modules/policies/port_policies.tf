@@ -218,7 +218,7 @@ variable "port_policies" {
       port_channel_ethernet_uplinks = optional(map(object(
         {
           admin_speed                   = optional(string)
-          ethernet_network_group_policy = string
+          ethernet_network_group_policy = optional(string)
           flow_control_policy           = optional(string)
           interfaces = optional(list(object(
             {
@@ -283,7 +283,7 @@ variable "port_policies" {
         {
           admin_speed                   = optional(string)
           breakout_port_id              = optional(number)
-          ethernet_network_group_policy = string
+          ethernet_network_group_policy = optional(string)
           fec                           = optional(string)
           flow_control_policy           = optional(string)
           link_control_policy           = optional(string)
