@@ -142,6 +142,7 @@ module "boot_order_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version            = ">=0.9.6"
   source             = "terraform-cisco-modules/imm/intersight//modules/boot_order_policies"
   for_each           = local.formatted_boot_order_policies
   boot_devices       = each.value.boot_devices

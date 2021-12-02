@@ -14,7 +14,7 @@ locals {
 
   # Terraform Cloud Remote Resources - Pools
   resource_pools = lookup(data.terraform_remote_state.pools.outputs, "resource_pools", {})
-  uuid_pools = lookup(data.terraform_remote_state.pools.outputs, "uuid_pools", {})
+  uuid_pools     = lookup(data.terraform_remote_state.pools.outputs, "uuid_pools", {})
 
   # Tags for Deployment
   tags = var.tags
@@ -55,14 +55,14 @@ locals {
       storage_policy                = v.storage_policy != null ? v.storage_policy : null
       syslog_policy                 = v.syslog_policy != null ? v.syslog_policy : null
       tags                          = v.tags != null ? v.tags : []
-      target_platform               = v.target_platform != null && (
+      target_platform = v.target_platform != null && (
         v.ucs_server_profile_template == null || v.ucs_server_profile_template == ""
       ) ? v.target_platform : v.ucs_server_profile_template == null || v.ucs_server_profile_template == "" ? "FIAttached" : null
-      ucs_server_profile_template   = v.ucs_server_profile_template != null ? v.ucs_server_profile_template : ""
-      uuid_pool                     = v.uuid_pool != null ? v.uuid_pool : ""
-      virtual_kvm_policy            = v.virtual_kvm_policy != null ? v.virtual_kvm_policy : null
-      virtual_media_policy          = v.virtual_media_policy != null ? v.virtual_media_policy : null
-      wait_for_completion           = v.wait_for_completion != null ? v.wait_for_completion : false
+      ucs_server_profile_template = v.ucs_server_profile_template != null ? v.ucs_server_profile_template : ""
+      uuid_pool                   = v.uuid_pool != null ? v.uuid_pool : ""
+      virtual_kvm_policy          = v.virtual_kvm_policy != null ? v.virtual_kvm_policy : null
+      virtual_media_policy        = v.virtual_media_policy != null ? v.virtual_media_policy : null
+      wait_for_completion         = v.wait_for_completion != null ? v.wait_for_completion : false
     }
   }
 

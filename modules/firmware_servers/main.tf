@@ -91,6 +91,7 @@ module "ucs_server_firmware" {
     local.org_moids,
     module.ucs_server_profiles
   ]
+  version     = ">=0.9.6"
   source      = "terraform-cisco-modules/imm/intersight//modules/ucs_server_firmware"
   for_each    = local.policies_serial_over_lan
   baud_rate   = each.value.baud_rate

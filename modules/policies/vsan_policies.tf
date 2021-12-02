@@ -68,6 +68,7 @@ module "vsan_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version         = ">=0.9.6"
   source          = "terraform-cisco-modules/imm/intersight//modules/vsan_policies"
   for_each        = var.vsan_policies
   description     = each.value.description != "" ? each.value.description : "${each.key} VSAN Policy."
@@ -94,6 +95,7 @@ module "vsan_policies_add_vsans" {
     local.org_moids,
     module.vsan_policies
   ]
+  version          = ">=0.9.6"
   source           = "terraform-cisco-modules/imm/intersight//modules/vsan_policy_add_vsan"
   for_each         = local.vsans
   default_zoning   = each.value.default_zoning

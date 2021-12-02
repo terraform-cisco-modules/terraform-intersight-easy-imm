@@ -50,6 +50,7 @@ module "ntp_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version     = ">=0.9.6"
   source      = "terraform-cisco-modules/imm/intersight//modules/ntp_policies"
   for_each    = local.ntp_policies
   description = each.value.description != "" ? each.value.description : "${each.key} NTP Policy."

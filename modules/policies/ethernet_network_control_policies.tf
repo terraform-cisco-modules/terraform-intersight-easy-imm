@@ -63,6 +63,7 @@ module "ethernet_network_control_policies" {
   depends_on = [
     local.org_moids
   ]
+  version               = ">=0.9.6"
   source                = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_control_policies"
   for_each              = local.ethernet_network_control_policies
   action_on_uplink_fail = each.value.action_on_uplink_fail

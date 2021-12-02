@@ -146,6 +146,7 @@ module "ucs_server_profiles" {
   depends_on = [
     local.org_moids,
   ]
+  version                = ">=0.9.6"
   source                 = "terraform-cisco-modules/imm/intersight//modules/ucs_server_profiles"
   for_each               = local.ucs_server_profiles
   action                 = each.value.action
@@ -156,11 +157,11 @@ module "ucs_server_profiles" {
   static_uuid_address    = each.value.static_uuid_address
   tags                   = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform        = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
-  uuid_pool              = each.value.uuid_pool != "" ? [
+  uuid_pool = each.value.uuid_pool != "" ? [
     {
       moid = local.uuid_pools[each.value.uuid_pool]
     }
-   ] : []
+  ] : []
   wait_for_completion = each.value.wait_for_completion
   assigned_server = each.value.server_assignment_mode == "Static" ? [
     {

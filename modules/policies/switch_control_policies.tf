@@ -60,6 +60,7 @@ module "switch_control_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version               = ">=0.9.6"
   source                = "terraform-cisco-modules/imm/intersight//modules/switch_control_policies"
   for_each              = local.switch_control_policies
   description           = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy."

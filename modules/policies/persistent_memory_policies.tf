@@ -98,6 +98,7 @@ module "persistent_memory_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version         = ">=0.9.6"
   source          = "terraform-cisco-modules/imm/intersight//modules/persistent_memory_policies"
   for_each        = local.persistent_memory_policies
   description     = each.value.description != "" ? each.value.description : "${each.key} Persistent Memory Policy."

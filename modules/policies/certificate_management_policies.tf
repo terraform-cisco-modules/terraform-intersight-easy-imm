@@ -67,6 +67,7 @@ module "certificate_management_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version             = ">=0.9.6"
   source              = "terraform-cisco-modules/imm/intersight//modules/adapter_configuration_policies"
   for_each            = local.adapter_configuration_policies
   description         = each.value.description != "" ? each.value.description : "${each.key} Adapter Configuration Policy."

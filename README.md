@@ -253,10 +253,10 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_sensitive_intersight_variables"></a> [sensitive\_intersight\_variables](#module\_sensitive\_intersight\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | n/a |
-| <a name="module_sensitive_server_variables"></a> [sensitive\_server\_variables](#module\_sensitive\_server\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | n/a |
-| <a name="module_sensitive_snmp_variables"></a> [sensitive\_snmp\_variables](#module\_sensitive\_snmp\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | n/a |
-| <a name="module_workspaces"></a> [workspaces](#module\_workspaces) | terraform-cisco-modules/modules/tfe//modules/tfc_workspace | n/a |
+| <a name="module_sensitive_intersight_variables"></a> [sensitive\_intersight\_variables](#module\_sensitive\_intersight\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | 0.6.2 |
+| <a name="module_sensitive_server_variables"></a> [sensitive\_server\_variables](#module\_sensitive\_server\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | 0.6.2 |
+| <a name="module_sensitive_snmp_variables"></a> [sensitive\_snmp\_variables](#module\_sensitive\_snmp\_variables) | terraform-cisco-modules/modules/tfe//modules/tfc_variables | 0.6.2 |
+| <a name="module_workspaces"></a> [workspaces](#module\_workspaces) | terraform-cisco-modules/modules/tfe//modules/tfc_workspace | 0.6.2 |
 
 ## Resources
 

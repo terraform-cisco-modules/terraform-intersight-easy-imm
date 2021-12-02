@@ -47,6 +47,7 @@ module "link_aggregation_policies" {
   depends_on = [
     local.org_moids
   ]
+  version            = ">=0.9.6"
   source             = "terraform-cisco-modules/imm/intersight//modules/link_aggregation_policies"
   for_each           = local.link_aggregation_policies
   description        = each.value.description != "" ? each.value.description : "${each.key} Link Aggregation Policy."

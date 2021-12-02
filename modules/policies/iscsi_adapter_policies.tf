@@ -48,6 +48,7 @@ module "iscsi_adapter_policies" {
   depends_on = [
     local.org_moids
   ]
+  version                = ">=0.9.6"
   source                 = "terraform-cisco-modules/imm/intersight//modules/iscsi_adapter_policies"
   for_each               = var.iscsi_adapter_policies
   description            = each.value.description != null ? each.value.description : "${each.key} iSCSI Adapter Policy."

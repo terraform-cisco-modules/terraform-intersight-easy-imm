@@ -52,6 +52,7 @@ module "imc_access_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version        = ">=0.9.6"
   source         = "terraform-cisco-modules/imm/intersight//modules/imc_access_policies"
   for_each       = local.imc_access_policies
   description    = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."

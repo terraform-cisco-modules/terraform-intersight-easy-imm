@@ -63,6 +63,7 @@ module "smtp_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version                   = ">=0.9.6"
   source                    = "terraform-cisco-modules/imm/intersight//modules/smtp_policies"
   for_each                  = local.smtp_policies
   description               = each.value.description != "" ? each.value.description : "${each.key} SMTP Policy."

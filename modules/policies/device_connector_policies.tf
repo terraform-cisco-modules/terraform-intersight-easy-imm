@@ -43,6 +43,7 @@ module "device_connector_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version               = ">=0.9.6"
   source                = "terraform-cisco-modules/imm/intersight//modules/device_connector_policies"
   for_each              = local.device_connector_policies
   configuration_lockout = each.value.configuration_lockout

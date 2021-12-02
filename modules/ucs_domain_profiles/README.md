@@ -20,20 +20,20 @@ This module will create UCS Domain Profiles in Intersight.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.13 |
+| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.17 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.13 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.17 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ucs_domain_profiles"></a> [ucs\_domain\_profiles](#module\_ucs\_domain\_profiles) | terraform-cisco-modules/imm/intersight//modules/ucs_domain_profiles | n/a |
-| <a name="module_ucs_domain_switches"></a> [ucs\_domain\_switches](#module\_ucs\_domain\_switches) | terraform-cisco-modules/imm/intersight//modules/ucs_domain_switches | n/a |
+| <a name="module_ucs_domain_profiles"></a> [ucs\_domain\_profiles](#module\_ucs\_domain\_profiles) | terraform-cisco-modules/imm/intersight//modules/ucs_domain_profiles | >=0.9.6 |
+| <a name="module_ucs_domain_switches"></a> [ucs\_domain\_switches](#module\_ucs\_domain\_switches) | terraform-cisco-modules/imm/intersight//modules/ucs_domain_switches | >=0.9.6 |
 
 ## Resources
 

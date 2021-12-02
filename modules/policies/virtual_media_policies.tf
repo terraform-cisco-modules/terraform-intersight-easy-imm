@@ -138,6 +138,7 @@ module "virtual_media_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version                         = ">=0.9.6"
   source                          = "terraform-cisco-modules/imm/intersight//modules/virtual_media_policies"
   for_each                        = local.virtual_media_policies
   description                     = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy."

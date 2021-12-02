@@ -89,6 +89,7 @@ module "ucs_domain_profiles" {
   depends_on = [
     local.org_moids
   ]
+  version     = ">=0.9.6"
   source      = "terraform-cisco-modules/imm/intersight//modules/ucs_domain_profiles"
   for_each    = local.ucs_domain_profiles
   description = each.value.description != "" ? each.value.description : "${each.key} UCS Domain."
@@ -108,6 +109,7 @@ module "ucs_domain_switches" {
     local.org_moids,
     module.ucs_domain_profiles
   ]
+  version         = ">=0.9.6"
   source          = "terraform-cisco-modules/imm/intersight//modules/ucs_domain_switches"
   for_each        = local.merged_ucs_switches
   action          = each.value.action

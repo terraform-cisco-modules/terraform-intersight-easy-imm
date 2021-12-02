@@ -114,6 +114,7 @@ module "iscsi_boot_policies" {
     module.iscsi_adapter_policies,
     module.iscsi_static_target_policies,
   ]
+  version                       = ">=0.9.6"
   source                        = "terraform-cisco-modules/imm/intersight//modules/iscsi_boot_policies"
   for_each                      = var.iscsi_boot_policies
   authentication                = each.value.authentication

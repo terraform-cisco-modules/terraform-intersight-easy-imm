@@ -101,6 +101,7 @@ module "ip_pools" {
   depends_on = [
     local.org_moids
   ]
+  version          = ">=0.9.6"
   source           = "terraform-cisco-modules/imm/intersight//modules/ip_pools"
   for_each         = local.ip_pools
   assignment_order = each.value.assignment_order

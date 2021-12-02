@@ -162,6 +162,7 @@ module "lan_connectivity_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version                     = ">=0.9.6"
   source                      = "terraform-cisco-modules/imm/intersight//modules/lan_connectivity_policies"
   for_each                    = var.lan_connectivity_policies
   description                 = each.value.description != "" ? each.value.description : "${each.key} LAN Connectivity Policy."
@@ -201,6 +202,7 @@ module "lan_connectivity_vnics" {
     module.iscsi_boot_policies,
     module.lan_connectivity_policies
   ]
+  version                                = ">=0.9.6"
   source                                 = "terraform-cisco-modules/imm/intersight//modules/lan_connectivity_add_vnic"
   for_each                               = local.vnics
   cdn_source                             = each.value.cdn_source

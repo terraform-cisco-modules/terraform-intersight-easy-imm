@@ -38,6 +38,7 @@ module "ethernet_network_group_policies" {
   depends_on = [
     local.org_moids
   ]
+  version       = ">=0.9.6"
   source        = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_group_policies"
   for_each      = local.ethernet_network_group_policies
   allowed_vlans = each.value.allowed_vlans

@@ -121,6 +121,7 @@ module "san_connectivity_policies" {
     local.org_moids,
     local.merged_profile_policies
   ]
+  version              = ">=0.9.6"
   source               = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_policies"
   for_each             = local.san_connectivity_policies
   description          = each.value.description != "" ? each.value.description : "${each.key} SAN Connectivity Policy."
@@ -156,6 +157,7 @@ module "san_connectivity_vhbas" {
     module.fibre_channel_qos_policies,
     module.san_connectivity_policies
   ]
+  version                      = ">=0.9.6"
   source                       = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba"
   for_each                     = local.vhbas
   fc_adapter_policy_moid       = module.fibre_channel_adapter_policies[each.value.fibre_channel_adapter_policy].moid

@@ -70,6 +70,7 @@ module "ucs_chassis_profiles" {
   depends_on = [
     local.org_moids
   ]
+  version             = ">=0.9.6"
   source              = "terraform-cisco-modules/imm/intersight//modules/ucs_chassis_profiles"
   for_each            = local.ucs_chassis_profiles
   action              = each.value.action

@@ -49,6 +49,7 @@ module "ssh_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version     = ">=0.9.6"
   source      = "terraform-cisco-modules/imm/intersight//modules/ssh_policies"
   for_each    = local.ssh_policies
   description = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."

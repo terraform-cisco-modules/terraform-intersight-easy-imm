@@ -30,7 +30,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ucs_server_firmware"></a> [ucs\_server\_firmware](#module\_ucs\_server\_firmware) | terraform-cisco-modules/imm/intersight//modules/ucs_server_firmware | n/a |
+| <a name="module_ucs_server_firmware"></a> [ucs\_server\_firmware](#module\_ucs\_server\_firmware) | terraform-cisco-modules/imm/intersight//modules/ucs_server_firmware | >=0.9.6 |
 
 ## Resources
 

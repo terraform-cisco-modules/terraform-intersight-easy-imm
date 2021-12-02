@@ -72,6 +72,7 @@ module "wwnn_pools" {
   depends_on = [
     local.org_moids
   ]
+  version          = ">=0.9.6"
   source           = "terraform-cisco-modules/imm/intersight//modules/fc_pools"
   for_each         = local.wwnn_pools
   assignment_order = each.value.assignment_order

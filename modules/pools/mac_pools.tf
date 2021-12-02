@@ -38,15 +38,15 @@ variable "mac_pools" {
     {
       assignment_order = optional(string)
       description      = optional(string)
-      mac_blocks       = optional(map(object(
+      mac_blocks = optional(map(object(
         {
           from = string
           size = optional(number)
           to   = optional(string)
         }
       )))
-      organization     = optional(string)
-      tags             = optional(list(map(string)))
+      organization = optional(string)
+      tags         = optional(list(map(string)))
     }
   ))
 }
@@ -67,6 +67,7 @@ module "mac_pools" {
   depends_on = [
     local.org_moids
   ]
+  version          = ">=0.9.6"
   source           = "terraform-cisco-modules/imm/intersight//modules/mac_pools"
   for_each         = local.mac_pools
   assignment_order = each.value.assignment_order

@@ -123,6 +123,7 @@ module "local_user_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version                   = ">=0.9.6"
   source                    = "terraform-cisco-modules/imm/intersight//modules/local_user_policies"
   for_each                  = local.local_user_policies
   always_send_user_password = each.value.always_send_user_password
@@ -157,6 +158,7 @@ module "local_users" {
     local.org_moids,
     module.local_user_policies
   ]
+  version      = ">=0.9.6"
   for_each     = local.local_users.users
   source       = "terraform-cisco-modules/imm/intersight//modules/local_user_add_users"
   org_moid     = local.org_moids[each.value.organization].moid

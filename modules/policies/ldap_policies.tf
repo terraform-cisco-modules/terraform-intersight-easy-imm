@@ -155,6 +155,7 @@ module "ldap_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version                     = ">=0.9.6"
   source                      = "terraform-cisco-modules/imm/intersight//modules/ldap_policies"
   for_each                    = local.ldap_policies
   base_settings               = each.value.base_settings
@@ -189,6 +190,7 @@ module "ldap_add_server" {
   depends_on = [
     module.ldap_policies
   ]
+  version          = ">=0.9.6"
   for_each         = local.ldap_servers
   source           = "terraform-cisco-modules/imm/intersight//modules/ldap_add_server"
   ldap_policy_moid = module.ldap_policies[each.value.policy].moid
@@ -206,6 +208,7 @@ module "ldap_add_group" {
     local.org_moids,
     module.ldap_policies
   ]
+  version          = ">=0.9.6"
   source           = "terraform-cisco-modules/imm/intersight//modules/ldap_add_group"
   for_each         = local.ldap_groups
   domain           = each.value.domain

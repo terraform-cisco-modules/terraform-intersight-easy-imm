@@ -2722,6 +2722,7 @@ module "bios_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version     = ">=0.9.6"
   source      = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each    = local.bios_policies
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."

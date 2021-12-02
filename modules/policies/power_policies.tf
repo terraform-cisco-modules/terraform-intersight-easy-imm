@@ -61,6 +61,7 @@ module "power_policies" {
     local.org_moids,
     local.merged_profile_policies
   ]
+  version             = ">=0.9.6"
   source              = "terraform-cisco-modules/imm/intersight//modules/power_policies"
   for_each            = local.power_policies
   allocated_budget    = each.value.allocated_budget

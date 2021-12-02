@@ -54,6 +54,7 @@ module "flow_control_policies" {
   depends_on = [
     local.org_moids
   ]
+  version                    = ">=0.9.6"
   source                     = "terraform-cisco-modules/imm/intersight//modules/flow_control_policies"
   for_each                   = local.flow_control_policies
   description                = each.value.description != "" ? each.value.description : "${each.key} Flow Control Policy."

@@ -4,6 +4,7 @@
 #__________________________________________________________
 
 module "workspaces" {
+  version                   = "0.6.2"
   source                    = "terraform-cisco-modules/modules/tfe//modules/tfc_workspace"
   for_each                  = local.workspaces
   allow_destroy_plan        = each.value.allow_destroy_plan
@@ -34,10 +35,11 @@ output "workspaces" {
 #__________________________________________________________
 
 module "sensitive_intersight_variables" {
-  source = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
   depends_on = [
     module.workspaces
   ]
+  version      = "0.6.2"
+  source       = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
   for_each     = local.workspaces
   category     = "terraform"
   workspace_id = module.workspaces[each.key].workspace.id
@@ -64,10 +66,11 @@ module "sensitive_intersight_variables" {
 #__________________________________________________________
 
 module "sensitive_snmp_variables" {
-  source = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
   depends_on = [
     module.workspaces
   ]
+  version = "0.6.2"
+  source  = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
   for_each = {
     for k, v in local.workspaces : k => v
     if length(regexall("(policies)", local.workspaces[k].workspace_type)) > 0
@@ -205,10 +208,11 @@ module "sensitive_snmp_variables" {
 #__________________________________________________________
 
 module "sensitive_server_variables" {
-  source = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
   depends_on = [
     module.workspaces
   ]
+  version = "0.6.2"
+  source  = "terraform-cisco-modules/modules/tfe//modules/tfc_variables"
   for_each = {
     for k, v in local.workspaces : k => v
     if length(regexall("(policies)", local.workspaces[k].workspace_type)) > 0

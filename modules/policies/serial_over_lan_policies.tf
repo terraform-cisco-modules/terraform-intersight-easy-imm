@@ -59,6 +59,7 @@ module "serial_over_lan_policies" {
     local.org_moids,
     local.merged_profile_policies
   ]
+  version     = ">=0.9.6"
   source      = "terraform-cisco-modules/imm/intersight//modules/serial_over_lan_policies"
   for_each    = local.serial_over_lan_policies
   baud_rate   = each.value.baud_rate

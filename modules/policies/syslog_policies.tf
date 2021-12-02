@@ -54,6 +54,7 @@ module "syslog_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
+  version            = ">=0.9.6"
   source             = "terraform-cisco-modules/imm/intersight//modules/syslog_policies"
   for_each           = local.syslog_policies
   description        = each.value.description != "" ? each.value.description : "${each.key} Syslog Policy."

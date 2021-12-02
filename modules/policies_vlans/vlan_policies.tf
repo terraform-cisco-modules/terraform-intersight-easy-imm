@@ -65,6 +65,7 @@ module "vlan_policies" {
     local.org_moids,
     local.merged_profile_policies
   ]
+  version     = ">=0.9.6"
   source      = "terraform-cisco-modules/imm/intersight//modules/vlan_policies"
   for_each    = var.vlan_policies
   description = each.value.description != "" ? each.value.description : "${each.key} VLAN Policy."
@@ -91,6 +92,7 @@ module "vlan_policies_add_vlans" {
     module.multicast_policies,
     module.vlan_policies
   ]
+  version               = ">=0.9.6"
   source                = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list"
   for_each              = local.vlans
   auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
