@@ -4,53 +4,105 @@
 # GUI Location: Configure > Policies > Create Policy > Certificate Management
 #____________________________________________________________________________
 
+variable "base64_certificate_1" {
+  default     = ""
+  description = "The Server Certificate in Base64 format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_certificate_2" {
+  default     = ""
+  description = "The Server Certificate in Base64 format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_certificate_3" {
+  default     = ""
+  description = "The Server Certificate in Base64 format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_certificate_4" {
+  default     = ""
+  description = "The Server Certificate in Base64 format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_certificate_5" {
+  default     = ""
+  description = "The Server Certificate in Base64 format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_private_key_1" {
+  default     = ""
+  description = "Private Key in Base64 Format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_private_key_2" {
+  default     = ""
+  description = "Private Key in Base64 Format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_private_key_3" {
+  default     = ""
+  description = "Private Key in Base64 Format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_private_key_4" {
+  default     = ""
+  description = "Private Key in Base64 Format."
+  sensitive   = true
+  type        = string
+}
+
+variable "base64_private_key_5" {
+  default     = ""
+  description = "Private Key in Base64 Format."
+  sensitive   = true
+  type        = string
+}
+
 variable "certificate_management_policies" {
   default = {
     default = {
-      description         = ""
-      enable_fip          = true
-      enable_lldp         = true
-      enable_port_channel = true
-      fec_mode_1          = "cl91"
-      fec_mode_2          = "cl91"
-      fec_mode_3          = "cl91"
-      fec_mode_4          = "cl91"
-      organization        = "default"
-      tags                = []
+      certificate_number = 1
+      description        = ""
+      enabled            = true
+      organization       = "default"
+      private_key_number = 1
+      tags               = []
     }
   }
   description = <<-EOT
   key - Name of the Adapter Configuration Policy.
+  * certificate_number - The Number of the base64_certificate Variable.  i.e. 1 = base64_certificate_1.
   * description - Description to Assign to the Policy.
-  * enable_fip - If Selected, then FCoE Initialization Protocol (FIP) mode is enabled. FIP mode ensures that the adapter is compatible with current FCoE standards.
-  * enable_lldp - If Selected, then Link Layer Discovery Protocol (LLDP) enables all the Data Center Bridging Capability Exchange protocol (DCBX) functionality, which includes FCoE, priority based flow control.
-  * enable_port_channel - When Port Channel is enabled, two vNICs and two vHBAs are available for use on the adapter card.
-    When disabled, four vNICs and four vHBAs are available for use on the adapter card. Disabling port channel reboots the server.
-    Port Channel is supported only for Cisco VIC 1455/1457 adapters.
-  * fec_mode_[1-4] - DCE Interface [1-4] Forward Error Correction (FEC) mode setting for the DCE interfaces of the adapter.
-    FEC mode settings are supported on Cisco VIC 14xx adapters. FEC mode 'cl74' is unsupported for Cisco VIC 1495/1497.
-    This setting will be ignored for unsupported adapters and for unavailable DCE interfaces.
-    - cl74 - Use cl74 standard as FEC mode setting. 'Clause 74' aka FC-FEC ('FireCode' FEC) offers simple,
-      low-latency protection against 1 burst/sparse bit error, but it is not good for random errors.
-    - cl91 - (Default) Use cl91 standard as FEC mode setting. 'Clause 91' aka RS-FEC ('ReedSolomon' FEC) offers better
-      error protection against bursty and random errors but adds latency.
-    - Off - Disable FEC mode on the DCE Interface.
+  * enabled - "Enable/Disable the Certificate Management policy.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
+  * private_key_number - The Number of the base64_private_key Variable.  i.e. 1 = base64_private_key_1.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
-      description         = optional(string)
-      enable_fip          = optional(bool)
-      enable_lldp         = optional(bool)
-      enable_port_channel = optional(bool)
-      fec_mode_1          = optional(string)
-      fec_mode_2          = optional(string)
-      fec_mode_3          = optional(string)
-      fec_mode_4          = optional(string)
-      organization        = optional(string)
-      tags                = optional(list(map(string)))
+      certificate_number = number
+      description        = optional(string)
+      enabled            = optional(bool)
+      organization       = optional(string)
+      private_key_number = number
+      tags               = optional(list(map(string)))
     }
   ))
 }
@@ -58,8 +110,8 @@ variable "certificate_management_policies" {
 
 #_________________________________________________________________________
 #
-# Adapter Configuration Policies
-# GUI Location: Configure > Policies > Create Policy > Adapter Configuration
+# Certificate Management Policies
+# GUI Location: Configure > Policies > Create Policy > Certificate Management
 #_________________________________________________________________________
 
 module "certificate_management_policies" {
@@ -67,25 +119,41 @@ module "certificate_management_policies" {
     local.org_moids,
     local.merged_profile_policies,
   ]
-  version             = ">=0.9.6"
-  source              = "terraform-cisco-modules/imm/intersight//modules/adapter_configuration_policies"
-  for_each            = local.adapter_configuration_policies
-  description         = each.value.description != "" ? each.value.description : "${each.key} Adapter Configuration Policy."
-  enable_fip          = each.value.enable_fip
-  enable_lldp         = each.value.enable_lldp
-  enable_port_channel = each.value.enable_port_channel
-  fec_mode_1          = each.value.fec_mode_1
-  fec_mode_2          = each.value.fec_mode_2
-  fec_mode_3          = each.value.fec_mode_3
-  fec_mode_4          = each.value.fec_mode_4
-  name                = each.key
-  org_moid            = local.org_moids[each.value.organization].moid
-  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  version  = ">=0.9.6"
+  source   = "terraform-cisco-modules/imm/intersight//modules/certificate_management_policies"
+  for_each = local.certificate_management_policies
+  base64_certificate = length(
+    regexall("1", each.value.certificate_number)
+    ) > 0 ? var.base64_certificate_1 : length(
+    regexall("2", each.value.certificate_number)
+    ) > 0 ? var.base64_certificate_2 : length(
+    regexall("3", each.value.certificate_number)
+    ) > 0 ? var.base64_certificate_3 : length(
+    regexall("4", each.value.certificate_number)
+    ) > 0 ? var.base64_certificate_4 : length(
+    regexall("5", each.value.certificate_number)
+  ) > 0 ? var.base64_certificate_5 : null
+  description = each.value.description != "" ? each.value.description : "${each.key} Certificate Management Policy."
+  enabled     = each.value.enabled
+  name        = each.key
+  org_moid    = local.org_moids[each.value.organization].moid
+  base64_private_key = length(
+    regexall("1", each.value.private_key_number)
+    ) > 0 ? var.base64_private_key_1 : length(
+    regexall("2", each.value.private_key_number)
+    ) > 0 ? var.base64_private_key_2 : length(
+    regexall("3", each.value.private_key_number)
+    ) > 0 ? var.base64_private_key_3 : length(
+    regexall("4", each.value.private_key_number)
+    ) > 0 ? var.base64_private_key_4 : length(
+    regexall("5", each.value.private_key_number)
+  ) > 0 ? var.base64_private_key_5 : null
+  tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
   profiles = {
     for k, v in local.merged_profile_policies : k => {
       moid        = v.moid
       object_type = v.object_type
     }
-    if local.merged_profile_policies[k].device_connector_policy == each.key
+    if local.merged_profile_policies[k].certificate_management_policy == each.key
   }
 }
