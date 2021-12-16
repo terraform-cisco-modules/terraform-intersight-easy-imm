@@ -498,10 +498,15 @@ variable "bios_policies" {
     - 115200 - Value - 115200 for configuring BaudRate token.
   * bios_template - Name of a BIOS Template to Configure.  Options are:
     - DSS - Analytics Database Systems.
+    - DSS_tpm - Analytics Database Systems with TPM Enabled.
     - HPC - High-Performance Computing.
+    - HPC_tpm - High-Performance Computing with TPM Enabled.
     - Java - Java Application Servers.
-    - OLTP - Online Transaction Processing
+    - Java_tpm - Java Application Servers with TPM Enabled.
+    - OLTP - Online Transaction Processing.
+    - OLTP_tpm - Online Transaction Processing with TPM Enabled.
     - Virtualization - VMware.
+    - Virtualization_tpm - VMware.
   * bme_dma_mitigation - default is "platform-default".  BIOS Token for setting BME DMA Mitigation configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
@@ -2943,7 +2948,9 @@ module "bios_policies" {
   # Main Section
   #+++++++++++++++++++++++++++++++
   post_error_pause = each.value.post_error_pause # POST Error Pause
-  tpm_support      = each.value.tpm_support      # TPM Support
+  tpm_support      = length(                        # TPM Support
+    regexall("tpm", each.value.bios_template)
+  ) > 0 ? "enabled" : each.value.tpm_support
   #+++++++++++++++++++++++++++++++
   # Memory Section
   #+++++++++++++++++++++++++++++++
@@ -3154,7 +3161,9 @@ module "bios_policies" {
   sgx_le_wr                       = each.value.sgx_le_wr                       # SGX Write Eanble
   sgx_package_info_in_band_access = each.value.sgx_package_info_in_band_access # SGX Package Information In-Band Access
   sgx_qos                         = each.value.sgx_qos                         # SGX QoS
-  tpm_control                     = each.value.tpm_control                     # Trusted Platform Module State
+  tpm_control                     = length(                                       # Trusted Platform Module State
+    regexall("tpm", each.value.bios_template)
+  ) > 0 ? "enabled" : each.value.tpm_control
   tpm_pending_operation           = each.value.tpm_pending_operation           # TPM Pending Operation
   txt_support                     = each.value.txt_support                     # Intel Trusted Execution Technology Support
   #+++++++++++++++++++++++++++++++

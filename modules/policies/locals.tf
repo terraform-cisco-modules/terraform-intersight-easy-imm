@@ -742,6 +742,24 @@ locals {
   }
 
 
+  #_______________________________________________________________
+  #
+  # Certificate Management Policy
+  # GUI Location: Policies > Create Policy: Certificate Management
+  #_______________________________________________________________
+
+  certificate_management_policies = {
+    for k, v in var.certificate_management_policies : k => {
+      certificate  = v.certificate != null ? v.certificate : 1
+      description  = v.description != null ? v.description : ""
+      enabled      = v.enabled != null ? v.enabled : true
+      organization = v.organization != null ? v.organization : "default"
+      private_key  = v.private_key != null ? v.private_key : 1
+      tags         = v.tags != null ? v.tags : []
+    }
+  }
+
+
   #__________________________________________________________
   #
   # Device Connector Policy Section - Locals
