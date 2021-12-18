@@ -166,9 +166,6 @@ variable "port_policies" {
       * 16Gbps - (default).  Admin configurable speed 16Gbps.
       * 32Gbps - Admin configurable speed 32Gbps.
     - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
-    - fill_pattern - Fill pattern to differentiate the configs in NPIV.
-      * Arbff - Fc Fill Pattern type Arbff.
-      * Idle - Fc Fill Pattern type Idle.
     - port_list - Ports to Assign to the Fibre Channel Uplink Port Policy.
     - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * port_role_fc_uplinks - Use this Map to Configure Ports for FC Uplinks.
@@ -309,7 +306,6 @@ variable "port_policies" {
         {
           admin_speed      = optional(string)
           breakout_port_id = optional(number)
-          fill_pattern     = optional(string)
           port_list        = string
           slot_id          = optional(number)
           vsan_id          = number
@@ -742,7 +738,6 @@ module "port_role_fc_storage" {
   for_each         = local.port_role_fc_storage
   admin_speed      = each.value.admin_speed
   breakout_port_id = each.value.breakout_port_id
-  fill_pattern     = each.value.fill_pattern
   port_list        = each.value.port_list
   port_policy_moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
   slot_id          = each.value.slot_id

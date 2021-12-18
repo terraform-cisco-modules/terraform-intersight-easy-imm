@@ -1527,7 +1527,6 @@ locals {
       for k, v in value.port_role_fc_storage : {
         admin_speed      = v.admin_speed != null ? v.admin_speed : "16Gbps"
         breakout_port_id = v.breakout_port_id != null ? v.breakout_port_id : 0
-        fill_pattern     = v.fill_pattern != null ? v.fill_pattern : "Arbff"
         key              = k
         port_list        = v.port_list
         port_policy      = key

@@ -72,7 +72,7 @@ variable "ipmi_key_1" {
 # LDAP Policy Sensitive Variable
 #__________________________________________________________
 
-variable "ldap_password" {
+variable "binding_parameters_password" {
   default     = ""
   description = "The password of the user for initial bind process. It can be any string that adheres to the following constraints. It can have character except spaces, tabs, line breaks. It cannot be more than 254 characters."
   sensitive   = true
@@ -126,7 +126,7 @@ variable "local_user_password_5" {
 # Persistent Memory Policy Sensitive Variables
 #__________________________________________________________
 
-variable "persistent_passphrase" {
+variable "secure_passphrase" {
   default     = ""
   description = "Secure passphrase to be applied on the Persistent Memory Modules on the server. The allowed characters are a-z, A to Z, 0-9, and special characters =, \u0021, &, #, $, %, +, ^, @, _, *, -."
   sensitive   = true

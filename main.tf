@@ -226,11 +226,11 @@ module "sensitive_server_variables" {
       sensitive   = true
       value       = var.ipmi_key_1
     },
-    ldap_password = {
+    binding_parameters_password = {
       description = "The password of the user for initial bind process. It can be any string that adheres to the following constraints. It can have character except spaces, tabs, line breaks. It cannot be more than 254 characters."
-      key         = "ldap_password"
+      key         = "binding_parameters_password"
       sensitive   = true
-      value       = var.ldap_password
+      value       = var.binding_parameters_password
     },
     local_user_password_1 = {
       description = "Password to assign to a local user.  Sensitive Variables cannot be added to a for_each loop so these are added seperately."
@@ -262,11 +262,11 @@ module "sensitive_server_variables" {
       sensitive   = true
       value       = var.local_user_password_5
     },
-    persistent_passphrase = {
+    secure_passphrase = {
       description = "Secure passphrase to be applied on the Persistent Memory Modules on the server. The allowed characters are a-z, A to Z, 0-9, and special characters =, \u0021, &, #, $, %, +, ^, @, _, *, -."
-      key         = "persistent_passphrase"
+      key         = "secure_passphrase"
       sensitive   = true
-      value       = var.persistent_passphrase
+      value       = var.secure_passphrase
     },
   }
 }
