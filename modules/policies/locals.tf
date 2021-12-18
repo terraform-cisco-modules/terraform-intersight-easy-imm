@@ -25,7 +25,7 @@ locals {
 
   # Terraform Cloud Remote Resources - Profiles
   ucs_domain_profiles = lookup(data.terraform_remote_state.ucs_domain_profiles.outputs, "ucs_domain_profiles", {})
-  ucs_domain_moids    = lookup(data.terraform_remote_state.ucs_domain_profiles.outputs, "domain_moids", {})
+  ucs_domain_moids    = lookup(data.terraform_remote_state.ucs_domain_profiles.outputs, "moids", {})
 
   #__________________________________________________________
   #
@@ -1320,6 +1320,7 @@ locals {
       organization                  = v.organization != null ? v.organization : "default"
       port_channel_appliances       = v.port_channel_appliances != null ? v.port_channel_appliances : {}
       port_channel_ethernet_uplinks = v.port_channel_ethernet_uplinks != null ? v.port_channel_ethernet_uplinks : {}
+      port_channel_fc_storage       = v.port_channel_fc_storage != null ? v.port_channel_fc_storage : {}
       port_channel_fc_uplinks       = v.port_channel_fc_uplinks != null ? v.port_channel_fc_uplinks : {}
       port_channel_fcoe_uplinks     = v.port_channel_fcoe_uplinks != null ? v.port_channel_fcoe_uplinks : {}
       port_modes                    = v.port_modes != null ? v.port_modes : []
@@ -1967,14 +1968,26 @@ locals {
       organization                    = v.organization != null ? v.organization : "default"
       tags                            = v.tags != null ? v.tags : []
       vmedia_mappings = v.vmedia_mappings != null ? {
-        authentication_protocol = v.vmedia_mappings.authentication_protocol != null ? v.vmedia_mappings.authentication_protocol : "none"
-        device_type             = v.vmedia_mappings.device_type != null ? v.vmedia_mappings.device_type : "cdd"
-        file_location           = v.vmedia_mappings.file_location
-        mount_options           = v.vmedia_mappings.mount_options != null ? v.vmedia_mappings.mount_options : ""
-        name                    = k
-        password                = v.vmedia_mappings.password != null ? v.vmedia_mappings.password : 0
-        protocol                = v.vmedia_mappings.protocol != null ? v.vmedia_mappings.protocol : "nfs"
-        username                = v.vmedia_mappings.username != null ? v.vmedia_mappings.username : ""
+        authentication_protocol = contains(keys(
+          v.vmedia_mappings), "authentication_protocol"
+        ) == "true" ? v.vmedia_mappings.authentication_protocol : "none"
+        device_type = contains(keys(
+          v.vmedia_mappings), "device_type"
+        ) == "true" ? v.vmedia_mappings.device_type : "cdd"
+        file_location = v.vmedia_mappings.file_location
+        mount_options = contains(keys(
+          v.vmedia_mappings), "mount_options"
+        ) == "true" ? v.vmedia_mappings.mount_options : ""
+        name = k
+        password = contains(keys(
+          v.vmedia_mappings), "password"
+        ) == "true" ? v.vmedia_mappings.password : 0
+        protocol = contains(keys(
+          v.vmedia_mappings), "protocol"
+        ) == "true" ? v.vmedia_mappings.protocol : "nfs"
+        username = contains(keys(
+          v.vmedia_mappings), "username"
+        ) == "true" ? v.vmedia_mappings.username : ""
       } : {}
     }
   }

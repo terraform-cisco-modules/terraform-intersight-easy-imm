@@ -116,7 +116,7 @@ resource "intersight_vnic_fc_adapter_policy" "fibre_channel_adapter_policies" {
   io_throttle_count           = each.value.io_throttle_count
   lun_count                   = each.value.max_luns_per_target
   lun_queue_depth             = each.value.lun_queue_depth
-  name                        = each.value.name
+  name                        = each.key
   resource_allocation_timeout = each.value.resource_allocation_timeout
   error_recovery_settings {
     enabled           = each.value.enable_fcp_error_recovery
