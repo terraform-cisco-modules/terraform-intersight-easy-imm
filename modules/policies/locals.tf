@@ -836,20 +836,14 @@ locals {
   ethernet_network_control_policies = {
     for k, v in var.ethernet_network_control_policies : k => {
       action_on_uplink_fail = v.action_on_uplink_fail != null ? v.action_on_uplink_fail : "linkDown"
-      cdp_enable = length(
-        regexall("(both_enabled|cdp_enabled)", coalesce(v.base_template, "EMPTY"))
-      ) > 0 ? true : v.cdp_enable != null ? v.cdp_enable : false
-      description = v.description != null ? v.description : ""
-      lldp_enable_receive = length(
-        regexall("(both_enabled|lldp_enabled)", coalesce(v.base_template, "EMPTY"))
-      ) > 0 ? true : v.lldp_enable_receive != null ? v.lldp_enable_receive : false
-      lldp_enable_transmit = length(
-        regexall("(both_enabled|lldp_enabled)", coalesce(v.base_template, "EMPTY"))
-      ) > 0 ? true : v.lldp_enable_transmit != null ? v.lldp_enable_transmit : false
-      mac_register_mode  = v.mac_register_mode != null ? v.mac_register_mode : "nativeVlanOnly"
-      mac_security_forge = v.mac_security_forge != null ? v.mac_security_forge : "allow"
-      organization       = v.organization != null ? v.organization : "default"
-      tags               = v.tags != null ? v.tags : []
+      cdp_enable            = v.cdp_enable != null ? v.cdp_enable : false
+      description           = v.description != null ? v.description : ""
+      lldp_enable_receive   = v.lldp_enable_receive != null ? v.lldp_enable_receive : false
+      lldp_enable_transmit  = v.lldp_enable_transmit != null ? v.lldp_enable_transmit : false
+      mac_register_mode     = v.mac_register_mode != null ? v.mac_register_mode : "nativeVlanOnly"
+      mac_security_forge    = v.mac_security_forge != null ? v.mac_security_forge : "allow"
+      organization          = v.organization != null ? v.organization : "default"
+      tags                  = v.tags != null ? v.tags : []
     }
   }
 
