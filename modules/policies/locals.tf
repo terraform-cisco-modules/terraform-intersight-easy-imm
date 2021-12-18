@@ -1240,7 +1240,7 @@ locals {
 
   user_roles_list = distinct(flatten(concat(local.ldap_roles, local.local_user_roles)))
   user_roles = {
-    for s in local.user_roles_list: "${s}" => {
+    for s in local.user_roles_list : "${s}" => {
       role = s
     }
   }
@@ -1981,17 +1981,17 @@ locals {
   }
 
   vmedia_mappings_loop = flatten([
-    for key, value in local.virtual_media_policies: [
-      for k, v in value.vmedia_mappings: {
+    for key, value in local.virtual_media_policies : [
+      for k, v in value.vmedia_mappings : {
         authentication_protocol = v.authentication_protocol != null ? v.authentication_protocol : "none"
-        device_type = v.device_type != null ? v.device_type : "cdd"
-        file_location = v.file_location
-        mount_options = v.mount_options != null ? v.mount_options : ""
-        name = k
-        password = v.password != null ? v.password : 0
-        policy = key
-        protocol = v.protocol != null ? v.protocol : "nfs"
-        username = v.username != null ? v.username : ""
+        device_type             = v.device_type != null ? v.device_type : "cdd"
+        file_location           = v.file_location
+        mount_options           = v.mount_options != null ? v.mount_options : ""
+        name                    = k
+        password                = v.password != null ? v.password : 0
+        policy                  = key
+        protocol                = v.protocol != null ? v.protocol : "nfs"
+        username                = v.username != null ? v.username : ""
       }
     ]
     if length(value.vmedia_mappings) > 0
