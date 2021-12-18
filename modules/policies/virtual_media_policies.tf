@@ -133,7 +133,7 @@ variable "vmedia_password_5" {
 # GUI Location: Configure > Policies > Create Policy > Virtual Media
 #_________________________________________________________________________
 
-resource "intersight_vmedia_policy" "vmedia" {
+resource "intersight_vmedia_policy" "virtual_media_policies" {
   depends_on = [
     local.org_moids
   ]

@@ -133,8 +133,8 @@ output "local_user_policies" {
 # Merged Profile Outputs
 #__________________________________________________________
 
-output "merged_profile_policies" {
-  value = local.merged_profile_policies
+output "ucs_domain_policies" {
+  value = local.ucs_domain_policies
 }
 
 
@@ -354,8 +354,8 @@ output "virtual_kvm_policies" {
 output "virtual_media_policies" {
   description = "Moid's of the Virtual Media Policies."
   value = var.virtual_media_policies != {} ? { for v in sort(
-    keys(module.virtual_media_policies)
-  ) : v => module.virtual_media_policies[v].moid } : {}
+    keys(intersight_vmedia_policy.virtual_media_policies)
+  ) : v => intersight_vmedia_policy.virtual_media_policies[v].moid } : {}
 }
 
 

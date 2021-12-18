@@ -162,7 +162,7 @@ resource "intersight_iam_end_point_user" "users" {
   for_each = local.local_users
   name     = each.value.username
   organization {
-    moid        = var.org_moid
+    moid        = local.org_moids[each.value.organization].moid
     object_type = "organization.Organization"
   }
 }

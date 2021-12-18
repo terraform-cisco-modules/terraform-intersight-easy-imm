@@ -1241,7 +1241,7 @@ locals {
     ]
   ])
 
-  user_roles = distinct(merge(local.ldap_roles, local.local_user_roles))
+  user_roles = distinct(concat(local.ldap_roles, local.local_user_roles))
 
   #______________________________________________
   #

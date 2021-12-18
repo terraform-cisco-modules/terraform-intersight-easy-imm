@@ -68,7 +68,7 @@ variable "switch_control_policies" {
 resource "intersight_fabric_switch_control_policy" "switch_control_policies" {
   depends_on = [
     local.org_moids,
-    local.merged_profile_policies,
+    local.ucs_domain_policies
   ]
   for_each                       = local.switch_control_policies
   description                    = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy"
@@ -87,7 +87,7 @@ resource "intersight_fabric_switch_control_policy" "switch_control_policies" {
     recovery_action  = each.value.udld_recovery_action
   }
   dynamic "profiles" {
-    for_each = { for k, v in local.merged_profile_policies : k => v if local.merged_profile_policies[k].switch_control_policy == each.key }
+    for_each = { for k, v in local.ucs_domain_policies : k => v if local.ucs_domain_policies[k].switch_control_policy == each.key }
     content {
       moid        = profiles.value.moid
       object_type = profiles.value.object_type

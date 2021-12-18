@@ -33,12 +33,12 @@ This Module will create Intersight Management Mode - Server Policies.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_port_role_appliances"></a> [port\_role\_appliances](#module\_port\_role\_appliances) | terraform-cisco-modules/imm/intersight//modules/port_role_appliances | >=0.9.6 |
-| <a name="module_port_role_ethernet_uplinks"></a> [port\_role\_ethernet\_uplinks](#module\_port\_role\_ethernet\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_ethernet_uplinks | >=0.9.6 |
-| <a name="module_port_role_fc_storage"></a> [port\_role\_fc\_storage](#module\_port\_role\_fc\_storage) | terraform-cisco-modules/imm/intersight//modules/port_role_fc_storage | >=0.9.7 |
-| <a name="module_port_role_fc_uplinks"></a> [port\_role\_fc\_uplinks](#module\_port\_role\_fc\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fc_uplinks | >=0.9.6 |
-| <a name="module_port_role_fcoe_uplinks"></a> [port\_role\_fcoe\_uplinks](#module\_port\_role\_fcoe\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fcoe_uplinks | >=0.9.6 |
-| <a name="module_port_role_servers"></a> [port\_role\_servers](#module\_port\_role\_servers) | terraform-cisco-modules/imm/intersight//modules/port_role_servers | >=0.9.6 |
+| <a name="module_port_role_appliances"></a> [port\_role\_appliances](#module\_port\_role\_appliances) | terraform-cisco-modules/imm/intersight//modules/port_role_appliances | >=0.9.8 |
+| <a name="module_port_role_ethernet_uplinks"></a> [port\_role\_ethernet\_uplinks](#module\_port\_role\_ethernet\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_ethernet_uplinks | >=0.9.8 |
+| <a name="module_port_role_fc_storage"></a> [port\_role\_fc\_storage](#module\_port\_role\_fc\_storage) | terraform-cisco-modules/imm/intersight//modules/port_role_fc_storage | >=0.9.8 |
+| <a name="module_port_role_fc_uplinks"></a> [port\_role\_fc\_uplinks](#module\_port\_role\_fc\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fc_uplinks | >=0.9.8 |
+| <a name="module_port_role_fcoe_uplinks"></a> [port\_role\_fcoe\_uplinks](#module\_port\_role\_fcoe\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fcoe_uplinks | >=0.9.8 |
+| <a name="module_port_role_servers"></a> [port\_role\_servers](#module\_port\_role\_servers) | terraform-cisco-modules/imm/intersight//modules/port_role_servers | >=0.9.8 |
 | <a name="module_vlan_policies_add_vlans"></a> [vlan\_policies\_add\_vlans](#module\_vlan\_policies\_add\_vlans) | terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list | >=0.9.6 |
 
 ## Resources
@@ -88,7 +88,7 @@ This Module will create Intersight Management Mode - Server Policies.
 | [intersight_storage_storage_policy.storage_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/storage_storage_policy) | resource |
 | [intersight_syslog_policy.syslog_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/syslog_policy) | resource |
 | [intersight_thermal_policy.thermal_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/thermal_policy) | resource |
-| [intersight_vmedia_policy.vmedia](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/vmedia_policy) | resource |
+| [intersight_vmedia_policy.virtual_media_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/vmedia_policy) | resource |
 | [intersight_vnic_eth_adapter_policy.ethernet_adapter_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/vnic_eth_adapter_policy) | resource |
 | [intersight_vnic_eth_if.vnics](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/vnic_eth_if) | resource |
 | [intersight_vnic_eth_network_policy.ethernet_network_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/vnic_eth_network_policy) | resource |
@@ -217,7 +217,7 @@ This Module will create Intersight Management Mode - Server Policies.
 | <a name="input_vmedia_password_5"></a> [vmedia\_password\_5](#input\_vmedia\_password\_5) | Password for vMedia | `string` | `""` | no |
 | <a name="input_vsan_policies"></a> [vsan\_policies](#input\_vsan\_policies) | key - Name of the VSAN Policy.<br>* description - Description to Assign to the Policy.<br>* organization - Name of the Intersight Organization to assign this Policy to.<br>  - https://intersight.com/an/settings/organizations/<br>* tags - List of Key/Value Pairs to Assign as Attributes to the Policy.<br>* uplink\_trunking - Default is false.  Enable or Disable Trunking on all of configured FC uplink ports.<br>* vsans - List of VSANs to add to the VSAN Policy.<br>  - default\_zoning - Enables or Disables the default zoning state.<br>    1. Enabled - Admin configured Enabled State.<br>    2. Disabled (Default) - Admin configured Disabled State.<br>  - fc\_zone\_sharing\_mode - Logical grouping mode for fc ports.  Not used at this time.<br>  - fcoe\_vlan\_id - (REQUIRED).  FCoE VLAN Identifier to Assign to the VSAN Policy.<br>  - name - Name for the VSAN.<br>  - vsan\_id - (REQUIRED).  VSAN Identifier to Assign to the VSAN Policy.<br>  - vsan\_scope - Used to indicate whether the VSAN Id is defined for storage or uplink or both traffics in FI.<br>    * Uplink (Default) - Vsan associated with uplink network.<br>    * Storage - Vsan associated with storage network.<br>    * Common - Vsan that is common for uplink and storage network. | <pre>map(object(<br>    {<br>      description     = optional(string)<br>      organization    = optional(string)<br>      tags            = optional(list(map(string)))<br>      uplink_trunking = optional(bool)<br>      vsans = optional(map(object(<br>        {<br>          default_zoning       = optional(string)<br>          fc_zone_sharing_mode = optional(string)<br>          fcoe_vlan_id         = number<br>          name                 = string<br>          vsan_id              = number<br>          vsan_scope           = optional(string)<br>        }<br>      )))<br>    }<br>  ))</pre> | <pre>{<br>  "default": {<br>    "description": "",<br>    "organization": "default",<br>    "tags": [],<br>    "uplink_trunking": false,<br>    "vsans": {<br>      "default": {<br>        "default_zoning": "Disabled",<br>        "fc_zone_sharing_mode": "",<br>        "fcoe_vlan_id": null,<br>        "name": "vsan",<br>        "vsan_id": null,<br>        "vsan_scope": "Uplink"<br>      }<br>    }<br>  }<br>}</pre> | no |
 | <a name="input_ws_pools"></a> [ws\_pools](#input\_ws\_pools) | Pools Workspace Name. | `string` | n/a | yes |
-| <a name="input_ws_profiles"></a> [ws\_profiles](#input\_ws\_profiles) | UCS Profiles Workspace Name. | `string` | n/a | yes |
+| <a name="input_ws_ucs_domain_profiles"></a> [ws\_ucs\_domain\_profiles](#input\_ws\_ucs\_domain\_profiles) | UCS Domain Profiles Workspace Name. | `string` | n/a | yes |
 
 ## Outputs
 
@@ -233,7 +233,6 @@ This Module will create Intersight Management Mode - Server Policies.
 | <a name="output_lan_connectivity_policies"></a> [lan\_connectivity\_policies](#output\_lan\_connectivity\_policies) | Moid's of the LAN Connectivity Policies. |
 | <a name="output_ldap_policies"></a> [ldap\_policies](#output\_ldap\_policies) | Moid's of the LDAP Policies. |
 | <a name="output_local_user_policies"></a> [local\_user\_policies](#output\_local\_user\_policies) | Moid's of the Local User Policies. |
-| <a name="output_merged_profile_policies"></a> [merged\_profile\_policies](#output\_merged\_profile\_policies) | n/a |
 | <a name="output_network_connectivity_policies"></a> [network\_connectivity\_policies](#output\_network\_connectivity\_policies) | Moid's of the Network Connectivity Policies. |
 | <a name="output_ntp_policies"></a> [ntp\_policies](#output\_ntp\_policies) | Moid's of the NTP Policies. |
 | <a name="output_persistent_memory_policies"></a> [persistent\_memory\_policies](#output\_persistent\_memory\_policies) | Moid's of the Persistent Memory Policies. |
@@ -249,6 +248,7 @@ This Module will create Intersight Management Mode - Server Policies.
 | <a name="output_syslog_policies"></a> [syslog\_policies](#output\_syslog\_policies) | Moid's of the Syslog Policies. |
 | <a name="output_system_qos_policies"></a> [system\_qos\_policies](#output\_system\_qos\_policies) | Moid's of the System QoS Policies. |
 | <a name="output_thermal_policies"></a> [thermal\_policies](#output\_thermal\_policies) | Moid's of the Thermal Policies. |
+| <a name="output_ucs_domain_policies"></a> [ucs\_domain\_policies](#output\_ucs\_domain\_policies) | n/a |
 | <a name="output_virtual_kvm_policies"></a> [virtual\_kvm\_policies](#output\_virtual\_kvm\_policies) | Moid's of the Virtual KVM Policies. |
 | <a name="output_virtual_media_policies"></a> [virtual\_media\_policies](#output\_virtual\_media\_policies) | Moid's of the Virtual Media Policies. |
 | <a name="output_vlan_policies"></a> [vlan\_policies](#output\_vlan\_policies) | moid of the VLAN Policies. |
