@@ -658,7 +658,7 @@ module "port_role_appliances" {
     intersight_fabric_eth_network_group_policy.ethernet_network_group_policies,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.6"
+  version          = ">=0.9.7"
   source           = "terraform-cisco-modules/imm/intersight//modules/port_role_appliances"
   for_each         = local.port_role_appliances
   admin_speed      = each.value.admin_speed
@@ -697,7 +697,7 @@ module "port_role_ethernet_uplinks" {
     intersight_fabric_link_control_policy.link_control_policies,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.6"
+  version          = ">=0.9.7"
   source           = "terraform-cisco-modules/imm/intersight//modules/port_role_ethernet_uplinks"
   for_each         = local.port_role_ethernet_uplinks
   admin_speed      = each.value.admin_speed
@@ -763,7 +763,7 @@ module "port_role_fc_uplinks" {
     intersight_fabric_port_mode.port_modes,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.6"
+  version          = ">=0.9.7"
   source           = "terraform-cisco-modules/imm/intersight//modules/port_role_fc_uplinks"
   for_each         = local.port_role_fc_uplinks
   admin_speed      = each.value.admin_speed
@@ -789,7 +789,7 @@ module "port_role_fcoe_uplinks" {
     intersight_fabric_link_control_policy.link_control_policies,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.6"
+  version          = ">=0.9.7"
   source           = "terraform-cisco-modules/imm/intersight//modules/port_role_fcoe_uplinks"
   for_each         = local.port_role_fcoe_uplinks
   admin_speed      = each.value.admin_speed
@@ -818,7 +818,7 @@ module "port_role_servers" {
     local.org_moids,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.6"
+  version          = ">=0.9.7"
   source           = "terraform-cisco-modules/imm/intersight//modules/port_role_servers"
   for_each         = local.port_role_servers
   breakout_port_id = each.value.breakout_port_id
