@@ -57,6 +57,6 @@ data "intersight_organization_organization" "org_moid" {
 
 data "intersight_iam_end_point_role" "roles" {
   for_each = local.user_roles
-  name     = each.value
+  name     = each.value.role
   type     = "IMC"
 }

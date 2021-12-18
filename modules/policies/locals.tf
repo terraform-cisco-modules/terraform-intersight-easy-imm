@@ -1238,7 +1238,13 @@ locals {
     ]
   ])
 
-  user_roles = toset(distinct(concat(local.ldap_roles, local.local_user_roles)))
+  user_roles_list = distinct(flatten(concat(local.ldap_roles, local.local_user_roles)))
+  user_roles = {
+    for s in local.user_roles_list: "${s}" => {
+      role = s
+    }
+  }
+
 
   #______________________________________________
   #
@@ -1970,32 +1976,28 @@ locals {
       enable_virtual_media_encryption = v.enable_virtual_media_encryption != null ? v.enable_virtual_media_encryption : true
       organization                    = v.organization != null ? v.organization : "default"
       tags                            = v.tags != null ? v.tags : []
-      vmedia_mappings = v.vmedia_mappings != null ? {
-        authentication_protocol = contains(keys(
-          v.vmedia_mappings), "authentication_protocol"
-        ) == "true" ? v.vmedia_mappings["authentication_protocol"] : "none"
-        device_type = contains(keys(
-          v.vmedia_mappings), "device_type"
-        ) == "true" ? v.vmedia_mappings["device_type"] : "cdd"
-        file_location = contains(keys(
-          v.vmedia_mappings), "file_location"
-        ) == "true" ? v.vmedia_mappings["file_location"] : ""
-        mount_options = contains(keys(
-          v.vmedia_mappings), "mount_options"
-        ) == "true" ? v.vmedia_mappings["mount_options"] : ""
-        name = k
-        password = contains(keys(
-          v.vmedia_mappings), "password"
-        ) == "true" ? v.vmedia_mappings["password"] : 0
-        protocol = contains(keys(
-          v.vmedia_mappings), "protocol"
-        ) == "true" ? v.vmedia_mappings["protocol"] : "nfs"
-        username = contains(keys(
-          v.vmedia_mappings), "username"
-        ) == "true" ? v.vmedia_mappings["username"] : ""
-      } : {}
+      vmedia_mappings                 = v.vmedia_mappings != null ? v.vmedia_mappings : {}
     }
   }
+
+  vmedia_mappings_loop = flatten([
+    for key, value in local.virtual_media_policies: [
+      for k, v in value.vmedia_mappings: {
+        authentication_protocol = v.authentication_protocol != null ? v.authentication_protocol : "none"
+        device_type = v.device_type != null ? v.device_type : "cdd"
+        file_location = v.file_location
+        mount_options = v.mount_options != null ? v.mount_options : ""
+        name = k
+        password = v.password != null ? v.password : 0
+        policy = key
+        protocol = v.protocol != null ? v.protocol : "nfs"
+        username = v.username != null ? v.username : ""
+      }
+    ]
+    if length(value.vmedia_mappings) > 0
+  ])
+
+  vmedia_mappings = { for k, v in local.vmedia_mappings_loop : v.name => v }
 
   #__________________________________________________________
   #

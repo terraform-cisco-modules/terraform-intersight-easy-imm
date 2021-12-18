@@ -148,7 +148,7 @@ resource "intersight_vmedia_policy" "virtual_media_policies" {
     object_type = "organization.Organization"
   }
   dynamic "mappings" {
-    for_each = each.value.vmedia_mappings
+    for_each = { for k, v in local.vmedia_mappings: k => v if local.vmedia_mappings[k].policy == each.key }
     content {
       additional_properties   = ""
       authentication_protocol = mappings.value.authentication_protocol
