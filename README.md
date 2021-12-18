@@ -20,30 +20,12 @@
 * MAC Pools
 * UUID Pools
 
-### Domain Policies
-
-* Ethernet Network Control (CDP/LLDP) - module/policies
-* Ethernet Network Group (VLAN Groups) - module/policies
-* Flow Control - module/policies
-* Link Aggregation - module/policies
-* Link Control - module/policies
-* Multicast - module/policies_vlans
-* Network Connectivity (DNS) - module/policies
-* NTP - module/policies
-* Port - module/policies
-* SNMP - module/policies
-* Switch Control - module/policies
-* Syslog - module/policies
-* System QoS - module/policies
-* VLAN - module/policies_vlans
-* VSAN - module/policies
-
-### Chassis/Server Policies - module/policies
+### Intersight Policies - Folder modules/policies
 
 * Adapter Configuration (Standalone Servers)
 * BIOS
 * Boot Order
-* Certificate Management (under development)
+* Certificate Management
 * Device Connector
 * Ethernet Adapter (vnIC Adapter Policy)
 * Ethernet Network (Standalone Servers)
@@ -53,6 +35,9 @@
 * Fibre Channel Adapter (vHBA Adapter Policy)
 * Fibre Channel Network
 * Fibre Channel QoS (vHBA QoS)
+* Ethernet Network Control (CDP/LLDP)
+* Ethernet Network Group (VLAN Groups)
+* Flow Control
 * IMC Access
 * IPMI Over LAN
 * iSCSI Adapter
@@ -60,24 +45,32 @@
 * iSCSI Static Target
 * LAN Connectivity
 * LDAP (Standalone Servers)
+* Link Aggregation
+* Link Control
 * Local User
-* Network Connectivity
+* Multicast
+* Network Connectivity (DNS)
 * NTP
 * Persistent Memory
+* Port
 * Power
 * SAN Connectivity
-* SD Card
+* SD Card - Depricated
 * Serial Over LAN
 * SMTP
 * SNMP
 * SSH
 * Storage
+* Switch Control
 * Syslog
+* System QoS
 * Thermal
 * Virtual KVM
 * Virtual Media
+* VLAN
+* VSAN
 
-### UCS Chassis Profiles - module/ucs_chassis_profiles
+### UCS Chassis Profiles - module/profiles
 
 * ucs_chassis_profiles
 
@@ -85,7 +78,7 @@
 
 * ucs_domain_profiles
 
-### UCS Server Profiles - module/ucs_server_profiles
+### UCS Server Profiles - module/profiles
 
 * ucs_server_profiles
 
@@ -225,10 +218,15 @@ export TF_VAR_snmp_trap_community_4="your_community"
 export TF_VAR_snmp_trap_community_5="your_community"
 ```
 
-### Execute the Terraform Plan
+## Execute the Terraform Plan
 
 Once all Variables have been imported into your environment, run the plan in the tfe folder:
 
+### Terraform Cloud
+
+When running in Terraform Cloud with VCS Integration the first Plan will need to be run from the UI but subsiqent runs should trigger automatically
+
+### Terraform CLI
 * Execute the Plan
 
 ```bash

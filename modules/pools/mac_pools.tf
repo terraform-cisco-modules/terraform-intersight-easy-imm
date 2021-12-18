@@ -63,17 +63,32 @@ variable "mac_pools" {
 # MAC Pools
 #______________________________________________
 
-module "mac_pools" {
+resource "intersight_macpool_pool" "mac_pools" {
   depends_on = [
     local.org_moids
   ]
-  version          = ">=0.9.6"
-  source           = "terraform-cisco-modules/imm/intersight//modules/mac_pools"
   for_each         = local.mac_pools
   assignment_order = each.value.assignment_order
-  description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} MAC Pool."
-  mac_blocks       = each.value.mac_blocks
+  description      = each.value.description != "" ? each.value.description : "${each.key} MAC Pool"
   name             = each.key
-  org_moid         = local.org_moids[each.value.organization].moid
-  tags             = each.value.tags != [] ? each.value.tags : local.tags
+  dynamic "mac_blocks" {
+    for_each = each.value.mac_blocks
+    content {
+      object_type = "macpool.Block"
+      from        = mac_blocks.value.from
+      size        = mac_blocks.value.size != null ? tonumber(mac_blocks.value.size) : null
+      to          = mac_blocks.value.to != null ? mac_blocks.value.to : null
+    }
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

@@ -114,46 +114,49 @@ variable "certificate_management_policies" {
 # GUI Location: Configure > Policies > Create Policy > Certificate Management
 #_________________________________________________________________________
 
-module "certificate_management_policies" {
+resource "intersight_certificatemanagement_policy" "certificate_management_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version  = ">=0.9.6"
-  source   = "terraform-cisco-modules/imm/intersight//modules/certificate_management_policies"
-  for_each = local.certificate_management_policies
-  base64_certificate = length(
-    regexall("1", each.value.certificate)
-    ) > 0 ? var.base64_certificate_1 : length(
-    regexall("2", each.value.certificate)
-    ) > 0 ? var.base64_certificate_2 : length(
-    regexall("3", each.value.certificate)
-    ) > 0 ? var.base64_certificate_3 : length(
-    regexall("4", each.value.certificate)
-    ) > 0 ? var.base64_certificate_4 : length(
-    regexall("5", each.value.certificate)
-  ) > 0 ? var.base64_certificate_5 : null
+  for_each    = local.certificate_management_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Certificate Management Policy."
-  enabled     = each.value.enabled
   name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  base64_private_key = length(
-    regexall("1", each.value.private_key)
-    ) > 0 ? var.base64_private_key_1 : length(
-    regexall("2", each.value.private_key)
-    ) > 0 ? var.base64_private_key_2 : length(
-    regexall("3", each.value.private_key)
-    ) > 0 ? var.base64_private_key_3 : length(
-    regexall("4", each.value.private_key)
-    ) > 0 ? var.base64_private_key_4 : length(
-    regexall("5", each.value.private_key)
-  ) > 0 ? var.base64_private_key_5 : null
-  tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  certificates {
+    certificate {
+      pem_certificate = length(
+        regexall("1", each.value.certificate)
+        ) > 0 ? var.base64_certificate_1 : length(
+        regexall("2", each.value.certificate)
+        ) > 0 ? var.base64_certificate_2 : length(
+        regexall("3", each.value.certificate)
+        ) > 0 ? var.base64_certificate_3 : length(
+        regexall("4", each.value.certificate)
+        ) > 0 ? var.base64_certificate_4 : length(
+        regexall("5", each.value.certificate)
+      ) > 0 ? var.base64_certificate_5 : null
     }
-    if local.merged_profile_policies[k].certificate_management_policy == each.key
+    enabled = each.value.enabled
+    privatekey = length(
+      regexall("1", each.value.private_key)
+      ) > 0 ? var.base64_private_key_1 : length(
+      regexall("2", each.value.private_key)
+      ) > 0 ? var.base64_private_key_2 : length(
+      regexall("3", each.value.private_key)
+      ) > 0 ? var.base64_private_key_3 : length(
+      regexall("4", each.value.private_key)
+      ) > 0 ? var.base64_private_key_4 : length(
+      regexall("5", each.value.private_key)
+    ) > 0 ? var.base64_private_key_5 : null
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }

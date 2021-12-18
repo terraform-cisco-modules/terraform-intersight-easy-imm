@@ -113,16 +113,3 @@ variable "ucs_server_profile_templates" {
     }
   ))
 }
-
-# module "ucs_server_profile_templates" {
-#   depends_on = [
-#     local.org_moids
-#   ]
-#   source          = "terraform-cisco-modules/imm/intersight//modules/ucs_server_templates"
-#   for_each        = local.ucs_server_profile_templates
-#   description     = each.value.description != "" ? each.value.description : "${each.key} Server Profile."
-#   name            = each.key
-#   org_moid        = local.org_moids[each.value.organization].moid
-#   tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
-#   target_platform = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
-# }

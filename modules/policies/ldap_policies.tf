@@ -150,69 +150,93 @@ variable "ldap_policies" {
 # LDAP Policy
 #______________________________________________
 
-module "ldap_policies" {
+resource "intersight_iam_ldap_policy" "ldap_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version                     = ">=0.9.6"
-  source                      = "terraform-cisco-modules/imm/intersight//modules/ldap_policies"
-  for_each                    = local.ldap_policies
-  base_settings               = each.value.base_settings
-  binding_parameters          = each.value.binding_parameters
-  binding_parameters_password = var.binding_parameters_password
-  description                 = each.value.description != "" ? each.value.description : "${each.key} LDAP Policy."
-  enable_encryption           = each.value.enable_encryption
-  enable_group_authorization  = each.value.enable_group_authorization
-  enable_ldap                 = each.value.enable_ldap
-  ldap_from_dns               = each.value.ldap_from_dns
-  name                        = each.key
-  nested_group_search_depth   = each.value.nested_group_search_depth
-  org_moid                    = local.org_moids[each.value.organization].moid
-  search_parameters           = each.value.search_parameters
-  tags                        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  user_search_precedence      = each.value.user_search_precedence
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each    = local.ldap_policies
+  description = each.value.description != "" ? each.value.description : "${each.key} LDAP Policy"
+  name        = each.key
+  enabled     = each.value.enable_ldap
+  base_properties {
+    # Base Settings
+    base_dn = each.value.base_settings.base_dn
+    domain  = each.value.base_settings.domain
+    timeout = each.value.base_settings.timeout != null ? each.value.base_settings.timeout : 0
+    # Enable LDAP Encryption
+    enable_encryption = each.value.enable_encryption
+    # Binding Parameters
+    bind_method = each.value.binding_parameters.bind_method
+    bind_dn     = each.value.binding_parameters.bind_dn
+    password    = var.binding_parameters_password
+    # Search Parameters
+    attribute       = each.value.search_parameters.attribute
+    filter          = each.value.search_parameters.filter
+    group_attribute = each.value.search_parameters.group_attribute
+    # Group Authorization
+    enable_group_authorization = each.value.enable_group_authorization
+    nested_group_search_depth  = each.value.nested_group_search_depth
+  }
+  # Configure LDAP Servers
+  enable_dns = each.value.ldap_from_dns.enable
+  dns_parameters {
+    nr_source     = each.value.ldap_from_dns.source
+    search_domain = each.value.ldap_from_dns.search_domain
+    search_forest = each.value.ldap_from_dns.search_forest
+  }
+  user_search_precedence = each.value.user_search_precedence
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].ldap_policy == each.key
   }
 }
 
+
 #______________________________________________
 #
-# LDAP Provider
+# LDAP Servers
 #______________________________________________
 
-module "ldap_add_server" {
+resource "intersight_iam_ldap_provider" "ldap_servers" {
   depends_on = [
-    module.ldap_policies
+    local.org_moids,
+    intersight_iam_ldap_policy.ldap_policies
   ]
-  version          = ">=0.9.6"
-  for_each         = local.ldap_servers
-  source           = "terraform-cisco-modules/imm/intersight//modules/ldap_add_server"
-  ldap_policy_moid = module.ldap_policies[each.value.policy].moid
-  port             = each.value.port
-  server           = each.value.server
+  for_each = local.ldap_servers
+  ldap_policy {
+    moid = intersight_iam_ldap_policy.ldap_policies[each.value.policy].moid
+  }
+  port   = each.value.port
+  server = each.value.server
 }
+
 
 #______________________________________________
 #
 # LDAP Groups
 #______________________________________________
 
-module "ldap_add_group" {
+resource "intersight_iam_ldap_group" "ldap_group" {
   depends_on = [
-    local.org_moids,
-    module.ldap_policies
+    data.intersight_iam_end_point_role.roles,
+    intersight_iam_ldap_policy.ldap_policies,
+    local.org_moids
   ]
-  version          = ">=0.9.6"
-  source           = "terraform-cisco-modules/imm/intersight//modules/ldap_add_group"
-  for_each         = local.ldap_groups
-  domain           = each.value.domain
-  name             = each.value.name
-  ldap_policy_moid = module.ldap_policies[each.value.policy].moid
-  role             = each.value.role
+  for_each = local.ldap_groups
+  domain   = each.value.domain
+  name     = each.value.name
+  end_point_role {
+    moid        = data.intersight_iam_end_point_role.roles[each.value.role].results[0].moid
+    object_type = "iam.EndPointRole"
+  }
+  ldap_policy {
+    moid = intersight_iam_ldap_policy.ldap_policies[each.value.policy].moid
+  }
 }

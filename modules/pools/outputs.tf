@@ -5,7 +5,9 @@
 
 output "ip_pools" {
   description = "moid of the IP Pools."
-  value       = var.ip_pools != {} ? { for v in sort(keys(module.ip_pools)) : v => module.ip_pools[v].moid } : {}
+  value = var.ip_pools != {} ? { for v in sort(
+    keys(intersight_ippool_pool.ip_pools)
+  ) : v => intersight_ippool_pool.ip_pools[v].moid } : {}
 }
 
 
@@ -16,7 +18,9 @@ output "ip_pools" {
 
 output "iqn_pools" {
   description = "moid of the IQN Pools."
-  value       = var.iqn_pools != {} ? { for v in sort(keys(module.iqn_pools)) : v => module.iqn_pools[v].moid } : {}
+  value = var.iqn_pools != {} ? { for v in sort(
+    keys(intersight_iqnpool_pool.iqn_pools)
+  ) : v => intersight_iqnpool_pool.iqn_pools[v].moid } : {}
 }
 
 
@@ -27,18 +31,9 @@ output "iqn_pools" {
 
 output "mac_pools" {
   description = "moid of the MAC Pools."
-  value       = var.mac_pools != {} ? { for v in sort(keys(module.mac_pools)) : v => module.mac_pools[v].moid } : {}
-}
-
-
-#__________________________________________________________
-#
-# UUID Pool Outputs
-#__________________________________________________________
-
-output "uuid_pools" {
-  description = "moid of the UUID Pools."
-  value       = var.uuid_pools != {} ? { for v in sort(keys(module.uuid_pools)) : v => module.uuid_pools[v].moid } : {}
+  value = var.mac_pools != {} ? { for v in sort(
+    keys(intersight_macpool_pool.mac_pools)
+  ) : v => intersight_macpool_pool.mac_pools[v].moid } : {}
 }
 
 
@@ -49,7 +44,22 @@ output "uuid_pools" {
 
 output "resource_pools" {
   description = "moid of the UUID Pools."
-  value       = var.resource_pools != {} ? { for v in sort(keys(module.resource_pools)) : v => module.resource_pools[v].moid } : {}
+  value = var.resource_pools != {} ? { for v in sort(
+    keys(module.resource_pools)
+  ) : v => module.resource_pools[v].moid } : {}
+}
+
+
+#__________________________________________________________
+#
+# UUID Pool Outputs
+#__________________________________________________________
+
+output "uuid_pools" {
+  description = "moid of the UUID Pools."
+  value = var.uuid_pools != {} ? { for v in sort(
+    keys(intersight_uuidpool_pool.uuid_pools)
+  ) : v => intersight_uuidpool_pool.uuid_pools[v].moid } : {}
 }
 
 
@@ -60,7 +70,9 @@ output "resource_pools" {
 
 output "wwnn_pools" {
   description = "moid of the Fibre-Channel WWNN Pools."
-  value       = var.wwnn_pools != {} ? { for v in sort(keys(module.wwnn_pools)) : v => module.wwnn_pools[v].moid } : {}
+  value = var.wwnn_pools != {} ? { for v in sort(
+    keys(intersight_fcpool_pool.wwnn_pools)
+  ) : v => intersight_fcpool_pool.wwnn_pools[v].moid } : {}
 }
 
 
@@ -71,5 +83,7 @@ output "wwnn_pools" {
 
 output "wwpn_pools" {
   description = "moid of the Fibre-Channel WWPN Pools."
-  value       = var.wwpn_pools != {} ? { for v in sort(keys(module.wwpn_pools)) : v => module.wwpn_pools[v].moid } : {}
+  value = var.wwpn_pools != {} ? { for v in sort(
+    keys(intersight_fcpool_pool.wwpn_pools)
+  ) : v => intersight_fcpool_pool.wwpn_pools[v].moid } : {}
 }

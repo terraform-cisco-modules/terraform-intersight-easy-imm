@@ -51,20 +51,26 @@ variable "multicast_policies" {
 # GUI Location: Create > Policy > Create Policy > Multicast > Start
 #_________________________________________________________________________
 
-module "multicast_policies" {
+resource "intersight_fabric_multicast_policy" "multicast_policies" {
   depends_on = [
     local.org_moids
   ]
-  version                 = ">=0.9.6"
-  source                  = "terraform-cisco-modules/imm/intersight//modules/multicast_policies"
   for_each                = local.multicast_policies
-  description             = each.value.description != "" ? each.value.description : "${each.key} Multicast Policy."
+  description             = each.value.description != "" ? each.value.description : "${each.key} Multicast Policy"
   name                    = each.key
-  org_moid                = local.org_moids[each.value.organization].moid
   querier_ip_address      = each.value.querier_ip_address
   querier_ip_address_peer = each.value.querier_ip_address_peer
   querier_state           = each.value.querier_state
   snooping_state          = each.value.snooping_state
-  tags                    = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
-

@@ -107,37 +107,92 @@ variable "iscsi_boot_policies" {
 # GUI Location: Configure > Policies > Create Policy > iSCSI Boot
 #_________________________________________________________________________
 
-module "iscsi_boot_policies" {
+resource "intersight_vnic_iscsi_boot_policy" "iscsi_boot_policies" {
   depends_on = [
     data.terraform_remote_state.pools,
     local.org_moids,
-    module.iscsi_adapter_policies,
-    module.iscsi_static_target_policies,
+    intersight_vnic_iscsi_adapter_policy.iscsi_adapter_policies,
+    intersight_vnic_iscsi_static_target_policy.iscsi_static_target_policies,
   ]
-  version                       = ">=0.9.6"
-  source                        = "terraform-cisco-modules/imm/intersight//modules/iscsi_boot_policies"
-  for_each                      = var.iscsi_boot_policies
-  authentication                = each.value.authentication
-  dhcp_vendor_id_iqn            = each.value.dhcp_vendor_id_iqn != null ? each.value.dhcp_vendor_id_iqn : ""
-  description                   = each.value.description != null ? each.value.description : "${each.key} iSCSI Boot Policy."
-  initiator_ip_source           = each.value.initiator_ip_source != null ? each.value.initiator_ip_source : ""
-  initiator_static_ip_v4_config = each.value.initiator_static_ip_v4_config != null ? each.value.initiator_static_ip_v4_config : {}
-  password                      = each.value.password == 1 ? var.iscsi_boot_password : ""
-  username                      = each.value.username != null ? each.value.username : ""
-  name                          = each.key
-  primary_target_policy_moid = length(
-    regexall("[a-zA-Z0-9]+", each.value.primary_target_policy)
-  ) > 0 ? [module.iscsi_static_target_policies[each.value.primary_target_policy].moid] : []
+  for_each               = var.iscsi_boot_policies
+  auto_targetvendor_name = each.value.dhcp_vendor_id_iqn != null ? each.value.dhcp_vendor_id_iqn : ""
+  chap = [
+    {
+      additional_properties = ""
+      class_id              = "vnic.IscsiAuthProfile"
+      is_password_set       = each.value.authentication == "chap" ? true : false
+      object_type           = "vnic.IscsiAuthProfile"
+      password              = each.value.authentication == "chap" ? var.iscsi_boot_password : ""
+      user_id               = each.value.authentication == "chap" ? each.value.username : ""
+    }
+  ]
+  description                    = each.value.description != null ? each.value.description : "${each.key} iSCSI Boot Policy"
+  initiator_ip_source            = each.value.initiator_ip_source != null ? each.value.initiator_ip_source : ""
+  initiator_static_ip_v4_address = each.value.initiator_static_ip_v4_config.ip_address != null ? each.value.initiator_static_ip_v4_config.ip_address : ""
+  initiator_static_ip_v4_config = [
+    {
+      additional_properties = ""
+      class_id              = "ippool.IpV4Config"
+      gateway               = each.value.initiator_static_ip_v4_config.default_gateway != null ? each.value.initiator_static_ip_v4_config.default_gateway : ""
+      netmask               = each.value.initiator_static_ip_v4_config.subnet_mask != null ? each.value.initiator_static_ip_v4_config.subnet_mask : ""
+      object_type           = "ippool.IpV4Config"
+      primary_dns           = each.value.initiator_static_ip_v4_config.primary_dns != null ? each.value.initiator_static_ip_v4_config.primary_dns : ""
+      secondary_dns         = each.value.initiator_static_ip_v4_config.secondary_dns != null ? each.value.initiator_static_ip_v4_config.secondary_dns : ""
+    }
+  ]
+  mutual_chap = [
+    {
+      additional_properties = ""
+      class_id              = "vnic.IscsiAuthProfile"
+      is_password_set       = each.value.authentication == "mutual_chap" ? true : false
+      object_type           = "vnic.IscsiAuthProfile"
+      password              = each.value.authentication == "mutual_chap" ? var.iscsi_boot_password : ""
+      user_id               = each.value.authentication == "mutual_chap" ? each.value.username : ""
+    }
+  ]
+  name               = each.key
   target_source_type = each.value.target_source_type != null ? each.value.target_source_type : "Auto"
-  org_moid           = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
-  tags               = each.value.tags != null ? each.value.tags : local.tags
-  initiator_ip_pool = length(
-    regexall("Pool", each.value.initiator_ip_source)
-  ) > 0 ? [local.ip_pools[each.value.initiator_ip_pool]] : []
-  iscsi_adapter_policy_moid = length(
-    regexall("[a-zA-Z0-9]+", each.value.iscsi_adapter_policy)
-  ) > 0 ? [module.iscsi_adapter_policies[each.value.iscsi_adapter_policy].moid] : []
-  secondary_target_policy_moid = length(
-    regexall("[a-zA-Z0-9]+", each.value.secondary_target_policy)
-  ) > 0 ? [module.iscsi_static_target_policies[each.value.primary_target_policy].moid] : []
+  organization {
+    moid        = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "initiator_ip_pool" {
+    for_each = length(
+      regexall("Pool", each.value.initiator_ip_source)
+    ) > 0 ? [local.ip_pools[each.value.initiator_ip_pool]] : []
+    content {
+      moid = initiator_ip_pool.value
+    }
+  }
+  dynamic "iscsi_adapter_policy" {
+    for_each = length(
+      regexall("[a-zA-Z0-9]+", each.value.iscsi_adapter_policy)
+    ) > 0 ? [intersight_vnic_iscsi_adapter_policy.iscsi_adapter_policies[each.value.iscsi_adapter_policy].moid] : []
+    content {
+      moid = iscsi_adapter_policy.value
+    }
+  }
+  dynamic "primary_target_policy" {
+    for_each = length(
+      regexall("[a-zA-Z0-9]+", each.value.primary_target_policy)
+    ) > 0 ? [intersight_vnic_iscsi_static_target_policy.iscsi_static_target_policies[each.value.primary_target_policy].moid] : []
+    content {
+      moid = primary_target_policy.value
+    }
+  }
+  dynamic "secondary_target_policy" {
+    for_each = length(
+      regexall("[a-zA-Z0-9]+", each.value.secondary_target_policy)
+    ) > 0 ? [intersight_vnic_iscsi_static_target_policy.iscsi_static_target_policies[each.value.primary_target_policy].moid] : []
+    content {
+      moid = secondary_target_policy.value
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

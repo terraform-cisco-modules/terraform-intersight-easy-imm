@@ -1,19 +1,19 @@
-# ucs_server_profiles - Intersight UCS Server Profiles and UCS Server Profile Tempaltes Deployment Module
+# profiles - Intersight UCS Profiles and Deployment Module
 
-## Use this module to create UCS Chassis Profiles in Intersight
+## Use this module to create UCS Profiles in Intersight
 
 ## Usage
 
 ```hcl
-module "ucs_server_profiles" {
+module "profiles" {
 
-  source = "terraform-cisco-modules/easy-imm/intersight//modules/ucs_server_profiles"
+  source = "terraform-cisco-modules/easy-imm/intersight//modules/profiles"
 
   # omitted...
 }
 ```
 
-This module will create UCS Server Profiles and Server Profile Templates in Intersight.  
+This module will create UCS Profiles (Chassis, Domain, Servers), in Intersight.  
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

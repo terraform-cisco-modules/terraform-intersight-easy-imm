@@ -43,18 +43,24 @@ variable "link_aggregation_policies" {
 # GUI Location: Configure > Policy > Create Policy > Link Aggregation
 #_________________________________________________________________________
 
-module "link_aggregation_policies" {
+resource "intersight_fabric_link_aggregation_policy" "link_aggregation_policies" {
   depends_on = [
     local.org_moids
   ]
-  version            = ">=0.9.6"
-  source             = "terraform-cisco-modules/imm/intersight//modules/link_aggregation_policies"
   for_each           = local.link_aggregation_policies
-  description        = each.value.description != "" ? each.value.description : "${each.key} Link Aggregation Policy."
-  lacp_rate          = each.value.lacp_rate
+  description        = each.value.description != "" ? each.value.description : "${each.key} Link Aggregation Policy"
   name               = each.key
-  org_moid           = local.org_moids[each.value.organization].moid
+  lacp_rate          = each.value.lacp_rate
   suspend_individual = each.value.suspend_individual
-  tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
-

@@ -8,7 +8,6 @@ variable "ethernet_network_control_policies" {
   default = {
     default = {
       action_on_uplink_fail = "linkDown"
-      base_template         = ""
       cdp_enable            = false
       description           = ""
       lldp_enable_receive   = false
@@ -25,10 +24,6 @@ variable "ethernet_network_control_policies" {
     - linkDown
     - warning
     Important! If the Action on Uplink is set to Warning, the switch will not fail over if uplink connectivity is lost.
-  * base-template - This is a shortcut with the base recommendation settings.  Options are:
-    - both_enabled
-    - cdp_enabled
-    - lldp_enabled
   * cdp_enable - Default is false.  Flag to Enable or Disable CDP on an interface.
   * description - Description for the Policy.
   * lldp_enable_receive - Default is false.  Determines if the LLDP frames can be received by an interface on the switch.
@@ -46,7 +41,6 @@ variable "ethernet_network_control_policies" {
   type = map(object(
     {
       action_on_uplink_fail = optional(string)
-      base_template         = optional(string)
       cdp_enable            = optional(bool)
       description           = optional(string)
       lldp_enable_receive   = optional(bool)
@@ -59,21 +53,37 @@ variable "ethernet_network_control_policies" {
   ))
 }
 
-module "ethernet_network_control_policies" {
+#_______________________________________________________________________________
+#
+# Ethernet Network Control Policies
+# GUI Location: Configure > Policies > Create Policy > Ethernet Network Control
+#_______________________________________________________________________________
+
+resource "intersight_fabric_eth_network_control_policy" "ethernet_network_control_policies" {
   depends_on = [
     local.org_moids
   ]
-  version               = ">=0.9.6"
-  source                = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_control_policies"
   for_each              = local.ethernet_network_control_policies
-  action_on_uplink_fail = each.value.action_on_uplink_fail
-  cdp_enable            = each.value.cdp_enable
-  description           = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Control Policy."
-  lldp_enable_receive   = each.value.lldp_enable_receive
-  lldp_enable_transmit  = each.value.lldp_enable_transmit
-  mac_register_mode     = each.value.mac_register_mode
-  mac_security_forge    = each.value.mac_security_forge
+  cdp_enabled           = each.value.cdp_enable
+  description           = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Control Policy"
+  forge_mac             = each.value.mac_security_forge
+  mac_registration_mode = each.value.mac_register_mode
   name                  = each.key
-  org_moid              = local.org_moids[each.value.organization].moid
-  tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  uplink_fail_action    = each.value.action_on_uplink_fail
+  lldp_settings {
+    object_type      = "fabric.LldpSettings"
+    receive_enabled  = each.value.lldp_enable_receive
+    transmit_enabled = each.value.lldp_enable_transmit
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

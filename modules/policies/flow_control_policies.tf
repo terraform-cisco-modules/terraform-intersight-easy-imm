@@ -50,19 +50,25 @@ variable "flow_control_policies" {
 # GUI Location: Configure > Policy > Create Policy > Flow Control > Start
 #_________________________________________________________________________
 
-module "flow_control_policies" {
+resource "intersight_fabric_flow_control_policy" "flow_control_policies" {
   depends_on = [
     local.org_moids
   ]
-  version                    = ">=0.9.6"
-  source                     = "terraform-cisco-modules/imm/intersight//modules/flow_control_policies"
   for_each                   = local.flow_control_policies
-  description                = each.value.description != "" ? each.value.description : "${each.key} Flow Control Policy."
+  description                = each.value.description != "" ? each.value.description : "${each.key} Flow Control Policy"
   name                       = each.key
-  org_moid                   = local.org_moids[each.value.organization].moid
   priority_flow_control_mode = each.value.priority
   receive_direction          = each.value.receive
   send_direction             = each.value.send
-  tags                       = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
-

@@ -137,26 +137,33 @@ variable "boot_order_policies" {
 # GUI Location: Configure > Policies > Create Policy > Boot Order
 #_________________________________________________________________________
 
-module "boot_order_policies" {
+resource "intersight_boot_precision_policy" "boot_order_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version            = ">=0.9.6"
-  source             = "terraform-cisco-modules/imm/intersight//modules/boot_order_policies"
-  for_each           = local.formatted_boot_order_policies
-  boot_devices       = each.value.boot_devices
-  boot_mode          = each.value.boot_mode
-  description        = each.value.description != "" ? each.value.description : "${each.key} Boot Order Policy."
-  enable_secure_boot = each.value.enable_secure_boot
-  name               = each.key
-  org_moid           = local.org_moids[each.value.organization].moid
-  tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each                 = local.formatted_boot_order_policies
+  configured_boot_mode     = each.value.boot_mode
+  description              = each.value.description != "" ? each.value.description : "${each.key} Boot Order Policy."
+  enforce_uefi_secure_boot = each.value.enable_secure_boot
+  name                     = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "boot_devices" {
+    for_each = each.value.boot_devices
+    content {
+      additional_properties = boot_devices.value.additional_properties != "" ? boot_devices.value.additional_properties : ""
+      enabled               = boot_devices.value.enabled
+      object_type           = boot_devices.value.object_type
+      name                  = boot_devices.value.name
     }
-    if local.merged_profile_policies[k].boot_order_policy == each.key
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }

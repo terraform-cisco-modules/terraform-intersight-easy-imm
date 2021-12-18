@@ -100,34 +100,63 @@ variable "fibre_channel_adapter_policies" {
   ))
 }
 
-module "fibre_channel_adapter_policies" {
+#_______________________________________________________________________________
+#
+# Fibre-Channel Adapter Policies
+# GUI Location: Configure > Policies > Create Policy > Fibre-Channel Adapter
+#_______________________________________________________________________________
+
+resource "intersight_vnic_fc_adapter_policy" "fibre_channel_adapter_policies" {
   depends_on = [
     local.org_moids
   ]
-  version                           = ">=0.9.6"
-  source                            = "terraform-cisco-modules/imm/intersight//modules/fibre_channel_adapter_policies"
-  for_each                          = local.fibre_channel_adapter_policies
-  description                       = each.value.description != "" ? each.value.description : "${each.key} Fibre Channel Adapter Policy."
-  error_detection_timeout           = each.value.error_detection_timeout
-  enable_fcp_error_recovery         = each.value.enable_fcp_error_recovery
-  error_recovery_port_down_io_retry = each.value.error_recovery_port_down_io_retry
-  error_recovery_io_retry_timeout   = each.value.error_recovery_io_retry_timeout
-  error_recovery_link_down_timeout  = each.value.error_recovery_link_down_timeout
-  error_recovery_port_down_timeout  = each.value.error_recovery_port_down_timeout
-  flogi_retries                     = each.value.flogi_retries
-  flogi_timeout                     = each.value.flogi_timeout
-  interrupt_mode                    = each.value.interrupt_mode
-  io_throttle_count                 = each.value.io_throttle_count
-  lun_queue_depth                   = each.value.lun_queue_depth
-  max_luns_per_target               = each.value.max_luns_per_target
-  name                              = each.key
-  plogi_retries                     = each.value.plogi_retries
-  plogi_timeout                     = each.value.plogi_timeout
-  org_moid                          = local.org_moids[each.value.organization].moid
-  receive_ring_size                 = each.value.receive_ring_size
-  resource_allocation_timeout       = each.value.resource_allocation_timeout
-  scsi_io_queue_count               = each.value.scsi_io_queue_count
-  scsi_io_ring_size                 = each.value.scsi_io_ring_size
-  tags                              = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  transmit_ring_size                = each.value.transmit_ring_size
+  for_each                    = local.fibre_channel_adapter_policies
+  description                 = each.value.description != "" ? each.value.description : "${each.key} Fibre Channel Adapter Policy"
+  error_detection_timeout     = each.value.error_detection_timeout
+  io_throttle_count           = each.value.io_throttle_count
+  lun_count                   = each.value.max_luns_per_target
+  lun_queue_depth             = each.value.lun_queue_depth
+  name                        = each.value.name
+  resource_allocation_timeout = each.value.resource_allocation_timeout
+  error_recovery_settings {
+    enabled           = each.value.enable_fcp_error_recovery
+    io_retry_count    = each.value.error_recovery_port_down_io_retry
+    io_retry_timeout  = each.value.error_recovery_io_retry_timeout
+    link_down_timeout = each.value.error_recovery_link_down_timeout
+    port_down_timeout = each.value.error_recovery_port_down_timeout
+  }
+  flogi_settings {
+    retries = each.value.flogi_retries
+    timeout = each.value.flogi_timeout
+  }
+  interrupt_settings {
+    mode = each.value.interrupt_mode
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  plogi_settings {
+    retries = each.value.plogi_retries
+    timeout = each.value.plogi_timeout
+  }
+  rx_queue_settings {
+    nr_count  = 1
+    ring_size = each.value.receive_ring_size
+  }
+  scsi_queue_settings {
+    nr_count  = each.value.scsi_io_queue_count
+    ring_size = each.value.scsi_io_ring_size
+  }
+  tx_queue_settings {
+    nr_count  = 1
+    ring_size = each.value.transmit_ring_size
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

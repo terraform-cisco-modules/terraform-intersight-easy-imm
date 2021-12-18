@@ -58,83 +58,59 @@ variable "sd_card_policies" {
 # GUI Location: Policies > Create Policy > SD Card
 #____________________________________________________________
 
-module "sd_card_policies" {
-  depends_on = [
-    local.org_moids,
-    local.merged_profile_policies
-  ]
-  version = ">=0.9.6"
-  source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies"
-  for_each = {
-    for k, v in local.sd_card_policies : k => v
-    if v.enable_os == true && (v.enable_diagnostics == true || v.enable_drivers == true || v.enable_huu == true || v.enable_scu == true)
-  }
-  description        = each.value.description != "" ? each.value.description : "${each.key} SD Card Policy."
-  enable_diagnostics = each.value.enable_diagnostics
-  enable_drivers     = each.value.enable_drivers
-  enable_huu         = each.value.enable_huu
-  enable_os          = each.value.enable_os
-  enable_scu         = each.value.enable_scu
-  name               = each.key
-  org_moid           = local.org_moids[each.value.organization].moid
-  tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
-    }
-    if local.merged_profile_policies[k].sd_card_policy == each.key
-  }
-}
+# module "sd_card_policies" {
+#   depends_on = [
+#     local.org_moids
+#   ]
+#   version = ">=0.9.6"
+#   source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies"
+#   for_each = {
+#     for k, v in local.sd_card_policies : k => v
+#     if v.enable_os == true && (v.enable_diagnostics == true || v.enable_drivers == true || v.enable_huu == true || v.enable_scu == true)
+#   }
+#   description        = each.value.description != "" ? each.value.description : "${each.key} SD Card Policy."
+#   enable_diagnostics = each.value.enable_diagnostics
+#   enable_drivers     = each.value.enable_drivers
+#   enable_huu         = each.value.enable_huu
+#   enable_os          = each.value.enable_os
+#   enable_scu         = each.value.enable_scu
+#   name               = each.key
+#   org_moid           = local.org_moids[each.value.organization].moid
+#   tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
+# }
 
-module "sd_card_policies_os" {
-  depends_on = [
-    local.org_moids,
-    local.merged_profile_policies
-  ]
-  version = ">=0.9.6"
-  source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies_os"
-  for_each = {
-    for k, v in local.sd_card_policies : k => v
-    if v.enable_os == true && v.enable_diagnostics == false && v.enable_drivers == false && v.enable_huu == false && v.enable_scu == false
-  }
-  description = each.value.description != "" ? each.value.description : "${each.key} SD Card Policy."
-  name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
-    }
-    if local.merged_profile_policies[k].sd_card_policy == each.key
-  }
-}
-
-module "sd_card_policies_utiity" {
-  depends_on = [
-    local.org_moids,
-    local.merged_profile_policies
-  ]
-  version = ">=0.9.6"
-  source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies_utility"
-  for_each = {
-    for k, v in local.sd_card_policies : k => v
-    if v.enable_os == false && (v.enable_diagnostics == true || v.enable_drivers == true || v.enable_huu == true || v.enable_scu == true)
-  }
-  description        = each.value.description != "" ? each.value.description : "${each.key} SD Card Policy."
-  enable_diagnostics = each.value.enable_diagnostics
-  enable_drivers     = each.value.enable_drivers
-  enable_huu         = each.value.enable_huu
-  enable_scu         = each.value.enable_scu
-  name               = each.key
-  org_moid           = local.org_moids[each.value.organization].moid
-  tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
-    }
-    if local.merged_profile_policies[k].sd_card_policy == each.key
-  }
-}
+# module "sd_card_policies_os" {
+#   depends_on = [
+#     local.org_moids
+#   ]
+#   version = ">=0.9.6"
+#   source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies_os"
+#   for_each = {
+#     for k, v in local.sd_card_policies : k => v
+#     if v.enable_os == true && v.enable_diagnostics == false && v.enable_drivers == false && v.enable_huu == false && v.enable_scu == false
+#   }
+#   description = each.value.description != "" ? each.value.description : "${each.key} SD Card Policy."
+#   name        = each.key
+#   org_moid    = local.org_moids[each.value.organization].moid
+#   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+# }
+# 
+# module "sd_card_policies_utiity" {
+#   depends_on = [
+#     local.org_moids
+#   ]
+#   version = ">=0.9.6"
+#   source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies_utility"
+#   for_each = {
+#     for k, v in local.sd_card_policies : k => v
+#     if v.enable_os == false && (v.enable_diagnostics == true || v.enable_drivers == true || v.enable_huu == true || v.enable_scu == true)
+#   }
+#   description        = each.value.description != "" ? each.value.description : "${each.key} SD Card Policy."
+#   enable_diagnostics = each.value.enable_diagnostics
+#   enable_drivers     = each.value.enable_drivers
+#   enable_huu         = each.value.enable_huu
+#   enable_scu         = each.value.enable_scu
+#   name               = each.key
+#   org_moid           = local.org_moids[each.value.organization].moid
+#   tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
+# }

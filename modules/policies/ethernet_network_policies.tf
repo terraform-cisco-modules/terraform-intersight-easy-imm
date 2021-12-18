@@ -36,17 +36,34 @@ variable "ethernet_network_policies" {
   ))
 }
 
-module "ethernet_network_policies" {
+#_______________________________________________________________________________
+#
+# Ethernet Network Policies
+# GUI Location: Configure > Policies > Create Policy > Ethernet Network
+#_______________________________________________________________________________
+
+resource "intersight_vnic_eth_network_policy" "ethernet_network_policies" {
   depends_on = [
     local.org_moids
   ]
-  version      = ">=0.9.6"
-  source       = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_policies"
-  for_each     = local.ethernet_network_policies
-  description  = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Policy."
-  name         = each.key
-  default_vlan = each.value.default_vlan
-  org_moid     = local.org_moids[each.value.organization].moid
-  tags         = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vlan_mode    = each.value.vlan_mode
+  for_each    = local.ethernet_network_policies
+  description = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Policy."
+  name        = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  vlan_settings {
+    allowed_vlans = "" # CSCvx98712.  This is no longer valid for the policy
+    default_vlan  = each.value.default_vlan
+    mode          = each.value.vlan_mode
+    object_type   = "vnic.VlanSettings"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

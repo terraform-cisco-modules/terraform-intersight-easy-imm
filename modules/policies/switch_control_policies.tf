@@ -8,6 +8,8 @@ variable "switch_control_policies" {
   default = {
     default = {
       description                  = ""
+      ethernet_switching_mode      = "end-host"
+      fc_switching_mode            = "end-host"
       mac_address_table_aging      = "Default"
       mac_aging_time               = 14500
       organization                 = "default"
@@ -20,6 +22,12 @@ variable "switch_control_policies" {
   description = <<-EOT
   key - Name of the Link Control Policy.
   * description - Description to Assign to the Policy.
+  * ethernet_switching_mode - Enable or Disable Ethernet End Host Switching Mode.
+    - end-host - In end-host mode, the fabric interconnects appear to the upstream devices as end hosts with multiple links.  In this mode, the switch does not run Spanning Tree Protocol and avoids loops by following a set of rules for traffic forwarding.  In case of ethernet switching mode - Ethernet end-host mode is also known as Ethernet host virtualizer.
+    - switch - In switch mode, the switch runs Spanning Tree Protocol to avoid loops, and broadcast and multicast packets are handled in the traditional way.This is the traditional switch mode.
+  * fc_switching_mode - Enable or Disable FC End Host Switching Mode.
+    - end-host - In end-host mode, the fabric interconnects appear to the upstream devices as end hosts with multiple links.  In this mode, the switch does not run Spanning Tree Protocol and avoids loops by following a set of rules for traffic forwarding.  In case of ethernet switching mode - Ethernet end-host mode is also known as Ethernet host virtualizer.
+    - switch - In switch mode, the switch runs Spanning Tree Protocol to avoid loops, and broadcast and multicast packets are handled in the traditional way.This is the traditional switch mode.
   * mac_address_table_aging - This specifies one of the option to configure the MAC address aging time.
     - Custom - This option allows the the user to configure the MAC address aging time on the switch. For Switch Model UCS-FI-6454 or higher, the valid range is 120 to 918000 seconds and the switch will set the lower multiple of 5 of the given time.
     - Default - (Default) This option sets the default MAC address aging time to 14500 seconds for End Host mode.
@@ -37,6 +45,8 @@ variable "switch_control_policies" {
   type = map(object(
     {
       description                  = optional(string)
+      ethernet_switching_mode      = optional(string)
+      fc_switching_mode            = optional(string)
       mac_address_table_aging      = optional(string)
       mac_aging_time               = optional(number)
       organization                 = optional(string)
@@ -55,30 +65,39 @@ variable "switch_control_policies" {
 # GUI Location: Configure > Policy > Create Policy > Switch Control
 #_________________________________________________________________________
 
-module "switch_control_policies" {
+resource "intersight_fabric_switch_control_policy" "switch_control_policies" {
   depends_on = [
     local.org_moids,
     local.merged_profile_policies,
   ]
-  version               = ">=0.9.6"
-  source                = "terraform-cisco-modules/imm/intersight//modules/switch_control_policies"
-  for_each              = local.switch_control_policies
-  description           = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy."
-  name                  = each.key
-  mac_aging_option      = each.value.mac_address_table_aging
-  mac_aging_time        = each.value.mac_aging_time
-  udld_message_interval = each.value.udld_message_interval
-  udld_recovery_action  = each.value.udld_recovery_action
-  vlan_optimization     = each.value.vlan_port_count_optimization
-  org_moid              = local.org_moids[each.value.organization].moid
-  tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each                       = local.switch_control_policies
+  description                    = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy"
+  name                           = each.key
+  vlan_port_optimization_enabled = each.value.vlan_port_count_optimization
+  mac_aging_settings {
+    mac_aging_option = each.value.mac_aging_option
+    mac_aging_time   = each.value.mac_aging_option == "Custom" ? each.value.mac_aging_time : null
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  udld_settings {
+    message_interval = each.value.udld_message_interval
+    recovery_action  = each.value.udld_recovery_action
+  }
+  dynamic "profiles" {
+    for_each = { for k, v in local.merged_profile_policies : k => v if local.merged_profile_policies[k].switch_control_policy == each.key }
+    content {
+      moid        = profiles.value.moid
+      object_type = profiles.value.object_type
     }
-    if local.merged_profile_policies[k].switch_control_policy == each.key
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }
-
-

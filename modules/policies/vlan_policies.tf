@@ -60,24 +60,31 @@ variable "vlan_policies" {
 #_________________________________________________________________________
 
 
-module "vlan_policies" {
+resource "intersight_fabric_eth_network_policy" "vlan_policies" {
   depends_on = [
     local.org_moids,
-    local.merged_profile_policies
+    local.ucs_domain_policies
   ]
-  version     = ">=0.9.6"
-  source      = "terraform-cisco-modules/imm/intersight//modules/vlan_policies"
   for_each    = var.vlan_policies
-  description = each.value.description != "" ? each.value.description : "${each.key} VLAN Policy."
+  description = each.value.description != "" ? each.value.description : "${each.key} VLAN Policy"
   name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "profiles" {
+    for_each = { for k, v in local.ucs_domain_policies : k => v if local.ucs_domain_policies[k].vlan_policy == each.key }
+    content {
+      moid        = profiles.value.moid
+      object_type = profiles.value.object_type
     }
-    if local.merged_profile_policies[k].vlan_policy == each.key
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }
 
@@ -89,16 +96,20 @@ module "vlan_policies" {
 module "vlan_policies_add_vlans" {
   depends_on = [
     local.org_moids,
-    module.multicast_policies,
-    module.vlan_policies
+    intersight_fabric_multicast_policy.multicast_policies,
+    intersight_fabric_eth_network_policy.vlan_policies
   ]
   version               = ">=0.9.6"
   source                = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list"
   for_each              = local.vlans
   auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
-  multicast_policy_moid = module.multicast_policies[each.value.multicast_policy].moid
-  name                  = each.value.name != "" ? each.value.name : "VLAN"
-  native_vlan           = each.value.native_vlan
-  vlan_list             = each.value.vlan_list
-  vlan_policy_moid      = module.vlan_policies[each.value.vlan_policy].moid
+  multicast_policy_moid = intersight_fabric_multicast_policy.multicast_policies[
+    each.value.multicast_policy
+  ].moid
+  name        = each.value.name != "" ? each.value.name : "VLAN"
+  native_vlan = each.value.native_vlan
+  vlan_list   = each.value.vlan_list
+  vlan_policy_moid = intersight_fabric_eth_network_policy.vlan_policies[
+    each.value.vlan_policy
+  ].moid
 }

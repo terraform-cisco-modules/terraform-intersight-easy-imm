@@ -68,18 +68,33 @@ variable "wwpn_pools" {
 # WWPN Pools
 #______________________________________________
 
-module "wwpn_pools" {
+resource "intersight_fcpool_pool" "wwpn_pools" {
   depends_on = [
     local.org_moids
   ]
-  version          = ">=0.9.6"
-  source           = "terraform-cisco-modules/imm/intersight//modules/fc_pools"
   for_each         = local.wwpn_pools
   assignment_order = each.value.assignment_order
-  description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} ${each.value.pool_purpose} Pool."
-  id_blocks        = each.value.id_blocks
+  description      = each.value.description != "" ? each.value.description : "${each.key} ${each.value.pool_purpose} Pool."
   name             = each.key
-  org_moid         = local.org_moids[each.value.organization].moid
   pool_purpose     = each.value.pool_purpose
-  tags             = each.value.tags != [] ? each.value.tags : local.tags
+  dynamic "id_blocks" {
+    for_each = each.value.id_blocks
+    content {
+      object_type = "fcpool.Block"
+      from        = id_blocks.value.from
+      size        = id_blocks.value.size != null ? id_blocks.value.size : null
+      to          = id_blocks.value.to != null ? id_blocks.value.to : null
+    }
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

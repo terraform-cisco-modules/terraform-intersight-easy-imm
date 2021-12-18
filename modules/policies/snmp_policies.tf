@@ -321,13 +321,11 @@ variable "snmp_policies" {
 # GUI Location: Policies > Create Policy > SNMP
 #____________________________________________________________
 
-module "snmp_policies" {
+resource "intersight_snmp_policy" "snmp_policies" {
   depends_on = [
     local.org_moids,
-    local.merged_profile_policies,
+    local.ucs_domain_policies
   ]
-  version  = ">=0.9.6"
-  source   = "terraform-cisco-modules/imm/intersight//modules/snmp_policies"
   for_each = local.snmp_policies
   access_community_string = length(
     regexall("1", each.value.access_community_string)
@@ -340,34 +338,15 @@ module "snmp_policies" {
     ) > 0 ? var.access_community_string_3 : length(
     regexall("5", each.value.access_community_string)
   ) > 0 ? var.access_community_string_5 : ""
-  description             = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
-  enable_snmp             = each.value.enable_snmp
-  name                    = each.key
-  org_moid                = local.org_moids[each.value.organization].moid
-  snmp_auth_password_1    = var.snmp_auth_password_1
-  snmp_auth_password_2    = var.snmp_auth_password_2
-  snmp_auth_password_3    = var.snmp_auth_password_3
-  snmp_auth_password_4    = var.snmp_auth_password_4
-  snmp_auth_password_5    = var.snmp_auth_password_5
-  snmp_community_access   = each.value.snmp_community_access != "" ? each.value.snmp_community_access : "Disabled"
-  snmp_engine_input_id    = each.value.snmp_engine_input_id
-  snmp_port               = each.value.snmp_port
-  snmp_privacy_password_1 = var.snmp_privacy_password_1
-  snmp_privacy_password_2 = var.snmp_privacy_password_2
-  snmp_privacy_password_3 = var.snmp_privacy_password_3
-  snmp_privacy_password_4 = var.snmp_privacy_password_4
-  snmp_privacy_password_5 = var.snmp_privacy_password_5
-  snmp_trap_community_1   = var.snmp_trap_community_1
-  snmp_trap_community_2   = var.snmp_trap_community_2
-  snmp_trap_community_3   = var.snmp_trap_community_3
-  snmp_trap_community_4   = var.snmp_trap_community_4
-  snmp_trap_community_5   = var.snmp_trap_community_5
-  snmp_trap_destinations  = each.value.snmp_trap_destinations
-  snmp_users              = each.value.snmp_users
-  system_contact          = each.value.system_contact
-  system_location         = each.value.system_location
-  tags                    = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  trap_community_string = length(
+  community_access = each.value.snmp_community_access != "" ? each.value.snmp_community_access : "Disabled"
+  description      = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy"
+  enabled          = each.value.enable_snmp
+  engine_id        = each.value.snmp_engine_input_id
+  name             = each.key
+  snmp_port        = each.value.snmp_port
+  sys_contact      = each.value.system_contact
+  sys_location     = each.value.system_location
+  trap_community = length(
     regexall("1", each.value.trap_community_string)
     ) > 0 ? var.trap_community_string_1 : length(
     regexall("2", each.value.trap_community_string)
@@ -380,11 +359,75 @@ module "snmp_policies" {
   ) > 0 ? var.trap_community_string_5 : ""
   v2_enabled = length(regexall("[1-5]", each.value.access_community_string)) > 0 ? true : false
   v3_enabled = length(each.value.snmp_users) > 0 ? true : false
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "profiles" {
+    for_each = { for k, v in local.ucs_domain_policies : k => v if local.ucs_domain_policies[k].snmp_policy == each.key }
+    content {
+      moid        = profiles.value.moid
+      object_type = profiles.value.object_type
     }
-    if local.merged_profile_policies[k].snmp_policy == each.key
+  }
+  dynamic "snmp_users" {
+    for_each = each.value.snmp_users
+    content {
+      auth_password = length(
+        regexall("1", coalesce(snmp_users.value.auth_password, 10))
+        ) > 0 ? var.snmp_auth_password_1 : length(
+        regexall("2", coalesce(snmp_users.value.auth_password, 10))
+        ) > 0 ? var.snmp_auth_password_2 : length(
+        regexall("3", coalesce(snmp_users.value.auth_password, 10))
+        ) > 0 ? var.snmp_auth_password_3 : length(
+        regexall("4", coalesce(snmp_users.value.auth_password, 10))
+        ) > 0 ? var.snmp_auth_password_3 : length(
+        regexall("5", coalesce(snmp_users.value.auth_password, 10))
+      ) > 0 ? var.snmp_auth_password_5 : ""
+      auth_type = snmp_users.value.auth_type
+      name      = snmp_users.key
+      privacy_password = length(
+        regexall("1", coalesce(snmp_users.value.privacy_password, 10))
+        ) > 0 ? var.snmp_privacy_password_1 : length(
+        regexall("2", coalesce(snmp_users.value.privacy_password, 10))
+        ) > 0 ? var.snmp_privacy_password_2 : length(
+        regexall("3", coalesce(snmp_users.value.privacy_password, 10))
+        ) > 0 ? var.snmp_privacy_password_3 : length(
+        regexall("4", coalesce(snmp_users.value.privacy_password, 10))
+        ) > 0 ? var.snmp_privacy_password_3 : length(
+        regexall("5", coalesce(snmp_users.value.privacy_password, 10))
+      ) > 0 ? var.snmp_privacy_password_5 : ""
+      privacy_type   = snmp_users.value.privacy_type
+      security_level = snmp_users.value.security_level
+    }
+  }
+  dynamic "snmp_traps" {
+    for_each = each.value.snmp_trap_destinations
+    content {
+      community = length(
+        regexall("1", coalesce(snmp_traps.value.community_string, 10))
+        ) > 0 ? var.snmp_trap_community_1 : length(
+        regexall("2", coalesce(snmp_traps.value.community_string, 10))
+        ) > 0 ? var.snmp_trap_community_2 : length(
+        regexall("3", coalesce(snmp_traps.value.community_string, 10))
+        ) > 0 ? var.snmp_trap_community_3 : length(
+        regexall("4", coalesce(snmp_traps.value.community_string, 10))
+        ) > 0 ? var.snmp_trap_community_4 : length(
+        regexall("5", coalesce(snmp_traps.value.community_string, 10))
+      ) > 0 ? var.snmp_trap_community_5 : ""
+      destination = snmp_traps.key
+      enabled     = snmp_traps.value.enable
+      port        = snmp_traps.value.port
+      type        = snmp_traps.value.trap_type
+      nr_version  = snmp_traps.value.user != "" ? "V3" : "V2"
+      user        = snmp_traps.value.user
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }

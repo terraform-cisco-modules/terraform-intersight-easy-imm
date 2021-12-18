@@ -69,18 +69,33 @@ variable "iqn_pools" {
 # IQN Pools
 #______________________________________________
 
-module "iqn_pools" {
+resource "intersight_iqnpool_pool" "iqn_pools" {
   depends_on = [
     local.org_moids
   ]
-  version          = ">=0.9.6"
-  source           = "terraform-cisco-modules/imm/intersight//modules/iqn_pools"
   for_each         = local.iqn_pools
   assignment_order = each.value.assignment_order
-  description      = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} IQN Pool."
-  prefix           = each.value.prefix
-  iqn_blocks       = each.value.iqn_blocks
+  description      = each.value.description != "" ? each.value.description : "${each.key} IQN Pool"
   name             = each.key
-  org_moid         = local.org_moids[each.value.organization].moid
-  tags             = each.value.tags != [] ? each.value.tags : local.tags
+  prefix           = each.value.prefix
+  dynamic "iqn_suffix_blocks" {
+    for_each = each.value.iqn_blocks
+    content {
+      from   = iqn_suffix_blocks.value.from
+      size   = iqn_suffix_blocks.value.size != null ? tonumber(iqn_suffix_blocks.value.size) : null
+      suffix = iqn_suffix_blocks.value.suffix
+      to     = iqn_suffix_blocks.value.to != null ? iqn_suffix_blocks.value.to : null
+    }
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

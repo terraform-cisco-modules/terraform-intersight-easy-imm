@@ -56,27 +56,26 @@ variable "power_policies" {
 # GUI Location: Configure > Policies > Create Policy > Power > Start
 #_________________________________________________________________________
 
-module "power_policies" {
+resource "intersight_power_policy" "power_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies
+    local.org_moids
   ]
-  version             = ">=0.9.6"
-  source              = "terraform-cisco-modules/imm/intersight//modules/power_policies"
   for_each            = local.power_policies
   allocated_budget    = each.value.allocated_budget
-  description         = each.value.description != "" ? each.value.description : "${each.key} Power Policy."
+  description         = each.value.description != "" ? each.value.description : "${each.key} Power Policy"
   name                = each.key
-  org_moid            = local.org_moids[each.value.organization].moid
   power_profiling     = each.value.power_profiling
   power_restore_state = each.value.power_restore_state
   redundancy_mode     = each.value.redundancy_mode
-  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].power_policy == each.key
   }
 }

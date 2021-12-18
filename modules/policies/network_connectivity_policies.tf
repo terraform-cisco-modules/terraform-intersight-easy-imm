@@ -54,28 +54,39 @@ variable "network_connectivity_policies" {
 # GUI Location: Configure > Policies > Create Policy > Network Connectivity
 #_________________________________________________________________________
 
-module "network_connectivity_policies" {
+resource "intersight_networkconfig_policy" "network_connectivity_policies" {
   depends_on = [
     local.org_moids,
-    local.merged_profile_policies,
+    local.ucs_domain_policies
   ]
-  version        = ">=0.9.6"
-  source         = "terraform-cisco-modules/imm/intersight//modules/network_connectivity_policies"
-  for_each       = local.network_connectivity_policies
-  description    = each.value.description != "" ? each.value.description : "${each.key} Network Connectivity (DNS) Policy."
-  dns_servers_v4 = each.value.dns_servers_v4
-  dns_servers_v6 = each.value.dns_servers_v6
-  dynamic_dns    = each.value.enable_dynamic_dns
-  ipv6_enable    = each.value.enable_ipv6
-  name           = each.key
-  org_moid       = local.org_moids[each.value.organization].moid
-  tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  update_domain  = each.value.update_domain
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each                 = local.network_connectivity_policies
+  alternate_ipv4dns_server = length(each.value.dns_servers_v4) > 1 ? each.value.dns_servers_v4[1] : null
+  alternate_ipv6dns_server = length(each.value.dns_servers_v6) > 1 ? each.value.dns_servers_v6[1] : null
+  description              = each.value.description != "" ? each.value.description : "${each.key} Network Connectivity Policy"
+  dynamic_dns_domain       = each.value.update_domain
+  enable_dynamic_dns       = each.value.dynamic_dns
+  enable_ipv4dns_from_dhcp = each.value.dynamic_dns == true ? true : false
+  enable_ipv6              = each.value.ipv6_enable
+  enable_ipv6dns_from_dhcp = each.value.ipv6_enable == true && each.value.dynamic_dns == true ? true : false
+  preferred_ipv4dns_server = length(each.value.dns_servers_v4) > 0 ? each.value.dns_servers_v4[0] : null
+  preferred_ipv6dns_server = length(each.value.dns_servers_v6) > 0 ? each.value.dns_servers_v6[0] : null
+  name                     = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "profiles" {
+    for_each = { for k, v in local.ucs_domain_policies : k => v if local.ucs_domain_policies[k].network_connectivity_policy == each.key }
+    content {
+      moid        = profiles.value.moid
+      object_type = profiles.value.object_type
     }
-    if local.merged_profile_policies[k].network_connectivity_policy == each.key
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }

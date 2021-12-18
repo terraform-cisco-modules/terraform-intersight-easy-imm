@@ -58,30 +58,28 @@ variable "smtp_policies" {
 # GUI Location: Policies > Create Policy > SMTP
 #____________________________________________________________
 
-module "smtp_policies" {
+resource "intersight_smtp_policy" "smtp_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version                   = ">=0.9.6"
-  source                    = "terraform-cisco-modules/imm/intersight//modules/smtp_policies"
-  for_each                  = local.smtp_policies
-  description               = each.value.description != "" ? each.value.description : "${each.key} SMTP Policy."
-  enable_smtp               = each.value.enable_smtp
-  mail_alert_recipients     = each.value.mail_alert_recipients
-  minimum_severity          = each.value.minimum_severity
-  name                      = each.key
-  org_moid                  = local.org_moids[each.value.organization].moid
-  smtp_alert_sender_address = each.value.smtp_alert_sender_address
-  smtp_server_address       = each.value.smtp_server_address
-  tags                      = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each        = local.smtp_policies
+  description     = each.value.description != "" ? each.value.description : "${each.key} SMTP Policy"
+  enabled         = each.value.enable_smtp
+  min_severity    = each.value.minimum_severity
+  name            = each.key
+  sender_email    = each.value.smtp_alert_sender_address == "" ? each.value.smtp_server_address : each.value.smtp_alert_sender_address
+  smtp_port       = each.value.smtp_port
+  smtp_recipients = each.value.mail_alert_recipients
+  smtp_server     = each.value.smtp_server_address
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].smtp_policy == each.key
   }
 }
-
-

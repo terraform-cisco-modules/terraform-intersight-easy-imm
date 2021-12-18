@@ -1,0 +1,114 @@
+organizations = ["Wakanda"]
+
+ip_pools = {
+  "wakanda_pool" = {
+    assignment_order = "sequential"
+    description      = "Wakanda IP Pool"
+    ipv4_blocks = {
+      "0" = {
+        from = "198.18.0.10"
+        size = 240
+        to   = "198.18.0.249"
+      }
+    }
+    ipv4_config = {
+      "0" = {
+        gateway       = "198.18.0.1"
+        netmask       = "255.255.255.0"
+        primary_dns   = "208.67.220.220"
+        secondary_dns = "208.67.220.220"
+      }
+    }
+    ipv6_blocks  = {}
+    ipv6_config  = {}
+    organization = "Wakanda"
+    tags         = []
+  }
+}
+
+iqn_pools = {
+  "wakanda_pool" = {
+    assignment_order = "sequential"
+    description      = "Wakanda IQN Pool"
+    iqn_blocks = {
+      "0" = {
+        from   = "0"
+        size   = 1000
+        suffix = "ucs-host"
+        to     = "1000"
+      }
+    }
+    organization = "Wakanda"
+    prefix       = "iqn.1984-12.com.cisco"
+    tags         = []
+  }
+}
+
+mac_pools = {
+  "wakanda_pool" = {
+    assignment_order = "sequential"
+    description      = "Wakanda MAC Address Pool"
+    mac_blocks = {
+      "key" = {
+        from = "00:25:B5:0A:00:00"
+        size = 1000
+        to   = "00:25:B5:0A:03:E7"
+      }
+    }
+    organization = "Wakanda"
+    tags         = []
+  }
+}
+
+resource_pools = {}
+
+uuid_pools = {
+  "wakanda_pool" = {
+    assignment_order = "sequential"
+    description      = "Wakanda UUID Pool"
+    organization     = "Wakanda"
+    prefix           = "000025B5-0000-0000"
+    tags             = []
+    uuid_blocks = {
+      "0" = {
+        from = "0000-000000000000"
+        size = 1000
+        to   = "0000-0000000003E7"
+      }
+    }
+  }
+}
+
+wwnn_pools = {
+  "wakanda_wwnn_pool" = {
+    assignment_order = "sequential"
+    description      = "Wakanda WWNN Pool"
+    id_blocks = {
+      "key" = {
+        from = "20:00:00:25:B5:0A:00:00"
+        size = 1000
+        to   = "20:00:00:25:B5:0A:03:E7"
+      }
+    }
+    organization = "Wakanda"
+    pool_purpose = "WWNN"
+    tags         = []
+  }
+}
+
+wwpn_pools = {
+  "wakanda_wwpn_pool" = {
+    assignment_order = "sequential"
+    description      = "Wakanda WWPN Pool"
+    id_blocks = {
+      "key" = {
+        from = "20:00:00:25:B5:0A:00:00"
+        size = 1000
+        to   = "20:00:00:25:B5:0A:03:E7"
+      }
+    }
+    organization = "Wakanda"
+    pool_purpose = "WWPN"
+    tags         = []
+  }
+}

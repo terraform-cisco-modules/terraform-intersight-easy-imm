@@ -206,31 +206,59 @@ variable "storage_policies" {
 # GUI Location: Configure > Policies > Create Policy > Storage > Start
 #_________________________________________________________________________
 
-module "storage_policies" {
+resource "intersight_storage_storage_policy" "storage_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version                  = ">=0.9.6"
-  source                   = "terraform-cisco-modules/imm/intersight//modules/storage_policies"
   for_each                 = local.storage_policies
-  description              = each.value.description != "" ? each.value.description : "${each.key} Storage Policy."
+  description              = each.value.description != "" ? each.value.description : "${each.key} Storage Policy"
   global_hot_spares        = each.value.global_hot_spares
-  m2_configuration         = each.value.m2_configuration
   name                     = each.key
-  org_moid                 = local.org_moids[each.value.organization].moid
-  raid0_drive              = each.value.single_drive_raid_configuration
-  tags                     = length(each.value.tags) > 0 ? each.value.tags : local.tags
   unused_disks_state       = each.value.unused_disks_state
   use_jbod_for_vd_creation = each.value.use_jbod_for_vd_creation
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  # retain_policy_virtual_drives = var.retain_policy
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "m2_virtual_drive" {
+    for_each = each.value.m2_configuration
+    content {
+      controller_slot = m2_virtual_drive.value.controller_slot
+      enable          = m2_virtual_drive.value.enable
+      # additional_properties = ""
+      # object_type           = "storage.DiskGroupPolicy"
     }
-    if local.merged_profile_policies[k].storage_policy == each.key
+  }
+  dynamic "raid0_drive" {
+    for_each = each.value.single_drive_raid_configuration
+    content {
+      drive_slots = raid0_drive.value.drive_slots
+      enable      = raid0_drive.value.enable
+      object_type = "server.Profile"
+      virtual_drive_policy = [
+        {
+          additional_properties = ""
+          access_policy         = raid0_drive.value.access_policy
+          class_id              = "storage.VirtualDriveConfig"
+          drive_cache           = raid0_drive.value.drive_cache
+          object_type           = "storage.VirtualDriveConfig"
+          read_policy           = raid0_drive.value.read_policy
+          strip_size            = raid0_drive.value.strip_size
+          write_policy          = raid0_drive.value.write_policy
+        }
+      ]
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }
+
 
 #_________________________________________________________________________
 #
@@ -238,19 +266,69 @@ module "storage_policies" {
 # GUI Location: Configure > Policies > Create Policy > Storage > Start
 #_________________________________________________________________________
 
-module "storage_drive_group" {
+resource "intersight_storage_drive_group" "drive_group" {
   depends_on = [
     local.org_moids,
-    module.storage_policies
+    intersight_storage_storage_policy.storage_policies
   ]
-  version               = ">=0.9.6"
-  source                = "terraform-cisco-modules/imm/intersight//modules/storage_drive_group"
-  for_each              = local.drive_group
-  automatic_drive_group = each.value.automatic_drive_group
-  manual_drive_group    = each.value.manual_drive_group
-  name                  = each.key
-  raid_level            = each.value.raid_level
-  storage_moid          = module.storage_policies[each.value.storage_policy].moid
-  tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  virtual_drives        = each.value.virtual_drives
+  for_each   = local.drive_group
+  name       = each.key
+  raid_level = each.value.raid_level
+  storage_policy {
+    moid = intersight_storage_storage_policy.storage_policies[each.value.storage_policy].moid
+    # object_type = "organization.Organization"
+  }
+  dynamic "automatic_drive_group" {
+    for_each = each.value.automatic_drive_group
+    content {
+      class_id                 = "storage.ManualDriveGroup"
+      drives_per_span          = automatic_drive_group.value.drives_per_span
+      drive_type               = automatic_drive_group.value.drive_type
+      minimum_drive_size       = automatic_drive_group.value.minimum_drive_size
+      num_dedicated_hot_spares = automatic_drive_group.value.num_dedicated_hot_spares != null ? automatic_drive_group.value.num_dedicated_hot_spares : 0
+      number_of_spans          = automatic_drive_group.value.number_of_spans
+      object_type              = "storage.ManualDriveGroup"
+      use_remaining_drives     = automatic_drive_group.value.use_remaining_drives != null ? automatic_drive_group.value.use_remaining_drives : false
+    }
+  }
+  dynamic "manual_drive_group" {
+    for_each = each.value.manual_drive_group
+    content {
+      class_id             = "storage.ManualDriveGroup"
+      dedicated_hot_spares = manual_drive_group.value.dedicated_hot_spares != null ? manual_drive_group.value.dedicated_hot_spares : ""
+      object_type          = "storage.ManualDriveGroup"
+      span_groups          = manual_drive_group.value.drive_array_spans
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
+  dynamic "virtual_drives" {
+    for_each = each.value.virtual_drives
+    content {
+      additional_properties = ""
+      boot_drive            = virtual_drives.value.boot_drive
+      class_id              = "storage.VirtualDriveConfiguration"
+      expand_to_available   = virtual_drives.value.expand_to_available
+      name                  = virtual_drives.key
+      object_type           = "storage.VirtualDriveConfiguration"
+      size                  = virtual_drives.value.size
+      virtual_drive_policy = [
+        {
+          additional_properties = ""
+          access_policy         = virtual_drives.value.access_policy
+          class_id              = "storage.VirtualDrivePolicy"
+          drive_cache           = virtual_drives.value.disk_cache
+          object_type           = "storage.VirtualDrivePolicy"
+          read_policy           = virtual_drives.value.read_policy
+          strip_size            = virtual_drives.value.strip_size
+          write_policy          = virtual_drives.value.write_policy
+        }
+      ]
+    }
+  }
 }

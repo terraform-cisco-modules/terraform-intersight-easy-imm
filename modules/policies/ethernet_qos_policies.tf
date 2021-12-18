@@ -52,20 +52,34 @@ variable "ethernet_qos_policies" {
   ))
 }
 
-module "ethernet_qos_policies" {
+#_______________________________________________________________________________
+#
+# Ethernet QoS Policies
+# GUI Location: Configure > Policies > Create Policy > Ethernet QoS
+#_______________________________________________________________________________
+
+resource "intersight_vnic_eth_qos_policy" "ethernet_qos_policies" {
   depends_on = [
     local.org_moids
   ]
-  version               = ">=0.9.6"
-  source                = "terraform-cisco-modules/imm/intersight//modules/ethernet_qos_policies"
-  for_each              = local.ethernet_qos_policies
-  description           = each.value.description != "" ? each.value.description : "${each.key} Ethernet QoS Policy."
-  enable_trust_host_cos = each.value.enable_trust_host_cos
-  name                  = each.key
-  mtu                   = each.value.mtu
-  burst                 = each.value.burst
-  priority              = each.value.priority
-  rate_limit            = each.value.rate_limit
-  org_moid              = local.org_moids[each.value.organization].moid
-  tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  for_each       = local.ethernet_qos_policies
+  burst          = each.value.burst
+  cos            = each.value.cos
+  description    = each.value.description != "" ? each.value.description : "${each.key} Ethernet QoS Policy"
+  mtu            = each.value.mtu
+  name           = each.key
+  priority       = each.value.priority
+  rate_limit     = each.value.rate_limit
+  trust_host_cos = each.value.enable_trust_host_cos
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

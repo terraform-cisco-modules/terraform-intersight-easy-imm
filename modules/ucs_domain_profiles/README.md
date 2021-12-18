@@ -20,25 +20,24 @@ This module will create UCS Domain Profiles in Intersight.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.17 |
+| <a name="requirement_intersight"></a> [intersight](#requirement\_intersight) | >=1.0.21 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.17 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.21 |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_ucs_domain_profiles"></a> [ucs\_domain\_profiles](#module\_ucs\_domain\_profiles) | terraform-cisco-modules/imm/intersight//modules/ucs_domain_profiles | >=0.9.6 |
-| <a name="module_ucs_domain_switches"></a> [ucs\_domain\_switches](#module\_ucs\_domain\_switches) | terraform-cisco-modules/imm/intersight//modules/ucs_domain_switches | >=0.9.6 |
+No modules.
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [intersight_fabric_switch_cluster_profile.ucs_domain_profiles](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_cluster_profile) | resource |
+| [intersight_fabric_switch_profile.ucs_domain_switches](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_profile) | resource |
 | [intersight_network_element_summary.fis](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/network_element_summary) | data source |
 | [intersight_organization_organization.org_moid](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/organization_organization) | data source |
 

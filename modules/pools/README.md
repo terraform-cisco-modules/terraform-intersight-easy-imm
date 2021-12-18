@@ -26,24 +26,24 @@ This module will create Pool resources in Intersight.  These pools can be assign
 
 | Name | Version |
 |------|---------|
-| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | >=1.0.19 |
+| <a name="provider_intersight"></a> [intersight](#provider\_intersight) | 1.0.21 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ip_pools"></a> [ip\_pools](#module\_ip\_pools) | terraform-cisco-modules/imm/intersight//modules/ip_pools | >=0.9.6 |
-| <a name="module_iqn_pools"></a> [iqn\_pools](#module\_iqn\_pools) | terraform-cisco-modules/imm/intersight//modules/iqn_pools | >=0.9.6 |
-| <a name="module_mac_pools"></a> [mac\_pools](#module\_mac\_pools) | terraform-cisco-modules/imm/intersight//modules/mac_pools | >=0.9.6 |
 | <a name="module_resource_pools"></a> [resource\_pools](#module\_resource\_pools) | terraform-cisco-modules/imm/intersight//modules/resource_pools | >=0.9.6 |
-| <a name="module_uuid_pools"></a> [uuid\_pools](#module\_uuid\_pools) | terraform-cisco-modules/imm/intersight//modules/uuid_pools | >=0.9.6 |
-| <a name="module_wwnn_pools"></a> [wwnn\_pools](#module\_wwnn\_pools) | terraform-cisco-modules/imm/intersight//modules/fc_pools | >=0.9.6 |
-| <a name="module_wwpn_pools"></a> [wwpn\_pools](#module\_wwpn\_pools) | terraform-cisco-modules/imm/intersight//modules/fc_pools | >=0.9.6 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [intersight_fcpool_pool.wwnn_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fcpool_pool) | resource |
+| [intersight_fcpool_pool.wwpn_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fcpool_pool) | resource |
+| [intersight_ippool_pool.ip_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/ippool_pool) | resource |
+| [intersight_iqnpool_pool.iqn_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/iqnpool_pool) | resource |
+| [intersight_macpool_pool.mac_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/macpool_pool) | resource |
+| [intersight_uuidpool_pool.uuid_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/uuidpool_pool) | resource |
 | [intersight_organization_organization.org_moid](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/organization_organization) | data source |
 
 ## Inputs

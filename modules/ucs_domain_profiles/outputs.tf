@@ -4,10 +4,9 @@
 #__________________________________________________________
 
 output "moids" {
-  value = {
-    for v in sort(keys(module.ucs_domain_switches)) : v => module.ucs_domain_switches[v].moid
-    if v != null
-  }
+  value = var.ucs_domain_profiles != {} ? { for v in sort(
+    keys(intersight_fabric_switch_profile.ucs_domain_switches)
+  ) : v => intersight_fabric_switch_profile.ucs_domain_switches[v].moid } : {}
 }
 
 output "ucs_domain_profiles" {

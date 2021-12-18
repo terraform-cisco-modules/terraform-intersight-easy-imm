@@ -166,51 +166,84 @@ variable "ethernet_adapter_policies" {
   ))
 }
 
-module "ethernet_adapter_policies" {
+#_________________________________________________________________________
+#
+# Ethernet Adapter Policies
+# GUI Location: Configure > Policies > Create Policy > Ethernet Adapter
+#_________________________________________________________________________
+
+resource "intersight_vnic_eth_adapter_policy" "ethernet_adapter_policies" {
   depends_on = [
     local.org_moids
   ]
-  version                                  = ">=0.9.6"
-  source                                   = "terraform-cisco-modules/imm/intersight//modules/ethernet_adapter_policies"
-  for_each                                 = local.ethernet_adapter_policies
-  completion_queue_count                   = each.value.completion_queue_count
-  completion_ring_size                     = each.value.completion_ring_size
-  description                              = each.value.description
-  enable_accelerated_receive_flow_steering = each.value.enable_accelerated_receive_flow_steering
-  enable_advanced_filter                   = each.value.enable_advanced_filter
-  enable_geneve_offload                    = each.value.enable_geneve_offload
-  enable_interrupt_scaling                 = each.value.enable_interrupt_scaling
-  enable_nvgre_offload                     = each.value.enable_nvgre_offload
-  name                                     = each.key
-  org_moid                                 = local.org_moids[each.value.organization].moid
-  tags                                     = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  interrupt_coalescing_type                = each.value.interrupt_coalescing_type
-  interrupt_mode                           = each.value.interrupt_mode
-  interrupt_timer                          = each.value.interrupt_timer
-  interrupts                               = each.value.interrupts
-  receive_queue_count                      = each.value.receive_queue_count
-  receive_ring_size                        = each.value.receive_ring_size
-  receive_side_scaling_enable              = each.value.receive_side_scaling_enable
-  rss_enable_ipv4_hash                     = each.value.rss_enable_ipv4_hash
-  rss_enable_ipv6_extensions_hash          = each.value.rss_enable_ipv6_extensions_hash
-  rss_enable_ipv6_hash                     = each.value.rss_enable_ipv6_hash
-  rss_enable_tcp_and_ipv4_hash             = each.value.rss_enable_tcp_and_ipv4_hash
-  rss_enable_tcp_and_ipv6_extensions_hash  = each.value.rss_enable_tcp_and_ipv6_extensions_hash
-  rss_enable_tcp_and_ipv6_hash             = each.value.rss_enable_tcp_and_ipv6_hash
-  rss_enable_udp_and_ipv4_hash             = each.value.rss_enable_udp_and_ipv4_hash
-  rss_enable_udp_and_ipv6_hash             = each.value.rss_enable_udp_and_ipv6_hash
-  roce_cos                                 = each.value.roce_cos
-  roce_enable                              = each.value.roce_enable
-  roce_memory_regions                      = each.value.roce_memory_regions
-  roce_queue_pairs                         = each.value.roce_queue_pairs
-  roce_resource_groups                     = each.value.roce_resource_groups
-  roce_version                             = each.value.roce_version
-  tcp_offload_large_recieve                = each.value.tcp_offload_large_recieve
-  tcp_offload_large_send                   = each.value.tcp_offload_large_send
-  tcp_offload_rx_checksum                  = each.value.tcp_offload_rx_checksum
-  tcp_offload_tx_checksum                  = each.value.tcp_offload_tx_checksum
-  transmit_queue_count                     = each.value.transmit_queue_count
-  transmit_ring_size                       = each.value.transmit_ring_size
-  uplink_failback_timeout                  = each.value.uplink_failback_timeout
-  enable_vxlan_offload                     = each.value.enable_vxlan_offload
+  for_each                = local.ethernet_adapter_policies
+  advanced_filter         = each.value.enable_advanced_filter
+  description             = each.value.description != "" ? each.value.description : "${each.key} Ethernet Adapter Policy"
+  geneve_enabled          = each.value.enable_geneve_offload
+  interrupt_scaling       = each.value.enable_interrupt_scaling
+  name                    = each.key
+  rss_settings            = each.value.receive_side_scaling_enable
+  uplink_failback_timeout = each.value.uplink_failback_timeout
+  arfs_settings {
+    enabled = each.value.enable_accelerated_receive_flow_steering
+  }
+  completion_queue_settings {
+    nr_count  = each.value.completion_queue_count
+    ring_size = each.value.completion_ring_size
+  }
+  interrupt_settings {
+    coalescing_time = each.value.interrupt_timer
+    coalescing_type = each.value.interrupt_coalescing_type
+    nr_count        = each.value.interrupts
+    mode            = each.value.interrupt_mode
+  }
+  nvgre_settings {
+    enabled = each.value.enable_nvgre_offload
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  roce_settings {
+    class_of_service = each.value.roce_cos
+    enabled          = each.value.roce_enable
+    memory_regions   = each.value.roce_memory_regions
+    queue_pairs      = each.value.roce_queue_pairs
+    resource_groups  = each.value.roce_resource_groups
+    nr_version       = each.value.roce_version
+  }
+  rss_hash_settings {
+    ipv4_hash         = each.value.rss_enable_ipv4_hash
+    ipv6_ext_hash     = each.value.rss_enable_ipv6_extensions_hash
+    ipv6_hash         = each.value.rss_enable_ipv6_hash
+    tcp_ipv4_hash     = each.value.rss_enable_tcp_and_ipv4_hash
+    tcp_ipv6_ext_hash = each.value.rss_enable_tcp_and_ipv6_extensions_hash
+    tcp_ipv6_hash     = each.value.rss_enable_tcp_and_ipv6_hash
+    udp_ipv4_hash     = each.value.rss_enable_udp_and_ipv4_hash
+    udp_ipv6_hash     = each.value.rss_enable_udp_and_ipv6_hash
+  }
+  rx_queue_settings {
+    nr_count  = each.value.receive_queue_count
+    ring_size = each.value.receive_ring_size
+  }
+  tcp_offload_settings {
+    large_receive = each.value.tcp_offload_large_recieve
+    large_send    = each.value.tcp_offload_large_send
+    rx_checksum   = each.value.tcp_offload_rx_checksum
+    tx_checksum   = each.value.tcp_offload_tx_checksum
+  }
+  tx_queue_settings {
+    nr_count  = each.value.transmit_queue_count
+    ring_size = each.value.transmit_ring_size
+  }
+  vxlan_settings {
+    enabled = each.value.enable_vxlan_offload
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

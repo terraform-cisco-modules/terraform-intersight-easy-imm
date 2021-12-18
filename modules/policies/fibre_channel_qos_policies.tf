@@ -40,19 +40,32 @@ variable "fibre_channel_qos_policies" {
   ))
 }
 
-module "fibre_channel_qos_policies" {
+#_______________________________________________________________________________
+#
+# Fibre-Channel QoS Policies
+# GUI Location: Configure > Policies > Create Policy > Fibre-Channel QoS
+#_______________________________________________________________________________
+
+resource "intersight_vnic_fc_qos_policy" "fibre_channel_qos_policies" {
   depends_on = [
     local.org_moids
   ]
-  version             = ">=0.9.6"
-  source              = "terraform-cisco-modules/imm/intersight//modules/fibre_channel_qos_policies"
   for_each            = local.fibre_channel_qos_policies
-  burst               = each.value.burst
-  cos                 = each.value.cos
-  description         = each.value.description != "" ? each.value.description : "${each.key} vHBA QoS Policy."
-  max_data_field_size = each.value.max_data_field_size
+  burst               = each.value.burst # FI-Attached
+  cos                 = each.value.cos   # Standalone
+  description         = each.value.description != "" ? each.value.description : "${each.key} vHBA QoS Policy"
+  max_data_field_size = each.value.max_data_field_size # FI-Attached and Standalone
   name                = each.key
-  org_moid            = local.org_moids[each.value.organization].moid
-  rate_limit          = each.value.rate_limit
-  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  rate_limit          = each.value.rate_limit # FI-Attached and Standalone
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

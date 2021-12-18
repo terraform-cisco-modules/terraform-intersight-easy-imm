@@ -45,26 +45,43 @@ variable "ntp_policies" {
 # GUI Location: Configure > Policies > Create Policy > NTP > Start
 #_________________________________________________________________________
 
-module "ntp_policies" {
+resource "intersight_ntp_policy" "ntp_policies" {
   depends_on = [
     local.org_moids,
-    local.merged_profile_policies,
+    local.ucs_domain_policies
   ]
-  version     = ">=0.9.6"
-  source      = "terraform-cisco-modules/imm/intersight//modules/ntp_policies"
   for_each    = local.ntp_policies
-  description = each.value.description != "" ? each.value.description : "${each.key} NTP Policy."
+  description = each.value.description != "" ? each.value.description : "${each.key} NTP Policy"
   enabled     = each.value.enabled
   name        = each.key
   ntp_servers = each.value.ntp_servers
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   timezone    = each.value.timezone
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "authenticated_ntp_servers" {
+    for_each = each.value.authenticated_ntp_servers
+    content {
+      key_type      = "SHA1"
+      object_type   = authenticated_ntp_servers.value.object_type
+      server_name   = authenticated_ntp_servers.value.server_name
+      sym_key_id    = authenticated_ntp_servers.value.sym_key_id
+      sym_key_value = authenticated_ntp_servers.value.sym_key_value
     }
-    if local.merged_profile_policies[k].ntp_policy == each.key
+  }
+  dynamic "profiles" {
+    for_each = { for k, v in local.ucs_domain_policies : k => v if local.ucs_domain_policies[k].ntp_policy == each.key }
+    content {
+      moid        = profiles.value.moid
+      object_type = profiles.value.object_type
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }

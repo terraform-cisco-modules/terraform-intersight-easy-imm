@@ -50,28 +50,27 @@ variable "virtual_kvm_policies" {
 # GUI Location: Configure > Policies > Create Policy > Virtual KVM
 #_________________________________________________________________________
 
-module "virtual_kvm_policies" {
+resource "intersight_kvm_policy" "virtual_kvm_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version                   = ">=0.9.6"
-  source                    = "terraform-cisco-modules/imm/intersight//modules/virtual_kvm_policies"
   for_each                  = local.virtual_kvm_policies
-  description               = each.value.description != "" ? each.value.description : "${each.key} Virtual KVM Policy."
+  description               = each.value.description != "" ? each.value.description : "${each.key} Virtual KVM Policy"
   enable_local_server_video = each.value.enable_local_server_video
   enable_video_encryption   = each.value.enable_video_encryption
-  enable_virtual_kvm        = each.value.enable_virtual_kvm
+  enabled                   = each.value.enable_virtual_kvm
   maximum_sessions          = each.value.maximum_sessions
   name                      = each.key
-  org_moid                  = local.org_moids[each.value.organization].moid
   remote_port               = each.value.remote_port
-  tags                      = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].virtual_kvm_policy == each.key
   }
 }

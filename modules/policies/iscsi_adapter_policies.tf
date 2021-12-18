@@ -44,17 +44,25 @@ variable "iscsi_adapter_policies" {
 # GUI Location: Configure > Policies > Create Policy > iSCSI Adapter
 #_________________________________________________________________________
 
-module "iscsi_adapter_policies" {
+resource "intersight_vnic_iscsi_adapter_policy" "iscsi_adapter_policies" {
   depends_on = [
     local.org_moids
   ]
-  version                = ">=0.9.6"
-  source                 = "terraform-cisco-modules/imm/intersight//modules/iscsi_adapter_policies"
-  for_each               = var.iscsi_adapter_policies
-  description            = each.value.description != null ? each.value.description : "${each.key} iSCSI Adapter Policy."
-  dhcp_timeout           = each.value.dhcp_timeout != null ? each.value.dhcp_timeout : 60
-  lun_busy_retry_count   = each.value.lun_busy_retry_count != null ? each.value.lun_busy_retry_count : 15
-  org_moid               = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
-  tags                   = each.value.tags != null ? each.value.tags : local.tags
-  tcp_connection_timeout = each.value.tcp_connection_timeout != null ? each.value.tcp_connection_timeout : 15
+  for_each             = var.iscsi_adapter_policies
+  connection_time_out  = each.value.tcp_connection_timeout != null ? each.value.tcp_connection_timeout : 15
+  description          = each.value.description != null ? each.value.description : "${each.key} iSCSI Adapter Policy"
+  dhcp_timeout         = each.value.dhcp_timeout != null ? each.value.dhcp_timeout : 60
+  lun_busy_retry_count = each.value.lun_busy_retry_count != null ? each.value.lun_busy_retry_count : 15
+  name                 = each.key
+  organization {
+    moid        = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

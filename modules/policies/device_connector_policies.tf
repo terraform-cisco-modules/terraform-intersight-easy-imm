@@ -38,24 +38,23 @@ variable "device_connector_policies" {
 # GUI Location: Configure > Policies > Create Policy > Device Connector
 #_________________________________________________________________________
 
-module "device_connector_policies" {
+resource "intersight_deviceconnector_policy" "device_connector_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version               = ">=0.9.6"
-  source                = "terraform-cisco-modules/imm/intersight//modules/device_connector_policies"
-  for_each              = local.device_connector_policies
-  configuration_lockout = each.value.configuration_lockout
-  description           = each.value.description != "" ? each.value.description : "${each.key} Device Connector Policy."
-  name                  = each.key
-  org_moid              = local.org_moids[each.value.organization].moid
-  tags                  = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each        = local.device_connector_policies
+  description     = each.value.description != "" ? each.value.description : "${each.key} Device Connector Policy"
+  lockout_enabled = each.value.configuration_lockout
+  name            = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].device_connector_policy == each.key
   }
 }

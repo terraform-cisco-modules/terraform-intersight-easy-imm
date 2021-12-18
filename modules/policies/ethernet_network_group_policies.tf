@@ -34,17 +34,32 @@ variable "ethernet_network_group_policies" {
   ))
 }
 
-module "ethernet_network_group_policies" {
+#_______________________________________________________________________________
+#
+# Ethernet Network Group Policies
+# GUI Location: Configure > Policies > Create Policy > Ethernet Network Group
+#_______________________________________________________________________________
+
+resource "intersight_fabric_eth_network_group_policy" "ethernet_network_group_policies" {
   depends_on = [
     local.org_moids
   ]
-  version       = ">=0.9.6"
-  source        = "terraform-cisco-modules/imm/intersight//modules/ethernet_network_group_policies"
-  for_each      = local.ethernet_network_group_policies
-  allowed_vlans = each.value.allowed_vlans
-  description   = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Group Policy."
-  name          = each.key
-  native_vlan   = each.value.native_vlan
-  org_moid      = local.org_moids[each.value.organization].moid
-  tags          = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  for_each    = local.ethernet_network_group_policies
+  description = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Group Policy"
+  name        = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  vlan_settings {
+    native_vlan   = each.value.native_vlan
+    allowed_vlans = each.value.allowed_vlans
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

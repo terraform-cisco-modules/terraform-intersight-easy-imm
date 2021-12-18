@@ -44,26 +44,25 @@ variable "ssh_policies" {
 # GUI Location: Configure > Policies > Create Policy > SSH > Start
 #_________________________________________________________________________
 
-module "ssh_policies" {
+resource "intersight_ssh_policy" "ssh_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version     = ">=0.9.6"
-  source      = "terraform-cisco-modules/imm/intersight//modules/ssh_policies"
   for_each    = local.ssh_policies
-  description = each.value.description != "" ? each.value.description : "${each.key} SNMP Policy."
-  enable_ssh  = each.value.enable_ssh
+  description = each.value.description != "" ? each.value.description : "${each.key} SSH Policy"
+  enabled     = each.value.enable_ssh
   name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  ssh_port    = each.value.ssh_port
-  ssh_timeout = each.value.ssh_timeout
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  port        = each.value.ssh_port
+  timeout     = each.value.ssh_timeout
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].ssh_policy == each.key
   }
 }

@@ -93,31 +93,46 @@ variable "secure_passphrase" {
 # GUI Location: Configure > Policies > Create Policy > Persistent Memory
 #_________________________________________________________________________
 
-module "persistent_memory_policies" {
+resource "intersight_memory_persistent_memory_policy" "persistent_memory_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version         = ">=0.9.6"
-  source          = "terraform-cisco-modules/imm/intersight//modules/persistent_memory_policies"
-  for_each        = local.persistent_memory_policies
-  description     = each.value.description != "" ? each.value.description : "${each.key} Persistent Memory Policy."
-  management_mode = each.value.management_mode
-  name            = each.key
-  org_moid        = local.org_moids[each.value.organization].moid
-  # Goals
-  memory_mode_percentage = each.value.memory_mode_percentage
-  persistent_memory_type = each.value.persistent_memory_type
-  # Namespaces
-  namespaces        = each.value.namespaces
+  for_each          = local.persistent_memory_policies
+  description       = each.value.description != "" ? each.value.description : "${each.key} Persistent Memory Policy"
+  management_mode   = each.value.management_mode
+  name              = each.key
   retain_namespaces = each.value.retain_namespaces
-  secure_passphrase = var.secure_passphrase
-  tags              = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  goals {
+    memory_mode_percentage = each.value.memory_mode_percentage
+    object_type            = "memory.PersistentMemoryGoal"
+    persistent_memory_type = each.value.persistent_memory_type
+    socket_id              = "All Sockets"
+  }
+  local_security {
+    object_type       = "memory.PersistentMemoryLocalSecurity"
+    enabled           = var.secure_passphrase == "" ? false : true
+    secure_passphrase = var.secure_passphrase
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "logical_namespaces" {
+    for_each = each.value.namespaces
+    content {
+      capacity         = logical_namespaces.value.capacity
+      mode             = logical_namespaces.value.mode != null ? logical_namespaces.value.mode : "raw"
+      name             = logical_namespaces.key
+      object_type      = "memory.PersistentMemoryLocalSecurity"
+      socket_id        = logical_namespaces.value.socket_id != null ? logical_namespaces.value.socket_id : 1
+      socket_memory_id = logical_namespaces.value.socket_memory_id != null ? logical_namespaces.value.socket_memory_id : "Not Applicable"
     }
-    if local.merged_profile_policies[k].persistent_memory_policy == each.key
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }

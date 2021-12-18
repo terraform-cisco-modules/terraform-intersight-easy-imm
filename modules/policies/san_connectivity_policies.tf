@@ -115,30 +115,33 @@ variable "san_connectivity_policies" {
 # GUI Location: Configure > Policies > Create Policy > SAN Connectivity
 #_________________________________________________________________________
 
-
-module "san_connectivity_policies" {
+resource "intersight_vnic_san_connectivity_policy" "san_connectivity_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies
+    local.org_moids
   ]
-  version              = ">=0.9.6"
-  source               = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_policies"
-  for_each             = local.san_connectivity_policies
-  description          = each.value.description != "" ? each.value.description : "${each.key} SAN Connectivity Policy."
-  name                 = each.key
-  org_moid             = local.org_moids[each.value.organization].moid
-  tags                 = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  target_platform      = each.value.target_platform
-  vhba_placement_mode  = each.value.vhba_placement_mode
-  wwnn_pool            = each.value.wwnn_allocation_type == "POOL" ? [local.wwnn_pools[each.value.wwnn_pool]] : []
-  wwnn_allocation_type = each.value.wwnn_allocation_type
-  wwnn_static_address  = each.value.wwnn_allocation_type == "STATIC" ? each.value.wwnn_static_address : ""
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each            = local.san_connectivity_policies
+  description         = each.value.description != "" ? each.value.description : "${each.key} SAN Connectivity Policy"
+  name                = each.key
+  placement_mode      = each.value.vhba_placement_mode
+  static_wwnn_address = each.value.wwnn_allocation_type == "STATIC" ? each.value.wwnn_static_address : ""
+  target_platform     = each.value.target_platform
+  wwnn_address_type   = each.value.wwnn_allocation_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].san_connectivity_policy == each.key
+  }
+  dynamic "wwnn_pool" {
+    for_each = each.value.wwnn_allocation_type == "POOL" ? [local.wwnn_pools[each.value.wwnn_pool]] : []
+    content {
+      moid = wwnn_pool.value
+    }
   }
 }
 
@@ -149,29 +152,51 @@ module "san_connectivity_policies" {
 # GUI Location: Configure > Policies > Create Policy > SAN Connectivity
 #_________________________________________________________________________
 
-module "san_connectivity_vhbas" {
+resource "intersight_vnic_fc_if" "vhbas" {
   depends_on = [
     local.org_moids,
-    module.fibre_channel_adapter_policies,
-    module.fibre_channel_network_policies,
-    module.fibre_channel_qos_policies,
-    module.san_connectivity_policies
+    intersight_vnic_fc_adapter_policy.fibre_channel_adapter_policies,
+    intersight_vnic_fc_network_policy.fibre_channel_network_policies,
+    intersight_vnic_fc_qos_policy.fibre_channel_qos_policies,
+    intersight_vnic_san_connectivity_policy.san_connectivity_policies
   ]
-  version                      = ">=0.9.6"
-  source                       = "terraform-cisco-modules/imm/intersight//modules/san_connectivity_add_vhba"
-  for_each                     = local.vhbas
-  fc_adapter_policy_moid       = module.fibre_channel_adapter_policies[each.value.fibre_channel_adapter_policy].moid
-  fc_network_policy_moid       = module.fibre_channel_network_policies[each.value.fibre_channel_network_policy].moid
-  fc_qos_policy_moid           = module.fibre_channel_qos_policies[each.value.fibre_channel_qos_policy].moid
-  name                         = each.value.name
-  persistent_lun_bindings      = each.value.persistent_lun_bindings
-  placement_pci_link           = each.value.placement_pci_link
-  placement_pci_order          = each.value.placement_pci_order
-  placement_slot_id            = each.value.placement_slot_id
-  placement_switch_id          = each.value.placement_switch_id
-  placement_uplink_port        = each.value.placement_uplink_port
-  san_connectivity_policy_moid = module.san_connectivity_policies[each.value.san_connectivity_policy].moid
-  wwpn_allocation_type         = each.value.wwpn_allocation_type
-  wwpn_pool_moid               = each.value.wwpn_allocation_type == "POOL" ? [local.wwpn_pools[each.value.wwpn_pool]] : []
-  wwpn_static_address          = each.value.wwpn_allocation_type == "STATIC" ? each.value.wwpn_static_address : ""
+  for_each            = local.vhbas
+  name                = each.value.name
+  order               = each.value.placement_pci_order
+  persistent_bindings = each.value.persistent_lun_bindings
+  static_wwpn_address = each.value.wwpn_allocation_type == "STATIC" ? each.value.wwpn_static_address : ""
+  type                = each.value.vhba_type
+  wwpn_address_type   = each.value.wwpn_allocation_type
+  fc_adapter_policy {
+    moid = intersight_vnic_fc_adapter_policy.fibre_channel_adapter_policies[
+      each.value.fibre_channel_adapter_policy
+    ].moid
+  }
+  fc_network_policy {
+    moid = intersight_vnic_fc_network_policy.fibre_channel_network_policies[
+      each.value.fibre_channel_network_policy
+    ].moid
+  }
+  fc_qos_policy {
+    moid = intersight_vnic_fc_qos_policy.fibre_channel_qos_policies[
+      each.value.fibre_channel_qos_policy
+    ].moid
+  }
+  san_connectivity_policy {
+    moid = intersight_vnic_san_connectivity_policy.san_connectivity_policies[
+      each.value.san_connectivity_policy
+    ].moid
+  }
+  placement {
+    id        = each.value.placement_slot_id
+    pci_link  = each.value.placement_pci_link
+    switch_id = each.value.placement_switch_id
+    uplink    = each.value.placement_uplink_port
+  }
+  dynamic "wwpn_pool" {
+    for_each = each.value.wwpn_allocation_type == "POOL" ? [local.wwpn_pools[each.value.wwpn_pool]] : []
+    content {
+      moid = wwpn_pool.value
+    }
+  }
 }

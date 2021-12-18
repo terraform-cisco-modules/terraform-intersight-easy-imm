@@ -54,29 +54,26 @@ variable "serial_over_lan_policies" {
 # GUI Location: Configure > Policies > Create Policy > Serial over LAN
 #_________________________________________________________________________
 
-module "serial_over_lan_policies" {
+resource "intersight_sol_policy" "serial_over_lan_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies
+    local.org_moids
   ]
-  version     = ">=0.9.6"
-  source      = "terraform-cisco-modules/imm/intersight//modules/serial_over_lan_policies"
   for_each    = local.serial_over_lan_policies
   baud_rate   = each.value.baud_rate
   com_port    = each.value.com_port
-  description = each.value.description != "" ? each.value.description : "${each.key} Serial over LAN Policy."
+  description = each.value.description
   enabled     = each.value.enabled
-  ssh_port    = each.value.ssh_port
   name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  ssh_port    = each.value.ssh_port
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].serial_over_lan_policy == each.key
   }
 }
-
-

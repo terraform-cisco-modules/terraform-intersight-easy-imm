@@ -47,27 +47,32 @@ variable "imc_access_policies" {
 # GUI Location: Configure > Policies > Create Policy > IMC Access > Start
 #_________________________________________________________________________
 
-module "imc_access_policies" {
+resource "intersight_access_policy" "imc_access_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version        = ">=0.9.6"
-  source         = "terraform-cisco-modules/imm/intersight//modules/imc_access_policies"
-  for_each       = local.imc_access_policies
-  description    = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy."
-  inband_ip_pool = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
-  inband_vlan_id = each.value.inband_vlan_id
-  enable_ipv4    = each.value.ipv4_address_configuration
-  enable_ipv6    = each.value.ipv6_address_configuration
-  name           = each.key
-  org_moid       = local.org_moids[each.value.organization].moid
-  tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each    = local.imc_access_policies
+  description = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy"
+  inband_vlan = each.value.inband_vlan_id
+  name        = each.key
+  address_type {
+    enable_ip_v4 = each.value.ipv4_address_configuration
+    enable_ip_v6 = each.value.ipv6_address_configuration
+    object_type  = "access.AddressType"
+  }
+  inband_ip_pool {
+    moid        = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
+    object_type = "ippool.Pool"
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].imc_access_policy == each.key
   }
 }

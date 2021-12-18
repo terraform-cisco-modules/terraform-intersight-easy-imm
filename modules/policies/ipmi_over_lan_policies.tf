@@ -54,26 +54,25 @@ variable "ipmi_over_lan_policies" {
 # GUI Location: Configure > Policies > Create Policy > IPMI over LAN
 #_________________________________________________________________________
 
-module "ipmi_over_lan_policies" {
+resource "intersight_ipmioverlan_policy" "ipmi_over_lan_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version        = ">=0.9.6"
-  source         = "terraform-cisco-modules/imm/intersight//modules/ipmi_over_lan_policies"
   for_each       = local.ipmi_over_lan_policies
-  description    = each.value.description != "" ? each.value.description : "${each.key} IPMI over LAN Policy."
+  description    = each.value.description != "" ? each.value.description : "${each.key} IPMI over LAN Policy"
   enabled        = each.value.enabled
   encryption_key = each.value.ipmi_key == 1 ? var.ipmi_key_1 : null
-  privilege      = each.value.privilege
   name           = each.key
-  org_moid       = local.org_moids[each.value.organization].moid
-  tags           = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  privilege      = each.value.privilege
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].ipmi_over_lan_policy == each.key
   }
 }

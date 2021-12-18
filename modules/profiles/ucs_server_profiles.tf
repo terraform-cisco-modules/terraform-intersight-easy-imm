@@ -142,36 +142,78 @@ variable "ucs_server_profiles" {
 # GUI Location: Profiles > UCS Server Profile > Create UCS Server Profile
 #_________________________________________________________________________
 
-module "ucs_server_profiles" {
+resource "intersight_server_profile" "ucs_server_profiles" {
   depends_on = [
     local.org_moids,
   ]
-  version                = ">=0.9.6"
-  source                 = "terraform-cisco-modules/imm/intersight//modules/ucs_server_profiles"
   for_each               = local.ucs_server_profiles
   action                 = each.value.action
-  description            = each.value.description != "" ? each.value.description : "${each.key} Server Profile."
+  description            = each.value.description != "" ? each.value.description : "${each.key} Server Profile"
   name                   = each.key
-  org_moid               = local.org_moids[each.value.organization].moid
   server_assignment_mode = each.value.server_assignment_mode
   static_uuid_address    = each.value.static_uuid_address
-  tags                   = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  target_platform        = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
-  uuid_pool = each.value.uuid_pool != "" ? [
-    {
-      moid = local.uuid_pools[each.value.uuid_pool]
-    }
-  ] : []
+  target_platform        = each.value.target_platform
+  type                   = "instance"
+  uuid_address_type = length(
+    each.value.uuid_pool
+  ) > 0 ? "POOL" : each.value.static_uuid_address != "" ? "STATIC" : "NONE"
   wait_for_completion = each.value.wait_for_completion
-  assigned_server = each.value.server_assignment_mode == "Static" ? [
-    {
-      moid        = data.intersight_compute_physical_summary.server[each.key].results[0].moid
-      object_type = data.intersight_compute_physical_summary.server[each.key].results[0].source_object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "assigned_server" {
+    for_each = each.value.server_assignment_mode == "Static" ? [
+      {
+        moid        = data.intersight_compute_physical_summary.server[each.key].results[0].moid
+        object_type = data.intersight_compute_physical_summary.server[each.key].results[0].source_object_type
+      }
+    ] : []
+    content {
+      moid        = assigned_server.value.moid
+      object_type = assigned_server.value.object_type
     }
-  ] : []
-  associated_server_pool = each.value.server_assignment_mode == "Pool" ? [
-    {
-      moid = local.resource_pools[each.value.resource_pool].moid
+  }
+  dynamic "associated_server_pool" {
+    for_each = each.value.server_assignment_mode == "Pool" ? [
+      {
+        moid = local.resource_pools[each.value.resource_pool].moid
+      }
+    ] : []
+    content {
+      moid        = assigned_server.value.moid
+      object_type = "resourcepool.Pool"
     }
-  ] : []
+  }
+  dynamic "policy_bucket" {
+    for_each = [for s in each.value.policy_bucket : s if s != null]
+    content {
+      moid        = policy_bucket.value.moid
+      object_type = policy_bucket.value.object_type
+    }
+  }
+  # dynamic "src_template" {
+  #   for_each = var.src_template
+  #   content {
+  #     moid = src_template.value
+  #   }
+  # }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
+  dynamic "uuid_pool" {
+    for_each = each.value.uuid_pool != "" ? [
+      {
+        moid = local.uuid_pools[each.value.uuid_pool]
+      }
+    ] : []
+    content {
+      moid        = uuid_pool.value.moid
+      object_type = "uuidpool.Pool"
+    }
+  }
 }

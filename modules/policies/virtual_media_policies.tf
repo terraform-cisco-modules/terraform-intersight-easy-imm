@@ -133,32 +133,51 @@ variable "vmedia_password_5" {
 # GUI Location: Configure > Policies > Create Policy > Virtual Media
 #_________________________________________________________________________
 
-module "virtual_media_policies" {
+resource "intersight_vmedia_policy" "vmedia" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version                         = ">=0.9.6"
-  source                          = "terraform-cisco-modules/imm/intersight//modules/virtual_media_policies"
-  for_each                        = local.virtual_media_policies
-  description                     = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy."
-  enable_virtual_media            = each.value.enable_virtual_media
-  enable_virtual_media_encryption = each.value.enable_virtual_media_encryption
-  enable_low_power_usb            = each.value.enable_low_power_usb
-  name                            = each.key
-  org_moid                        = local.org_moids[each.value.organization].moid
-  tags                            = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vmedia_mounts                   = each.value.vmedia_mappings
-  vmedia_password_1               = var.vmedia_password_1
-  vmedia_password_2               = var.vmedia_password_2
-  vmedia_password_3               = var.vmedia_password_3
-  vmedia_password_4               = var.vmedia_password_4
-  vmedia_password_5               = var.vmedia_password_5
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each      = local.virtual_media_policies
+  description   = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy"
+  enabled       = each.value.enable_virtual_media
+  encryption    = each.value.enable_virtual_media_encryption
+  low_power_usb = each.value.enable_low_power_usb
+  name          = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "mappings" {
+    for_each = each.value.vmedia_mappings
+    content {
+      additional_properties   = ""
+      authentication_protocol = mappings.value.authentication_protocol
+      class_id                = "vmedia.Mapping"
+      device_type             = mappings.value.device_type
+      file_location           = mappings.value.file_location
+      host_name               = ""
+      is_password_set         = mappings.value.password != 0 ? true : false
+      mount_options           = mappings.value.mount_options
+      mount_protocol          = mappings.value.protocol
+      object_type             = "vmedia.Mapping"
+      password = length(
+        regexall("1", mappings.value.password)) > 0 ? var.vmedia_password_1 : length(
+        regexall("2", mappings.value.password)) > 0 ? var.vmedia_password_2 : length(
+        regexall("3", mappings.value.password)) > 0 ? var.vmedia_password_3 : length(
+        regexall("4", mappings.value.password)) > 0 ? var.vmedia_password_4 : length(
+        regexall("5", mappings.value.password)
+      ) > 0 ? var.vmedia_password_5 : ""
+      remote_file = ""
+      remote_path = ""
+      username    = mappings.value.username
+      volume_name = mappings.value.name
     }
-    if local.merged_profile_policies[k].virtual_media_policy == each.key
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }

@@ -118,31 +118,32 @@ variable "local_user_policies" {
 # GUI Location: Configure > Policies > Create Policy > Local User > Start
 #_________________________________________________________________________
 
-module "local_user_policies" {
+resource "intersight_iam_end_point_user_policy" "local_user_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version                   = ">=0.9.6"
-  source                    = "terraform-cisco-modules/imm/intersight//modules/local_user_policies"
-  for_each                  = local.local_user_policies
-  always_send_user_password = each.value.always_send_user_password
-  description               = each.value.description != "" ? each.value.description : "${each.key} Local User Policy."
-  enable_password_expiry    = each.value.enable_password_expiry
-  enforce_strong_password   = each.value.enforce_strong_password
-  grace_period              = each.value.grace_period
-  name                      = each.key
-  notification_period       = each.value.notification_period
-  org_moid                  = local.org_moids[each.value.organization].moid
-  password_expiry_duration  = each.value.password_expiry_duration
-  password_history          = each.value.password_history
-  tags                      = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each    = local.local_user_policies
+  description = each.value.description != "" ? each.value.description : "${each.key} Local User Policy."
+  name        = each.key
+  password_properties {
+    enable_password_expiry   = each.value.enable_password_expiry
+    enforce_strong_password  = each.value.enforce_strong_password
+    force_send_password      = each.value.always_send_user_password
+    grace_period             = each.value.grace_period
+    notification_period      = each.value.notification_period
+    password_expiry_duration = each.value.password_expiry_duration
+    password_history         = each.value.password_history
+  }
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].local_user_policy == each.key
   }
 }
 
@@ -153,17 +154,27 @@ module "local_user_policies" {
 # GUI Location: Configure > Policies > Create Policy > Local User > Start
 #_________________________________________________________________________
 
-module "local_users" {
+resource "intersight_iam_end_point_user" "users" {
   depends_on = [
     local.org_moids,
-    module.local_user_policies
+    intersight_iam_end_point_user_policy.local_user_policies
   ]
-  version      = ">=0.9.6"
-  for_each     = local.local_users.users
-  source       = "terraform-cisco-modules/imm/intersight//modules/local_user_add_users"
-  org_moid     = local.org_moids[each.value.organization].moid
-  user_enabled = each.value.enabled
-  user_password = length(
+  for_each = local.local_users
+  name     = each.value.username
+  organization {
+    moid        = var.org_moid
+    object_type = "organization.Organization"
+  }
+}
+
+resource "intersight_iam_end_point_user_role" "user_roles" {
+  depends_on = [
+    data.intersight_iam_end_point_role.roles,
+    intersight_iam_end_point_user.users
+  ]
+  for_each = local.local_users
+  enabled  = each.value.user_enabled
+  password = length(
     regexall("^1$", each.value.password)
     ) > 0 ? var.local_user_password_1 : length(
     regexall("^2$", each.value.password)
@@ -172,7 +183,16 @@ module "local_users" {
     ) > 0 ? var.local_user_password_3 : length(
     regexall("^4$", each.value.password)
   ) > 0 ? var.local_user_password_4 : var.local_user_password_5
-  user_policy_moid = module.local_user_policies[each.value.policy].moid
-  user_role        = each.value.role
-  username         = each.value.username
+  end_point_role {
+    moid        = data.intersight_iam_end_point_role.roles[each.value.role].results[0].moid
+    object_type = "iam.EndPointRole"
+  }
+  end_point_user {
+    moid        = intersight_iam_end_point_user.users[each.key].moid
+    object_type = "iam.EndPointUser"
+  }
+  end_point_user_policy {
+    moid        = intersight_iam_ldap_policy.ldap_policies[each.value.policy].moid
+    object_type = "iam.EndPointUserPolicy"
+  }
 }

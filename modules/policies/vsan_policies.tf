@@ -13,10 +13,12 @@ variable "vsan_policies" {
       uplink_trunking = false
       vsans = {
         default = {
-          default_zoning = "Disabled"
-          fcoe_vlan_id   = null
-          name           = "vsan"
-          vsan_id        = null
+          default_zoning       = "Disabled"
+          fc_zone_sharing_mode = ""
+          fcoe_vlan_id         = null
+          name                 = "vsan"
+          vsan_id              = null
+          vsan_scope           = "Uplink"
         }
       }
     }
@@ -36,6 +38,10 @@ variable "vsan_policies" {
     - fcoe_vlan_id - (REQUIRED).  FCoE VLAN Identifier to Assign to the VSAN Policy.
     - name - Name for the VSAN.
     - vsan_id - (REQUIRED).  VSAN Identifier to Assign to the VSAN Policy.
+    - vsan_scope - Used to indicate whether the VSAN Id is defined for storage or uplink or both traffics in FI.
+      * Uplink (Default) - Vsan associated with uplink network.
+      * Storage - Vsan associated with storage network.
+      * Common - Vsan that is common for uplink and storage network.
   EOT
   type = map(object(
     {
@@ -45,10 +51,12 @@ variable "vsan_policies" {
       uplink_trunking = optional(bool)
       vsans = optional(map(object(
         {
-          default_zoning = optional(string)
-          fcoe_vlan_id   = number
-          name           = string
-          vsan_id        = number
+          default_zoning       = optional(string)
+          fc_zone_sharing_mode = optional(string)
+          fcoe_vlan_id         = number
+          name                 = string
+          vsan_id              = number
+          vsan_scope           = optional(string)
         }
       )))
     }
@@ -63,45 +71,54 @@ variable "vsan_policies" {
 #_________________________________________________________________________
 
 
-module "vsan_policies" {
+resource "intersight_fabric_fc_network_policy" "vsan_policies" {
   depends_on = [
     local.org_moids,
-    local.merged_profile_policies,
+    local.ucs_domain_policies
   ]
-  version         = ">=0.9.6"
-  source          = "terraform-cisco-modules/imm/intersight//modules/vsan_policies"
   for_each        = var.vsan_policies
-  description     = each.value.description != "" ? each.value.description : "${each.key} VSAN Policy."
-  uplink_trunking = each.value.uplink_trunking
+  description     = each.value.description != "" ? each.value.description : "${each.key} VSAN Policy"
+  enable_trunking = each.value.uplink_trunking
   name            = each.key
-  org_moid        = local.org_moids[each.value.organization].moid
-  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "profiles" {
+    for_each = { for k, v in local.ucs_domain_policies : k => v if local.ucs_domain_policies[k].vsan_policy == each.key }
+    content {
+      moid        = profiles.value.moid
+      object_type = profiles.value.object_type
     }
-    if local.merged_profile_policies[k].vsan_policy == each.key
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }
+
 
 #______________________________________________
 #
 # Assign VSANs to VSAN Policies
 #______________________________________________
 
-module "vsan_policies_add_vsans" {
+resource "intersight_fabric_vsan" "vsans" {
   depends_on = [
     local.org_moids,
-    module.vsan_policies
+    intersight_fabric_fc_network_policy.vsan_policies
   ]
-  version          = ">=0.9.6"
-  source           = "terraform-cisco-modules/imm/intersight//modules/vsan_policy_add_vsan"
-  for_each         = local.vsans
-  default_zoning   = each.value.default_zoning
-  fcoe_vlan_id     = each.value.fcoe_vlan_id
-  name             = each.value.name
-  vsan_id          = each.value.vsan_id
-  vsan_policy_moid = module.vsan_policies[each.value.vsan_policy].moid
-  # fc_zone_sharing_mode = local.vsans[each.value].fc_zone_sharing_mode
+  for_each             = local.vsans
+  default_zoning       = each.value.default_zoning
+  fcoe_vlan            = each.value.fcoe_vlan_id
+  fc_zone_sharing_mode = each.value.fc_zone_sharing_mode
+  name                 = each.value.name
+  vsan_id              = each.value.vsan_id
+  vsan_scope           = each.value.vsan_scope
+  fc_network_policy {
+    moid = intersight_fabric_fc_network_policy.vsan_policies[each.value.vsan_policy].moid
+  }
 }

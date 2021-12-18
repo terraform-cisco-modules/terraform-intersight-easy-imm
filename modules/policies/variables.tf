@@ -23,21 +23,10 @@ variable "ws_pools" {
   type        = string
 }
 
-variable "ws_ucs_chassis_profiles" {
-  description = "UCS Chassis Profiles Workspace Name."
+variable "ws_profiles" {
+  description = "UCS Profiles Workspace Name."
   type        = string
 }
-
-variable "ws_ucs_domain_profiles" {
-  description = "UCS Domain Profiles Workspace Name."
-  type        = string
-}
-
-variable "ws_ucs_server_profiles" {
-  description = "UCS Server Profiles Workspace Name."
-  type        = string
-}
-
 
 #__________________________________________________________
 #
@@ -67,12 +56,6 @@ variable "secretkey" {
 #
 # Global Variables
 #__________________________________________________________
-
-variable "assign_profiles_to_templates" {
-  default     = false
-  description = "Flag to associate disable assigning UCS Server Profiles to Templates until Policies are assigned to Templates."
-  type        = bool
-}
 
 variable "organizations" {
   default     = ["default"]

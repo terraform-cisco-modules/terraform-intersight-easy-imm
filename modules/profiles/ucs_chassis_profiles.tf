@@ -66,24 +66,43 @@ variable "ucs_chassis_profiles" {
 # GUI Location: Profiles > UCS Chassis Profile > Create UCS Chassis Profile
 #_________________________________________________________________________
 
-module "ucs_chassis_profiles" {
+resource "intersight_chassis_profile" "ucs_chassis_profiles" {
   depends_on = [
     local.org_moids
   ]
-  version             = ">=0.9.6"
-  source              = "terraform-cisco-modules/imm/intersight//modules/ucs_chassis_profiles"
   for_each            = local.ucs_chassis_profiles
   action              = each.value.action
   description         = each.value.description != "" ? each.value.description : "${each.key} Chassis Profile."
   name                = each.key
-  org_moid            = local.org_moids[each.value.organization].moid
-  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_platform     = each.value.target_platform == "Standalone" ? "Standalone" : "FIAttached"
+  type                = "instance"
   wait_for_completion = each.value.wait_for_completion
-  assigned_chassis = each.value.assign_chassis == true ? [
-    {
-      moid = data.intersight_equipment_chassis.chassis[each.key].results[0].moid
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "assigned_chassis" {
+    for_each = each.value.assign_chassis == true ? [
+      {
+        moid = data.intersight_equipment_chassis.chassis[each.key].results[0].moid
+      }
+    ] : []
+    content {
+      moid = assigned_chassis.value.moid
     }
-  ] : []
-  # src_template        = each.value.src_template
+  }
+  dynamic "policy_bucket" {
+    for_each = [for s in each.value.policy_bucket : s if s != null]
+    content {
+      moid        = policy_bucket.value.moid
+      object_type = policy_bucket.value.object_type
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

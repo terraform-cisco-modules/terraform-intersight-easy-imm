@@ -85,37 +85,70 @@ variable "ucs_domain_profiles" {
 # GUI Location: Profiles > UCS Domain Profile > Create UCS Domain Profile
 #_________________________________________________________________________
 
-module "ucs_domain_profiles" {
+resource "intersight_fabric_switch_cluster_profile" "ucs_domain_profiles" {
   depends_on = [
     local.org_moids
   ]
-  version     = ">=0.9.6"
-  source      = "terraform-cisco-modules/imm/intersight//modules/ucs_domain_profiles"
   for_each    = local.ucs_domain_profiles
-  description = each.value.description != "" ? each.value.description : "${each.key} UCS Domain."
+  description = each.value.description != "" ? each.value.description : "${each.key} UCS Domain Profile"
   name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  type        = "instance"
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
+
 
 #______________________________________________
 #
-# Create Fabric Interconnect A Switch Profile
+# Create Fabric Interconnect Switch Profiles
 #______________________________________________
 
-module "ucs_domain_switches" {
+resource "intersight_fabric_switch_profile" "ucs_domain_switches" {
   depends_on = [
     data.intersight_network_element_summary.fis,
     local.org_moids,
-    module.ucs_domain_profiles
+    intersight_fabric_switch_cluster_profile.ucs_domain_profiles
   ]
-  version         = ">=0.9.6"
-  source          = "terraform-cisco-modules/imm/intersight//modules/ucs_domain_switches"
-  for_each        = local.merged_ucs_switches
-  action          = each.value.action
-  assigned_switch = each.value.assign_switches == true ? [data.intersight_network_element_summary.fis[each.key].results.0.moid] : []
-  cluster_moid    = module.ucs_domain_profiles[each.value.domain_profile].moid
-  description     = "${each.key} Fabric Interconnect ${each.value.fabric}."
-  name            = "${each.key}-${each.value.fabric}"
-  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  for_each    = local.merged_ucs_switches
+  action      = each.value.action
+  description = "${each.key} Fabric Interconnect ${each.value.fabric}"
+  name        = "${each.key}-${each.value.fabric}"
+  type        = "instance"
+  switch_cluster_profile {
+    moid = intersight_fabric_switch_cluster_profile.ucs_domain_profiles[
+      each.value.domain_profile
+    ].moid
+  }
+  dynamic "assigned_switch" {
+    for_each = each.value.assign_switches == true ? [
+      data.intersight_network_element_summary.fis[each.key
+    ].results.0.moid] : []
+    content {
+      moid = assigned_switch.value
+    }
+  }
+  # Need to wait for a Bug fix to the API to Support Policy Buckets with Domain Profiles
+  # dynamic "policy_bucket" {
+  #   for_each = [for s in each.value.policy_bucket : s if s != null]
+  #   content {
+  #     moid        = policy_bucket.value.moid
+  #     object_type = policy_bucket.value.object_type
+  #   }
+  # }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

@@ -88,24 +88,54 @@ variable "system_qos_policies" {
 # GUI Location: Configure > Policy > Create Policy > System QoS > Start
 #_________________________________________________________________________
 
-module "system_qos_policies" {
+resource "intersight_fabric_system_qos_policy" "system_qos_policies" {
   depends_on = [
     local.org_moids,
-    local.merged_profile_policies,
+    local.ucs_domain_policies
   ]
-  version     = ">=0.9.6"
-  source      = "terraform-cisco-modules/imm/intersight//modules/system_qos_policies"
   for_each    = var.system_qos_policies
-  classes     = each.value.classes != null ? each.value.classes : {}
-  description = each.value.description != null ? each.value.description : "${each.key} System QoS Policy."
+  description = each.value.description != null ? each.value.description : "${each.key} System QoS Policy"
   name        = each.key
-  org_moid    = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
-  tags        = each.value.tags != null ? each.value.tags : []
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "classes" {
+    for_each = each.value.classes != null ? each.value.classes : {}
+    content {
+      additional_properties = ""
+      admin_state = length(
+        regexall("(Best Effort|FC)", classes.key)
+      ) > 0 ? "Enabled" : classes.value.state != null ? classes.value.state : "Disabled"
+      bandwidth_percent = classes.value.bandwidth_percent != null ? classes.value.bandwidth_percent : 0
+      cos = classes.key == "Best Effort" ? 255 : classes.key == "FC" ? 3 : length(
+        regexall("Bronze", classes.key)) > 0 && classes.value.cos != null ? 1 : length(
+        regexall("Gold", classes.key)) > 0 && classes.value.cos != null ? 4 : length(
+        regexall("Platinum", classes.key)) > 0 && classes.value.cos != null ? 5 : length(
+      regexall("Silver", classes.key)) > 0 && classes.value.cos != null ? 2 : classes.value.cos
+      mtu                = classes.key == "FC" ? 2240 : classes.value.mtu != null ? classes.value.mtu : 1500
+      multicast_optimize = classes.key == "Silver" ? false : false
+      name               = classes.key
+      object_type        = "fabric.QosClass"
+      packet_drop = length(
+        regexall("(Best Effort)", classes.key)) > 0 ? true : length(
+        regexall("(FC)", classes.key)
+      ) > 0 ? false : classes.value.packet_drop != null ? classes.value.packet_drop : true
+      weight = classes.value.weight != null ? classes.value.weight : 0
     }
-    if local.merged_profile_policies[k].system_qos_policy == each.key
+  }
+  dynamic "profiles" {
+    for_each = { for k, v in local.ucs_domain_policies : k => v if local.ucs_domain_policies[k].system_qos_policy == each.key }
+    content {
+      moid        = profiles.value.moid
+      object_type = profiles.value.object_type
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }

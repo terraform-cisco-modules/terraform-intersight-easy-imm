@@ -59,18 +59,34 @@ variable "iscsi_static_target_policies" {
 # GUI Location: Configure > Policies > Create Policy > iSCSI Static Target
 #__________________________________________________________________________
 
-module "iscsi_static_target_policies" {
+resource "intersight_vnic_iscsi_static_target_policy" "iscsi_static_target_policies" {
   depends_on = [
     local.org_moids
   ]
-  version     = ">=0.9.6"
-  source      = "terraform-cisco-modules/imm/intersight//modules/iscsi_static_target_policies"
   for_each    = var.iscsi_static_target_policies
-  description = each.value.description != "" ? each.value.description : "${each.key} iSCSI Adapter Policy."
+  description = each.value.description != "" ? each.value.description : "${each.key} iSCSI Adapter Policy"
   ip_address  = each.value.ip_address
-  lun         = each.value.lun != null ? each.value.lun : []
-  org_moid    = local.org_moids[each.value.organization].moid
+  name        = each.key
   port        = each.value.port
-  tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
   target_name = each.value.target_name
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "lun" {
+    for_each = each.value.lun != null ? each.value.lun : []
+    content {
+      additional_properties = ""
+      bootable              = lun.value.bootable
+      lun_id                = lun.value.lun_id
+      object_type           = "vnic.Lun"
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

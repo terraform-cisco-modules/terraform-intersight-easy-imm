@@ -42,6 +42,16 @@ variable "tfc_organization" {
 # Terraform Cloud domain_workspace Workspace
 #______________________________________________
 
+variable "ws_policies" {
+  description = "Policies Workspace Name."
+  type        = string
+}
+
+# variable "ws_policies_vlans" {
+#   description = "Policies VLANs Workspace Name."
+#   type        = string
+# }
+
 variable "ws_pools" {
   description = "Pools Workspace Name."
   type        = string
@@ -63,11 +73,4 @@ variable "tags" {
   default     = []
   description = "List of Key/Value Pairs to Assign as Attributes to the Policy."
   type        = list(map(string))
-}
-
-
-variable "assign_profiles_to_templates" {
-  default     = false
-  description = "Flag to associate disable assigning UCS Server Profiles to Templates until Policies are assigned to Templates."
-  type        = bool
 }

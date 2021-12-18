@@ -34,17 +34,32 @@ variable "fibre_channel_network_policies" {
   ))
 }
 
-module "fibre_channel_network_policies" {
+#_______________________________________________________________________________
+#
+# Fibre-Channel Network Policies
+# GUI Location: Configure > Policies > Create Policy > Fibre-Channel Network
+#_______________________________________________________________________________
+
+resource "intersight_vnic_fc_network_policy" "fibre_channel_network_policies" {
   depends_on = [
     local.org_moids
   ]
-  version         = ">=0.9.6"
-  source          = "terraform-cisco-modules/imm/intersight//modules/fibre_channel_network_policies"
-  for_each        = local.fibre_channel_network_policies
-  default_vlan_id = each.value.default_vlan_id
-  description     = each.value.description != "" ? each.value.description : "${each.key} Fibre Channel Network Policy."
-  name            = each.key
-  org_moid        = local.org_moids[each.value.organization].moid
-  tags            = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vsan_id         = each.value.vsan_id
+  for_each    = local.fibre_channel_network_policies
+  description = each.value.description != "" ? each.value.description : "${each.key} Fibre Channel Network Policy"
+  name        = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  vsan_settings {
+    default_vlan_id = each.value.default_vlan_id
+    id              = each.value.vsan_id
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

@@ -2722,25 +2722,21 @@ variable "bios_policies" {
   ))
 }
 
-module "bios_policies" {
+
+#_________________________________________________________________________
+#
+# BIOS Policies
+# GUI Location: Configure > Policies > Create Policy > BIOS
+#_________________________________________________________________________
+
+resource "intersight_bios_policy" "bios_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version     = ">=0.9.6"
-  source      = "terraform-cisco-modules/imm/intersight//modules/bios_policies"
   for_each    = local.bios_policies
-  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy."
+  description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy"
   name        = each.key
-  org_moid    = local.org_moids[each.value.organization].moid
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
-    }
-    if local.merged_profile_policies[k].bios_policy == each.key
-  }
-  tags = length(each.value.tags) > 0 ? each.value.tags : local.tags
+
   #+++++++++++++++++++++++++++++++
   # Boot Options Section
   #+++++++++++++++++++++++++++++++
@@ -2758,16 +2754,18 @@ module "bios_policies" {
   psata                        = each.value.psata                        # P-SATA Mode
   sata_mode_select             = each.value.sata_mode_select             # SATA Mode
   vmd_enable                   = each.value.vmd_enable                   # VMD Enablement
+
+
   #+++++++++++++++++++++++++++++++
   # Intel Directed IO Section
   #+++++++++++++++++++++++++++++++
-  intel_vt_for_directed_io = length(
-    regexall("(DSS|HPC|Java)", each.value.bios_template)
-  ) > 0 ? "disabled" : each.value.intel_vt_for_directed_io                           # Intel VT for Directed IO
+  intel_vt_for_directed_io           = each.value.intel_vt_for_directed_io           # Intel VT for Directed IO
   intel_vtd_coherency_support        = each.value.intel_vtd_coherency_support        # Intel(R) VT-d Coherency Support
   intel_vtd_interrupt_remapping      = each.value.intel_vtd_interrupt_remapping      # Intel(R) VT-d interrupt Remapping
   intel_vtd_pass_through_dma_support = each.value.intel_vtd_pass_through_dma_support # Intel(R) VT-d PassThrough DMA Support
   intel_vtdats_support               = each.value.intel_vtdats_support               # Intel VTD ATS Support
+
+
   #+++++++++++++++++++++++++++++++
   # LOM and PCIe Slots Section
   #+++++++++++++++++++++++++++++++
@@ -2944,13 +2942,15 @@ module "bios_policies" {
   slot_sas_state                 = each.value.slot_sas_state                 # PCIe Slot:SAS OptionROM
   slot_ssd_slot1link_speed       = each.value.slot_ssd_slot1link_speed       # PCIe Slot:FrontSSD1 Link Speed
   slot_ssd_slot2link_speed       = each.value.slot_ssd_slot2link_speed       # PCIe Slot:FrontSSD2 Link Speed
+
+
   #+++++++++++++++++++++++++++++++
   # Main Section
   #+++++++++++++++++++++++++++++++
   post_error_pause = each.value.post_error_pause # POST Error Pause
-  tpm_support      = length(                        # TPM Support
-    regexall("tpm", each.value.bios_template)
-  ) > 0 ? "enabled" : each.value.tpm_support
+  tpm_support      = each.value.tpm_support      # TPM Support
+
+
   #+++++++++++++++++++++++++++++++
   # Memory Section
   #+++++++++++++++++++++++++++++++
@@ -3003,6 +3003,7 @@ module "bios_policies" {
   tsme                                  = each.value.tsme                                  # Transparent Secure Memory Encryption
   uma_based_clustering                  = each.value.uma_based_clustering                  # UMA Based Clustering
   vol_memory_mode                       = each.value.vol_memory_mode                       # Volatile Memory Mode
+
   #+++++++++++++++++++++++++++++++
   # PCI Section
   #+++++++++++++++++++++++++++++++
@@ -3015,6 +3016,8 @@ module "bios_policies" {
   pc_ie_ssd_hot_plug_support = each.value.pc_ie_ssd_hot_plug_support # NVMe SSD Hot-Plug Support
   sr_iov                     = each.value.sr_iov                     # SR-IOV Support
   vga_priority               = each.value.vga_priority               # VGA Priority
+
+
   #+++++++++++++++++++++++++++++++
   # Power and Performance Section
   #+++++++++++++++++++++++++++++++
@@ -3026,6 +3029,8 @@ module "bios_policies" {
   cbs_cmn_efficiency_mode_en         = each.value.cbs_cmn_efficiency_mode_en         # Efficiency Mode Enable
   cbs_cmn_gnb_smucppc                = each.value.cbs_cmn_gnb_smucppc                # CPPC
   cbs_cmnc_tdp_ctl                   = each.value.cbs_cmnc_tdp_ctl                   # cTDP Control
+
+
   #+++++++++++++++++++++++++++++++
   # Processor Section
   #+++++++++++++++++++++++++++++++
@@ -3053,74 +3058,62 @@ module "bios_policies" {
   cpu_energy_performance            = each.value.cpu_energy_performance            # Energy Performance
   cpu_frequency_floor               = each.value.cpu_frequency_floor               # Frequency Floor Override
   cpu_performance                   = each.value.cpu_performance                   # CPU Performance
-  cpu_power_management = length(
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "custom" : each.value.cpu_power_management                         # Power Technology
-  demand_scrub                   = each.value.demand_scrub                   # Demand Scrub
-  direct_cache_access            = each.value.direct_cache_access            # Direct Cache Access Support
-  dram_clock_throttling          = each.value.dram_clock_throttling          # DRAM Clock Throttling
-  energy_efficient_turbo         = each.value.energy_efficient_turbo         # Energy Efficient Turbo
-  eng_perf_tuning                = each.value.eng_perf_tuning                # Energy Performance Tuning
-  enhanced_intel_speed_step_tech = each.value.enhanced_intel_speed_step_tech # Enhanced Intel Speedstep(R) Technology
-  epp_enable                     = each.value.epp_enable                     # Processor EPP Enable
-  epp_profile                    = each.value.epp_profile                    # EPP Profile
-  execute_disable_bit            = each.value.execute_disable_bit            # Execute Disable Bit
-  extended_apic                  = each.value.extended_apic                  # Local X2 Apic
-  hardware_prefetch              = each.value.hardware_prefetch              # Hardware Prefetcher
-  hwpm_enable                    = each.value.hwpm_enable                    # CPU Hardware Power Management
-  imc_interleave                 = each.value.imc_interleave                 # IMC Interleaving
-  intel_dynamic_speed_select     = each.value.intel_dynamic_speed_select     # Intel Dynamic Speed Select
-  intel_hyper_threading_tech = length(
-    regexall("(HPC)", each.value.bios_template)
-  ) > 0 ? "disabled" : each.value.intel_hyper_threading_tech # Intel HyperThreading Tech
-  intel_speed_select     = each.value.intel_speed_select     # Intel Speed Select
-  intel_turbo_boost_tech = each.value.intel_turbo_boost_tech # Intel Turbo Boost Tech
-  intel_virtualization_technology = length(                  # Intel(R) VT
-    regexall("(HPC|Java)", each.value.bios_template)
-  ) > 0 ? "disabled" : each.value.intel_virtualization_technology
-  ioh_error_enable      = each.value.ioh_error_enable      # IIO Error Enable
-  ip_prefetch           = each.value.ip_prefetch           # DCU IP Prefetcher
-  kti_prefetch          = each.value.kti_prefetch          # KTI Prefetch
-  llc_prefetch          = each.value.llc_prefetch          # LLC Prefetch
-  memory_inter_leave    = each.value.memory_inter_leave    # Intel Memory Interleaving
-  package_cstate_limit  = each.value.package_cstate_limit  # Package C State Limit
-  patrol_scrub          = each.value.patrol_scrub          # Patrol Scrub
-  patrol_scrub_duration = each.value.patrol_scrub_duration # Patrol Scrub Interval
-  processor_c1e = length(                                  # Processor C1E
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "disabled" : each.value.processor_c1e
-  processor_c3report = length(
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "disabled" : each.value.processor_c3report # Processor C3 Report
-  processor_c6report = length(
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "disabled" : each.value.processor_c6report # Processor C6 Report
-  processor_cstate = length(
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "disabled" : each.value.processor_cstate   # CPU C State
-  pstate_coord_type  = each.value.pstate_coord_type  # P-State Coordination
-  pwr_perf_tuning    = each.value.pwr_perf_tuning    # Power Performance Tuning
-  qpi_link_speed     = each.value.qpi_link_speed     # UPI Link Frequency Select
-  rank_inter_leave   = each.value.rank_inter_leave   # Rank Interleaving
-  single_pctl_enable = each.value.single_pctl_enable # Single PCTL
-  smt_mode           = each.value.smt_mode           # SMT Mode
-  snc                = each.value.snc                # Sub Numa Clustering
-  streamer_prefetch  = each.value.streamer_prefetch  # DCU Streamer Prefetch
-  svm_mode           = each.value.svm_mode           # SVM Mode
-  ufs_disable        = each.value.ufs_disable        # Uncore Frequency Scaling
-  work_load_config = length(                         # Workload Configuration
-    regexall("(HPC)", each.value.bios_template)
-  ) > 0 ? "Balanced" : each.value.work_load_config
-  xpt_prefetch = each.value.xpt_prefetch # XPT Prefetch
+  cpu_power_management              = each.value.cpu_power_management              # Power Technology
+  demand_scrub                      = each.value.demand_scrub                      # Demand Scrub
+  direct_cache_access               = each.value.direct_cache_access               # Direct Cache Access Support
+  dram_clock_throttling             = each.value.dram_clock_throttling             # DRAM Clock Throttling
+  energy_efficient_turbo            = each.value.energy_efficient_turbo            # Energy Efficient Turbo
+  eng_perf_tuning                   = each.value.eng_perf_tuning                   # Energy Performance Tuning
+  enhanced_intel_speed_step_tech    = each.value.enhanced_intel_speed_step_tech    # Enhanced Intel Speedstep(R) Technology
+  epp_enable                        = each.value.epp_enable                        # Processor EPP Enable
+  epp_profile                       = each.value.epp_profile                       # EPP Profile
+  execute_disable_bit               = each.value.execute_disable_bit               # Execute Disable Bit
+  extended_apic                     = each.value.extended_apic                     # Local X2 Apic
+  hardware_prefetch                 = each.value.hardware_prefetch                 # Hardware Prefetcher
+  hwpm_enable                       = each.value.hwpm_enable                       # CPU Hardware Power Management
+  imc_interleave                    = each.value.imc_interleave                    # IMC Interleaving
+  intel_dynamic_speed_select        = each.value.intel_dynamic_speed_select        # Intel Dynamic Speed Select
+  intel_hyper_threading_tech        = each.value.intel_hyper_threading_tech        # Intel HyperThreading Tech
+  intel_speed_select                = each.value.intel_speed_select                # Intel Speed Select
+  intel_turbo_boost_tech            = each.value.intel_turbo_boost_tech            # Intel Turbo Boost Tech
+  intel_virtualization_technology   = each.value.intel_virtualization_technology   # Intel(R) VT
+  ioh_error_enable                  = each.value.ioh_error_enable                  # IIO Error Enable
+  ip_prefetch                       = each.value.ip_prefetch                       # DCU IP Prefetcher
+  kti_prefetch                      = each.value.kti_prefetch                      # KTI Prefetch
+  llc_prefetch                      = each.value.llc_prefetch                      # LLC Prefetch
+  memory_inter_leave                = each.value.memory_inter_leave                # Intel Memory Interleaving
+  package_cstate_limit              = each.value.package_cstate_limit              # Package C State Limit
+  patrol_scrub                      = each.value.patrol_scrub                      # Patrol Scrub
+  patrol_scrub_duration             = each.value.patrol_scrub_duration             # Patrol Scrub Interval
+  processor_c1e                     = each.value.processor_c1e                     # Processor C1E
+  processor_c3report                = each.value.processor_c3report                # Processor C3 Report
+  processor_c6report                = each.value.processor_c6report                # Processor C6 Report
+  processor_cstate                  = each.value.processor_cstate                  # CPU C State
+  pstate_coord_type                 = each.value.pstate_coord_type                 # P-State Coordination
+  pwr_perf_tuning                   = each.value.pwr_perf_tuning                   # Power Performance Tuning
+  qpi_link_speed                    = each.value.qpi_link_speed                    # UPI Link Frequency Select
+  rank_inter_leave                  = each.value.rank_inter_leave                  # Rank Interleaving
+  single_pctl_enable                = each.value.single_pctl_enable                # Single PCTL
+  smt_mode                          = each.value.smt_mode                          # SMT Mode
+  snc                               = each.value.snc                               # Sub Numa Clustering
+  streamer_prefetch                 = each.value.streamer_prefetch                 # DCU Streamer Prefetch
+  svm_mode                          = each.value.svm_mode                          # SVM Mode
+  ufs_disable                       = each.value.ufs_disable                       # Uncore Frequency Scaling
+  work_load_config                  = each.value.work_load_config                  # Workload Configuration
+  xpt_prefetch                      = each.value.xpt_prefetch                      # XPT Prefetch
+
+
   #+++++++++++++++++++++++++++++++
   # QPI Section
   #+++++++++++++++++++++++++++++++
   qpi_link_frequency = each.value.qpi_link_frequency # QPI Link Frequency Select
   qpi_snoop_mode     = each.value.qpi_snoop_mode     # QPI Snoop Mode
+
   #+++++++++++++++++++++++++++++++
   # Serial Port Section
   #+++++++++++++++++++++++++++++++
   serial_port_aenable = each.value.serial_port_aenable # Serial A Enable
+
   #+++++++++++++++++++++++++++++++
   # Server Management Section
   #+++++++++++++++++++++++++++++++
@@ -3143,6 +3136,8 @@ module "bios_policies" {
   redirection_after_post          = each.value.redirection_after_post          # Redirection After BIOS POST
   terminal_type                   = each.value.terminal_type                   # Terminal Type
   ucsm_boot_order_rule            = each.value.ucsm_boot_order_rule            # Boot Order Rules
+
+
   #+++++++++++++++++++++++++++++++
   # Trusted Platform Section
   #+++++++++++++++++++++++++++++++
@@ -3161,11 +3156,11 @@ module "bios_policies" {
   sgx_le_wr                       = each.value.sgx_le_wr                       # SGX Write Eanble
   sgx_package_info_in_band_access = each.value.sgx_package_info_in_band_access # SGX Package Information In-Band Access
   sgx_qos                         = each.value.sgx_qos                         # SGX QoS
-  tpm_control                     = length(                                       # Trusted Platform Module State
-    regexall("tpm", each.value.bios_template)
-  ) > 0 ? "enabled" : each.value.tpm_control
+  tpm_control                     = each.value.tpm_control                     # Trusted Platform Module State
   tpm_pending_operation           = each.value.tpm_pending_operation           # TPM Pending Operation
   txt_support                     = each.value.txt_support                     # Intel Trusted Execution Technology Support
+
+
   #+++++++++++++++++++++++++++++++
   # USB Section
   #+++++++++++++++++++++++++++++++
@@ -3181,4 +3176,16 @@ module "bios_policies" {
   usb_port_sd_card         = each.value.usb_port_sd_card         # USB Port SD Card
   usb_port_vmedia          = each.value.usb_port_vmedia          # USB Port VMedia
   usb_xhci_support         = each.value.usb_xhci_support         # XHCI Legacy Support
+
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

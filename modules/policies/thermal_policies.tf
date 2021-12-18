@@ -43,24 +43,23 @@ variable "thermal_policies" {
 # GUI Location: Configure > Policy > Create Policy > Thermal > Start
 #_________________________________________________________________________
 
-module "thermal_policies" {
+resource "intersight_thermal_policy" "thermal_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version          = ">=0.9.6"
-  source           = "terraform-cisco-modules/imm/intersight//modules/thermal_policies"
   for_each         = local.thermal_policies
-  description      = each.value.description != "" ? each.value.description : "${each.key} Thermal Policy."
+  description      = each.value.description != "" ? each.value.description : "${each.key} Thermal Policy"
   fan_control_mode = each.value.fan_control_mode
   name             = each.key
-  org_moid         = local.org_moids[each.value.organization].moid
-  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
     }
-    if local.merged_profile_policies[k].thermal_policy == each.key
   }
 }

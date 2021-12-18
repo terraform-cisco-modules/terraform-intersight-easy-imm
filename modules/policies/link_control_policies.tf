@@ -45,18 +45,26 @@ variable "link_control_policies" {
 # GUI Location: Configure > Policy > Create Policy > Link Control
 #_________________________________________________________________________
 
-module "link_control_policies" {
+resource "intersight_fabric_link_control_policy" "link_control_policies" {
   depends_on = [
     local.org_moids
   ]
-  version          = ">=0.9.6"
-  source           = "terraform-cisco-modules/imm/intersight//modules/link_control_policies"
-  for_each         = local.link_control_policies
-  description      = each.value.description != "" ? each.value.description : "${each.key} Link Control Policy."
-  name             = each.key
-  org_moid         = local.org_moids[each.value.organization].moid
-  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  udld_admin_state = each.value.admin_state
-  udld_mode        = each.value.mode
+  for_each    = local.link_control_policies
+  description = each.value.description != "" ? each.value.description : "${each.key} Link Control Policy"
+  name        = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  udld_settings {
+    admin_state = each.value.udld_admin_state
+    mode        = each.value.udld_mode
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
-

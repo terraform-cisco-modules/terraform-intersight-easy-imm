@@ -16,6 +16,7 @@ variable "adapter_configuration_policies" {
       fec_mode_3          = "cl91"
       fec_mode_4          = "cl91"
       organization        = "default"
+      pci_slot            = "MLOM"
       tags                = []
     }
   }
@@ -37,6 +38,7 @@ variable "adapter_configuration_policies" {
     - Off - Disable FEC mode on the DCE Interface.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
+  * pci_slot - PCIe slot where the VIC adapter is installed. Supported values are (1-15) and MLOM.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
@@ -50,6 +52,7 @@ variable "adapter_configuration_policies" {
       fec_mode_3          = optional(string)
       fec_mode_4          = optional(string)
       organization        = optional(string)
+      pci_slot            = optional(string)
       tags                = optional(list(map(string)))
     }
   ))
@@ -62,30 +65,68 @@ variable "adapter_configuration_policies" {
 # GUI Location: Configure > Policies > Create Policy > Adapter Configuration
 #_________________________________________________________________________
 
-module "adapter_configuration_policies" {
+resource "intersight_adapter_config_policy" "adapter_configuration_policies" {
   depends_on = [
-    local.org_moids,
-    local.merged_profile_policies,
+    local.org_moids
   ]
-  version             = ">=0.9.6"
-  source              = "terraform-cisco-modules/imm/intersight//modules/adapter_configuration_policies"
-  for_each            = local.adapter_configuration_policies
-  description         = each.value.description != "" ? each.value.description : "${each.key} Adapter Configuration Policy."
-  enable_fip          = each.value.enable_fip
-  enable_lldp         = each.value.enable_lldp
-  enable_port_channel = each.value.enable_port_channel
-  fec_mode_1          = each.value.fec_mode_1
-  fec_mode_2          = each.value.fec_mode_2
-  fec_mode_3          = each.value.fec_mode_3
-  fec_mode_4          = each.value.fec_mode_4
-  name                = each.key
-  org_moid            = local.org_moids[each.value.organization].moid
-  tags                = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  profiles = {
-    for k, v in local.merged_profile_policies : k => {
-      moid        = v.moid
-      object_type = v.object_type
+  for_each    = local.adapter_configuration_policies
+  description = each.value.description != "" ? each.value.description : "${each.key} Adapter Configuration Policy."
+  name        = each.key
+  organization {
+    moid        = local.org_moids[each.value.organization].moid
+    object_type = "organization.Organization"
+  }
+  settings {
+    object_type = "adapter.AdapterConfig"
+    slot_id     = each.value.pci_slot
+    dce_interface_settings = [
+      {
+        additional_properties = ""
+        class_id              = "adapter.DceInterfaceSettings"
+        fec_mode              = each.value.fec_mode_1
+        interface_id          = 0
+        object_type           = "adapter.DceInterfaceSettings"
+      },
+      {
+        additional_properties = ""
+        class_id              = "adapter.DceInterfaceSettings"
+        fec_mode              = each.value.fec_mode_2
+        interface_id          = 1
+        object_type           = "adapter.DceInterfaceSettings"
+      },
+      {
+        additional_properties = ""
+        class_id              = "adapter.DceInterfaceSettings"
+        fec_mode              = each.value.fec_mode_3
+        interface_id          = 2
+        object_type           = "adapter.DceInterfaceSettings"
+      },
+      {
+        additional_properties = ""
+        class_id              = "adapter.DceInterfaceSettings"
+        fec_mode              = each.value.fec_mode_4
+        interface_id          = 3
+        object_type           = "adapter.DceInterfaceSettings"
+      },
+    ]
+    eth_settings {
+      lldp_enabled = each.value.enable_lldp
+      object_type  = "adapter.EthSettings"
     }
-    if local.merged_profile_policies[k].device_connector_policy == each.key
+    fc_settings {
+      fip_enabled = each.value.enable_fip
+      object_type = "adapter.FcSettings"
+    }
+    port_channel_settings {
+      enabled     = each.value.enable_port_channel
+      object_type = "adapter.PortChannelSettings"
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
   }
 }
