@@ -2053,7 +2053,7 @@ locals {
         name                 = v.name != null ? v.name : "vsan-${v.vsan_id}"
         vsan_id              = v.vsan_id != null ? v.vsan_id : 4
         vsan_policy          = key
-        vsan_scope           = v.vsan_scope != null ? v.vsan_scope : 4
+        vsan_scope           = v.vsan_scope != null ? v.vsan_scope : "Uplink"
       }
     ]
   ])
