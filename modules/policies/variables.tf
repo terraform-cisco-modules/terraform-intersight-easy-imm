@@ -23,8 +23,8 @@ variable "ws_pools" {
   type        = string
 }
 
-variable "ws_profiles" {
-  description = "UCS Profiles Workspace Name."
+variable "ws_ucs_domain_profiles" {
+  description = "UCS Domain Profiles Workspace Name."
   type        = string
 }
 
