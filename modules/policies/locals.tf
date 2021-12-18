@@ -1072,6 +1072,7 @@ locals {
         placement_slot_id                      = v.placement_slot_id != null ? v.placement_slot_id : "MLOM"
         placement_switch_id                    = v.placement_switch_id != null ? v.placement_switch_id : "None"
         placement_uplink_port                  = v.placement_uplink_port != null ? v.placement_uplink_port : 0
+        tags                                   = value.tags
         usnic_adapter_policy                   = v.usnic_adapter_policy != null ? v.usnic_adapter_policy : ""
         usnic_class_of_service                 = v.usnic_class_of_service != null ? v.usnic_class_of_service : 5
         usnic_number_of_usnics                 = v.usnic_number_of_usnics != null ? v.usnic_number_of_usnics : 0
@@ -1208,11 +1209,9 @@ locals {
     }
   }
 
-  local_users = {
-    for k, v in var.local_user_policies : "users" =>
-    {
-      for key, value in v.users : "${k}_${key}" =>
-      {
+  local_users_loop = flatten([
+    for k, v in local.local_user_policies : [
+      for key, value in v.users : {
         enabled      = value.enabled != null ? value.enabled : true
         password     = value.password != null ? value.password : 1
         role         = value.role != null ? value.role : "admin"
@@ -1220,7 +1219,11 @@ locals {
         organization = v.organization != null ? v.organization : "default"
         username     = key
       }
-    }
+    ]
+  ])
+
+  local_users = {
+    for k, v in local.local_users_loop : "${v.policy}_${v.username}" => v
   }
 
   ldap_roles = distinct([
@@ -1320,12 +1323,12 @@ locals {
       organization                  = v.organization != null ? v.organization : "default"
       port_channel_appliances       = v.port_channel_appliances != null ? v.port_channel_appliances : {}
       port_channel_ethernet_uplinks = v.port_channel_ethernet_uplinks != null ? v.port_channel_ethernet_uplinks : {}
-      port_channel_fc_storage       = v.port_channel_fc_storage != null ? v.port_channel_fc_storage : {}
       port_channel_fc_uplinks       = v.port_channel_fc_uplinks != null ? v.port_channel_fc_uplinks : {}
       port_channel_fcoe_uplinks     = v.port_channel_fcoe_uplinks != null ? v.port_channel_fcoe_uplinks : {}
       port_modes                    = v.port_modes != null ? v.port_modes : []
       port_role_appliances          = v.port_role_appliances != null ? v.port_role_appliances : {}
       port_role_ethernet_uplinks    = v.port_role_ethernet_uplinks != null ? v.port_role_ethernet_uplinks : {}
+      port_role_fc_storage          = v.port_role_fc_storage != null ? v.port_role_fc_storage : {}
       port_role_fc_uplinks          = v.port_role_fc_uplinks != null ? v.port_role_fc_uplinks : {}
       port_role_fcoe_uplinks        = v.port_role_fcoe_uplinks != null ? v.port_role_fcoe_uplinks : {}
       port_role_servers             = v.port_role_servers != null ? v.port_role_servers : {}

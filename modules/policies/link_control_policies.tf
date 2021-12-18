@@ -57,8 +57,8 @@ resource "intersight_fabric_link_control_policy" "link_control_policies" {
     object_type = "organization.Organization"
   }
   udld_settings {
-    admin_state = each.value.udld_admin_state
-    mode        = each.value.udld_mode
+    admin_state = each.value.admin_state
+    mode        = each.value.mode
   }
   dynamic "tags" {
     for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags

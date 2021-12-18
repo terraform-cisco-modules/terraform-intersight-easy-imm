@@ -60,16 +60,16 @@ resource "intersight_ntp_policy" "ntp_policies" {
     moid        = local.org_moids[each.value.organization].moid
     object_type = "organization.Organization"
   }
-  dynamic "authenticated_ntp_servers" {
-    for_each = each.value.authenticated_ntp_servers
-    content {
-      key_type      = "SHA1"
-      object_type   = authenticated_ntp_servers.value.object_type
-      server_name   = authenticated_ntp_servers.value.server_name
-      sym_key_id    = authenticated_ntp_servers.value.sym_key_id
-      sym_key_value = authenticated_ntp_servers.value.sym_key_value
-    }
-  }
+  # dynamic "authenticated_ntp_servers" {
+  #   for_each = each.value.authenticated_ntp_servers
+  #   content {
+  #     key_type      = "SHA1"
+  #     object_type   = authenticated_ntp_servers.value.object_type
+  #     server_name   = authenticated_ntp_servers.value.server_name
+  #     sym_key_id    = authenticated_ntp_servers.value.sym_key_id
+  #     sym_key_value = authenticated_ntp_servers.value.sym_key_value
+  #   }
+  # }
   dynamic "profiles" {
     for_each = { for k, v in local.ucs_domain_policies : k => v if local.ucs_domain_policies[k].ntp_policy == each.key }
     content {

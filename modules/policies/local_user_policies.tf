@@ -173,7 +173,7 @@ resource "intersight_iam_end_point_user_role" "user_roles" {
     intersight_iam_end_point_user.users
   ]
   for_each = local.local_users
-  enabled  = each.value.user_enabled
+  enabled  = each.value.enabled
   password = length(
     regexall("^1$", each.value.password)
     ) > 0 ? var.local_user_password_1 : length(

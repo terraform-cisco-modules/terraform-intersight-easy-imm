@@ -72,11 +72,13 @@ resource "intersight_fabric_switch_control_policy" "switch_control_policies" {
   ]
   for_each                       = local.switch_control_policies
   description                    = each.value.description != "" ? each.value.description : "${each.key} Switch Control Policy"
+  ethernet_switching_mode        = each.value.ethernet_switching_mode
+  fc_switching_mode              = each.value.fc_switching_mode
   name                           = each.key
   vlan_port_optimization_enabled = each.value.vlan_port_count_optimization
   mac_aging_settings {
-    mac_aging_option = each.value.mac_aging_option
-    mac_aging_time   = each.value.mac_aging_option == "Custom" ? each.value.mac_aging_time : null
+    mac_aging_option = each.value.mac_address_table_aging
+    mac_aging_time   = each.value.mac_address_table_aging == "Custom" ? each.value.mac_aging_time : null
   }
   organization {
     moid        = local.org_moids[each.value.organization].moid
