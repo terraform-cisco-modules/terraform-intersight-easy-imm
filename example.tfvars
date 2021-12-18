@@ -15,13 +15,6 @@ vcs_repo          = "scotttyso/Asgard"
 #__________________________________________________________
 
 workspaces = {
-  "Asgard_chassis_profiles" = {
-    auto_apply          = true
-    description         = "Asgard UCS Chassis Profiles."
-    global_remote_state = true
-    working_directory   = "modules/ucs_chassis_profiles"
-    workspace_type      = "chassis"
-  }
   "Asgard_domain_profiles" = {
     auto_apply          = true
     description         = "Asgard UCS Domain Profile."
@@ -35,12 +28,6 @@ workspaces = {
     working_directory = "modules/policies"
     workspace_type    = "policies"
   }
-  "Asgard_policies_vlans" = {
-    auto_apply        = true
-    description       = "Asgard UCS Multicast and VLAN Policies."
-    working_directory = "modules/policies_vlans"
-    workspace_type    = "vlan"
-  }
   "Asgard_pools" = {
     auto_apply          = true
     description         = "Pools for the Asgard Organization."
@@ -48,11 +35,11 @@ workspaces = {
     working_directory   = "modules/pools"
     workspace_type      = "pool"
   }
-  "Asgard_server_profiles" = {
+  "Asgard_profiles" = {
     auto_apply          = true
-    description         = "Asgard UCS Server Profiles."
+    description         = "Asgard UCS Chassis and Server Profiles."
     global_remote_state = true
-    working_directory   = "modules/ucs_server_profiles"
-    workspace_type      = "server"
+    working_directory   = "modules/ucs_profiles"
+    workspace_type      = "profiles"
   }
 }
