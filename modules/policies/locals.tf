@@ -1238,7 +1238,7 @@ locals {
     ]
   ])
 
-  user_roles = distinct(concat(local.ldap_roles, local.local_user_roles))
+  user_roles = toset(distinct(concat(local.ldap_roles, local.local_user_roles)))
 
   #______________________________________________
   #
@@ -1973,24 +1973,26 @@ locals {
       vmedia_mappings = v.vmedia_mappings != null ? {
         authentication_protocol = contains(keys(
           v.vmedia_mappings), "authentication_protocol"
-        ) == "true" ? v.vmedia_mappings.authentication_protocol : "none"
+        ) == "true" ? v.vmedia_mappings["authentication_protocol"] : "none"
         device_type = contains(keys(
           v.vmedia_mappings), "device_type"
-        ) == "true" ? v.vmedia_mappings.device_type : "cdd"
-        file_location = v.vmedia_mappings.file_location
+        ) == "true" ? v.vmedia_mappings["device_type"] : "cdd"
+        file_location = contains(keys(
+          v.vmedia_mappings), "file_location"
+        ) == "true" ? v.vmedia_mappings["file_location"] : ""
         mount_options = contains(keys(
           v.vmedia_mappings), "mount_options"
-        ) == "true" ? v.vmedia_mappings.mount_options : ""
+        ) == "true" ? v.vmedia_mappings["mount_options"] : ""
         name = k
         password = contains(keys(
           v.vmedia_mappings), "password"
-        ) == "true" ? v.vmedia_mappings.password : 0
+        ) == "true" ? v.vmedia_mappings["password"] : 0
         protocol = contains(keys(
           v.vmedia_mappings), "protocol"
-        ) == "true" ? v.vmedia_mappings.protocol : "nfs"
+        ) == "true" ? v.vmedia_mappings["protocol"] : "nfs"
         username = contains(keys(
           v.vmedia_mappings), "username"
-        ) == "true" ? v.vmedia_mappings.username : ""
+        ) == "true" ? v.vmedia_mappings["username"] : ""
       } : {}
     }
   }
