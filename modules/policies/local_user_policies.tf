@@ -123,7 +123,7 @@ resource "intersight_iam_end_point_user_policy" "local_user_policies" {
     local.org_moids
   ]
   for_each    = local.local_user_policies
-  description = each.value.description != "" ? each.value.description : "${each.key} Local User Policy."
+  description = each.value.description != "" ? each.value.description : "${each.key} Local User Policy"
   name        = each.key
   password_properties {
     enable_password_expiry   = each.value.enable_password_expiry
@@ -192,7 +192,7 @@ resource "intersight_iam_end_point_user_role" "user_roles" {
     object_type = "iam.EndPointUser"
   }
   end_point_user_policy {
-    moid        = intersight_iam_ldap_policy.ldap_policies[each.value.policy].moid
+    moid        = intersight_iam_end_point_user_policy.local_user_policies[each.value.policy].moid
     object_type = "iam.EndPointUserPolicy"
   }
 }
