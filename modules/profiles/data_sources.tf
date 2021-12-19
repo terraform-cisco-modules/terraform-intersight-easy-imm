@@ -10,13 +10,6 @@
 #   }
 # }
 
-# data "terraform_remote_state" "policies_vlans" {
-#   backend = "local"
-#   config = {
-#     path = "../policies_vlans/terraform.tfstate"
-#   }
-# }
-
 # data "terraform_remote_state" "pools" {
 #   backend = "local"
 #   config = {
@@ -33,16 +26,6 @@ data "terraform_remote_state" "policies" {
     }
   }
 }
-
-# data "terraform_remote_state" "policies_vlans" {
-#   backend = "remote"
-#   config = {
-#     organization = var.tfc_organization
-#     workspaces = {
-#       name = var.ws_policies_vlans
-#     }
-#   }
-# }
 
 data "terraform_remote_state" "pools" {
   backend = "remote"

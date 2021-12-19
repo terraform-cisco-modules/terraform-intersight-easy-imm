@@ -47,11 +47,6 @@ variable "ws_policies" {
   type        = string
 }
 
-# variable "ws_policies_vlans" {
-#   description = "Policies VLANs Workspace Name."
-#   type        = string
-# }
-
 variable "ws_pools" {
   description = "Pools Workspace Name."
   type        = string

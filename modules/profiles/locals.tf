@@ -43,7 +43,7 @@ locals {
   vsan_policies                   = lookup(data.terraform_remote_state.policies.outputs, "vsan_policies", {})
 
   # Terraform Cloud Remote Resources - Policies VLANs
-  vlan_policies = lookup(data.terraform_remote_state.policies_vlans.outputs, "vlan_policies", {})
+  vlan_policies = lookup(data.terraform_remote_state.policies.outputs, "vlan_policies", {})
 
   # Terraform Cloud Remote Resources - Pools
   resource_pools = lookup(data.terraform_remote_state.pools.outputs, "resource_pools", {})
