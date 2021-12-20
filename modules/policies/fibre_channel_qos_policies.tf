@@ -51,12 +51,12 @@ resource "intersight_vnic_fc_qos_policy" "fibre_channel_qos_policies" {
     local.org_moids
   ]
   for_each            = local.fibre_channel_qos_policies
-  burst               = each.value.burst # FI-Attached
+  burst               = each.value.burst # FIAttached
   cos                 = each.value.cos   # Standalone
   description         = each.value.description != "" ? each.value.description : "${each.key} vHBA QoS Policy"
-  max_data_field_size = each.value.max_data_field_size # FI-Attached and Standalone
+  max_data_field_size = each.value.max_data_field_size # FIAttached and Standalone
   name                = each.key
-  rate_limit          = each.value.rate_limit # FI-Attached and Standalone
+  rate_limit          = each.value.rate_limit # FIAttached and Standalone
   organization {
     moid        = local.org_moids[each.value.organization].moid
     object_type = "organization.Organization"
