@@ -2950,7 +2950,9 @@ resource "intersight_bios_policy" "bios_policies" {
   # Main Section
   #+++++++++++++++++++++++++++++++
   post_error_pause = each.value.post_error_pause # POST Error Pause
-  tpm_support      = each.value.tpm_support      # TPM Support
+  tpm_support      = length(                     # TPM Support
+    regexall("_tpm", each.value.bios_template)
+  ) > 0 ? "enabled" : each.value.tpm_support
 
 
   #+++++++++++++++++++++++++++++++
@@ -3174,7 +3176,9 @@ resource "intersight_bios_policy" "bios_policies" {
   sgx_le_wr                       = each.value.sgx_le_wr                       # SGX Write Eanble
   sgx_package_info_in_band_access = each.value.sgx_package_info_in_band_access # SGX Package Information In-Band Access
   sgx_qos                         = each.value.sgx_qos                         # SGX QoS
-  tpm_control                     = each.value.tpm_control                     # Trusted Platform Module State
+  tpm_control                     = length(                                    # Trusted Platform Module State
+    regexall("_tpm", each.value.bios_template)
+  ) > 0 ? "enabled" : each.value.tpm_control
   tpm_pending_operation           = each.value.tpm_pending_operation           # TPM Pending Operation
   txt_support                     = each.value.txt_support                     # Intel Trusted Execution Technology Support
 
