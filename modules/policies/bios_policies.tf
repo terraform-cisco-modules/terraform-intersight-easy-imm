@@ -36,6 +36,8 @@ variable "bios_policies" {
       boot_option_retry                     = "platform-default"
       boot_performance_mode                 = "platform-default"
       burst_and_postponed_refresh           = "platform-default"
+      c1auto_demotion                       = "platform-default"
+      c1auto_un_demotion                    = "platform-default"
       cbs_cmn_apbdis                        = "platform-default"
       cbs_cmn_cpu_cpb                       = "platform-default"
       cbs_cmn_cpu_gen_downcore_ctrl         = "platform-default"
@@ -80,6 +82,7 @@ variable "bios_policies" {
       cpu_energy_performance                = "platform-default"
       cpu_frequency_floor                   = "platform-default"
       cpu_performance                       = "platform-default"
+      cpu_perf_enhancement                  = "platform-default"
       cpu_power_management                  = "platform-default"
       cr_qos                                = "platform-default"
       crfastgo_config                       = "platform-default"
@@ -129,6 +132,7 @@ variable "bios_policies" {
       kti_prefetch                          = "platform-default"
       legacy_os_redirection                 = "platform-default"
       legacy_usb_support                    = "platform-default"
+      llc_alloc                             = "platform-default"
       llc_prefetch                          = "platform-default"
       lom_port0state                        = "platform-default"
       lom_port1state                        = "platform-default"
@@ -194,6 +198,7 @@ variable "bios_policies" {
       pcie_slot_nvme5option_rom             = "platform-default"
       pcie_slot_nvme6link_speed             = "platform-default"
       pcie_slot_nvme6option_rom             = "platform-default"
+      pcie_slots_cdn_enable                 = "platform-default"
       pop_support                           = "platform-default"
       post_error_pause                      = "platform-default"
       post_package_repair                   = "platform-default"
@@ -226,6 +231,8 @@ variable "bios_policies" {
       sgx_le_wr                             = "platform-default"
       sgx_package_info_in_band_access       = "platform-default"
       sgx_qos                               = "platform-default"
+      sha1pcr_bank                          = "platform-default"
+      sha256pcr_bank                        = "platform-default"
       single_pctl_enable                    = "platform-default"
       slot_flom_link_speed                  = "platform-default"
       slot_front_nvme10link_speed           = "platform-default"
@@ -377,6 +384,8 @@ variable "bios_policies" {
       ucsm_boot_order_rule                  = "platform-default"
       ufs_disable                           = "platform-default"
       uma_based_clustering                  = "platform-default"
+      upi_link_enablement                   = "platform-default"
+      upi_power_management                  = "platform-default"
       usb_emul6064                          = "platform-default"
       usb_port_front                        = "platform-default"
       usb_port_internal                     = "platform-default"
@@ -386,10 +395,12 @@ variable "bios_policies" {
       usb_port_vmedia                       = "platform-default"
       usb_xhci_support                      = "platform-default"
       vga_priority                          = "platform-default"
+      virtual_numa                          = "platform-default"
       vmd_enable                            = "platform-default"
       vol_memory_mode                       = "platform-default"
       work_load_config                      = "platform-default"
       xpt_prefetch                          = "platform-default"
+      xpt_remote_prefetch                   = "platform-default"
     }
   }
   description = <<-EOT
@@ -503,10 +514,15 @@ variable "bios_policies" {
     - HPC_tpm - High-Performance Computing with TPM Enabled.
     - Java - Java Application Servers.
     - Java_tpm - Java Application Servers with TPM Enabled.
+    - M6_analytical_DB_tpm - M6 Analytical Database Systems with TPM Enabled.
+    - M6_Data_tpm - M6 Data Analytics with TPM Enabled.
+    - M6_HPC_tpm - High-Performance Computing with TPM Enabled.
+    - M6_relational_DB_tpm - M6 Relational Database Systems with TPM Enabled.
+    - M6_Virtualization_tpm - Virtual Host with TPM Enabled.
     - OLTP - Online Transaction Processing.
     - OLTP_tpm - Online Transaction Processing with TPM Enabled.
-    - Virtualization - VMware.
-    - Virtualization_tpm - VMware.
+    - Virtualization - Virtual Host.
+    - Virtualization_tpm - Virtual Host with TPM Enabled.
   * bme_dma_mitigation - default is "platform-default".  BIOS Token for setting BME DMA Mitigation configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
@@ -531,6 +547,13 @@ variable "bios_policies" {
     - Max Performance - Value - Max Performance for configuring BootPerformanceMode token.
     - Set by Intel NM - Value - Set by Intel NM for configuring BootPerformanceMode token.
   * burst_and_postponed_refresh - default is "platform-default".  BIOS Token for setting Burst and Postponed Refresh configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - enabled - Enables the BIOS setting.
+    - disabled - Disables the BIOS setting.
+  * c1auto_demotion - BIOS Token for setting C1 Auto Demotion configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - enabled - Enables the BIOS setting.* disabled - Disables the BIOS setting.
+  * c1auto_un_demotion - BIOS Token for setting C1 Auto UnDemotion configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
     - disabled - Disables the BIOS setting.
@@ -813,6 +836,10 @@ variable "bios_policies" {
     - enterprise - Value - enterprise for configuring CpuPerformance token.
     - high-throughput - Value - high-throughput for configuring CpuPerformance token.
     - hpc - Value - hpc for configuring CpuPerformance token.
+  * cpu_perf_enhancement - BIOS Token for setting Enhanced CPU Performance configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - Auto - Value - Auto for configuring CpuPerfEnhancement token.
+    - Disabled - Value - Disabled for configuring CpuPerfEnhancement token.
   * cpu_power_management - default is "platform-default".  BIOS Token for setting Power Technology configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - custom - Value - custom for configuring CpuPowerManagement token.
@@ -1045,6 +1072,10 @@ variable "bios_policies" {
     - auto - Value - auto for configuring LegacyUsbSupport token.
     - disabled - Value - disabled for configuring LegacyUsbSupport token.
     - enabled - Value - enabled for configuring LegacyUsbSupport token.
+  * llc_alloc - BIOS Token for setting LLC Dead Line configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - Auto - Value - Auto for configuring LlcAlloc token.* disabled - Value - disabled for configuring LlcAlloc token.
+    - enabled - Value - enabled for configuring LlcAlloc token.
   * llc_prefetch - default is "platform-default".  BIOS Token for setting LLC Prefetch configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
@@ -1341,6 +1372,10 @@ variable "bios_policies" {
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
     - disabled - Disables the BIOS setting.
+  * pcie_slots_cdn_enable - BIOS Token for setting PCIe Slots CDN Control configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - enabled - Enables the BIOS setting.
+    - disabled - Disables the BIOS setting.
   * pop_support - default is "platform-default".  BIOS Token for setting Power ON Password configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
@@ -1475,6 +1510,14 @@ variable "bios_policies" {
     - enabled - Enables the BIOS setting.
     - disabled - Disables the BIOS setting.
   * sgx_qos - default is "platform-default".  BIOS Token for setting SGX QoS configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - enabled - Enables the BIOS setting.
+    - disabled - Disables the BIOS setting.
+  * sha1pcr_bank - BIOS Token for setting SHA-1 PCR Bank configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - enabled - Enables the BIOS setting.
+    - disabled - Disables the BIOS setting.
+  * sha256pcr_bank - BIOS Token for setting SHA256 PCR Bank configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
     - disabled - Disables the BIOS setting.
@@ -2276,6 +2319,15 @@ variable "bios_policies" {
     - platform-default - Default value used by the platform for the BIOS setting.
     - Disable (All2All) - Value - Disable (All2All) for configuring UmaBasedClustering token.
     - Hemisphere (2-clusters) - Value - Hemisphere (2-clusters) for configuring UmaBasedClustering token.
+  * upi_link_enablement - BIOS Token for setting UPI Link Enablement configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - 1 - Value - 1 for configuring UpiLinkEnablement token.
+    - 2 - Value - 2 for configuring UpiLinkEnablement token.
+    - Auto - Value - Auto for configuring UpiLinkEnablement token.
+  * upi_power_management - BIOS Token for setting UPI Power Manangement configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - enabled - Enables the BIOS setting.
+    - disabled - Disables the BIOS setting.
   * usb_emul6064 - default is "platform-default".  BIOS Token for setting Port 60/64 Emulation configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
@@ -2313,6 +2365,10 @@ variable "bios_policies" {
     - Offboard - Value - Offboard for configuring VgaPriority token.
     - Onboard - Value - Onboard for configuring VgaPriority token.
     - Onboard VGA Disabled - Value - Onboard VGA Disabled for configuring VgaPriority token.
+  * virtual_numa - BIOS Token for setting Virtual NUMA configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - enabled - Enables the BIOS setting.
+    - disabled - Disables the BIOS setting.
   * vmd_enable - default is "platform-default".  BIOS Token for setting VMD Enablement configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
     - enabled - Enables the BIOS setting.
@@ -2332,6 +2388,11 @@ variable "bios_policies" {
     - Auto - Value - Auto for configuring XptPrefetch token.
     - disabled - Value - disabled for configuring XptPrefetch token.
     - enabled - Value - enabled for configuring XptPrefetch token.
+  * xpt_remote_prefetch - BIOS Token for setting XPT Remote Prefetch configuration.
+    - platform-default - Default value used by the platform for the BIOS setting.
+    - Auto - Value - Auto for configuring XptRemotePrefetch token.
+    - disabled - Value - disabled for configuring XptRemotePrefetch token.
+    - enabled - Value - enabled for configuring XptRemotePrefetch token.
   EOT
   type = map(object(
     {
@@ -2364,6 +2425,8 @@ variable "bios_policies" {
       boot_option_retry                     = optional(string)
       boot_performance_mode                 = optional(string)
       burst_and_postponed_refresh           = optional(string)
+      c1auto_demotion                       = optional(string)
+      c1auto_un_demotion                    = optional(string)
       cbs_cmn_apbdis                        = optional(string)
       cbs_cmn_cpu_cpb                       = optional(string)
       cbs_cmn_cpu_gen_downcore_ctrl         = optional(string)
@@ -2407,6 +2470,7 @@ variable "bios_policies" {
       core_multi_processing                 = optional(string)
       cpu_energy_performance                = optional(string)
       cpu_frequency_floor                   = optional(string)
+      cpu_perf_enhancement                  = optional(string)
       cpu_performance                       = optional(string)
       cpu_power_management                  = optional(string)
       cr_qos                                = optional(string)
@@ -2457,6 +2521,7 @@ variable "bios_policies" {
       kti_prefetch                          = optional(string)
       legacy_os_redirection                 = optional(string)
       legacy_usb_support                    = optional(string)
+      llc_alloc                             = optional(string)
       llc_prefetch                          = optional(string)
       lom_port0state                        = optional(string)
       lom_port1state                        = optional(string)
@@ -2476,10 +2541,10 @@ variable "bios_policies" {
       network_stack                         = optional(string)
       numa_optimized                        = optional(string)
       nvmdimm_perform_config                = optional(string)
+      onboard10gbit_lom                     = optional(string)
       onboard_gbit_lom                      = optional(string)
       onboard_scu_storage_support           = optional(string)
       onboard_scu_storage_sw_stack          = optional(string)
-      onboard10gbit_lom                     = optional(string)
       operation_mode                        = optional(string)
       organization                          = optional(string)
       os_boot_watchdog_timer                = optional(string)
@@ -2522,6 +2587,7 @@ variable "bios_policies" {
       pcie_slot_nvme5option_rom             = optional(string)
       pcie_slot_nvme6link_speed             = optional(string)
       pcie_slot_nvme6option_rom             = optional(string)
+      pcie_slots_cdn_enable                 = optional(string)
       pop_support                           = optional(string)
       post_error_pause                      = optional(string)
       post_package_repair                   = optional(string)
@@ -2554,7 +2620,35 @@ variable "bios_policies" {
       sgx_le_wr                             = optional(string)
       sgx_package_info_in_band_access       = optional(string)
       sgx_qos                               = optional(string)
+      sha1pcr_bank                          = optional(string)
+      sha256pcr_bank                        = optional(string)
       single_pctl_enable                    = optional(string)
+      slot10link_speed                      = optional(string)
+      slot10state                           = optional(string)
+      slot11link_speed                      = optional(string)
+      slot11state                           = optional(string)
+      slot12link_speed                      = optional(string)
+      slot12state                           = optional(string)
+      slot13state                           = optional(string)
+      slot14state                           = optional(string)
+      slot1link_speed                       = optional(string)
+      slot1state                            = optional(string)
+      slot2link_speed                       = optional(string)
+      slot2state                            = optional(string)
+      slot3link_speed                       = optional(string)
+      slot3state                            = optional(string)
+      slot4link_speed                       = optional(string)
+      slot4state                            = optional(string)
+      slot5link_speed                       = optional(string)
+      slot5state                            = optional(string)
+      slot6link_speed                       = optional(string)
+      slot6state                            = optional(string)
+      slot7link_speed                       = optional(string)
+      slot7state                            = optional(string)
+      slot8link_speed                       = optional(string)
+      slot8state                            = optional(string)
+      slot9link_speed                       = optional(string)
+      slot9state                            = optional(string)
       slot_flom_link_speed                  = optional(string)
       slot_front_nvme10link_speed           = optional(string)
       slot_front_nvme10option_rom           = optional(string)
@@ -2660,37 +2754,11 @@ variable "bios_policies" {
       slot_sas_state                        = optional(string)
       slot_ssd_slot1link_speed              = optional(string)
       slot_ssd_slot2link_speed              = optional(string)
-      slot10link_speed                      = optional(string)
-      slot10state                           = optional(string)
-      slot11link_speed                      = optional(string)
-      slot11state                           = optional(string)
-      slot12link_speed                      = optional(string)
-      slot12state                           = optional(string)
-      slot13state                           = optional(string)
-      slot14state                           = optional(string)
-      slot1link_speed                       = optional(string)
-      slot1state                            = optional(string)
-      slot2link_speed                       = optional(string)
-      slot2state                            = optional(string)
-      slot3link_speed                       = optional(string)
-      slot3state                            = optional(string)
-      slot4link_speed                       = optional(string)
-      slot4state                            = optional(string)
-      slot5link_speed                       = optional(string)
-      slot5state                            = optional(string)
-      slot6link_speed                       = optional(string)
-      slot6state                            = optional(string)
-      slot7link_speed                       = optional(string)
-      slot7state                            = optional(string)
-      slot8link_speed                       = optional(string)
-      slot8state                            = optional(string)
-      slot9link_speed                       = optional(string)
-      slot9state                            = optional(string)
       smee                                  = optional(string)
       smt_mode                              = optional(string)
       snc                                   = optional(string)
-      snoopy_mode_for_ad                    = optional(string)
       snoopy_mode_for2lm                    = optional(string)
+      snoopy_mode_for_ad                    = optional(string)
       sparing_mode                          = optional(string)
       sr_iov                                = optional(string)
       streamer_prefetch                     = optional(string)
@@ -2705,6 +2773,8 @@ variable "bios_policies" {
       ucsm_boot_order_rule                  = optional(string)
       ufs_disable                           = optional(string)
       uma_based_clustering                  = optional(string)
+      upi_link_enablement                   = optional(string)
+      upi_power_management                  = optional(string)
       usb_emul6064                          = optional(string)
       usb_port_front                        = optional(string)
       usb_port_internal                     = optional(string)
@@ -2714,10 +2784,12 @@ variable "bios_policies" {
       usb_port_vmedia                       = optional(string)
       usb_xhci_support                      = optional(string)
       vga_priority                          = optional(string)
+      virtual_numa                          = optional(string)
       vmd_enable                            = optional(string)
       vol_memory_mode                       = optional(string)
       work_load_config                      = optional(string)
       xpt_prefetch                          = optional(string)
+      xpt_remote_prefetch                   = optional(string)
     }
   ))
 }
@@ -2760,7 +2832,7 @@ resource "intersight_bios_policy" "bios_policies" {
   # Intel Directed IO Section
   #+++++++++++++++++++++++++++++++
   intel_vt_for_directed_io = length(
-    regexall("(DSS|HPC|Java)", each.value.bios_template)
+    regexall("(analytical|Data|DSS|HPC|Java)", each.value.bios_template)
   ) > 0 ? "disabled" : each.value.intel_vt_for_directed_io                           # Intel VT for Directed IO
   intel_vtd_coherency_support        = each.value.intel_vtd_coherency_support        # Intel(R) VT-d Coherency Support
   intel_vtd_interrupt_remapping      = each.value.intel_vtd_interrupt_remapping      # Intel(R) VT-d interrupt Remapping
@@ -2949,8 +3021,9 @@ resource "intersight_bios_policy" "bios_policies" {
   #+++++++++++++++++++++++++++++++
   # Main Section
   #+++++++++++++++++++++++++++++++
-  post_error_pause = each.value.post_error_pause # POST Error Pause
-  tpm_support      = length(                     # TPM Support
+  pcie_slots_cdn_enable = each.value.pcie_slots_cdn_enable # PCIe Slots CDN Control
+  post_error_pause      = each.value.post_error_pause      # POST Error Pause
+  tpm_support = length(                                    # TPM Support
     regexall("_tpm", each.value.bios_template)
   ) > 0 ? "enabled" : each.value.tpm_support
 
@@ -2980,33 +3053,35 @@ resource "intersight_bios_policy" "bios_policies" {
   eadr_support                          = each.value.eadr_support                          # eADR Support
   lv_ddr_mode                           = each.value.lv_ddr_mode                           # Low Voltage DDR Mode
   memory_bandwidth_boost                = each.value.memory_bandwidth_boost                # Memory Bandwidth Boost
-  memory_refresh_rate                   = each.value.memory_refresh_rate                   # Memory Refresh Rate
-  memory_size_limit                     = each.value.memory_size_limit                     # Memory Size Limit in GiB
-  memory_thermal_throttling             = each.value.memory_thermal_throttling             # Memory Thermal Throttling Mode
-  mirroring_mode                        = each.value.mirroring_mode                        # Mirroring Mode
-  numa_optimized                        = each.value.numa_optimized                        # NUMA Optimized
-  nvmdimm_perform_config                = each.value.nvmdimm_perform_config                # NVM Performance Setting
-  operation_mode                        = each.value.operation_mode                        # Operation Mode
-  panic_high_watermark                  = each.value.panic_high_watermark                  # Panic and High Watermark
-  partial_cache_line_sparing            = each.value.partial_cache_line_sparing            # Partial Cache Line Sparing
-  partial_mirror_mode_config            = each.value.partial_mirror_mode_config            # Partial Memory Mirror Mode
-  partial_mirror_percent                = each.value.partial_mirror_percent                # Partial Mirror Percentage
-  partial_mirror_value1                 = each.value.partial_mirror_value1                 # Partial Mirror1 Size in GiB
-  partial_mirror_value2                 = each.value.partial_mirror_value2                 # Partial Mirror2 Size in GiB
-  partial_mirror_value3                 = each.value.partial_mirror_value3                 # Partial Mirror3 Size in GiB
-  partial_mirror_value4                 = each.value.partial_mirror_value4                 # Partial Mirror4 Size in GiB
-  pc_ie_ras_support                     = each.value.pc_ie_ras_support                     # PCIe RAS Support
-  post_package_repair                   = each.value.post_package_repair                   # Post Package Repair
-  select_memory_ras_configuration       = each.value.select_memory_ras_configuration       # Memory RAS Configuration
-  select_ppr_type                       = each.value.select_ppr_type                       # PPR Type
-  sev                                   = each.value.sev                                   # Secured Encrypted Virtualization
-  smee                                  = each.value.smee                                  # SMEE
-  snoopy_mode_for2lm                    = each.value.snoopy_mode_for2lm                    # Snoopy Mode for 2LM
-  snoopy_mode_for_ad                    = each.value.snoopy_mode_for_ad                    # Snoopy Mode for AD
-  sparing_mode                          = each.value.sparing_mode                          # Sparing Mode
-  tsme                                  = each.value.tsme                                  # Transparent Secure Memory Encryption
-  uma_based_clustering                  = each.value.uma_based_clustering                  # UMA Based Clustering
-  vol_memory_mode                       = each.value.vol_memory_mode                       # Volatile Memory Mode
+  memory_refresh_rate = length(
+    regexall("(DB|M6_HPC)(_tpm)?$", each.value.bios_template)
+  ) > 0 ? "1x" : each.value.memory_refresh_rate                                # Memory Refresh Rate
+  memory_size_limit               = each.value.memory_size_limit               # Memory Size Limit in GiB
+  memory_thermal_throttling       = each.value.memory_thermal_throttling       # Memory Thermal Throttling Mode
+  mirroring_mode                  = each.value.mirroring_mode                  # Mirroring Mode
+  numa_optimized                  = each.value.numa_optimized                  # NUMA Optimized
+  nvmdimm_perform_config          = each.value.nvmdimm_perform_config          # NVM Performance Setting
+  operation_mode                  = each.value.operation_mode                  # Operation Mode
+  panic_high_watermark            = each.value.panic_high_watermark            # Panic and High Watermark
+  partial_cache_line_sparing      = each.value.partial_cache_line_sparing      # Partial Cache Line Sparing
+  partial_mirror_mode_config      = each.value.partial_mirror_mode_config      # Partial Memory Mirror Mode
+  partial_mirror_percent          = each.value.partial_mirror_percent          # Partial Mirror Percentage
+  partial_mirror_value1           = each.value.partial_mirror_value1           # Partial Mirror1 Size in GiB
+  partial_mirror_value2           = each.value.partial_mirror_value2           # Partial Mirror2 Size in GiB
+  partial_mirror_value3           = each.value.partial_mirror_value3           # Partial Mirror3 Size in GiB
+  partial_mirror_value4           = each.value.partial_mirror_value4           # Partial Mirror4 Size in GiB
+  pc_ie_ras_support               = each.value.pc_ie_ras_support               # PCIe RAS Support
+  post_package_repair             = each.value.post_package_repair             # Post Package Repair
+  select_memory_ras_configuration = each.value.select_memory_ras_configuration # Memory RAS Configuration
+  select_ppr_type                 = each.value.select_ppr_type                 # PPR Type
+  sev                             = each.value.sev                             # Secured Encrypted Virtualization
+  smee                            = each.value.smee                            # SMEE
+  snoopy_mode_for2lm              = each.value.snoopy_mode_for2lm              # Snoopy Mode for 2LM
+  snoopy_mode_for_ad              = each.value.snoopy_mode_for_ad              # Snoopy Mode for AD
+  sparing_mode                    = each.value.sparing_mode                    # Sparing Mode
+  tsme                            = each.value.tsme                            # Transparent Secure Memory Encryption
+  uma_based_clustering            = each.value.uma_based_clustering            # UMA Based Clustering
+  vol_memory_mode                 = each.value.vol_memory_mode                 # Volatile Memory Mode
 
   #+++++++++++++++++++++++++++++++
   # PCI Section
@@ -3025,6 +3100,8 @@ resource "intersight_bios_policy" "bios_policies" {
   #+++++++++++++++++++++++++++++++
   # Power and Performance Section
   #+++++++++++++++++++++++++++++++
+  c1auto_demotion                    = each.value.c1auto_demotion                    # C1 Auto Demotion
+  c1auto_un_demotion                 = each.value.c1auto_un_demotion                 # C1 Auto UnDemotion
   cbs_cmn_cpu_cpb                    = each.value.cbs_cmn_cpu_cpb                    # Core Performance Boost
   cbs_cmn_cpu_global_cstate_ctrl     = each.value.cbs_cmn_cpu_global_cstate_ctrl     # Global C State Control
   cbs_cmn_cpu_l1stream_hw_prefetcher = each.value.cbs_cmn_cpu_l1stream_hw_prefetcher # L1 Stream HW Prefetcher
@@ -3033,6 +3110,18 @@ resource "intersight_bios_policy" "bios_policies" {
   cbs_cmn_efficiency_mode_en         = each.value.cbs_cmn_efficiency_mode_en         # Efficiency Mode Enable
   cbs_cmn_gnb_smucppc                = each.value.cbs_cmn_gnb_smucppc                # CPPC
   cbs_cmnc_tdp_ctl                   = each.value.cbs_cmnc_tdp_ctl                   # cTDP Control
+  cpu_perf_enhancement = length(                                                     # Enhanced CPU Performance
+    regexall("M6_[a-zA-Z\\_]+(_tpm)?", each.value.bios_template)
+  ) > 0 ? "Auto" : each.value.cpu_perf_enhancement
+  llc_alloc = length(
+    regexall("M6_(HPC|relational_DB)(_tpm)?", each.value.bios_template)
+  ) > 0 ? "enabled" : each.value.llc_alloc             # LLC Dead Line
+  upi_link_enablement = each.value.upi_link_enablement # UPI Link Enablement
+  upi_power_management = length(
+    regexall("M6_(HPC|relational_DB)(_tpm)?", each.value.bios_template)
+  ) > 0 ? "enabled" : each.value.upi_power_management  # UPI Power Management
+  virtual_numa        = each.value.virtual_numa        # Virtual Numa
+  xpt_remote_prefetch = each.value.xpt_remote_prefetch # XPT Remote Prefetch
 
 
   #+++++++++++++++++++++++++++++++
@@ -3063,64 +3152,74 @@ resource "intersight_bios_policy" "bios_policies" {
   cpu_frequency_floor               = each.value.cpu_frequency_floor               # Frequency Floor Override
   cpu_performance                   = each.value.cpu_performance                   # CPU Performance
   cpu_power_management = length(
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
-  ) > 0 ? "custom" : each.value.cpu_power_management                         # Power Technology
-  demand_scrub                      = each.value.demand_scrub                      # Demand Scrub
-  direct_cache_access               = each.value.direct_cache_access               # Direct Cache Access Support
-  dram_clock_throttling             = each.value.dram_clock_throttling             # DRAM Clock Throttling
-  energy_efficient_turbo            = each.value.energy_efficient_turbo            # Energy Efficient Turbo
-  eng_perf_tuning                   = each.value.eng_perf_tuning                   # Energy Performance Tuning
-  enhanced_intel_speed_step_tech    = each.value.enhanced_intel_speed_step_tech    # Enhanced Intel Speedstep(R) Technology
-  epp_enable                        = each.value.epp_enable                        # Processor EPP Enable
-  epp_profile                       = each.value.epp_profile                       # EPP Profile
-  execute_disable_bit               = each.value.execute_disable_bit               # Execute Disable Bit
-  extended_apic                     = each.value.extended_apic                     # Local X2 Apic
-  hardware_prefetch                 = each.value.hardware_prefetch                 # Hardware Prefetcher
-  hwpm_enable                       = each.value.hwpm_enable                       # CPU Hardware Power Management
-  imc_interleave                    = each.value.imc_interleave                    # IMC Interleaving
-  intel_dynamic_speed_select        = each.value.intel_dynamic_speed_select        # Intel Dynamic Speed Select
+    regexall("^(DSS|Java|OLTP|Virtualization)(_tpm)?$", each.value.bios_template)
+  ) > 0 ? "custom" : each.value.cpu_power_management       # Power Technology
+  demand_scrub          = each.value.demand_scrub          # Demand Scrub
+  direct_cache_access   = each.value.direct_cache_access   # Direct Cache Access Support
+  dram_clock_throttling = each.value.dram_clock_throttling # DRAM Clock Throttling
+  energy_efficient_turbo = length(
+    regexall("^M6_(relational_DB|HPC)(_tpm)?$", each.value.bios_template)
+  ) > 0 ? "disabled" : each.value.energy_efficient_turbo                     # Energy Efficient Turbo
+  eng_perf_tuning                = each.value.eng_perf_tuning                # Energy Performance Tuning
+  enhanced_intel_speed_step_tech = each.value.enhanced_intel_speed_step_tech # Enhanced Intel Speedstep(R) Technology
+  epp_enable                     = each.value.epp_enable                     # Processor EPP Enable
+  epp_profile                    = each.value.epp_profile                    # EPP Profile
+  execute_disable_bit            = each.value.execute_disable_bit            # Execute Disable Bit
+  extended_apic                  = each.value.extended_apic                  # Local X2 Apic
+  hardware_prefetch              = each.value.hardware_prefetch              # Hardware Prefetcher
+  hwpm_enable                    = each.value.hwpm_enable                    # CPU Hardware Power Management
+  imc_interleave                 = each.value.imc_interleave                 # IMC Interleaving
+  intel_dynamic_speed_select     = each.value.intel_dynamic_speed_select     # Intel Dynamic Speed Select
   intel_hyper_threading_tech = length(
-    regexall("(HPC)", each.value.bios_template)
+    regexall("^((M6_)?(analytical_DB|HPC))(_tpm)?$", each.value.bios_template)
   ) > 0 ? "disabled" : each.value.intel_hyper_threading_tech # Intel HyperThreading Tech
   intel_speed_select     = each.value.intel_speed_select     # Intel Speed Select
   intel_turbo_boost_tech = each.value.intel_turbo_boost_tech # Intel Turbo Boost Tech
   intel_virtualization_technology = length(                  # Intel(R) VT
-    regexall("(HPC|Java)", each.value.bios_template)
+    regexall("^(HPC|Java)(_tpm)?$", each.value.bios_template)
   ) > 0 ? "disabled" : each.value.intel_virtualization_technology
-  ioh_error_enable                  = each.value.ioh_error_enable                  # IIO Error Enable
-  ip_prefetch                       = each.value.ip_prefetch                       # DCU IP Prefetcher
-  kti_prefetch                      = each.value.kti_prefetch                      # KTI Prefetch
-  llc_prefetch                      = each.value.llc_prefetch                      # LLC Prefetch
-  memory_inter_leave                = each.value.memory_inter_leave                # Intel Memory Interleaving
-  package_cstate_limit              = each.value.package_cstate_limit              # Package C State Limit
-  patrol_scrub                      = each.value.patrol_scrub                      # Patrol Scrub
-  patrol_scrub_duration             = each.value.patrol_scrub_duration             # Patrol Scrub Interval
+  ioh_error_enable = each.value.ioh_error_enable # IIO Error Enable
+  ip_prefetch      = each.value.ip_prefetch      # DCU IP Prefetcher
+  kti_prefetch     = each.value.kti_prefetch     # KTI Prefetch
+  llc_prefetch     = each.value.llc_prefetch     # LLC Prefetch
+  memory_inter_leave = length(
+    regexall("(relational_DB|M6_HPC)?$", each.value.bios_template)
+  ) > 0 ? "1 Way Node Interleave" : each.value.memory_inter_leave # Intel Memory Interleaving
+  package_cstate_limit = each.value.package_cstate_limit          # Package C State Limit
+  patrol_scrub = length(
+    regexall("(DB|M6_HPC)(_tpm)?$", each.value.bios_template)
+  ) > 0 ? "custom" : each.value.patrol_scrub               # Patrol Scrub
+  patrol_scrub_duration = each.value.patrol_scrub_duration # Patrol Scrub Interval
   processor_c1e = length(                                  # Processor C1E
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
+    regexall("(DSS|M6_HPC|Java|OLTP|DB|Virtualization)(_tpm)?", each.value.bios_template)
   ) > 0 ? "disabled" : each.value.processor_c1e
   processor_c3report = length(
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
+    regexall("^(DSS|Java|OLTP|Virtualization)(_tpm)?$", each.value.bios_template)
   ) > 0 ? "disabled" : each.value.processor_c3report # Processor C3 Report
   processor_c6report = length(
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
+    regexall("^(DSS|M6_HPC|Java|OLTP|Virtualization)(_tpm)?$", each.value.bios_template)
   ) > 0 ? "disabled" : each.value.processor_c6report # Processor C6 Report
   processor_cstate = length(
-    regexall("(DSS|Java|OLTP|Virtualization)", each.value.bios_template)
+    regexall("^(DSS|Java|OLTP|Virtualization)(_tpm)?$", each.value.bios_template)
   ) > 0 ? "disabled" : each.value.processor_cstate   # CPU C State
-  pstate_coord_type                 = each.value.pstate_coord_type                 # P-State Coordination
-  pwr_perf_tuning                   = each.value.pwr_perf_tuning                   # Power Performance Tuning
-  qpi_link_speed                    = each.value.qpi_link_speed                    # UPI Link Frequency Select
-  rank_inter_leave                  = each.value.rank_inter_leave                  # Rank Interleaving
-  single_pctl_enable                = each.value.single_pctl_enable                # Single PCTL
-  smt_mode                          = each.value.smt_mode                          # SMT Mode
-  snc                               = each.value.snc                               # Sub Numa Clustering
-  streamer_prefetch                 = each.value.streamer_prefetch                 # DCU Streamer Prefetch
-  svm_mode                          = each.value.svm_mode                          # SVM Mode
-  ufs_disable                       = each.value.ufs_disable                       # Uncore Frequency Scaling
-  work_load_config = length(                         # Workload Configuration
-    regexall("(HPC)", each.value.bios_template)
+  pstate_coord_type  = each.value.pstate_coord_type  # P-State Coordination
+  pwr_perf_tuning    = each.value.pwr_perf_tuning    # Power Performance Tuning
+  qpi_link_speed     = each.value.qpi_link_speed     # UPI Link Frequency Select
+  rank_inter_leave   = each.value.rank_inter_leave   # Rank Interleaving
+  single_pctl_enable = each.value.single_pctl_enable # Single PCTL
+  smt_mode           = each.value.smt_mode           # SMT Mode
+  snc = length(
+    regexall("M6_(HPC|relational_DB)(_tpm)?", each.value.bios_template)
+  ) > 0 ? "enabled" : each.value.snc               # Sub Numa Clustering
+  streamer_prefetch = each.value.streamer_prefetch # DCU Streamer Prefetch
+  svm_mode          = each.value.svm_mode          # SVM Mode
+  ufs_disable       = each.value.ufs_disable       # Uncore Frequency Scaling
+  work_load_config = length(                       # Workload Configuration
+    regexall("(M6_)?(analytical_DB|Data|HPC)(_tpm)?", each.value.bios_template)
   ) > 0 ? "Balanced" : each.value.work_load_config
-  xpt_prefetch                      = each.value.xpt_prefetch                      # XPT Prefetch
+  xpt_prefetch = length(
+    regexall("M6_(HPC|relational_DB)(_tpm)?", each.value.bios_template)
+  ) > 0 ? "enabled" : each.value.xpt_prefetch # XPT Prefetch
 
 
   #+++++++++++++++++++++++++++++++
@@ -3165,6 +3264,8 @@ resource "intersight_bios_policy" "bios_policies" {
   enable_sgx                      = each.value.enable_sgx                      # Software Guard Extensions
   enable_tme                      = each.value.enable_tme                      # Total Memory Encryption
   epoch_update                    = each.value.epoch_update                    # Select Owner EPOCH Input Type
+  sha1pcr_bank                    = each.value.sha1pcr_bank                    # SHA-1 PCR Bank
+  sha256pcr_bank                  = each.value.sha256pcr_bank                  # SHA256 PCR Bank
   sgx_auto_registration_agent     = each.value.sgx_auto_registration_agent     # SGX Auto MP Registration Agent
   sgx_epoch0                      = each.value.sgx_epoch0                      # SGX Epoch 0
   sgx_epoch1                      = each.value.sgx_epoch1                      # SGX Epoch 1
@@ -3176,11 +3277,11 @@ resource "intersight_bios_policy" "bios_policies" {
   sgx_le_wr                       = each.value.sgx_le_wr                       # SGX Write Eanble
   sgx_package_info_in_band_access = each.value.sgx_package_info_in_band_access # SGX Package Information In-Band Access
   sgx_qos                         = each.value.sgx_qos                         # SGX QoS
-  tpm_control                     = length(                                    # Trusted Platform Module State
+  tpm_control = length(                                                        # Trusted Platform Module State
     regexall("_tpm", each.value.bios_template)
   ) > 0 ? "enabled" : each.value.tpm_control
-  tpm_pending_operation           = each.value.tpm_pending_operation           # TPM Pending Operation
-  txt_support                     = each.value.txt_support                     # Intel Trusted Execution Technology Support
+  tpm_pending_operation = each.value.tpm_pending_operation # TPM Pending Operation
+  txt_support           = each.value.txt_support           # Intel Trusted Execution Technology Support
 
 
   #+++++++++++++++++++++++++++++++
