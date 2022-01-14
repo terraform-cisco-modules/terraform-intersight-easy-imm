@@ -711,8 +711,8 @@ locals {
         regexall("(SRIOV)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for Win8 SRIOV-VMFEX PF." : length(
         regexall("(usNICOracleRAC)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for usNIC Oracle RAC Connection." : length(
         regexall("(usNIC)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for usNIC Connection." : length(
-        regexall("(VMwarePassThru)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for VMWare pass-thru." : length(
-        regexall("(VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for VMWare." : length(
+        regexall("(VMwarePassThru)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for VMware pass-thru." : length(
+        regexall("(VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for VMware." : length(
         regexall("(Win-AzureStack)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for Azure Stack." : length(
         regexall("(Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for Windows high performance and networking with RoCE V2." : length(
         regexall("(Win-HPN)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for Windows high performance and networking." : length(
@@ -926,7 +926,7 @@ locals {
         regexall("(Initiator)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for Initiator." : length(
         regexall("(Linux)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for linux." : length(
         regexall("(Solaris)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for Solaris." : length(
-        regexall("(VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for VMWare." : length(
+        regexall("(VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for VMware." : length(
         regexall("(WindowsBoot)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? "Recommended adapter settings for WindowsBoot." : length(
         regexall("(Windows)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? "Recommended adapter settings for Windows." : v.description != null ? v.description : ""

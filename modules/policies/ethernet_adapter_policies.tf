@@ -62,8 +62,8 @@ variable "ethernet_adapter_policies" {
     - SRIOV
     - usNIC
     - usNICOracleRAC
-    - VMWare
-    - VMWarePassThru
+    - VMware
+    - VMwarePassThru
     - WIN-AzureStack
     - Win-HPN
     - Win-HPN-SMBd

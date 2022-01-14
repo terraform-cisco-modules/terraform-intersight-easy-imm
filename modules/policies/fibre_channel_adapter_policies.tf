@@ -41,7 +41,7 @@ variable "fibre_channel_adapter_policies" {
     - Linux
     - Solaris
     - Target
-    - VMWare
+    - VMware
     - WindowsBoot
     - Windows
   * description - Description for the Policy.
