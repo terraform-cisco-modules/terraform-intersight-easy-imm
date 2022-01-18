@@ -146,13 +146,13 @@ variable "storage_policies" {
       organization = optional(string)
       single_drive_raid_configuration = optional(map(object(
         {
-          access_policy = string
-          drive_cache   = string
+          access_policy = optional(string)
+          drive_cache   = optional(string)
           drive_slots   = string
           enable        = bool
-          read_policy   = string
+          read_policy   = optional(string)
           strip_size    = string
-          write_policy  = string
+          write_policy  = optional(string)
         }
       )))
       tags                     = optional(list(map(string)))
@@ -183,14 +183,14 @@ variable "storage_policies" {
           raid_level = optional(string)
           virtual_drives = optional(map(object(
             {
-              access_policy       = string
-              boot_drive          = bool
-              disk_cache          = string
-              expand_to_available = bool
-              read_policy         = string
-              size                = number
-              strip_size          = number
-              write_policy        = string
+              access_policy       = optional(string)
+              boot_drive          = optional(bool)
+              disk_cache          = optional(string)
+              expand_to_available = optional(bool)
+              read_policy         = optional(string)
+              size                = optional(number)
+              strip_size          = optional(number)
+              write_policy        = optional(string)
             }
           )))
         }

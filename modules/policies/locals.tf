@@ -196,7 +196,6 @@ locals {
       intel_vtd_interrupt_remapping         = v.intel_vtd_interrupt_remapping != null ? v.intel_vtd_interrupt_remapping : "platform-default"
       intel_vtd_pass_through_dma_support    = v.intel_vtd_pass_through_dma_support != null ? v.intel_vtd_pass_through_dma_support : "platform-default"
       intel_vtdats_support                  = v.intel_vtdats_support != null ? v.intel_vtdats_support : "platform-default"
-      interested_mos                        = v.interested_mos != null ? v.interested_mos : "platform-default"
       ioh_error_enable                      = v.ioh_error_enable != null ? v.ioh_error_enable : "platform-default"
       ioh_resource                          = v.ioh_resource != null ? v.ioh_resource : "platform-default"
       ip_prefetch                           = v.ip_prefetch != null ? v.ip_prefetch : "platform-default"
@@ -1880,11 +1879,11 @@ locals {
   }
 
   drive_group = {
-    for k, v in local.drive_group_level_1 : k => {
-      automatic_drive_group = { for key, value in local.automatic_drive_group : key => value if value.drive_group == k }
+    for key, value in local.drive_group_level_1 : key => {
+      automatic_drive_group = { for k, v in local.automatic_drive_group : k => v if v.drive_group == k }
       manual_drive_group = {
-        for key, value in local.manual_drive_group : key => {
-          dedicated_hot_spares = value.dedicated_hot_spares
+        for k, v in local.manual_drive_group : k => {
+          dedicated_hot_spares = v.dedicated_hot_spares
           drive_array_spans = [
             for y, z in local.drive_array_spans : {
               additional_properties = ""
@@ -1893,13 +1892,24 @@ locals {
               slots                 = z.slots
             } if z.manual_drive_group == key
           ]
-        } if value.drive_group == k
+        } if v.drive_group == key
       }
-      organization   = v.organization
-      raid_level     = v.raid_level
-      storage_policy = v.storage_policy
-      tags           = v.tags
-      virtual_drives = v.virtual_drives
+      organization   = value.organization
+      raid_level     = value.raid_level
+      storage_policy = value.storage_policy
+      tags           = value.tags
+      virtual_drives = {
+        for k, v in value.virtual_drives : k => {
+          access_policy       = v.access_policy != null ? v.access_policy : "Default"
+          boot_drive          = v.boot_drive != null ? v.boot_drive : true
+          disk_cache          = v.disk_cache != null ? v.disk_cache : "Default"
+          expand_to_available = v.expand_to_available != null ? v.expand_to_available : true
+          read_policy         = v.read_policy != null ? v.read_policy : "Default"
+          size                = v.size != null ? v.size : 20
+          strip_size          = v.strip_size != null ? v.strip_size : 64
+          write_policy        = v.write_policy != null ? v.write_policy : "Default"
+        }
+      }
     }
   }
 
