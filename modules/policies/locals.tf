@@ -1799,120 +1799,79 @@ locals {
 
   storage_policies = {
     for k, v in var.storage_policies : k => {
-      description                     = v.description != null ? v.description : ""
-      drive_group                     = v.drive_group != null ? v.drive_group : {}
-      global_hot_spares               = v.global_hot_spares != null ? v.global_hot_spares : ""
-      organization                    = v.organization != null ? v.organization : "default"
-      m2_configuration                = v.m2_configuration != null ? v.m2_configuration : {}
-      single_drive_raid_configuration = v.single_drive_raid_configuration != null ? v.single_drive_raid_configuration : {}
-      tags                            = v.tags != null ? v.tags : []
-      unused_disks_state              = v.unused_disks_state != null ? v.unused_disks_state : "NoChange"
-      use_jbod_for_vd_creation        = v.use_jbod_for_vd_creation != null ? v.use_jbod_for_vd_creation : false
+      description       = v.description != null ? v.description : ""
+      drive_group       = v.drive_group != null ? v.drive_group : {}
+      global_hot_spares = v.global_hot_spares != null ? v.global_hot_spares : ""
+      organization      = v.organization != null ? v.organization : "default"
+      m2_configuration  = v.m2_configuration != null ? v.m2_configuration : {}
+      single_drive_raid_configuration = v.single_drive_raid_configuration != null ? {
+        for key, value in v.single_drive_raid_configuration : key => {
+          access_policy = value.access_policy != null ? value.access_policy : "Default"
+          drive_cache   = value.drive_cache != null ? value.drive_cache : "Default"
+          drive_slots   = value.drive_slots
+          enable        = value.enable != null ? value.enable : true
+          read_policy   = value.read_policy != null ? value.read_policy : "Default"
+          strip_size    = value.strip_size != null ? value.strip_size : 64
+          write_policy  = value.write_policy != null ? value.write_policy : "Default"
+        }
+      } : {}
+      tags                     = v.tags != null ? v.tags : []
+      unused_disks_state       = v.unused_disks_state != null ? v.unused_disks_state : "NoChange"
+      use_jbod_for_vd_creation = v.use_jbod_for_vd_creation != null ? v.use_jbod_for_vd_creation : false
     }
   }
 
-  drive_group_loop = flatten([
+  drive_groups_loop = flatten([
     for key, value in local.storage_policies : [
       for k, v in value.drive_group : {
-        automatic_drive_group = v.automatic_drive_group != null ? v.automatic_drive_group : {}
-        organization          = value.organization != null ? value.organization : "default"
-        manual_drive_group    = v.manual_drive_group != null ? v.manual_drive_group : {}
-        storage_policy        = key
-        key                   = k
-        raid_level            = v.raid_level != null ? v.raid_level : null
-        tags                  = value.tags != null ? value.tags : []
-        virtual_drives        = v.virtual_drives != null ? v.virtual_drives : {}
+        automatic_drive_group = v.automatic_drive_group != null ? {
+          for x, y in v.automatic_drive_group : x => {
+            drives_per_span          = y.drives_per_span != null ? y.drives_per_span : 2
+            drive_type               = y.drive_type != null ? y.drive_type : "SSD"
+            minimum_drive_size       = y.minimum_drive_size != null ? y.minimum_drive_size : 100
+            num_dedicated_hot_spares = y.num_dedicated_hot_spares != null ? y.num_dedicated_hot_spares : ""
+            number_of_spans          = y.number_of_spans != null ? y.number_of_spans : 1
+            use_remaining_drives     = y.use_remaining_drives != null ? y.use_remaining_drives : false
+
+          }
+        } : {}
+        organization = value.organization != null ? value.organization : "default"
+        manual_drive_group = v.manual_drive_group != null ? {
+          for x, y in v.manual_drive_group : x => {
+            dedicated_hot_spares = y.dedicated_hot_spares != null ? y.dedicated_hot_spares : ""
+            drive_array_spans = y.drive_array_spans != null ? [
+              for a, b in y.drive_array_spans : {
+                additional_properties = ""
+                class_id              = "storage.SpanDrives"
+                object_type           = "storage.SpanDrives"
+                slots                 = b.slots
+              }
+            ] : []
+          }
+        } : {}
+        storage_policy = key
+        key            = k
+        raid_level     = v.raid_level != null ? v.raid_level : null
+        tags           = value.tags != null ? value.tags : []
+        virtual_drives = v.virtual_drives != null ? {
+          for a, b in v.virtual_drives : a => {
+            access_policy       = b.access_policy != null ? b.access_policy : "Default"
+            boot_drive          = b.boot_drive != null ? b.boot_drive : true
+            disk_cache          = b.disk_cache != null ? b.disk_cache : "Default"
+            expand_to_available = b.expand_to_available != null ? b.expand_to_available : true
+            read_policy         = b.read_policy != null ? b.read_policy : "Default"
+            size                = b.size != null ? b.size : 20
+            strip_size          = b.strip_size != null ? b.strip_size : 64
+            write_policy        = b.write_policy != null ? b.write_policy : "Default"
+          }
+        } : {}
       }
     ]
   ])
 
-  drive_group_level_1 = {
-    for k, v in local.drive_group_loop : v.key => v
+  drive_groups = {
+    for k, v in local.drive_groups_loop : v.key => v
   }
-
-  automatic_drive_group_loop = flatten([
-    for key, value in local.drive_group_level_1 : [
-      for k, v in value.automatic_drive_group : {
-        key                      = k
-        drive_group              = key
-        drives_per_span          = v.drives_per_span != null ? v.drives_per_span : 2
-        drive_type               = v.drive_type != null ? v.drive_type : "SSD"
-        minimum_drive_size       = v.minimum_drive_size != null ? v.minimum_drive_size : 100
-        num_dedicated_hot_spares = v.num_dedicated_hot_spares != null ? v.num_dedicated_hot_spares : ""
-        number_of_spans          = v.number_of_spans != null ? v.number_of_spans : 1
-        use_remaining_drives     = v.use_remaining_drives != null ? v.use_remaining_drives : false
-      }
-    ]
-  ])
-
-  automatic_drive_group = {
-    for k, v in local.automatic_drive_group_loop : v.key => v
-  }
-
-  manual_drive_group_loop = flatten([
-    for key, value in local.drive_group_level_1 : [
-      for k, v in value.manual_drive_group : {
-        key                  = k
-        dedicated_hot_spares = v.dedicated_hot_spares != null ? v.dedicated_hot_spares : ""
-        drive_array_spans    = v.drive_array_spans != null ? v.drive_array_spans : {}
-        drive_group          = key
-      }
-    ]
-  ])
-
-  manual_drive_group = {
-    for k, v in local.manual_drive_group_loop : v.key => v
-  }
-
-  drive_span_loop = flatten([
-    for key, value in local.manual_drive_group : [
-      for k, v in value.drive_array_spans : {
-        key                = k
-        slots              = v.slots != null ? v.slots : ""
-        manual_drive_group = key
-      }
-    ]
-  ])
-
-  drive_array_spans = {
-    for k, v in local.drive_span_loop : v.key => v
-  }
-
-  drive_group = {
-    for key, value in local.drive_group_level_1 : key => {
-      automatic_drive_group = { for k, v in local.automatic_drive_group : k => v if v.drive_group == k }
-      manual_drive_group = {
-        for k, v in local.manual_drive_group : k => {
-          dedicated_hot_spares = v.dedicated_hot_spares
-          drive_array_spans = [
-            for y, z in local.drive_array_spans : {
-              additional_properties = ""
-              class_id              = "storage.SpanDrives"
-              object_type           = "storage.SpanDrives"
-              slots                 = z.slots
-            } if z.manual_drive_group == key
-          ]
-        } if v.drive_group == key
-      }
-      organization   = value.organization
-      raid_level     = value.raid_level
-      storage_policy = value.storage_policy
-      tags           = value.tags
-      virtual_drives = {
-        for k, v in value.virtual_drives : k => {
-          access_policy       = v.access_policy != null ? v.access_policy : "Default"
-          boot_drive          = v.boot_drive != null ? v.boot_drive : true
-          disk_cache          = v.disk_cache != null ? v.disk_cache : "Default"
-          expand_to_available = v.expand_to_available != null ? v.expand_to_available : true
-          read_policy         = v.read_policy != null ? v.read_policy : "Default"
-          size                = v.size != null ? v.size : 20
-          strip_size          = v.strip_size != null ? v.strip_size : 64
-          write_policy        = v.write_policy != null ? v.write_policy : "Default"
-        }
-      }
-    }
-  }
-
 
   #__________________________________________________________
   #
