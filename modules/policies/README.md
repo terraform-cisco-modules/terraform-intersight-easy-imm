@@ -31,15 +31,7 @@ This Module will create Intersight Management Mode - Server Policies.
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_port_role_appliances"></a> [port\_role\_appliances](#module\_port\_role\_appliances) | terraform-cisco-modules/imm/intersight//modules/port_role_appliances | >=0.9.8 |
-| <a name="module_port_role_ethernet_uplinks"></a> [port\_role\_ethernet\_uplinks](#module\_port\_role\_ethernet\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_ethernet_uplinks | >=0.9.8 |
-| <a name="module_port_role_fc_storage"></a> [port\_role\_fc\_storage](#module\_port\_role\_fc\_storage) | terraform-cisco-modules/imm/intersight//modules/port_role_fc_storage | >=0.9.8 |
-| <a name="module_port_role_fc_uplinks"></a> [port\_role\_fc\_uplinks](#module\_port\_role\_fc\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fc_uplinks | >=0.9.8 |
-| <a name="module_port_role_fcoe_uplinks"></a> [port\_role\_fcoe\_uplinks](#module\_port\_role\_fcoe\_uplinks) | terraform-cisco-modules/imm/intersight//modules/port_role_fcoe_uplinks | >=0.9.8 |
-| <a name="module_port_role_servers"></a> [port\_role\_servers](#module\_port\_role\_servers) | terraform-cisco-modules/imm/intersight//modules/port_role_servers | >=0.9.8 |
-| <a name="module_vlan_policies_add_vlans"></a> [vlan\_policies\_add\_vlans](#module\_vlan\_policies\_add\_vlans) | terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list | >=0.9.6 |
+No modules.
 
 ## Resources
 
@@ -52,21 +44,28 @@ This Module will create Intersight Management Mode - Server Policies.
 | [intersight_certificatemanagement_policy.certificate_management_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/certificatemanagement_policy) | resource |
 | [intersight_deviceconnector_policy.device_connector_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/deviceconnector_policy) | resource |
 | [intersight_fabric_appliance_pc_role.port_channel_appliances](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_appliance_pc_role) | resource |
+| [intersight_fabric_appliance_role.port_role_appliances](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_appliance_role) | resource |
 | [intersight_fabric_eth_network_control_policy.ethernet_network_control_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_eth_network_control_policy) | resource |
 | [intersight_fabric_eth_network_group_policy.ethernet_network_group_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_eth_network_group_policy) | resource |
 | [intersight_fabric_eth_network_policy.vlan_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_eth_network_policy) | resource |
 | [intersight_fabric_fc_network_policy.vsan_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_fc_network_policy) | resource |
+| [intersight_fabric_fc_storage_role.port_role_fc_storage](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_fc_storage_role) | resource |
 | [intersight_fabric_fc_uplink_pc_role.port_channel_fc_uplinks](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_fc_uplink_pc_role) | resource |
+| [intersight_fabric_fc_uplink_role.port_role_fc_uplinks](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_fc_uplink_role) | resource |
 | [intersight_fabric_fcoe_uplink_pc_role.port_channel_fcoe_uplinks](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_fcoe_uplink_pc_role) | resource |
+| [intersight_fabric_fcoe_uplink_role.port_role_fcoe_uplinks](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_fcoe_uplink_role) | resource |
 | [intersight_fabric_flow_control_policy.flow_control_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_flow_control_policy) | resource |
 | [intersight_fabric_link_aggregation_policy.link_aggregation_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_link_aggregation_policy) | resource |
 | [intersight_fabric_link_control_policy.link_control_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_link_control_policy) | resource |
 | [intersight_fabric_multicast_policy.multicast_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_multicast_policy) | resource |
 | [intersight_fabric_port_mode.port_modes](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_port_mode) | resource |
 | [intersight_fabric_port_policy.port_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_port_policy) | resource |
+| [intersight_fabric_server_role.port_role_servers](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_server_role) | resource |
 | [intersight_fabric_switch_control_policy.switch_control_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_switch_control_policy) | resource |
 | [intersight_fabric_system_qos_policy.system_qos_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_system_qos_policy) | resource |
 | [intersight_fabric_uplink_pc_role.port_channel_ethernet_uplinks](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_uplink_pc_role) | resource |
+| [intersight_fabric_uplink_role.port_role_ethernet_uplinks](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_uplink_role) | resource |
+| [intersight_fabric_vlan.vlan_policies_add_vlans](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_vlan) | resource |
 | [intersight_fabric_vsan.vsans](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/fabric_vsan) | resource |
 | [intersight_iam_end_point_user.users](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/iam_end_point_user) | resource |
 | [intersight_iam_end_point_user_policy.local_user_policies](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/iam_end_point_user_policy) | resource |

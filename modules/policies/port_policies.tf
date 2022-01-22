@@ -647,35 +647,51 @@ resource "intersight_fabric_fcoe_uplink_pc_role" "port_channel_fcoe_uplinks" {
 # GUI Location: Configure > Policies > Create Policy > Port > Start
 #_________________________________________________________________________
 
-module "port_role_appliances" {
+resource "intersight_fabric_appliance_role" "port_role_appliances" {
   depends_on = [
     local.org_moids,
     intersight_fabric_eth_network_control_policy.ethernet_network_control_policies,
     intersight_fabric_eth_network_group_policy.ethernet_network_group_policies,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.8"
-  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_appliances"
-  for_each         = local.port_role_appliances
-  admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
-  fec              = each.value.fec
-  mode             = each.value.mode
-  port_list        = each.value.port_list
-  port_policy_moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
-  priority         = each.value.priority
-  slot_id          = each.value.slot_id
-  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  ethernet_network_control_policy_moid = each.value.ethernet_network_control_policy != "" ? [
-    intersight_fabric_eth_network_control_policy.ethernet_network_control_policies[
-      each.value.ethernet_network_control_policy
-    ].moid
-  ] : []
-  ethernet_network_group_policy_moid = each.value.ethernet_network_group_policy != "" ? [
-    intersight_fabric_eth_network_group_policy.ethernet_network_group_policies[
-      each.value.ethernet_network_group_policy
-    ].moid
-  ] : []
+  for_each          = local.port_role_appliances
+  admin_speed       = each.value.admin_speed
+  aggregate_port_id = each.value.breakout_port_id
+  fec               = each.value.fec
+  mode              = each.value.mode
+  port_id           = each.value.port_id
+  priority          = each.value.priority
+  slot_id           = each.value.slot_id
+  port_policy {
+    moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
+  }
+  dynamic "eth_network_control_policy" {
+    for_each = each.value.ethernet_network_control_policy != "" ? [
+      intersight_fabric_eth_network_control_policy.ethernet_network_control_policies[
+        each.value.ethernet_network_control_policy
+      ].moid
+    ] : []
+    content {
+      moid = eth_network_control_policy.value
+    }
+  }
+  dynamic "eth_network_group_policy" {
+    for_each = each.value.ethernet_network_group_policy != "" ? [
+      intersight_fabric_eth_network_group_policy.ethernet_network_group_policies[
+        each.value.ethernet_network_group_policy
+      ].moid
+    ] : []
+    content {
+      moid = eth_network_group_policy.value
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
 
 
@@ -685,7 +701,7 @@ module "port_role_appliances" {
 # GUI Location: Configure > Policies > Create Policy > Port > Start
 #_________________________________________________________________________
 
-module "port_role_ethernet_uplinks" {
+resource "intersight_fabric_uplink_role" "port_role_ethernet_uplinks" {
   depends_on = [
     local.org_moids,
     intersight_fabric_eth_network_group_policy.ethernet_network_group_policies,
@@ -693,31 +709,52 @@ module "port_role_ethernet_uplinks" {
     intersight_fabric_link_control_policy.link_control_policies,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.8"
-  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_ethernet_uplinks"
-  for_each         = local.port_role_ethernet_uplinks
-  admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
-  fec              = each.value.fec
-  port_list        = each.value.port_list
-  port_policy_moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
-  slot_id          = each.value.slot_id
-  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  ethernet_network_group_policy_moid = each.value.ethernet_network_group_policy != "" ? [
-    intersight_fabric_eth_network_group_policy.ethernet_network_group_policies[
-      each.value.ethernet_network_group_policy
-    ].moid
-  ] : []
-  flow_control_policy_moid = each.value.flow_control_policy != "" ? [
-    intersight_fabric_flow_control_policy.flow_control_policies[
-      each.value.flow_control_policy
-    ].moid
-  ] : []
-  link_control_policy_moid = each.value.link_control_policy != "" ? [
-    intersight_fabric_link_control_policy.link_control_policies[
-      each.value.link_control_policy
-    ].moid
-  ] : []
+  for_each          = local.port_role_ethernet_uplinks
+  admin_speed       = each.value.admin_speed
+  aggregate_port_id = each.value.breakout_port_id
+  fec               = each.value.fec
+  port_id           = each.value.port_id
+  slot_id           = each.value.slot_id
+  port_policy {
+    moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
+  }
+  dynamic "eth_network_group_policy" {
+    for_each = each.value.ethernet_network_group_policy != "" ? [
+      intersight_fabric_eth_network_group_policy.ethernet_network_group_policies[
+        each.value.ethernet_network_group_policy
+      ].moid
+    ] : []
+    content {
+      moid = eth_network_group_policy.value
+    }
+  }
+  dynamic "flow_control_policy" {
+    for_each = each.value.flow_control_policy != "" ? [
+      intersight_fabric_flow_control_policy.flow_control_policies[
+        each.value.flow_control_policy
+      ].moid
+    ] : []
+    content {
+      moid = flow_control_policy.value
+    }
+  }
+  dynamic "link_control_policy" {
+    for_each = each.value.link_control_policy != "" ? [
+      intersight_fabric_link_control_policy.link_control_policies[
+        each.value.link_control_policy
+      ].moid
+    ] : []
+    content {
+      moid = link_control_policy.value
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
 
 
@@ -727,22 +764,28 @@ module "port_role_ethernet_uplinks" {
 # GUI Location: Configure > Policies > Create Policy > Port > Start
 #_________________________________________________________________________
 
-module "port_role_fc_storage" {
+resource "intersight_fabric_fc_storage_role" "port_role_fc_storage" {
   depends_on = [
     local.org_moids,
     intersight_fabric_port_mode.port_modes,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.8"
-  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_fc_storage"
-  for_each         = local.port_role_fc_storage
-  admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
-  port_list        = each.value.port_list
-  port_policy_moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
-  slot_id          = each.value.slot_id
-  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vsan_id          = each.value.vsan_id
+  for_each          = local.port_role_fc_storage
+  admin_speed       = each.value.admin_speed
+  aggregate_port_id = each.value.breakout_port_id
+  port_id           = each.value.port_id
+  slot_id           = each.value.slot_id
+  vsan_id           = each.value.vsan_id
+  port_policy {
+    moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
 
 
@@ -752,23 +795,29 @@ module "port_role_fc_storage" {
 # GUI Location: Configure > Policies > Create Policy > Port > Start
 #_________________________________________________________________________
 
-module "port_role_fc_uplinks" {
+resource "intersight_fabric_fc_uplink_role" "port_role_fc_uplinks" {
   depends_on = [
     local.org_moids,
     intersight_fabric_port_mode.port_modes,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.8"
-  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_fc_uplinks"
-  for_each         = local.port_role_fc_uplinks
-  admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
-  fill_pattern     = each.value.fill_pattern
-  port_list        = each.value.port_list
-  port_policy_moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
-  slot_id          = each.value.slot_id
-  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  vsan_id          = each.value.vsan_id
+  for_each          = local.port_role_fc_uplinks
+  admin_speed       = each.value.admin_speed
+  aggregate_port_id = each.value.breakout_port_id
+  fill_pattern      = each.value.fill_pattern
+  port_id           = each.value.port_id
+  slot_id           = each.value.slot_id
+  vsan_id           = each.value.vsan_id
+  port_policy {
+    moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
 
 
@@ -778,27 +827,38 @@ module "port_role_fc_uplinks" {
 # GUI Location: Configure > Policies > Create Policy > Port > Start
 #_________________________________________________________________________
 
-module "port_role_fcoe_uplinks" {
+resource "intersight_fabric_fcoe_uplink_role" "port_role_fcoe_uplinks" {
   depends_on = [
     local.org_moids,
     intersight_fabric_link_control_policy.link_control_policies,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.8"
-  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_fcoe_uplinks"
-  for_each         = local.port_role_fcoe_uplinks
-  admin_speed      = each.value.admin_speed
-  breakout_port_id = each.value.breakout_port_id
-  fec              = each.value.fec
-  port_list        = each.value.port_list
-  port_policy_moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
-  slot_id          = each.value.slot_id
-  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
-  link_control_policy_moid = each.value.link_control_policy != "" ? [
-    intersight_fabric_link_control_policy.link_control_policies[
-      each.value.link_control_policy
-    ].moid
-  ] : []
+  for_each          = local.port_role_fcoe_uplinks
+  admin_speed       = each.value.admin_speed
+  aggregate_port_id = each.value.breakout_port_id
+  fec               = each.value.fec
+  port_id           = each.value.port_id
+  slot_id           = each.value.slot_id
+  port_policy {
+    moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
+  }
+  dynamic "link_control_policy" {
+    for_each = each.value.link_control_policy != "" ? [
+      intersight_fabric_link_control_policy.link_control_policies[
+        each.value.link_control_policy
+      ].moid
+    ] : []
+    content {
+      moid = link_control_policy.value
+    }
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }
 
 
@@ -808,17 +868,23 @@ module "port_role_fcoe_uplinks" {
 # GUI Location: Configure > Policies > Create Policy > Port > Start
 #_________________________________________________________________________
 
-module "port_role_servers" {
+resource "intersight_fabric_server_role" "port_role_servers" {
   depends_on = [
     local.org_moids,
     intersight_fabric_port_policy.port_policies
   ]
-  version          = ">=0.9.8"
-  source           = "terraform-cisco-modules/imm/intersight//modules/port_role_servers"
-  for_each         = local.port_role_servers
-  breakout_port_id = each.value.breakout_port_id
-  port_list        = each.value.port_list
-  port_policy_moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
-  slot_id          = each.value.slot_id
-  tags             = length(each.value.tags) > 0 ? each.value.tags : local.tags
+  for_each          = local.port_role_servers
+  aggregate_port_id = each.value.breakout_port_id
+  port_id           = each.value.port_id
+  slot_id           = each.value.slot_id
+  port_policy {
+    moid = intersight_fabric_port_policy.port_policies[each.value.port_policy].moid
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

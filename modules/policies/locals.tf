@@ -1480,7 +1480,14 @@ locals {
   # Port Policy > Port Roles > Appliance Section - Locals
   #__________________________________________________________
 
-  port_role_appliances_loop = flatten([
+  /*
+  Loop 1 is to determine if the port_list is:
+  * A Single number 1
+  * A Range of numbers 1-5
+  * A List of numbers 1-5,10-15
+  And then to return these values as a list
+  */
+  port_role_appliances_loop_1 = flatten([
     for key, value in local.port_policies : [
       for k, v in value.port_role_appliances : {
         admin_speed                     = v.admin_speed != null ? v.admin_speed : "Auto"
@@ -1491,16 +1498,64 @@ locals {
         key                             = k
         mode                            = v.mode != null ? v.mode : "trunk"
         port_list                       = v.port_list
-        port_policy                     = key
-        priority                        = v.priority != null ? v.priority : "Best Effort"
-        slot_id                         = v.slot_id != null ? v.slot_id : 1
-        tags                            = value.tags != null ? value.tags : []
+        port_split = length(regexall("-", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)) : length(regexall(",", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)
+        ) : [v.port_list]
+        port_policy = key
+        priority    = v.priority != null ? v.priority : "Best Effort"
+        slot_id     = v.slot_id != null ? v.slot_id : 1
+        tags        = value.tags != null ? value.tags : []
       }
     ]
   ])
 
+  # Loop 2 takes a list that contains a "-" or a "," and expands those values
+  # into a full list.  So [1-5] becomes [1, 2, 3, 4, 5]
+  port_role_appliances_loop_2 = flatten([
+    for k, v in local.port_role_appliances_loop_1 : {
+      admin_speed                     = v.admin_speed
+      breakout_port_id                = v.breakout_port_id
+      ethernet_network_control_policy = v.ethernet_network_control_policy
+      ethernet_network_group_policy   = v.ethernet_network_group_policy
+      fec                             = v.fec
+      key                             = v.key
+      mode                            = v.mode
+      port_list = length(regexall("(,|-)", jsonencode(v.port_list))) > 0 ? flatten(
+        [for s in v.port_split : length(regexall("-", s)) > 0 ? [
+          for a in range(tonumber(element(split("-", s), 0)), (tonumber(element(split("-", s), 1)) + 1)
+      ) : tonumber(a)] : [s]]) : v.port_split
+      port_policy = v.port_policy
+      priority    = v.priority
+      slot_id     = v.slot_id
+      tags        = v.tags
+    }
+  ])
+
+  # Loop 3 will take the vlan_list created in Loop 2 and expand this
+  # out to a map of objects per vlan.
+  port_role_appliances_loop_3 = flatten([
+    for k, v in local.port_role_appliances_loop_2 : [
+      for s in v.port_list : {
+        admin_speed                     = v.admin_speed
+        breakout_port_id                = v.breakout_port_id
+        ethernet_network_control_policy = v.ethernet_network_control_policy
+        ethernet_network_group_policy   = v.ethernet_network_group_policy
+        fec                             = v.fec
+        key                             = v.key
+        mode                            = v.mode
+        port_id                         = s
+        port_policy                     = v.port_policy
+        priority                        = v.priority
+        slot_id                         = v.slot_id
+        tags                            = v.tags
+      }
+    ]
+  ])
+
+  # And lastly loop3's list is converted back to a map of objects
   port_role_appliances = {
-    for k, v in local.port_role_appliances_loop : "${v.port_policy}_${v.key}" => v
+    for k, v in local.port_role_appliances_loop_3 : "${v.port_policy}_${v.key}_${v.port_id}" => v
   }
 
 
@@ -1509,7 +1564,14 @@ locals {
   # Port Policy > Port Roles > Ethernet Uplinks Section - Locals
   #_________________________________________________________________
 
-  port_role_ethernet_uplinks_loop = flatten([
+  /*
+  Loop 1 is to determine if the port_list is:
+  * A Single number 1
+  * A Range of numbers 1-5
+  * A List of numbers 1-5,10-15
+  And then to return these values as a list
+  */
+  port_role_ethernet_uplinks_loop_1 = flatten([
     for key, value in local.port_policies : [
       for k, v in value.port_role_ethernet_uplinks : {
         admin_speed                   = v.admin_speed != null ? v.admin_speed : "Auto"
@@ -1520,15 +1582,60 @@ locals {
         key                           = k
         link_control_policy           = v.link_control_policy != null ? v.link_control_policy : ""
         port_list                     = v.port_list
-        port_policy                   = key
-        slot_id                       = v.slot_id != null ? v.slot_id : 1
-        tags                          = value.tags != null ? value.tags : []
+        port_split = length(regexall("-", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)) : length(regexall(",", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)
+        ) : [v.port_list]
+        port_policy = key
+        slot_id     = v.slot_id != null ? v.slot_id : 1
+        tags        = value.tags != null ? value.tags : []
+      }
+    ]
+  ])
+
+  # Loop 2 takes a list that contains a "-" or a "," and expands those values
+  # into a full list.  So [1-5] becomes [1, 2, 3, 4, 5]
+  port_role_ethernet_uplinks_loop_2 = flatten([
+    for k, v in local.port_role_ethernet_uplinks_loop_1 : {
+      admin_speed                   = v.admin_speed
+      breakout_port_id              = v.breakout_port_id
+      ethernet_network_group_policy = v.ethernet_network_group_policy
+      fec                           = v.fec
+      flow_control_policy           = v.flow_control_policy
+      key                           = v.key
+      link_control_policy           = v.link_control_policy
+      port_list = length(regexall("(,|-)", jsonencode(v.port_list))) > 0 ? flatten(
+        [for s in v.port_split : length(regexall("-", s)) > 0 ? [
+          for a in range(tonumber(element(split("-", s), 0)), (tonumber(element(split("-", s), 1)) + 1)
+      ) : tonumber(a)] : [s]]) : v.port_split
+      port_policy = v.port_policy
+      slot_id     = v.slot_id
+      tags        = v.tags
+    }
+  ])
+
+  # Loop 3 will take the vlan_list created in Loop 2 and expand this
+  # out to a map of objects per vlan.
+  port_role_ethernet_uplinks_loop_3 = flatten([
+    for k, v in local.port_role_ethernet_uplinks_loop_2 : [
+      for s in v.port_list : {
+        admin_speed                   = v.admin_speed
+        breakout_port_id              = v.breakout_port_id
+        ethernet_network_group_policy = v.ethernet_network_group_policy
+        fec                           = v.fec
+        flow_control_policy           = v.flow_control_policy
+        key                           = v.key
+        link_control_policy           = v.link_control_policy
+        port_id                       = s
+        port_policy                   = v.port_policy
+        slot_id                       = v.slot_id
+        tags                          = v.tags
       }
     ]
   ])
 
   port_role_ethernet_uplinks = {
-    for k, v in local.port_role_ethernet_uplinks_loop : "${v.port_policy}_${v.key}" => v
+    for k, v in local.port_role_ethernet_uplinks_loop_3 : "${v.port_policy}_${v.key}_${v.port_id}" => v
   }
 
 
@@ -1537,23 +1644,69 @@ locals {
   # Port Policy > Port Roles > Fibre-Channel Storage Section - Locals
   #______________________________________________________________________
 
-  port_role_fc_storage_loop = flatten([
+  /*
+  Loop 1 is to determine if the port_list is:
+  * A Single number 1
+  * A Range of numbers 1-5
+  * A List of numbers 1-5,10-15
+  And then to return these values as a list
+  */
+  port_role_fc_storage_loop_1 = flatten([
     for key, value in local.port_policies : [
       for k, v in value.port_role_fc_storage : {
         admin_speed      = v.admin_speed != null ? v.admin_speed : "16Gbps"
         breakout_port_id = v.breakout_port_id != null ? v.breakout_port_id : 0
         key              = k
         port_list        = v.port_list
-        port_policy      = key
-        slot_id          = v.slot_id != null ? v.slot_id : 1
-        tags             = value.tags != null ? value.tags : []
+        port_split = length(regexall("-", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)) : length(regexall(",", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)
+        ) : [v.port_list]
+        port_policy = key
+        slot_id     = v.slot_id != null ? v.slot_id : 1
+        tags        = value.tags != null ? value.tags : []
+        vsan_id     = v.vsan_id
+      }
+    ]
+  ])
+
+  # Loop 2 takes a list that contains a "-" or a "," and expands those values
+  # into a full list.  So [1-5] becomes [1, 2, 3, 4, 5]
+  port_role_fc_storage_loop_2 = flatten([
+    for k, v in local.port_role_fc_storage_loop_1 : {
+      admin_speed      = v.admin_speed
+      breakout_port_id = v.breakout_port_id
+      key              = v.key
+      port_list = length(regexall("(,|-)", jsonencode(v.port_list))) > 0 ? flatten(
+        [for s in v.port_split : length(regexall("-", s)) > 0 ? [
+          for a in range(tonumber(element(split("-", s), 0)), (tonumber(element(split("-", s), 1)) + 1)
+      ) : tonumber(a)] : [s]]) : v.port_split
+      port_policy = v.port_policy
+      slot_id     = v.slot_id
+      tags        = v.tags
+      vsan_id     = v.vsan_id
+    }
+  ])
+
+  # Loop 3 will take the vlan_list created in Loop 2 and expand this
+  # out to a map of objects per vlan.
+  port_role_fc_storage_loop_3 = flatten([
+    for k, v in local.port_role_fc_storage_loop_2 : [
+      for s in v.port_list : {
+        admin_speed      = v.admin_speed
+        breakout_port_id = v.breakout_port_id
+        key              = v.key
+        port_id          = s
+        port_policy      = v.port_policy
+        slot_id          = v.slot_id
+        tags             = v.tags
         vsan_id          = v.vsan_id
       }
     ]
   ])
 
   port_role_fc_storage = {
-    for k, v in local.port_role_fc_storage_loop : "${v.port_policy}_${v.key}" => v
+    for k, v in local.port_role_fc_storage_loop_3 : "${v.port_policy}_${v.key}_${v.port_id}" => v
   }
 
 
@@ -1562,7 +1715,14 @@ locals {
   # Port Policy > Port Roles > Fibre-Channel Uplinks Section - Locals
   #______________________________________________________________________
 
-  port_role_fc_uplinks_loop = flatten([
+  /*
+  Loop 1 is to determine if the port_list is:
+  * A Single number 1
+  * A Range of numbers 1-5
+  * A List of numbers 1-5,10-15
+  And then to return these values as a list
+  */
+  port_role_fc_uplinks_loop_1 = flatten([
     for key, value in local.port_policies : [
       for k, v in value.port_role_fc_uplinks : {
         admin_speed      = v.admin_speed != null ? v.admin_speed : "16Gbps"
@@ -1570,16 +1730,57 @@ locals {
         fill_pattern     = v.fill_pattern != null ? v.fill_pattern : "Arbff"
         key              = k
         port_list        = v.port_list
-        port_policy      = key
-        slot_id          = v.slot_id != null ? v.slot_id : 1
-        tags             = value.tags != null ? value.tags : []
+        port_split = length(regexall("-", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)) : length(regexall(",", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)
+        ) : [v.port_list]
+        port_policy = key
+        slot_id     = v.slot_id != null ? v.slot_id : 1
+        tags        = value.tags != null ? value.tags : []
+        vsan_id     = v.vsan_id
+      }
+    ]
+  ])
+
+  # Loop 2 takes a list that contains a "-" or a "," and expands those values
+  # into a full list.  So [1-5] becomes [1, 2, 3, 4, 5]
+  port_role_fc_uplinks_loop_2 = flatten([
+    for k, v in local.port_role_fc_uplinks_loop_1 : {
+      admin_speed      = v.admin_speed
+      breakout_port_id = v.breakout_port_id
+      fill_pattern     = v.fill_pattern
+      key              = v.key
+      port_list = length(regexall("(,|-)", jsonencode(v.port_list))) > 0 ? flatten(
+        [for s in v.port_split : length(regexall("-", s)) > 0 ? [
+          for a in range(tonumber(element(split("-", s), 0)), (tonumber(element(split("-", s), 1)) + 1)
+      ) : tonumber(a)] : [s]]) : v.port_split
+      port_policy = v.port_policy
+      slot_id     = v.slot_id
+      tags        = v.tags
+      vsan_id     = v.vsan_id
+    }
+  ])
+
+  # Loop 3 will take the vlan_list created in Loop 2 and expand this
+  # out to a map of objects per vlan.
+  port_role_fc_uplinks_loop_3 = flatten([
+    for k, v in local.port_role_fc_uplinks_loop_2 : [
+      for s in v.port_list : {
+        admin_speed      = v.admin_speed
+        breakout_port_id = v.breakout_port_id
+        fill_pattern     = v.fill_pattern
+        key              = v.key
+        port_id          = s
+        port_policy      = v.port_policy
+        slot_id          = v.slot_id
+        tags             = v.tags
         vsan_id          = v.vsan_id
       }
     ]
   ])
 
   port_role_fc_uplinks = {
-    for k, v in local.port_role_fc_uplinks_loop : "${v.port_policy}_${v.key}" => v
+    for k, v in local.port_role_fc_uplinks_loop_3 : "${v.port_policy}_${v.key}_${v.port_id}" => v
   }
 
 
@@ -1588,7 +1789,14 @@ locals {
   # Port Policy > Port Roles > FCoE Uplinks Section - Locals
   #_________________________________________________________________
 
-  port_role_fcoe_uplinks_loop = flatten([
+  /*
+  Loop 1 is to determine if the port_list is:
+  * A Single number 1
+  * A Range of numbers 1-5
+  * A List of numbers 1-5,10-15
+  And then to return these values as a list
+  */
+  port_role_fcoe_uplinks_loop_1 = flatten([
     for key, value in local.port_policies : [
       for k, v in value.port_role_fcoe_uplinks : {
         admin_speed         = v.admin_speed != null ? v.admin_speed : "Auto"
@@ -1597,15 +1805,58 @@ locals {
         key                 = k
         link_control_policy = v.link_control_policy != null ? v.link_control_policy : ""
         port_list           = v.port_list
-        port_policy         = key
-        slot_id             = v.slot_id != null ? v.slot_id : 1
-        tags                = value.tags != null ? value.tags : []
+        port_split = length(regexall("-", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)) : length(regexall(",", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)
+        ) : [v.port_list]
+        port_policy = key
+        slot_id     = v.slot_id != null ? v.slot_id : 1
+        tags        = value.tags != null ? value.tags : []
+      }
+    ]
+  ])
+
+  # Loop 2 takes a list that contains a "-" or a "," and expands those values
+  # into a full list.  So [1-5] becomes [1, 2, 3, 4, 5]
+  port_role_fcoe_uplinks_loop_2 = flatten([
+    for k, v in local.port_role_fcoe_uplinks_loop_1 : {
+      admin_speed         = v.admin_speed
+      breakout_port_id    = v.breakout_port_id
+      fec                 = v.fec
+      key                 = v.key
+      link_control_policy = v.link_control_policy
+      port_list = length(regexall("(,|-)", jsonencode(v.port_list))) > 0 ? flatten(
+        [for s in v.port_split : length(regexall("-", s)) > 0 ? [
+          for a in range(tonumber(element(split("-", s), 0)), (tonumber(element(split("-", s), 1)) + 1)
+      ) : tonumber(a)] : [s]]) : v.port_split
+      port_policy = v.port_policy
+      slot_id     = v.slot_id
+      tags        = v.tags
+    }
+  ])
+
+  # Loop 3 will take the vlan_list created in Loop 2 and expand this
+  # out to a map of objects per vlan.
+  port_role_fcoe_uplinks_loop_3 = flatten([
+    for k, v in local.port_role_fcoe_uplinks_loop_2 : [
+      for s in v.port_list : {
+        admin_speed                     = v.admin_speed
+        breakout_port_id                = v.breakout_port_id
+        ethernet_network_control_policy = v.ethernet_network_control_policy
+        ethernet_network_group_policy   = v.ethernet_network_group_policy
+        fec                             = v.fec
+        key                             = v.key
+        link_control_policy             = v.link_control_policy
+        port_id                         = s
+        port_policy                     = v.port_policy
+        slot_id                         = v.slot_id
+        tags                            = v.tags
       }
     ]
   ])
 
   port_role_fcoe_uplinks = {
-    for k, v in local.port_role_fcoe_uplinks_loop : "${v.port_policy}_${v.key}" => v
+    for k, v in local.port_role_fcoe_uplinks_loop_3 : "${v.port_policy}_${v.key}_${v.port_id}" => v
   }
 
 
@@ -1614,21 +1865,64 @@ locals {
   # Port Policy > Port Roles > FCoE Uplinks Section - Locals
   #_________________________________________________________________
 
-  port_role_servers_loop = flatten([
+  /*
+  Loop 1 is to determine if the port_list is:
+  * A Single number 1
+  * A Range of numbers 1-5
+  * A List of numbers 1-5,10-15
+  And then to return these values as a list
+  */
+  port_role_servers_loop_1 = flatten([
     for key, value in local.port_policies : [
       for k, v in value.port_role_servers : {
         breakout_port_id = v.breakout_port_id != null ? v.breakout_port_id : 0
         key              = k
         port_list        = v.port_list
-        port_policy      = key
-        slot_id          = v.slot_id != null ? v.slot_id : 1
-        tags             = value.tags != null ? value.tags : []
+        port_split = length(regexall("-", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)) : length(regexall(",", v.port_list)) > 0 ? tolist(
+          split(",", v.port_list)
+        ) : [v.port_list]
+        port_policy = key
+        slot_id     = v.slot_id != null ? v.slot_id : 1
+        tags        = value.tags != null ? value.tags : []
       }
     ]
   ])
 
+  # Loop 2 takes a list that contains a "-" or a "," and expands those values
+  # into a full list.  So [1-5] becomes [1, 2, 3, 4, 5]
+  port_role_servers_loop_2 = flatten([
+    for k, v in local.port_role_servers_loop_1 : {
+      breakout_port_id = v.breakout_port_id
+      key              = v.key
+      port_list = length(regexall("(,|-)", jsonencode(v.port_list))) > 0 ? flatten(
+        [for s in v.port_split : length(regexall("-", s)) > 0 ? [
+          for a in range(tonumber(element(split("-", s), 0)), (tonumber(element(split("-", s), 1)) + 1)
+      ) : tonumber(a)] : [s]]) : v.port_split
+      port_policy = v.port_policy
+      slot_id     = v.slot_id
+      tags        = v.tags
+    }
+  ])
+
+  # Loop 3 will take the vlan_list created in Loop 2 and expand this
+  # out to a map of objects per vlan.
+  port_role_servers_loop_3 = flatten([
+    for k, v in local.port_role_servers_loop_2 : [
+      for s in v.port_list : {
+        breakout_port_id = v.breakout_port_id
+        key              = v.key
+        port_id          = s
+        port_policy      = v.port_policy
+        slot_id          = v.slot_id
+        tags             = v.tags
+      }
+    ]
+  ])
+
+  # And lastly loop3's list is converted back to a map of objects
   port_role_servers = {
-    for k, v in local.port_role_servers_loop : "${v.port_policy}_${v.key}" => v
+    for k, v in local.port_role_servers_loop_3 : "${v.port_policy}_${v.key}_${v.port_id}" => v
   }
 
 
@@ -1994,20 +2288,70 @@ locals {
     }
   }
 
-  vlans_loop = flatten([
+  /*
+  Loop 1 is to determine if the vlan_list is:
+  * A Single number 1
+  * A Range of numbers 1-5
+  * A List of numbers 1-5,10-15
+  And then to return these values as a list
+  */
+  vlans_loop_1 = flatten([
     for key, value in var.vlan_policies : [
       for v in value.vlans : {
         auto_allow_on_uplinks = v.auto_allow_on_uplinks != null ? v.auto_allow_on_uplinks : false
+        key                   = v
         multicast_policy      = v.multicast_policy != null ? v.multicast_policy : ""
         name                  = v.name != null ? v.name : ""
         native_vlan           = v.native_vlan != null ? v.native_vlan : false
-        vlan_list             = v.vlan_list != null ? v.vlan_list : ""
-        vlan_policy           = key
+        vlan_list             = v.vlan_list
+        vlan_split = length(regexall("-", v.vlan_list)) > 0 ? tolist(split(",", v.vlan_list)) : length(
+          regexall(",", v.vlan_list)) > 0 ? tolist(split(",", v.vlan_list)
+        ) : [v.vlan_list]
+        vlan_policy = key
       }
     ]
   ])
+
+
+  # Loop 2 takes a list that contains a "-" or a "," and expands those values
+  # into a full list.  So [1-5] becomes [1, 2, 3, 4, 5]
+  vlans_loop_2 = flatten([
+    for k, v in local.vlans_loop_1 : {
+      auto_allow_on_uplinks = v.auto_allow_on_uplinks
+      key                   = v.key
+      multicast_policy      = v.multicast_policy
+      name                  = v.name
+      native_vlan           = v.native_vlan
+      vlan_policy           = v.vlan_policy
+      vlan_list             = v.vlan_list
+      vlan_list_ranges = length(regexall("(,|-)", jsonencode(v.vlan_list))) > 0 ? flatten([
+        for s in v.vlan_split : length(regexall("-", s)) > 0 ? [for v in range(tonumber(
+          element(split("-", s), 0)), (tonumber(element(split("-", s), 1)) + 1)
+        ) : tonumber(v)] : [s]
+      ]) : v.vlan_split
+    }
+  ])
+
+  # Loop 3 will take the vlan_list created in Loop 2 and expand this
+  # out to a map of objects per vlan.
+  vlans_loop_3 = flatten([
+    for k, v in local.vlans_loop_2 : [
+      for s in v.vlan_list_ranges : {
+        auto_allow_on_uplinks = v.auto_allow_on_uplinks
+        key                   = v.key
+        multicast_policy      = v.multicast_policy
+        name                  = v.name
+        native_vlan           = v.native_vlan
+        vlan_id               = s
+        vlan_list             = v.vlan_list
+        vlan_policy           = v.vlan_policy
+      }
+    ]
+  ])
+
+  # And lastly loop3's list is converted back to a map of objects
   vlans = {
-    for k, v in local.vlans_loop : k => v
+    for k, v in local.vlans_loop_3 : "${v.vlan_policy}_${v.key}_${v.vlan}" => v
   }
 
   #__________________________________________________________

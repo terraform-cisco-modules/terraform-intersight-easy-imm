@@ -93,23 +93,31 @@ resource "intersight_fabric_eth_network_policy" "vlan_policies" {
 # Assign VLANs to VLAN Policies
 #______________________________________________
 
-module "vlan_policies_add_vlans" {
+resource "intersight_fabric_vlan" "vlan_policies_add_vlans" {
   depends_on = [
     local.org_moids,
     intersight_fabric_multicast_policy.multicast_policies,
     intersight_fabric_eth_network_policy.vlan_policies
   ]
-  version               = ">=0.9.6"
-  source                = "terraform-cisco-modules/imm/intersight//modules/vlan_policy_add_vlan_list"
   for_each              = local.vlans
   auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
-  multicast_policy_moid = intersight_fabric_multicast_policy.multicast_policies[
-    each.value.multicast_policy
-  ].moid
-  name        = each.value.name != "" ? each.value.name : "VLAN"
-  native_vlan = each.value.native_vlan
-  vlan_list   = each.value.vlan_list
-  vlan_policy_moid = intersight_fabric_eth_network_policy.vlan_policies[
-    each.value.vlan_policy
-  ].moid
+  is_native             = each.value.native_vlan
+  name = length(
+    regexall("^[0-9]+$", each.value.vlan_list)
+    ) > 0 ? each.value.name : length(
+    regexall("^[0-9]{4}$", each.value.vlan_id)
+    ) > 0 ? join("-vl", [each.value.name, each.value.vlan_id]) : length(
+    regexall("^[0-9]{3}$", each.value.vlan_id)
+    ) > 0 ? join("-vl0", [each.value.name, each.value.vlan_id]) : length(
+    regexall("^[0-9]{2}$", each.value.vlan_id)
+    ) > 0 ? join("-vl00", [each.value.name, each.value.vlan_id]) : join(
+    "-vl000", [each.value.name, each.value.vlan_id]
+  )
+  vlan_id = each.value.vlan_id
+  eth_network_policy {
+    moid = intersight_fabric_eth_network_policy.vlan_policies[each.value.vlan_policy].moid
+  }
+  multicast_policy {
+    moid = intersight_fabric_multicast_policy.multicast_policies[each.value.multicast_policy].moid
+  }
 }
