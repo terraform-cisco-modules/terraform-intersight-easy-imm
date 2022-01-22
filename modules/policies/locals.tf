@@ -1512,17 +1512,17 @@ locals {
   port_role_ethernet_uplinks_loop = flatten([
     for key, value in local.port_policies : [
       for k, v in value.port_role_ethernet_uplinks : {
-        admin_speed                     = v.admin_speed != null ? v.admin_speed : "Auto"
-        breakout_port_id                = v.breakout_port_id != null ? v.breakout_port_id : 0
-        ethernet_network_control_policy = v.ethernet_network_control_policy
-        fec                             = v.fec != null ? v.fec : "Auto"
-        flow_control_policy             = v.flow_control_policy != null ? v.flow_control_policy : ""
-        key                             = k
-        link_control_policy             = v.link_control_policy != null ? v.link_control_policy : ""
-        port_list                       = v.port_list
-        port_policy                     = key
-        slot_id                         = v.slot_id != null ? v.slot_id : 1
-        tags                            = value.tags != null ? value.tags : []
+        admin_speed                   = v.admin_speed != null ? v.admin_speed : "Auto"
+        breakout_port_id              = v.breakout_port_id != null ? v.breakout_port_id : 0
+        ethernet_network_group_policy = v.ethernet_network_group_policy != null ? v.ethernet_network_group_policy : ""
+        fec                           = v.fec != null ? v.fec : "Auto"
+        flow_control_policy           = v.flow_control_policy != null ? v.flow_control_policy : ""
+        key                           = k
+        link_control_policy           = v.link_control_policy != null ? v.link_control_policy : ""
+        port_list                     = v.port_list
+        port_policy                   = key
+        slot_id                       = v.slot_id != null ? v.slot_id : 1
+        tags                          = value.tags != null ? value.tags : []
       }
     ]
   ])
