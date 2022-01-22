@@ -565,7 +565,7 @@ locals {
               ) > 0 && value.InterfaceName != "" ? value.InterfaceSource : length(
               regexall("mac", value.InterfaceSource)
             ) > 0 && value.MacAddress != "" ? value.InterfaceSource : "port",
-            IpType     = value.IpType != "" ? value.IpType : "None",
+            IpType     = value.IpType != "" ? value.IpType : "IPv4",
             MacAddress = value.MacAddress,
             Port       = value.Port,
             Slot       = value.Slot != "" ? value.Slot : "MLOM"
@@ -1020,7 +1020,7 @@ locals {
     for k, v in var.imc_access_policies : k => {
       description                = v.description != null ? v.description : ""
       inband_ip_pool             = v.inband_ip_pool != null ? v.inband_ip_pool : ""
-      inband_vlan_id             = v.inband_vlan_id != null ? v.inband_vlan_id : 1
+      inband_vlan_id             = v.inband_vlan_id != null ? v.inband_vlan_id : 4
       ipv4_address_configuration = v.ipv4_address_configuration != null ? v.ipv4_address_configuration : true
       ipv6_address_configuration = v.ipv6_address_configuration != null ? v.ipv6_address_configuration : false
       organization               = v.organization != null ? v.organization : "default"
