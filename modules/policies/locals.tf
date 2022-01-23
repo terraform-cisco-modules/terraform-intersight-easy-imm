@@ -566,7 +566,7 @@ locals {
               regexall("mac", value.InterfaceSource)
             ) > 0 && value.MacAddress != "" ? value.InterfaceSource : "port",
             IpType     = value.IpType != null && value.IpType != "" ? value.IpType : "IPv4",
-            MacAddress = value.IpType != null ? value.MacAddress : "",
+            MacAddress = value.MacAddress != null ? value.MacAddress : "",
             Port       = value.Port != null ? value.Port : -1,
             Slot       = value.Slot != "" ? value.Slot : "MLOM"
           }
