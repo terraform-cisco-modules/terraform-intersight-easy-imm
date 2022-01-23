@@ -565,7 +565,7 @@ locals {
               ) > 0 && value.InterfaceName != "" ? value.InterfaceSource : length(
               regexall("mac", value.InterfaceSource)
             ) > 0 && value.MacAddress != "" ? value.InterfaceSource : "port",
-            IpType     = value.IpType != "" ? value.IpType : "IPv4",
+            IpType     = value.IpType != null && value.IpType != "" ? value.IpType : "IPv4",
             MacAddress = value.MacAddress,
             Port       = value.Port,
             Slot       = value.Slot != "" ? value.Slot : "MLOM"
@@ -633,15 +633,15 @@ locals {
   }
 
   formatted_boot_order_policies = {
-    for k, v in local.boot_order_policies : k => {
+    for key, value in local.boot_order_policies : key => {
       boot_devices = {
-        for key, value in local.boot_devices_loop_2 : value.name => value if value.boot_order_policy == k
+        for k, v in local.boot_devices_loop_2 : v.name => v if v.boot_order_policy == key
       }
-      boot_mode          = v.boot_mode
-      description        = v.description
-      enable_secure_boot = v.enable_secure_boot
-      organization       = v.organization
-      tags               = v.tags
+      boot_mode          = value.boot_mode
+      description        = value.description
+      enable_secure_boot = value.enable_secure_boot
+      organization       = value.organization
+      tags               = value.tags
     }
   }
 
