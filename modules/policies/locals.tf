@@ -566,8 +566,8 @@ locals {
               regexall("mac", value.InterfaceSource)
             ) > 0 && value.MacAddress != "" ? value.InterfaceSource : "port",
             IpType     = value.IpType != null && value.IpType != "" ? value.IpType : "IPv4",
-            MacAddress = value.MacAddress,
-            Port       = value.Port,
+            MacAddress = value.IpType != null ? value.MacAddress : "",
+            Port       = value.Port != null ? value.Port : -1,
             Slot       = value.Slot != "" ? value.Slot : "MLOM"
           }
           ) : v.boot_mode == "Uefi" && value.object_type == "boot.San" ? jsonencode(
