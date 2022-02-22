@@ -103,10 +103,10 @@ locals {
 
   # Terraform Cloud Remote Resources - Pools
   resource_pools = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
-    data.terraform_remote_state.remote_pools[0].outputs, "resource_pools", {}
+    data.terraform_remote_state.local_pools[0].outputs, "resource_pools", {}
   ) : lookup(data.terraform_remote_state.remote_pools[0].outputs, "resource_pools", {})
   uuid_pools = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
-    data.terraform_remote_state.remote_pools[0].outputs, "uuid_pools", {}
+    data.terraform_remote_state.local_pools[0].outputs, "uuid_pools", {}
   ) : lookup(data.terraform_remote_state.remote_pools[0].outputs, "uuid_pools", {})
 
   # Tags for Deployment
