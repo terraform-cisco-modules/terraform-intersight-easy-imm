@@ -13,41 +13,101 @@ locals {
   }
 
   # Terraform Cloud Remote Resources - Policies
-  adapter_configuration_policies  = lookup(data.terraform_remote_state.policies.outputs, "adapter_configuration_policies", {})
-  bios_policies                   = lookup(data.terraform_remote_state.policies.outputs, "bios_policies", {})
-  boot_order_policies             = lookup(data.terraform_remote_state.policies.outputs, "boot_order_policies", {})
-  certificate_management_policies = lookup(data.terraform_remote_state.policies.outputs, "certificate_management_policies", {})
-  device_connector_policies       = lookup(data.terraform_remote_state.policies.outputs, "device_connector_policies", {})
-  imc_access_policies             = lookup(data.terraform_remote_state.policies.outputs, "imc_access_policies", {})
-  ipmi_over_lan_policies          = lookup(data.terraform_remote_state.policies.outputs, "ipmi_over_lan_policies", {})
-  lan_connectivity_policies       = lookup(data.terraform_remote_state.policies.outputs, "lan_connectivity_policies", {})
-  ldap_policies                   = lookup(data.terraform_remote_state.policies.outputs, "ldap_policies", {})
-  local_user_policies             = lookup(data.terraform_remote_state.policies.outputs, "local_user_policies", {})
-  network_connectivity_policies   = lookup(data.terraform_remote_state.policies.outputs, "network_connectivity_policies", {})
-  ntp_policies                    = lookup(data.terraform_remote_state.policies.outputs, "ntp_policies", {})
-  persistent_memory_policies      = lookup(data.terraform_remote_state.policies.outputs, "persistent_memory_policies", {})
-  port_policies                   = lookup(data.terraform_remote_state.policies.outputs, "port_policies", {})
-  power_policies                  = lookup(data.terraform_remote_state.policies.outputs, "power_policies", {})
-  san_connectivity_policies       = lookup(data.terraform_remote_state.policies.outputs, "san_connectivity_policies", {})
-  serial_over_lan_policies        = lookup(data.terraform_remote_state.policies.outputs, "serial_over_lan_policies", {})
-  smtp_policies                   = lookup(data.terraform_remote_state.policies.outputs, "smtp_policies", {})
-  snmp_policies                   = lookup(data.terraform_remote_state.policies.outputs, "snmp_policies", {})
-  ssh_policies                    = lookup(data.terraform_remote_state.policies.outputs, "ssh_policies", {})
-  storage_policies                = lookup(data.terraform_remote_state.policies.outputs, "storage_policies", {})
-  switch_control_policies         = lookup(data.terraform_remote_state.policies.outputs, "switch_control_policies", {})
-  syslog_policies                 = lookup(data.terraform_remote_state.policies.outputs, "syslog_policies", {})
-  system_qos_policies             = lookup(data.terraform_remote_state.policies.outputs, "system_qos_policies", {})
-  thermal_policies                = lookup(data.terraform_remote_state.policies.outputs, "thermal_policies", {})
-  virtual_kvm_policies            = lookup(data.terraform_remote_state.policies.outputs, "virtual_kvm_policies", {})
-  virtual_media_policies          = lookup(data.terraform_remote_state.policies.outputs, "virtual_media_policies", {})
-  vsan_policies                   = lookup(data.terraform_remote_state.policies.outputs, "vsan_policies", {})
-
-  # Terraform Cloud Remote Resources - Policies VLANs
-  vlan_policies = lookup(data.terraform_remote_state.policies.outputs, "vlan_policies", {})
+  adapter_configuration_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "adapter_configuration_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "adapter_configuration_policies", {})
+  bios_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "bios_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "bios_policies", {})
+  boot_order_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "boot_order_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "boot_order_policies", {})
+  certificate_management_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "certificate_management_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "certificate_management_policies", {})
+  device_connector_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "device_connector_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "device_connector_policies", {})
+  imc_access_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "imc_access_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "imc_access_policies", {})
+  ipmi_over_lan_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "ipmi_over_lan_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "ipmi_over_lan_policies", {})
+  lan_connectivity_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "lan_connectivity_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "lan_connectivity_policies", {})
+  ldap_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "ldap_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "ldap_policies", {})
+  local_user_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "local_user_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "local_user_policies", {})
+  network_connectivity_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "network_connectivity_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "network_connectivity_policies", {})
+  ntp_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "ntp_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "ntp_policies", {})
+  persistent_memory_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "persistent_memory_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "persistent_memory_policies", {})
+  port_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "port_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "port_policies", {})
+  power_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "power_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "power_policies", {})
+  san_connectivity_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "san_connectivity_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "san_connectivity_policies", {})
+  serial_over_lan_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "serial_over_lan_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "serial_over_lan_policies", {})
+  smtp_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "smtp_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "smtp_policies", {})
+  snmp_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "snmp_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "snmp_policies", {})
+  ssh_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "ssh_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "ssh_policies", {})
+  storage_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "storage_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "storage_policies", {})
+  switch_control_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "switch_control_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "switch_control_policies", {})
+  syslog_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "syslog_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "syslog_policies", {})
+  system_qos_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "system_qos_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "system_qos_policies", {})
+  thermal_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "thermal_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "thermal_policies", {})
+  virtual_kvm_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "virtual_kvm_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "virtual_kvm_policies", {})
+  virtual_media_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "virtual_media_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "virtual_media_policies", {})
+  vsan_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "vsan_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "vsan_policies", {})
+  vlan_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.local_policies[0].outputs, "vlan_policies", {}
+  ) : lookup(data.terraform_remote_state.remote_policies[0].outputs, "vlan_policies", {})
 
   # Terraform Cloud Remote Resources - Pools
-  resource_pools = lookup(data.terraform_remote_state.pools.outputs, "resource_pools", {})
-  uuid_pools     = lookup(data.terraform_remote_state.pools.outputs, "uuid_pools", {})
+  resource_pools = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.remote_pools[0].outputs, "resource_pools", {}
+  ) : lookup(data.terraform_remote_state.remote_pools[0].outputs, "resource_pools", {})
+  uuid_pools = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
+    data.terraform_remote_state.remote_pools[0].outputs, "uuid_pools", {}
+  ) : lookup(data.terraform_remote_state.remote_pools[0].outputs, "uuid_pools", {})
 
   # Tags for Deployment
   tags = var.tags

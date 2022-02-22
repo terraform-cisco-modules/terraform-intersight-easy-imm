@@ -109,7 +109,7 @@ variable "iscsi_boot_policies" {
 
 resource "intersight_vnic_iscsi_boot_policy" "iscsi_boot_policies" {
   depends_on = [
-    data.terraform_remote_state.pools,
+    local.ip_pools,
     local.org_moids,
     intersight_vnic_iscsi_adapter_policy.iscsi_adapter_policies,
     intersight_vnic_iscsi_static_target_policy.iscsi_static_target_policies,

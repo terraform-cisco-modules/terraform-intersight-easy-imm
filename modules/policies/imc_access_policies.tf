@@ -13,18 +13,20 @@ variable "imc_access_policies" {
       ipv4_address_configuration = true
       ipv6_address_configuration = false
       organization               = "default"
+      out_of_band_ip_pool        = ""
       tags                       = []
     }
   }
   description = <<-EOT
   key - Name of the IMC Access Policy
   * description - Description to Assign to the Policy.
-  * inband_ip_pool - Name of the IP Pool to Assign to the IMC Access Policy.
+  * inband_ip_pool - Name of the IP Pool to Assign to the Inband Configuration of the IMC Access Policy.
   * inband_vlan_id - VLAN ID to Assign as the Inband Management VLAN for IMC Access.
   * ipv4_address_configuration - Flag to Enable or Disable the IPv4 Address Family for Poliices.
   * ipv6_address_configuration - Flag to Enable or Disable the IPv6 Address Family for Poliices.
   * organization - Name of the Intersight Organization to assign this Policy to.
     - https://intersight.com/an/settings/organizations/
+  * out_of_band_ip_pool - Name of the IP Pool to Assign to the Out-of-Band Configuration of the IMC Access Policy.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
@@ -35,6 +37,7 @@ variable "imc_access_policies" {
       ipv4_address_configuration = optional(bool)
       ipv6_address_configuration = optional(bool)
       organization               = optional(string)
+      out_of_band_ip_pool        = optional(string)
       tags                       = optional(list(map(string)))
     }
   ))
@@ -60,6 +63,11 @@ resource "intersight_access_policy" "imc_access_policies" {
     enable_ip_v6 = each.value.ipv6_address_configuration
     object_type  = "access.AddressType"
   }
+  configuration_type {
+    configure_inband      = each.value.inband_ip_pool != "" ? true : false
+    configure_out_of_band = each.value.out_of_band_ip_pool != "" ? true : false
+  }
+
   inband_ip_pool {
     moid        = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
     object_type = "ippool.Pool"
@@ -67,6 +75,10 @@ resource "intersight_access_policy" "imc_access_policies" {
   organization {
     moid        = local.org_moids[each.value.organization].moid
     object_type = "organization.Organization"
+  }
+  out_of_band_ip_pool {
+    moid        = each.value.out_of_band_ip_pool != "" ? local.ip_pools[each.value.out_of_band_ip_pool] : null
+    object_type = "ippool.Pool"
   }
   dynamic "tags" {
     for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags

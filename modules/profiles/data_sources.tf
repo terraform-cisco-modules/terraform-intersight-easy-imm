@@ -1,38 +1,42 @@
 #__________________________________________________________
 #
-# Get outputs from the Policies and Pools Workspaces
+# Get outputs from the Terraform Workspaces
 #__________________________________________________________
 
-# data "terraform_remote_state" "policies" {
-#   backend = "local"
-#   config = {
-#     path = "../policies/terraform.tfstate"
-#   }
-# }
-
-# data "terraform_remote_state" "pools" {
-#   backend = "local"
-#   config = {
-#     path = "../pools/terraform.tfstate"
-#   }
-# }
-
-data "terraform_remote_state" "policies" {
-  backend = "remote"
+data "terraform_remote_state" "local_pools" {
+  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "local" }
+  backend  = each.value.backend
   config = {
-    organization = var.tfc_organization
+    path = "../pools/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "remote_pools" {
+  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "remote" }
+  backend  = each.value.backend
+  config = {
+    organization = each.value.tfc_organization
     workspaces = {
-      name = var.ws_policies
+      name = each.value.ws_pools
     }
   }
 }
 
-data "terraform_remote_state" "pools" {
-  backend = "remote"
+data "terraform_remote_state" "local_policies" {
+  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "local" }
+  backend  = each.value.backend
   config = {
-    organization = var.tfc_organization
+    path = "../policies/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "remote_policies" {
+  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "remote" }
+  backend  = each.value.backend
+  config = {
+    organization = each.value.tfc_organization
     workspaces = {
-      name = var.ws_pools
+      name = each.value.ws_policies
     }
   }
 }

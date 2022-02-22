@@ -4,29 +4,36 @@ terraform {
 
 #__________________________________________________________
 #
-# Terraform Cloud Organization
+# Terraform Workspace Variables
 #__________________________________________________________
 
-variable "tfc_organization" {
-  description = "Terraform Cloud Organization."
-  type        = string
+variable "tfc_workspaces" {
+  default = [
+    {
+      backend                = "remote"
+      tfc_organization       = "default"
+      ws_pools               = "default_pools"
+      ws_ucs_domain_profiles = "default_ucs_domain_profiles"
+    }
+  ]
+  description = <<-EOT
+  * backend: Options are:
+    - local - The backend is on the Local Machine
+    - Remote - The backend is in TFCB.
+  * tfc_organization: Name of the Terraform Cloud Organization
+  * ws_pools: Name of the pools workspace.
+  * ws_ucs_domain_profiles: Name of the ucs_domain_profiles workspace
+  EOT
+  type = list(object(
+    {
+      backend                = string
+      tfc_organization       = string
+      ws_pools               = string
+      ws_ucs_domain_profiles = string
+    }
+  ))
 }
 
-
-#______________________________________________
-#
-# Terraform Cloud domain_workspace Workspace
-#______________________________________________
-
-variable "ws_pools" {
-  description = "Pools Workspace Name."
-  type        = string
-}
-
-variable "ws_ucs_domain_profiles" {
-  description = "UCS Domain Profiles Workspace Name."
-  type        = string
-}
 
 #__________________________________________________________
 #
