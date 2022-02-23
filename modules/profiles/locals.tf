@@ -368,6 +368,7 @@ locals {
   #
   # UCS Server Profiles Section - Locals
   #__________________________________________________________
+
   ucs_server_loop_1 = {
     for k, v in var.ucs_server_profiles : k => {
       action                        = v.action != null ? v.action : "No-op"
@@ -451,7 +452,7 @@ locals {
     }
   }
 
-  merge_with_templates = flatten([
+  merge_with_templates = local.ucs_server_profile_templates != {} ? flatten([
     for k, v in local.ucs_server_loop_1 : [
       for key, value in local.ucs_server_profile_templates : {
         action = v.action
@@ -550,11 +551,11 @@ locals {
         wait_for_completion = v.wait_for_completion != null ? v.wait_for_completion : false
       } if v.ucs_server_profile_template == key || v.ucs_server_profile_template == ""
     ]
-  ])
+  ]) : []
 
-  ucs_server_merged = {
+  ucs_server_merged = local.ucs_server_profile_templates != {} ? {
     for k, v in local.merge_with_templates : v.key_name => v
-  }
+  } : local.ucs_server_loop_1
 
   server_bucket_loop = {
     for k, v in local.ucs_server_merged : k => {
@@ -570,95 +571,95 @@ locals {
       ucs_server_profile_template = v.ucs_server_profile_template
       uuid_pool                   = v.uuid_pool
       wait_for_completion         = v.wait_for_completion
-      adapter_configuration_policy = v.adapter_configuration_policy != "" ? {
+      adapter_configuration_policy = v.adapter_configuration_policy != "" && v.adapter_configuration_policy != null ? {
         moid        = local.adapter_configuration_policies[v.adapter_configuration_policy]
         object_type = "adapter.ConfigPolicy"
       } : null
-      bios_policy = v.bios_policy != "" ? {
+      bios_policy = v.bios_policy != "" && v.bios_policy != null ? {
         moid        = local.bios_policies[v.bios_policy]
         object_type = "bios.Policy"
       } : null
-      boot_order_policy = v.boot_order_policy != "" ? {
+      boot_order_policy = v.boot_order_policy != "" && v.boot_order_policy != null ? {
         moid        = local.boot_order_policies[v.boot_order_policy]
         object_type = "boot.PrecisionPolicy"
       } : null
-      certificate_management_policy = v.certificate_management_policy != "" ? {
+      certificate_management_policy = v.certificate_management_policy != "" && v.certificate_management_policy != null ? {
         moid        = local.certificate_management_policies[v.certificate_management_policy]
         object_type = "certificatemanagement.Policy"
       } : null
-      device_connector_policy = v.device_connector_policy != "" ? {
+      device_connector_policy = v.device_connector_policy != "" && v.device_connector_policy != null ? {
         moid        = local.device_connector_policies[v.device_connector_policy]
         object_type = "deviceconnector.Policy"
       } : null
-      imc_access_policy = v.imc_access_policy != "" ? {
+      imc_access_policy = v.imc_access_policy != "" && v.imc_access_policy != null ? {
         moid        = local.imc_access_policies[v.imc_access_policy]
         object_type = "access.Policy"
       } : null
-      ipmi_over_lan_policy = v.ipmi_over_lan_policy != "" ? {
+      ipmi_over_lan_policy = v.ipmi_over_lan_policy != "" && v.ipmi_over_lan_policy != null ? {
         moid        = local.ipmi_over_lan_policies[v.ipmi_over_lan_policy]
         object_type = "ipmioverlan.Policy"
       } : null
-      lan_connectivity_policy = v.lan_connectivity_policy != "" ? {
+      lan_connectivity_policy = v.lan_connectivity_policy != "" && v.lan_connectivity_policy != null ? {
         moid        = local.lan_connectivity_policies[v.lan_connectivity_policy]
         object_type = "vnic.LanConnectivityPolicy"
       } : null
-      ldap_policy = v.ldap_policy != "" ? {
+      ldap_policy = v.ldap_policy != "" && v.ldap_policy != null ? {
         moid        = local.ldap_policies[v.ldap_policy]
         object_type = "iam.LdapPolicy"
       } : null
-      local_user_policy = v.local_user_policy != "" ? {
+      local_user_policy = v.local_user_policy != "" && v.local_user_policy != null ? {
         moid        = local.local_user_policies[v.local_user_policy]
         object_type = "iam.EndPointUserPolicy"
       } : null
-      network_connectivity_policy = v.network_connectivity_policy != "" ? {
+      network_connectivity_policy = v.network_connectivity_policy != "" && v.network_connectivity_policy != null ? {
         moid        = local.network_connectivity_policies[v.network_connectivity_policy]
         object_type = "networkconfig.Policy"
       } : null
-      ntp_policy = v.ntp_policy != "" ? {
+      ntp_policy = v.ntp_policy != "" && v.ntp_policy != null ? {
         moid        = local.ntp_policies[v.ntp_policy]
         object_type = "ntp.Policy"
       } : null
-      persistent_memory_policy = v.persistent_memory_policy != "" ? {
+      persistent_memory_policy = v.persistent_memory_policy != "" && v.persistent_memory_policy != null ? {
         moid        = local.persistent_memory_policies[v.persistent_memory_policy]
         object_type = "memory.PersistentMemoryPolicy"
       } : null
-      power_policy = v.power_policy != "" ? {
+      power_policy = v.power_policy != "" && v.power_policy != null ? {
         moid        = local.power_policies[v.power_policy]
         object_type = "power.Policy"
       } : null
-      san_connectivity_policy = v.san_connectivity_policy != "" ? {
+      san_connectivity_policy = v.san_connectivity_policy != "" && v.san_connectivity_policy != null ? {
         moid        = local.san_connectivity_policies[v.san_connectivity_policy]
         object_type = "vnic.SanConnectivityPolicy"
       } : null
-      serial_over_lan_policy = v.serial_over_lan_policy != "" ? {
+      serial_over_lan_policy = v.serial_over_lan_policy != "" && v.serial_over_lan_policy != null ? {
         moid        = local.serial_over_lan_policies[v.serial_over_lan_policy]
         object_type = "sol.Policy"
       } : null
-      smtp_policy = v.smtp_policy != "" ? {
+      smtp_policy = v.smtp_policy != "" && v.smtp_policy != null ? {
         moid        = local.smtp_policies[v.smtp_policy]
         object_type = "smtp.Policy"
       } : null
-      snmp_policy = v.snmp_policy != "" ? {
+      snmp_policy = v.snmp_policy != "" && v.snmp_policy != null ? {
         moid        = local.snmp_policies[v.snmp_policy]
         object_type = "snmp.Policy"
       } : null
-      ssh_policy = v.ssh_policy != "" ? {
+      ssh_policy = v.ssh_policy != "" && v.ssh_policy != null ? {
         moid        = local.ssh_policies[v.ssh_policy]
         object_type = "ssh.Policy"
       } : null
-      storage_policy = v.storage_policy != "" ? {
+      storage_policy = v.storage_policy != "" && v.storage_policy != null ? {
         moid        = local.storage_policies[v.storage_policy]
         object_type = "storage.StoragePolicy"
       } : null
-      syslog_policy = v.syslog_policy != "" ? {
+      syslog_policy = v.syslog_policy != "" && v.syslog_policy != null ? {
         moid        = local.syslog_policies[v.syslog_policy]
         object_type = "syslog.Policy"
       } : null
-      virtual_kvm_policy = v.virtual_kvm_policy != "" ? {
+      virtual_kvm_policy = v.virtual_kvm_policy != "" && v.virtual_kvm_policy != null ? {
         moid        = local.virtual_kvm_policies[v.virtual_kvm_policy]
         object_type = "kvm.Policy"
       } : null
-      virtual_media_policy = v.virtual_media_policy != "" ? {
+      virtual_media_policy = v.virtual_media_policy != "" && v.virtual_media_policy != null ? {
         moid        = local.virtual_media_policies[v.virtual_media_policy]
         object_type = "vmedia.Policy"
       } : null
