@@ -8,7 +8,6 @@ variable "multicast_policies" {
   default = {
     default = {
       description             = ""
-      organization            = "default"
       querier_ip_address      = ""
       querier_ip_address_peer = ""
       querier_state           = "Disabled"
@@ -19,8 +18,6 @@ variable "multicast_policies" {
   description = <<-EOT
   key - Name of the Multicast Policy.
   * description - Description to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * querier_ip_address - IP Address of the IGMP Querier to Assign to the VLAN through this Policy.
   * querier_ip_address_peer - Used to define the IGMP Querier IP address of the peer switch.
   * querier_state - Administrative state of the IGMP Querier for the VLANs Assigned to this Policy.  Options are:
@@ -34,7 +31,6 @@ variable "multicast_policies" {
   type = map(object(
     {
       description             = optional(string)
-      organization            = optional(string)
       querier_ip_address      = optional(string)
       querier_ip_address_peer = optional(string)
       querier_state           = optional(string)
@@ -53,7 +49,7 @@ variable "multicast_policies" {
 
 resource "intersight_fabric_multicast_policy" "multicast_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each                = local.multicast_policies
   description             = each.value.description != "" ? each.value.description : "${each.key} Multicast Policy"
@@ -63,7 +59,7 @@ resource "intersight_fabric_multicast_policy" "multicast_policies" {
   querier_state           = each.value.querier_state
   snooping_state          = each.value.snooping_state
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

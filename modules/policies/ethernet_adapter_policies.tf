@@ -21,7 +21,6 @@ variable "ethernet_adapter_policies" {
       interrupt_mode                           = "MSIx"
       interrupt_timer                          = 125
       interrupts                               = 4
-      organization                             = "default"
       receive_queue_count                      = 4
       receive_ring_size                        = 512
       receive_side_scaling_enable              = true
@@ -86,8 +85,6 @@ variable "ethernet_adapter_policies" {
     - MSIx - Message Signaled Interrupt mechanism with the optional extension (MSIx).
   * interrupt_timer - Default is 125.  The time to wait between interrupts or the idle period that must be encountered before an interrupt is sent. To turn off interrupt coalescing, enter 0 (zero) in this field.  Range is 0-65535.
   * interrupts - Default is 8.  The number of interrupt resources to allocate. Typical value is be equal to the number of completion queue resources.  Range is 1-1024.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * receive_queue_count - Default is 4.  The number of queue resources to allocate.  Range is 1-1000.
   * receive_ring_size - Default is 512.  The number of descriptors in each queue.  Range is 64-4096.
   * receive_side_scaling_enable - Default is true.  Receive Side Scaling allows the incoming traffic to be spread across multiple CPU cores.
@@ -136,7 +133,6 @@ variable "ethernet_adapter_policies" {
       interrupt_mode                           = optional(string)
       interrupt_timer                          = optional(number)
       interrupts                               = optional(number)
-      organization                             = optional(string)
       receive_queue_count                      = optional(number)
       receive_ring_size                        = optional(number)
       receive_side_scaling_enable              = optional(bool)
@@ -174,7 +170,7 @@ variable "ethernet_adapter_policies" {
 
 resource "intersight_vnic_eth_adapter_policy" "ethernet_adapter_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each                = local.ethernet_adapter_policies
   advanced_filter         = each.value.enable_advanced_filter
@@ -201,7 +197,7 @@ resource "intersight_vnic_eth_adapter_policy" "ethernet_adapter_policies" {
     enabled = each.value.enable_nvgre_offload
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   roce_settings {

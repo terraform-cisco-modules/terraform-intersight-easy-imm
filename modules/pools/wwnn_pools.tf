@@ -9,7 +9,6 @@ variable "wwnn_pools" {
     default = {
       assignment_order = "default"
       description      = ""
-      organization     = "default"
       pool_purpose     = "WWNN"
       tags             = []
       id_blocks = {
@@ -34,8 +33,6 @@ variable "wwnn_pools" {
   * pool_purpose - What type of Fiber-Channel Pool is this.  Options are:
     - WWNN - (Default)
     - WWPN
-  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
   EOT
   type = map(object(
@@ -49,7 +46,6 @@ variable "wwnn_pools" {
           to   = optional(string)
         }
       )))
-      organization = optional(string)
       pool_purpose = optional(string)
       tags         = optional(list(map(string)))
     }
@@ -70,7 +66,7 @@ variable "wwnn_pools" {
 
 resource "intersight_fcpool_pool" "wwnn_pools" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each         = local.wwnn_pools
   assignment_order = each.value.assignment_order
@@ -87,7 +83,7 @@ resource "intersight_fcpool_pool" "wwnn_pools" {
     }
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

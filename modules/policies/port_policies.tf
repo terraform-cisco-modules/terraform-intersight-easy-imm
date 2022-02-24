@@ -9,7 +9,6 @@ variable "port_policies" {
     default = {
       description                   = ""
       device_model                  = "UCS-FI-6454"
-      organization                  = "default"
       port_channel_appliances       = {}
       port_channel_ethernet_uplinks = {}
       port_channel_fc_uplinks       = {}
@@ -31,8 +30,6 @@ variable "port_policies" {
     - UCS-FI-6454 - The standard 4th generation UCS Fabric Interconnect with 54 ports.
     - UCS-FI-64108 - The expanded 4th generation UCS Fabric Interconnect with 108 ports.
     - unknown - Unknown device type, usage is TBD.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * port_channel_appliances - Use this Map to Configure Ports for Appliance Port-Channels.
     key - Port-Channel Identifier.
     - admin_speed - Admin configured speed for the port.
@@ -209,7 +206,6 @@ variable "port_policies" {
     {
       description  = optional(string)
       device_model = optional(string)
-      organization = optional(string)
       port_channel_appliances = optional(map(object(
         {
           admin_speed                     = optional(string)
@@ -352,7 +348,7 @@ variable "port_policies" {
 
 resource "intersight_fabric_port_policy" "port_policies" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     local.ucs_domain_policies
   ]
   for_each     = local.port_policies
@@ -360,7 +356,7 @@ resource "intersight_fabric_port_policy" "port_policies" {
   device_model = each.value.device_model
   name         = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "profiles" {
@@ -388,7 +384,7 @@ resource "intersight_fabric_port_policy" "port_policies" {
 
 resource "intersight_fabric_port_mode" "port_modes" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_port_policy.port_policies
   ]
   for_each      = local.port_modes
@@ -417,7 +413,7 @@ resource "intersight_fabric_port_mode" "port_modes" {
 
 resource "intersight_fabric_appliance_pc_role" "port_channel_appliances" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_eth_network_control_policy.ethernet_network_control_policies,
     intersight_fabric_eth_network_group_policy.ethernet_network_group_policies,
     intersight_fabric_port_policy.port_policies
@@ -476,7 +472,7 @@ resource "intersight_fabric_appliance_pc_role" "port_channel_appliances" {
 
 resource "intersight_fabric_uplink_pc_role" "port_channel_ethernet_uplinks" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_eth_network_group_policy.ethernet_network_group_policies,
     intersight_fabric_flow_control_policy.flow_control_policies,
     intersight_fabric_link_aggregation_policy.link_aggregation_policies,
@@ -555,7 +551,7 @@ resource "intersight_fabric_uplink_pc_role" "port_channel_ethernet_uplinks" {
 
 resource "intersight_fabric_fc_uplink_pc_role" "port_channel_fc_uplinks" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_port_mode.port_modes,
     intersight_fabric_port_policy.port_policies
   ]
@@ -592,7 +588,7 @@ resource "intersight_fabric_fc_uplink_pc_role" "port_channel_fc_uplinks" {
 
 resource "intersight_fabric_fcoe_uplink_pc_role" "port_channel_fcoe_uplinks" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_link_aggregation_policy.link_aggregation_policies,
     intersight_fabric_link_control_policy.link_control_policies,
     intersight_fabric_port_policy.port_policies
@@ -649,7 +645,7 @@ resource "intersight_fabric_fcoe_uplink_pc_role" "port_channel_fcoe_uplinks" {
 
 resource "intersight_fabric_appliance_role" "port_role_appliances" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_eth_network_control_policy.ethernet_network_control_policies,
     intersight_fabric_eth_network_group_policy.ethernet_network_group_policies,
     intersight_fabric_port_policy.port_policies
@@ -703,7 +699,7 @@ resource "intersight_fabric_appliance_role" "port_role_appliances" {
 
 resource "intersight_fabric_uplink_role" "port_role_ethernet_uplinks" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_eth_network_group_policy.ethernet_network_group_policies,
     intersight_fabric_flow_control_policy.flow_control_policies,
     intersight_fabric_link_control_policy.link_control_policies,
@@ -766,7 +762,7 @@ resource "intersight_fabric_uplink_role" "port_role_ethernet_uplinks" {
 
 resource "intersight_fabric_fc_storage_role" "port_role_fc_storage" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_port_mode.port_modes,
     intersight_fabric_port_policy.port_policies
   ]
@@ -797,7 +793,7 @@ resource "intersight_fabric_fc_storage_role" "port_role_fc_storage" {
 
 resource "intersight_fabric_fc_uplink_role" "port_role_fc_uplinks" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_port_mode.port_modes,
     intersight_fabric_port_policy.port_policies
   ]
@@ -829,7 +825,7 @@ resource "intersight_fabric_fc_uplink_role" "port_role_fc_uplinks" {
 
 resource "intersight_fabric_fcoe_uplink_role" "port_role_fcoe_uplinks" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_link_control_policy.link_control_policies,
     intersight_fabric_port_policy.port_policies
   ]
@@ -870,7 +866,7 @@ resource "intersight_fabric_fcoe_uplink_role" "port_role_fcoe_uplinks" {
 
 resource "intersight_fabric_server_role" "port_role_servers" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_port_policy.port_policies
   ]
   for_each          = local.port_role_servers

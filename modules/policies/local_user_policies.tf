@@ -48,7 +48,6 @@ variable "local_user_policies" {
       enforce_strong_password   = true
       grace_period              = 0
       notification_period       = 15
-      organization              = "default"
       password_expiry_duration  = 90
       password_history          = 5
       tags                      = []
@@ -76,8 +75,6 @@ variable "local_user_policies" {
       4. Non-alphabetic characters (! , @, #, $, %, ^, &, *, -, _, +, =).
   * grace_period - Time, in days, after the password is expired that a user can continue to use their expired password.  The allowed grace period is between 0 to 5 days.  With 0 being no grace period.
   * notification_period - Number of days, between 0 to 15 (0 being disabled), that a user is notified to change their password before it expires.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * password_expiry_duration - When Password Expiry is Enabled, this sets the duration of time (in days) a password may be valid.  The password expiry duration must be greater than notification period + grace period.  Range is 1-3650.
     Note:  The
   * password_history - Password change history. Specifies the number of previous passwords that are stored and compared to a new password.  Range is 0 to 5.
@@ -96,7 +93,6 @@ variable "local_user_policies" {
       enforce_strong_password   = optional(bool)
       grace_period              = optional(number)
       notification_period       = optional(number)
-      organization              = optional(string)
       password_expiry_duration  = optional(number)
       password_history          = optional(number)
       tags                      = optional(list(map(string)))
@@ -120,7 +116,7 @@ variable "local_user_policies" {
 
 resource "intersight_iam_end_point_user_policy" "local_user_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.local_user_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Local User Policy"
@@ -135,7 +131,7 @@ resource "intersight_iam_end_point_user_policy" "local_user_policies" {
     password_history         = each.value.password_history
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {
@@ -156,13 +152,13 @@ resource "intersight_iam_end_point_user_policy" "local_user_policies" {
 
 resource "intersight_iam_end_point_user" "users" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_iam_end_point_user_policy.local_user_policies
   ]
   for_each = local.local_users
   name     = each.value.username
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
 }

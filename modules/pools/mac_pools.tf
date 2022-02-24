@@ -9,7 +9,6 @@ variable "mac_pools" {
     default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
       assignment_order = "default"
       description      = ""
-      organization     = "default"
       tags             = []
       mac_blocks = {
         default = {
@@ -30,8 +29,6 @@ variable "mac_pools" {
     - from - Staring MAC Address.  An Example is "00:25:B5:0A:00:00".
     - size - Size of MAC Address Pool.  An Example is 1000.
     - to - Ending MAC Address.  An Example is "00:25:B5:0A:03:E7".
-  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
   EOT
   type = map(object(
@@ -45,8 +42,7 @@ variable "mac_pools" {
           to   = optional(string)
         }
       )))
-      organization = optional(string)
-      tags         = optional(list(map(string)))
+      tags = optional(list(map(string)))
     }
   ))
 }
@@ -65,7 +61,7 @@ variable "mac_pools" {
 
 resource "intersight_macpool_pool" "mac_pools" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each         = local.mac_pools
   assignment_order = each.value.assignment_order
@@ -81,7 +77,7 @@ resource "intersight_macpool_pool" "mac_pools" {
     }
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

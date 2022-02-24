@@ -7,7 +7,6 @@ variable "ucs_domain_profiles" {
       device_model                = "UCS-FI-6454"
       network_connectivity_policy = ""
       ntp_policy                  = ""
-      organization                = ""
       port_policy_fabric_a        = ""
       port_policy_fabric_b        = ""
       snmp_policy                 = ""
@@ -37,8 +36,6 @@ variable "ucs_domain_profiles" {
     - unknown - Unknown device type, usage is TBD.
   * network_connectivity_policy - Name of the Network Connectivity Policy to assign to the Profile.
   * ntp_policy - Name of the Network Connectivity Policy to assign to the Profile.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * port_policy_fabric_a - Name of the Port Policy to assign to Fabric A.
   * port_policy_fabric_b - Name of the Port Policy to assign to Fabric B.
   * snmp_policy - Name of the SNMP Policy to assign to the Profile.
@@ -61,7 +58,6 @@ variable "ucs_domain_profiles" {
       device_model                = optional(string)
       network_connectivity_policy = optional(string)
       ntp_policy                  = optional(string)
-      organization                = optional(string)
       port_policy_fabric_a        = optional(string)
       port_policy_fabric_b        = optional(string)
       snmp_policy                 = optional(string)
@@ -87,14 +83,14 @@ variable "ucs_domain_profiles" {
 
 resource "intersight_fabric_switch_cluster_profile" "ucs_domain_profiles" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.ucs_domain_profiles
   description = each.value.description != "" ? each.value.description : "${each.key} UCS Domain Profile"
   name        = each.key
   type        = "instance"
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {
@@ -115,7 +111,6 @@ resource "intersight_fabric_switch_cluster_profile" "ucs_domain_profiles" {
 resource "intersight_fabric_switch_profile" "ucs_domain_switches" {
   depends_on = [
     data.intersight_network_element_summary.fis,
-    local.org_moids,
     intersight_fabric_switch_cluster_profile.ucs_domain_profiles
   ]
   for_each    = local.merged_ucs_switches

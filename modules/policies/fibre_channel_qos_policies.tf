@@ -11,7 +11,6 @@ variable "fibre_channel_qos_policies" {
       cos                 = 3
       description         = ""
       max_data_field_size = 2112
-      organization        = "default"
       rate_limit          = 0
       tags                = []
     }
@@ -22,8 +21,6 @@ variable "fibre_channel_qos_policies" {
   * cos - Default is 3.  Class of Service to be associated to the traffic on the virtual interface.  Value can be between 0-6.
   * description - Description for the Policy.
   * max_data_field_size - Default is 2112.  The maximum size of the Fibre Channel frame payload bytes that the virtual interface supports.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * rate_limit - Default is 0.  The value in Mbps (0-10G/40G/100G depending on Adapter Model) to use for limiting the data rate on the virtual interface. Setting this to zero will turn rate limiting off.  Range is between 0-100000.
   * tags - Default is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
@@ -33,7 +30,6 @@ variable "fibre_channel_qos_policies" {
       cos                 = optional(number)
       description         = optional(string)
       max_data_field_size = optional(number)
-      organization        = optional(string)
       rate_limit          = optional(number)
       tags                = optional(list(map(string)))
     }
@@ -48,7 +44,7 @@ variable "fibre_channel_qos_policies" {
 
 resource "intersight_vnic_fc_qos_policy" "fibre_channel_qos_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each            = local.fibre_channel_qos_policies
   burst               = each.value.burst # FIAttached
@@ -58,7 +54,7 @@ resource "intersight_vnic_fc_qos_policy" "fibre_channel_qos_policies" {
   name                = each.key
   rate_limit          = each.value.rate_limit # FIAttached and Standalone
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

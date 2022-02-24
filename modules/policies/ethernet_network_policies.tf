@@ -9,7 +9,6 @@ variable "ethernet_network_policies" {
     default = {
       default_vlan = 0
       description  = ""
-      organization = "default"
       tags         = []
       vlan_mode    = "ACCESS"
     }
@@ -18,8 +17,6 @@ variable "ethernet_network_policies" {
   key - Name of the Ethernet Network Group Policy
   * default_vlan - Default is 0.  Native VLAN ID of the virtual interface or the corresponding vethernet on the peer Fabric Interconnect to which the virtual interface is connected. Setting the ID to 0 will not associate any native VLAN to the traffic on the virtual interface.
   * description - Description for the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - Default is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
   * vlan_mode - Default is ACCESS.  Option to determine if the port can carry single VLAN (Access) or multiple VLANs (Trunk) traffic.
     - ACCESS - An access port carries traffic only for a single VLAN on the interface.
@@ -29,7 +26,6 @@ variable "ethernet_network_policies" {
     {
       default_vlan = optional(number)
       description  = optional(string)
-      organization = optional(string)
       tags         = optional(list(map(string)))
       vlan_mode    = optional(string)
     }
@@ -44,13 +40,13 @@ variable "ethernet_network_policies" {
 
 resource "intersight_vnic_eth_network_policy" "ethernet_network_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.ethernet_network_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Policy."
   name        = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   vlan_settings {

@@ -15,10 +15,9 @@ variable "iscsi_static_target_policies" {
           lun_id   = null
         }
       ]
-      organization = "default"
-      port         = null
-      tags         = []
-      target_name  = "**REQUIRED**"
+      port        = null
+      tags        = []
+      target_name = "**REQUIRED**"
     }
   }
   description = <<-EOT
@@ -28,8 +27,6 @@ variable "iscsi_static_target_policies" {
   * lun - Required Attribute.  The LUN parameters associated with an iSCSI target. This complex property has following sub-properties:
     - bootable - Default is true.  Flag to specify if the LUN is bootable.
     - lun_id - The Identifier of the LUN.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * port - Required Attribute.  The port associated with the iSCSI target.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * target_name - Required Attribute.  Qualified Name (IQN) or Extended Unique Identifier (EUI) name of the iSCSI target.
@@ -44,10 +41,9 @@ variable "iscsi_static_target_policies" {
           lun_id   = number
         }
       ))
-      organization = optional(string)
-      port         = number
-      tags         = optional(list(map(string)))
-      target_name  = string
+      port        = number
+      tags        = optional(list(map(string)))
+      target_name = string
     }
   ))
 }
@@ -61,7 +57,7 @@ variable "iscsi_static_target_policies" {
 
 resource "intersight_vnic_iscsi_static_target_policy" "iscsi_static_target_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = var.iscsi_static_target_policies
   description = each.value.description != "" ? each.value.description : "${each.key} iSCSI Adapter Policy"
@@ -70,7 +66,7 @@ resource "intersight_vnic_iscsi_static_target_policy" "iscsi_static_target_polic
   port        = each.value.port
   target_name = each.value.target_name
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "lun" {

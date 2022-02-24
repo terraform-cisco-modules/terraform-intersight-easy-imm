@@ -8,7 +8,6 @@ variable "vsan_policies" {
   default = {
     default = {
       description     = ""
-      organization    = "default"
       tags            = []
       uplink_trunking = false
       vsans = {
@@ -26,8 +25,6 @@ variable "vsan_policies" {
   description = <<-EOT
   key - Name of the VSAN Policy.
   * description - Description to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * uplink_trunking - Default is false.  Enable or Disable Trunking on all of configured FC uplink ports.
   * vsans - List of VSANs to add to the VSAN Policy.
@@ -46,7 +43,6 @@ variable "vsan_policies" {
   type = map(object(
     {
       description     = optional(string)
-      organization    = optional(string)
       tags            = optional(list(map(string)))
       uplink_trunking = optional(bool)
       vsans = optional(map(object(
@@ -73,7 +69,7 @@ variable "vsan_policies" {
 
 resource "intersight_fabric_fc_network_policy" "vsan_policies" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     local.ucs_domain_policies
   ]
   for_each        = var.vsan_policies
@@ -81,7 +77,7 @@ resource "intersight_fabric_fc_network_policy" "vsan_policies" {
   enable_trunking = each.value.uplink_trunking
   name            = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "profiles" {
@@ -108,7 +104,7 @@ resource "intersight_fabric_fc_network_policy" "vsan_policies" {
 
 resource "intersight_fabric_vsan" "vsans" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_fc_network_policy.vsan_policies
   ]
   for_each             = local.vsans

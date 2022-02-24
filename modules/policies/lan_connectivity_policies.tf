@@ -12,7 +12,6 @@ variable "lan_connectivity_policies" {
       iqn_allocation_type         = "None"
       iqn_pool                    = ""
       iqn_static_identifier       = ""
-      organization                = "default"
       tags                        = []
       target_platform             = "FIAttached"
       vnic_placement_mode         = "custom"
@@ -59,8 +58,6 @@ variable "lan_connectivity_policies" {
     - Static
   * iqn_pool - IQN Pool to Assign to the Policy.
   * iqn_static_identifier - User provided static iSCSI Qualified Name (IQN) for use as initiator identifiers by iSCSI vNICs.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * target_platform - The platform for which the server profile is applicable. It can either be:
     - Standalone - a server that is operating independently
@@ -111,7 +108,6 @@ variable "lan_connectivity_policies" {
       iqn_allocation_type         = optional(string)
       iqn_pool                    = optional(string)
       iqn_static_identifier       = optional(string)
-      organization                = optional(string)
       tags                        = optional(list(map(string)))
       target_platform             = optional(string)
       vnic_placement_mode         = optional(string)
@@ -159,7 +155,7 @@ variable "lan_connectivity_policies" {
 
 resource "intersight_vnic_lan_connectivity_policy" "lan_connectivity_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each            = var.lan_connectivity_policies
   description         = each.value.description != "" ? each.value.description : "${each.key} LAN Connectivity Policy"
@@ -170,7 +166,7 @@ resource "intersight_vnic_lan_connectivity_policy" "lan_connectivity_policies" {
   static_iqn_name     = each.value.iqn_allocation_type == "Static" ? each.value.iqn_static_identifier : ""
   target_platform     = each.value.target_platform
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "iqn_pool" {
@@ -197,7 +193,7 @@ resource "intersight_vnic_lan_connectivity_policy" "lan_connectivity_policies" {
 
 resource "intersight_vnic_eth_if" "vnics" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_vnic_eth_adapter_policy.ethernet_adapter_policies,
     intersight_fabric_eth_network_control_policy.ethernet_network_control_policies,
     intersight_fabric_eth_network_group_policy.ethernet_network_group_policies,

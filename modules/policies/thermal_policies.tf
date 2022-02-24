@@ -9,7 +9,6 @@ variable "thermal_policies" {
     default = {
       description      = ""
       fan_control_mode = "Balanced"
-      organization     = "default"
       tags             = []
     }
   }
@@ -22,15 +21,12 @@ variable "thermal_policies" {
     - LowPower - The Fans run at the minimum speed required to keep the chassis cool.
     - HighPower - The fans are kept at higher speed to emphasizes performance over power consumption. This Mode is only supported for UCS X series Chassis.
     - MaximumPower - The fans are always kept at maximum speed. This option provides the most cooling and consumes the most power. This Mode is only supported for UCS X series Chassis.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
       description      = optional(string)
       fan_control_mode = optional(string)
-      organization     = optional(string)
       tags             = optional(list(map(string)))
     }
   ))
@@ -45,14 +41,14 @@ variable "thermal_policies" {
 
 resource "intersight_thermal_policy" "thermal_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each         = local.thermal_policies
   description      = each.value.description != "" ? each.value.description : "${each.key} Thermal Policy"
   fan_control_mode = each.value.fan_control_mode
   name             = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

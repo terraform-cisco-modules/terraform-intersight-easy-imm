@@ -21,7 +21,6 @@ variable "fibre_channel_adapter_policies" {
       io_throttle_count                 = 256
       lun_queue_depth                   = 20
       max_luns_per_target               = 1024
-      organization                      = "default"
       plogi_retries                     = 8
       plogi_timeout                     = 20000
       receive_ring_size                 = 64
@@ -60,8 +59,6 @@ variable "fibre_channel_adapter_policies" {
   * io_throttle_count - Default is 512.  The maximum number of data or control I/O operations that can be pending for the virtual interface at one time. If this value is exceeded, the additional I/O operations wait in the queue until the number of pending I/O operations decreases and the additional operations can be processed.  Range is 1-1024.
   * lun_queue_depth - Default is 20.  The number of commands that the HBA can send and receive in a single transmission per LUN.  Range is 1-254.
   * max_luns_per_target - Default is 1024.  The maximum number of LUNs that the Fibre Channel driver will export or show. The maximum number of LUNs is usually controlled by the operating system running on the server.  Rnage is 1-1024.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * plogi_retries - Default is 8.  The number of times that the system tries to log in to a port after the first failure.  Range is 0-255.
   * plogi_timeout - Default is 20000.  The number of milliseconds that the system waits before it tries to log in again.  Range is 1000-255000.
   * receive_ring_size - Default is 64.  The number of descriptors in each queue.  Range is 64-2048.
@@ -87,7 +84,6 @@ variable "fibre_channel_adapter_policies" {
       io_throttle_count                 = optional(number)
       lun_queue_depth                   = optional(number)
       max_luns_per_target               = optional(number)
-      organization                      = optional(string)
       plogi_retries                     = optional(number)
       plogi_timeout                     = optional(number)
       receive_ring_size                 = optional(number)
@@ -108,7 +104,7 @@ variable "fibre_channel_adapter_policies" {
 
 resource "intersight_vnic_fc_adapter_policy" "fibre_channel_adapter_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each                    = local.fibre_channel_adapter_policies
   description                 = each.value.description != "" ? each.value.description : "${each.key} Fibre Channel Adapter Policy"
@@ -133,7 +129,7 @@ resource "intersight_vnic_fc_adapter_policy" "fibre_channel_adapter_policies" {
     mode = each.value.interrupt_mode
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   plogi_settings {

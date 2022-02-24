@@ -11,7 +11,6 @@ variable "boot_order_policies" {
       boot_mode          = "Uefi"
       description        = ""
       enable_secure_boot = false
-      organization       = "default"
       tags               = []
     }
   }
@@ -96,8 +95,6 @@ variable "boot_order_policies" {
     - Uefi - UEFI mode uses the GUID Partition Table (GPT) to locate EFI Service Partitions to boot from.
   * description - Description to Assign to the Policy.
   * enable_secure_boot - If UEFI secure boot is enabled, the boot mode is set to UEFI by default. Secure boot enforces that device boots using only software that is trusted by the Original Equipment Manufacturer (OEM).
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
@@ -124,7 +121,6 @@ variable "boot_order_policies" {
       boot_mode          = optional(string)
       description        = optional(string)
       enable_secure_boot = optional(bool)
-      organization       = optional(string)
       tags               = optional(list(map(string)))
     }
   ))
@@ -139,7 +135,7 @@ variable "boot_order_policies" {
 
 resource "intersight_boot_precision_policy" "boot_order_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each                 = local.formatted_boot_order_policies
   configured_boot_mode     = each.value.boot_mode
@@ -147,7 +143,7 @@ resource "intersight_boot_precision_policy" "boot_order_policies" {
   enforce_uefi_secure_boot = each.value.enable_secure_boot
   name                     = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "boot_devices" {

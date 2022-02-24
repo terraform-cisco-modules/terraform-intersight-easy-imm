@@ -13,7 +13,6 @@ variable "ip_pools" {
       ipv4_config      = {}
       ipv6_blocks      = {}
       ipv6_config      = {}
-      organization     = "default"
       tags             = []
     }
   }
@@ -41,8 +40,6 @@ variable "ip_pools" {
     - netmask - Netmask to assign to the pool.
     - primary_dns = Primary DNS Server to Assign to the Pool
     - secondary_dns = Secondary DNS Server to Assign to the Pool
-  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
   EOT
   type = map(object(
@@ -79,8 +76,7 @@ variable "ip_pools" {
           secondary_dns = optional(string)
         }
       )))
-      organization = optional(string)
-      tags         = optional(list(map(string)))
+      tags = optional(list(map(string)))
     }
   ))
 }
@@ -99,7 +95,7 @@ variable "ip_pools" {
 
 resource "intersight_ippool_pool" "ip_pools" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each         = local.ip_pools
   assignment_order = each.value.assignment_order
@@ -140,7 +136,7 @@ resource "intersight_ippool_pool" "ip_pools" {
     }
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

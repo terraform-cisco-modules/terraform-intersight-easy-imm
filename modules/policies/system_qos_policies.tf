@@ -18,9 +18,8 @@ variable "system_qos_policies" {
           weight             = 0
         }
       }
-      description  = ""
-      organization = "default"
-      tags         = []
+      description = ""
+      tags        = []
     }
   }
   description = <<-EOT
@@ -57,8 +56,6 @@ variable "system_qos_policies" {
       5. Platinum - By default is 10.
       6. Silver - By default is 8.
   * description - Description to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
@@ -74,9 +71,8 @@ variable "system_qos_policies" {
           weight             = optional(number)
         }
       )))
-      description  = optional(string)
-      organization = optional(string)
-      tags         = optional(list(map(string)))
+      description = optional(string)
+      tags        = optional(list(map(string)))
     }
   ))
 }
@@ -90,14 +86,14 @@ variable "system_qos_policies" {
 
 resource "intersight_fabric_system_qos_policy" "system_qos_policies" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     local.ucs_domain_policies
   ]
   for_each    = var.system_qos_policies
   description = each.value.description != null ? each.value.description : "${each.key} System QoS Policy"
   name        = each.key
   organization {
-    moid        = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
+    moid        = each.value.organization != null ? local.org_moid : local.org_moid["default"].moid
     object_type = "organization.Organization"
   }
   dynamic "classes" {

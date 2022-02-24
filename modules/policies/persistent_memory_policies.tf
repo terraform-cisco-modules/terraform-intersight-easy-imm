@@ -11,7 +11,6 @@ variable "persistent_memory_policies" {
       management_mode        = "configured-from-intersight"
       memory_mode_percentage = 0
       namespaces             = {}
-      organization           = "default"
       persistent_memory_type = "app-direct"
       retain_namespaces      = true
       tags                   = []
@@ -50,8 +49,6 @@ variable "persistent_memory_policies" {
       * 10 - The tenth socket memory ID within a socket in a server.
       * 12 - The twelfth socket memory ID within a socket in a server.
   * retain_namespaces - Persistent Memory Namespaces to be retained or not.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
@@ -68,7 +65,6 @@ variable "persistent_memory_policies" {
 
         }
       )))
-      organization           = optional(string)
       persistent_memory_type = optional(string)
       retain_namespaces      = optional(bool)
       tags                   = optional(list(map(string)))
@@ -95,7 +91,7 @@ variable "secure_passphrase" {
 
 resource "intersight_memory_persistent_memory_policy" "persistent_memory_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each          = local.persistent_memory_policies
   description       = each.value.description != "" ? each.value.description : "${each.key} Persistent Memory Policy"
@@ -114,7 +110,7 @@ resource "intersight_memory_persistent_memory_policy" "persistent_memory_policie
     secure_passphrase = var.secure_passphrase
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "logical_namespaces" {

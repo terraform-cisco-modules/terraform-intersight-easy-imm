@@ -12,7 +12,6 @@ variable "ethernet_qos_policies" {
       description           = ""
       enable_trust_host_cos = false
       mtu                   = 1500
-      organization          = "default"
       priority              = "Best Effort"
       rate_limit            = 0
       tags                  = []
@@ -25,8 +24,6 @@ variable "ethernet_qos_policies" {
   * description - Description for the Policy.
   * enable_trust_host_cos - Default is false.  Enables usage of the Class of Service provided by the operating system.
   * mtu - Default is 1500.  The Maximum Transmission Unit (MTU) or packet size that the virtual interface accepts.  Value can be between 1500-9000.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * priority - Default is 'Best Effort'.  The priortity matching the System QoS specified in the fabric profile.  Options are:
     - Platinum
     - Gold
@@ -45,7 +42,6 @@ variable "ethernet_qos_policies" {
       enable_trust_host_cos = optional(bool)
       priority              = optional(string)
       mtu                   = optional(number)
-      organization          = optional(string)
       rate_limit            = optional(number)
       tags                  = optional(list(map(string)))
     }
@@ -60,7 +56,7 @@ variable "ethernet_qos_policies" {
 
 resource "intersight_vnic_eth_qos_policy" "ethernet_qos_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each       = local.ethernet_qos_policies
   burst          = each.value.burst
@@ -72,7 +68,7 @@ resource "intersight_vnic_eth_qos_policy" "ethernet_qos_policies" {
   rate_limit     = each.value.rate_limit
   trust_host_cos = each.value.enable_trust_host_cos
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

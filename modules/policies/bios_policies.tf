@@ -407,8 +407,6 @@ variable "bios_policies" {
   Intersight BIOS Variable Map.
   key - Name of the BIOS Policy
   *  description - Description to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this BIOS Policy to:
-    - https://intersight.com/an/settings/organizations/
   *  tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * acs_control_gpu1state - default is "platform-default".  BIOS Token for setting ACS Control GPU 1 configuration.
     - platform-default - Default value used by the platform for the BIOS setting.
@@ -2546,7 +2544,6 @@ variable "bios_policies" {
       onboard_scu_storage_support           = optional(string)
       onboard_scu_storage_sw_stack          = optional(string)
       operation_mode                        = optional(string)
-      organization                          = optional(string)
       os_boot_watchdog_timer                = optional(string)
       os_boot_watchdog_timer_policy         = optional(string)
       os_boot_watchdog_timer_timeout        = optional(string)
@@ -2803,7 +2800,7 @@ variable "bios_policies" {
 
 resource "intersight_bios_policy" "bios_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.bios_policies
   description = each.value.description != "" ? each.value.description : "${each.key} BIOS Policy"
@@ -3301,7 +3298,7 @@ resource "intersight_bios_policy" "bios_policies" {
   usb_xhci_support         = each.value.usb_xhci_support         # XHCI Legacy Support
 
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

@@ -11,7 +11,6 @@ variable "smtp_policies" {
       enable_smtp               = true
       mail_alert_recipients     = []
       minimum_severity          = "critical"
-      organization              = "default"
       smtp_alert_sender_address = ""
       smtp_port                 = 25
       smtp_server_address       = ""
@@ -29,8 +28,6 @@ variable "smtp_policies" {
     - warning - Minimum severity to report is warning.
     - minor - Minimum severity to report is minor.
     - major - Minimum severity to report is major.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * smtp_alert_sender_address - The email address entered here will be displayed as the from address (mail received from address) of all the SMTP mail alerts that are received. If not configured, the hostname of the server is used in the from address field.
   * smtp_port - Port number used by the SMTP server for outgoing SMTP communication.  Valid range is between 1-65535.
   * smtp_server_address - IP address or hostname of the SMTP server. The SMTP server is used by the managed device to send email notifications.
@@ -42,7 +39,6 @@ variable "smtp_policies" {
       enable_smtp               = optional(bool)
       mail_alert_recipients     = optional(list(string))
       minimum_severity          = optional(string)
-      organization              = optional(string)
       smtp_alert_sender_address = optional(string)
       smtp_port                 = optional(number)
       smtp_server_address       = optional(string)
@@ -60,7 +56,7 @@ variable "smtp_policies" {
 
 resource "intersight_smtp_policy" "smtp_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each        = local.smtp_policies
   description     = each.value.description != "" ? each.value.description : "${each.key} SMTP Policy"
@@ -72,7 +68,7 @@ resource "intersight_smtp_policy" "smtp_policies" {
   smtp_recipients = each.value.mail_alert_recipients
   smtp_server     = each.value.smtp_server_address
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

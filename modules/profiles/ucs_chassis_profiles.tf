@@ -68,7 +68,7 @@ variable "ucs_chassis_profiles" {
 
 resource "intersight_chassis_profile" "ucs_chassis_profiles" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each            = local.ucs_chassis_profiles
   action              = each.value.action
@@ -78,7 +78,7 @@ resource "intersight_chassis_profile" "ucs_chassis_profiles" {
   type                = "instance"
   wait_for_completion = each.value.wait_for_completion
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "assigned_chassis" {

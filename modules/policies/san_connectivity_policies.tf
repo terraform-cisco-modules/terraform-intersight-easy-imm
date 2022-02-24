@@ -8,7 +8,6 @@ variable "san_connectivity_policies" {
   default = {
     default = {
       description          = ""
-      organization         = "default"
       tags                 = []
       target_platform      = "FIAttached"
       vhba_placement_mode  = "custom"
@@ -38,8 +37,6 @@ variable "san_connectivity_policies" {
   description = <<-EOT
   key - Name of the SAN Connectivity Policy.
   * description - Description to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * target_platform - The platform for which the server profile is applicable. It can either be:
     - FIAttached (Default) - A Server attached to a Intersight Managed Domain.
@@ -79,7 +76,6 @@ variable "san_connectivity_policies" {
   type = map(object(
     {
       description          = optional(string)
-      organization         = optional(string)
       tags                 = optional(list(map(string)))
       target_platform      = optional(string)
       vhba_placement_mode  = optional(string)
@@ -117,7 +113,7 @@ variable "san_connectivity_policies" {
 
 resource "intersight_vnic_san_connectivity_policy" "san_connectivity_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each            = local.san_connectivity_policies
   description         = each.value.description != "" ? each.value.description : "${each.key} SAN Connectivity Policy"
@@ -127,7 +123,7 @@ resource "intersight_vnic_san_connectivity_policy" "san_connectivity_policies" {
   target_platform     = each.value.target_platform
   wwnn_address_type   = each.value.wwnn_allocation_type
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {
@@ -154,7 +150,7 @@ resource "intersight_vnic_san_connectivity_policy" "san_connectivity_policies" {
 
 resource "intersight_vnic_fc_if" "vhbas" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_vnic_fc_adapter_policy.fibre_channel_adapter_policies,
     intersight_vnic_fc_network_policy.fibre_channel_network_policies,
     intersight_vnic_fc_qos_policy.fibre_channel_qos_policies,

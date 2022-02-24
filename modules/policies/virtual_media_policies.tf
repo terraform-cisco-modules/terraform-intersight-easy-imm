@@ -11,7 +11,6 @@ variable "virtual_media_policies" {
       enable_low_power_usb            = false
       enable_virtual_media            = true
       enable_virtual_media_encryption = true
-      organization                    = "default"
       tags                            = []
       vmedia_mappings                 = {}
     }
@@ -22,8 +21,6 @@ variable "virtual_media_policies" {
   * enable_low_power_usb - Default is false.  If enabled, the virtual drives appear on the boot selection menu after mapping the image and rebooting the host.
   * enable_virtual_media - Default is true.  Flag to Enable or Disable the Policy.
   * enable_virtual_media_encryption - Default is true.  If enabled, allows encryption of all Virtual Media communications.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * vmedia_mappings - Virtual Media Maps
     Key - Name of the Virtual Media Mount
@@ -75,7 +72,6 @@ variable "virtual_media_policies" {
       enable_low_power_usb            = optional(bool)
       enable_virtual_media            = optional(bool)
       enable_virtual_media_encryption = optional(bool)
-      organization                    = optional(string)
       tags                            = optional(list(map(string)))
       vmedia_mappings = optional(map(object(
         {
@@ -135,7 +131,7 @@ variable "vmedia_password_5" {
 
 resource "intersight_vmedia_policy" "virtual_media_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each      = local.virtual_media_policies
   description   = each.value.description != "" ? each.value.description : "${each.key} Virtual Media Policy"
@@ -144,7 +140,7 @@ resource "intersight_vmedia_policy" "virtual_media_policies" {
   low_power_usb = each.value.enable_low_power_usb
   name          = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "mappings" {

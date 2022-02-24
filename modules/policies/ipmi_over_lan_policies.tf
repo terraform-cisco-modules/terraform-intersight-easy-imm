@@ -14,12 +14,11 @@ variable "ipmi_key_1" {
 variable "ipmi_over_lan_policies" {
   default = {
     default = {
-      description  = ""
-      enabled      = true
-      ipmi_key     = null
-      organization = "default"
-      privilege    = "admin"
-      tags         = []
+      description = ""
+      enabled     = true
+      ipmi_key    = null
+      privilege   = "admin"
+      tags        = []
     }
   }
   description = <<-EOT
@@ -27,8 +26,6 @@ variable "ipmi_over_lan_policies" {
   * description - Description to Assign to the Policy.
   * enabled - Flag to Enable or Disable the Policy.
   * ipmi_key - If null then encryption will not be applied.  If the value is set to 1 it will apply the ipmi_key_1 value.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * privilege - The highest privilege level that can be assigned to an IPMI session on a server.
     - admin - Privilege to perform all actions available through IPMI.
     - user - Privilege to perform some functions through IPMI but restriction on performing administrative tasks.
@@ -37,12 +34,11 @@ variable "ipmi_over_lan_policies" {
   EOT
   type = map(object(
     {
-      description  = optional(string)
-      enabled      = optional(bool)
-      ipmi_key     = optional(number)
-      organization = optional(string)
-      privilege    = optional(string)
-      tags         = optional(list(map(string)))
+      description = optional(string)
+      enabled     = optional(bool)
+      ipmi_key    = optional(number)
+      privilege   = optional(string)
+      tags        = optional(list(map(string)))
     }
   ))
 }
@@ -56,7 +52,7 @@ variable "ipmi_over_lan_policies" {
 
 resource "intersight_ipmioverlan_policy" "ipmi_over_lan_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each       = local.ipmi_over_lan_policies
   description    = each.value.description != "" ? each.value.description : "${each.key} IPMI over LAN Policy"
@@ -65,7 +61,7 @@ resource "intersight_ipmioverlan_policy" "ipmi_over_lan_policies" {
   name           = each.key
   privilege      = each.value.privilege
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

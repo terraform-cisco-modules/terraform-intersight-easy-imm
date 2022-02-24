@@ -53,7 +53,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_apikey"></a> [apikey](#input\_apikey) | Intersight API Key. | `string` | n/a | yes |
 | <a name="input_endpoint"></a> [endpoint](#input\_endpoint) | Intersight URL. | `string` | `"https://intersight.com"` | no |
-| <a name="input_organizations"></a> [organizations](#input\_organizations) | Intersight Organization Names. | `set(string)` | <pre>[<br>  "default"<br>]</pre> | no |
+| <a name="input_organization"></a> [organization](#input\_organization) | Intersight Organization Names to Apply Policy to.  https://intersight.com/an/settings/organizations/. | `string` | `"default"` | no |
 | <a name="input_secretkey"></a> [secretkey](#input\_secretkey) | Intersight Secret Key. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of Key/Value Pairs to Assign as Attributes to the Policy. | `list(map(string))` | `[]` | no |
 | <a name="input_tfc_workspaces"></a> [tfc\_workspaces](#input\_tfc\_workspaces) | * backend: Options are:<br>  - local - The backend is on the Local Machine<br>  - Remote - The backend is in TFCB.<br>* tfc\_organization: Name of the Terraform Cloud Organization<br>* ws\_policies: Name of the policies workspace<br>* ws\_pools: Name of the pools workspace. | <pre>list(object(<br>    {<br>      backend          = string<br>      tfc_organization = string<br>      ws_pools         = string<br>      ws_policies      = string<br>    }<br>  ))</pre> | <pre>[<br>  {<br>    "backend": "remote",<br>    "tfc_organization": "default",<br>    "ws_policies": "default_ucs_domain_profiles",<br>    "ws_pools": "default_pools"<br>  }<br>]</pre> | no |

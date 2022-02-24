@@ -9,7 +9,6 @@ variable "power_policies" {
     default = {
       description               = ""
       dynamic_power_rebalancing = "Enabled"
-      organization              = "default"
       power_allocation          = 0
       power_priority            = "Low"
       power_profiling           = "Enabled"
@@ -25,8 +24,6 @@ variable "power_policies" {
   * dynamic_power_rebalancing - Sets the Dynamic Power Rebalancing of the System. This option is only supported for Cisco UCS X series Chassis.
     - Enabled - Set the value to Enabled.
     - Disabled - Set the value to Disabled.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * power_allocation - Sets the Allocated Power Budget of the System (in Watts). This field is only supported for Cisco UCS X series Chassis.
   * power_priority - Sets the Power Priority of the System. This field is only supported for Cisco UCS X series servers.
     - Low - Set the value to Low.
@@ -53,7 +50,6 @@ variable "power_policies" {
     {
       description               = optional(string)
       dynamic_power_rebalancing = optional(string)
-      organization              = optional(string)
       power_allocation          = optional(number)
       power_priority            = optional(string)
       power_profiling           = optional(string)
@@ -74,7 +70,7 @@ variable "power_policies" {
 
 resource "intersight_power_policy" "power_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each = local.power_policies
   additional_properties = jsonencode(
@@ -91,7 +87,7 @@ resource "intersight_power_policy" "power_policies" {
   power_restore_state = each.value.power_restore
   redundancy_mode     = each.value.power_redunancy
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

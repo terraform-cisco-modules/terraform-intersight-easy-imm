@@ -49,8 +49,7 @@ data "terraform_remote_state" "remote_policies" {
 #____________________________________________________________
 
 data "intersight_organization_organization" "org_moid" {
-  for_each = local.organizations
-  name     = each.value
+  name = var.organization
 }
 
 

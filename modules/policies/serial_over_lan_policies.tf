@@ -7,13 +7,12 @@
 variable "serial_over_lan_policies" {
   default = {
     default = {
-      baud_rate    = 115200
-      com_port     = "com0"
-      description  = ""
-      enabled      = true
-      organization = "default"
-      ssh_port     = 2400
-      tags         = []
+      baud_rate   = 115200
+      com_port    = "com0"
+      description = ""
+      enabled     = true
+      ssh_port    = 2400
+      tags        = []
     }
   }
   description = <<-EOT
@@ -29,20 +28,17 @@ variable "serial_over_lan_policies" {
     - com1
   * description - Description to Assign to the Policy.
   * enabled - Flag to Enable or Disable the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * ssh_port - SSH Port to Assign to the Policy.  Range is between 1024-65535.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
-      baud_rate    = optional(number)
-      com_port     = optional(string)
-      description  = optional(string)
-      enabled      = optional(bool)
-      organization = optional(string)
-      ssh_port     = optional(number)
-      tags         = optional(list(map(string)))
+      baud_rate   = optional(number)
+      com_port    = optional(string)
+      description = optional(string)
+      enabled     = optional(bool)
+      ssh_port    = optional(number)
+      tags        = optional(list(map(string)))
     }
   ))
 }
@@ -56,7 +52,7 @@ variable "serial_over_lan_policies" {
 
 resource "intersight_sol_policy" "serial_over_lan_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.serial_over_lan_policies
   baud_rate   = each.value.baud_rate
@@ -66,7 +62,7 @@ resource "intersight_sol_policy" "serial_over_lan_policies" {
   name        = each.key
   ssh_port    = each.value.ssh_port
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

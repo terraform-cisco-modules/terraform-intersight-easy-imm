@@ -7,32 +7,28 @@
 variable "ssh_policies" {
   default = {
     default = {
-      description  = ""
-      enable_ssh   = true
-      organization = "default"
-      ssh_port     = 22
-      ssh_timeout  = 1800
-      tags         = []
+      description = ""
+      enable_ssh  = true
+      ssh_port    = 22
+      ssh_timeout = 1800
+      tags        = []
     }
   }
   description = <<-EOT
   key - Name of the SSH Policy.
   * description - Description to Assign to the Policy.
   * enable_ssh - State of SSH service on the endpoint.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * ssh_port - Port used for secure shell access.  Valid range is between 1-65535.
   * ssh_timeout - Number of seconds to wait before the system considers a SSH request to have timed out.  Valid range is between 60-10800.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
-      description  = optional(string)
-      enable_ssh   = optional(bool)
-      organization = optional(string)
-      ssh_port     = optional(number)
-      ssh_timeout  = optional(number)
-      tags         = optional(list(map(string)))
+      description = optional(string)
+      enable_ssh  = optional(bool)
+      ssh_port    = optional(number)
+      ssh_timeout = optional(number)
+      tags        = optional(list(map(string)))
     }
   ))
 }
@@ -46,7 +42,7 @@ variable "ssh_policies" {
 
 resource "intersight_ssh_policy" "ssh_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.ssh_policies
   description = each.value.description != "" ? each.value.description : "${each.key} SSH Policy"
@@ -55,7 +51,7 @@ resource "intersight_ssh_policy" "ssh_policies" {
   port        = each.value.ssh_port
   timeout     = each.value.ssh_timeout
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

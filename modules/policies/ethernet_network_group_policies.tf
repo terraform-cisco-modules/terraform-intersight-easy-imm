@@ -10,7 +10,6 @@ variable "ethernet_network_group_policies" {
       allowed_vlans = "1"
       description   = ""
       native_vlan   = null
-      organization  = "default"
       tags          = []
     }
   }
@@ -19,8 +18,6 @@ variable "ethernet_network_group_policies" {
   * allowed_vlans - List of VLAN's to Add to the VLAN Group Policy.
   * description - Description for the Policy.
   * native_vlan - VLAN to Assign as the Native VLAN.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - Default is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
@@ -28,7 +25,6 @@ variable "ethernet_network_group_policies" {
       allowed_vlans = optional(string)
       description   = optional(string)
       native_vlan   = optional(number)
-      organization  = optional(string)
       tags          = optional(list(map(string)))
     }
   ))
@@ -42,13 +38,13 @@ variable "ethernet_network_group_policies" {
 
 resource "intersight_fabric_eth_network_group_policy" "ethernet_network_group_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.ethernet_network_group_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Ethernet Network Group Policy"
   name        = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   vlan_settings {

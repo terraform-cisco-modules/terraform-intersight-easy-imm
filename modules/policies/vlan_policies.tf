@@ -7,9 +7,8 @@
 variable "vlan_policies" {
   default = {
     default = {
-      description  = ""
-      organization = "default"
-      tags         = []
+      description = ""
+      tags        = []
       vlans = {
         default = {
           auto_allow_on_uplinks = false
@@ -24,8 +23,6 @@ variable "vlan_policies" {
   description = <<-EOT
   key - Name of the VLAN Policy.
   * description - Description to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * vlans - List of VSANs to add to the VSAN Policy.
     - auto_allow_on_uplinks - Default is false.  Used to determine whether this VLAN will be allowed on all uplink ports and PCs in this FI.
@@ -36,9 +33,8 @@ variable "vlan_policies" {
   EOT
   type = map(object(
     {
-      description  = optional(string)
-      organization = optional(string)
-      tags         = optional(list(map(string)))
+      description = optional(string)
+      tags        = optional(list(map(string)))
       vlans = optional(map(object(
         {
           auto_allow_on_uplinks = optional(bool)
@@ -62,14 +58,14 @@ variable "vlan_policies" {
 
 resource "intersight_fabric_eth_network_policy" "vlan_policies" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     local.ucs_domain_policies
   ]
   for_each    = var.vlan_policies
   description = each.value.description != "" ? each.value.description : "${each.key} VLAN Policy"
   name        = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "profiles" {
@@ -95,7 +91,7 @@ resource "intersight_fabric_eth_network_policy" "vlan_policies" {
 
 resource "intersight_fabric_vlan" "vlan_policies_add_vlans" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_fabric_multicast_policy.multicast_policies,
     intersight_fabric_eth_network_policy.vlan_policies
   ]

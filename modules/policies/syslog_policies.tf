@@ -9,7 +9,6 @@ variable "syslog_policies" {
     default = {
       description        = ""
       local_min_severity = "warning"
-      organization       = "default"
       remote_clients     = []
       tags               = []
     }
@@ -26,8 +25,6 @@ variable "syslog_policies" {
     - notice - Use logging level notice for logs classified as notice.
     - informational - Use logging level informational for logs classified as informational.
     - debug - Use logging level debug for logs classified as debug.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * remote_clients - Enables configuration lockout on the endpoint.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
@@ -35,7 +32,6 @@ variable "syslog_policies" {
     {
       description        = optional(string)
       local_min_severity = optional(string)
-      organization       = optional(string)
       remote_clients     = optional(list(map(string)))
       tags               = optional(list(map(string)))
     }
@@ -51,7 +47,7 @@ variable "syslog_policies" {
 
 resource "intersight_syslog_policy" "syslog_policies" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     local.ucs_domain_policies
   ]
   for_each    = local.syslog_policies
@@ -62,7 +58,7 @@ resource "intersight_syslog_policy" "syslog_policies" {
     object_type  = "syslog.LocalFileLoggingClient"
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "profiles" {

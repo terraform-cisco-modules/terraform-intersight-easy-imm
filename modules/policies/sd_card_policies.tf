@@ -13,7 +13,6 @@ variable "sd_card_policies" {
       enable_huu         = false
       enable_os          = false
       enable_scu         = false
-      organization       = "default"
       tags               = []
     }
   }
@@ -33,8 +32,6 @@ variable "sd_card_policies" {
   * enable_huu - Flag to Enable the HostUpgradeUtility Utility Partition.
   * enable_os - Flag to Enable the OperatingSystem Partition.
   * enable_scu - Flag to Enable the ServerConfigurationUtility Utility Partition.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
@@ -45,7 +42,6 @@ variable "sd_card_policies" {
       enable_huu         = optional(bool)
       enable_os          = optional(bool)
       enable_scu         = optional(bool)
-      organization       = optional(string)
       tags               = optional(list(map(string)))
     }
   ))
@@ -60,7 +56,7 @@ variable "sd_card_policies" {
 
 # module "sd_card_policies" {
 #   depends_on = [
-#     local.org_moids
+#     local.org_moid
 #   ]
 #   version = ">=0.9.6"
 #   source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies"
@@ -75,13 +71,13 @@ variable "sd_card_policies" {
 #   enable_os          = each.value.enable_os
 #   enable_scu         = each.value.enable_scu
 #   name               = each.key
-#   org_moid           = local.org_moids[each.value.organization].moid
+#   org_moid           = local.org_moid
 #   tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
 # }
 
 # module "sd_card_policies_os" {
 #   depends_on = [
-#     local.org_moids
+#     local.org_moid
 #   ]
 #   version = ">=0.9.6"
 #   source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies_os"
@@ -91,13 +87,13 @@ variable "sd_card_policies" {
 #   }
 #   description = each.value.description != "" ? each.value.description : "${each.key} SD Card Policy."
 #   name        = each.key
-#   org_moid    = local.org_moids[each.value.organization].moid
+#   org_moid    = local.org_moid
 #   tags        = length(each.value.tags) > 0 ? each.value.tags : local.tags
 # }
 # 
 # module "sd_card_policies_utiity" {
 #   depends_on = [
-#     local.org_moids
+#     local.org_moid
 #   ]
 #   version = ">=0.9.6"
 #   source  = "terraform-cisco-modules/imm/intersight//modules/sd_card_policies_utility"
@@ -111,6 +107,6 @@ variable "sd_card_policies" {
 #   enable_huu         = each.value.enable_huu
 #   enable_scu         = each.value.enable_scu
 #   name               = each.key
-#   org_moid           = local.org_moids[each.value.organization].moid
+#   org_moid           = local.org_moid
 #   tags               = length(each.value.tags) > 0 ? each.value.tags : local.tags
 # }

@@ -10,7 +10,6 @@ variable "storage_policies" {
       description                     = ""
       global_hot_spares               = ""
       m2_configuration                = {}
-      organization                    = "default"
       single_drive_raid_configuration = {}
       tags                            = []
       unused_disks_state              = "NoChange"
@@ -35,8 +34,6 @@ variable "storage_policies" {
       * MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in the second slot, if available.
       * MSTOR-RAID-1,MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in both the slots, if available.
     - enable - If enabled, this will create a virtual drive on the M.2 RAID controller.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * single_drive_raid_configuration - M.2 Virtual Drive Configuration.
     - access_policy - Access policy that host has on this virtual drive.
       * Default - Use platform default access mode.
@@ -71,8 +68,6 @@ variable "storage_policies" {
     - UnconfiguredGood - Unconfigured good state -ready to be added in a RAID group.
     - Jbod - JBOD state where the disks start showing up to Host OS.
   * use_jbod_for_vd_creation - Default is false.  Disks in JBOD State are used to create virtual drives.
-
-
   * drive_group - Drive Group(s) to Assign to the Storage Policy.
     key - Name of the Drive Group.
     - automatic_drive_group - This drive group is created using automatic drive selection.  This complex property has following sub-properties:
@@ -143,7 +138,6 @@ variable "storage_policies" {
           enable          = bool
         }
       )))
-      organization = optional(string)
       single_drive_raid_configuration = optional(map(object(
         {
           access_policy = optional(string)
@@ -208,7 +202,7 @@ variable "storage_policies" {
 
 resource "intersight_storage_storage_policy" "storage_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each                 = local.storage_policies
   description              = each.value.description != "" ? each.value.description : "${each.key} Storage Policy"
@@ -218,7 +212,7 @@ resource "intersight_storage_storage_policy" "storage_policies" {
   use_jbod_for_vd_creation = each.value.use_jbod_for_vd_creation
   # retain_policy_virtual_drives = var.retain_policy
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "m2_virtual_drive" {
@@ -268,7 +262,7 @@ resource "intersight_storage_storage_policy" "storage_policies" {
 
 resource "intersight_storage_drive_group" "drive_group" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_storage_storage_policy.storage_policies
   ]
   for_each   = local.drive_groups

@@ -4,13 +4,8 @@
 #__________________________________________________________
 
 locals {
-  # Intersight Organization Variables
-  organizations = var.organizations
-  org_moids = {
-    for v in sort(keys(data.intersight_organization_organization.org_moid)) : v => {
-      moid = data.intersight_organization_organization.org_moid[v].results[0].moid
-    }
-  }
+  # Intersight Organization Variable
+  org_moid = data.intersight_organization_organization.org_moid.results[0].moid
 
   # Terraform Cloud Remote Resources - Policies
   adapter_configuration_policies = var.tfc_workspaces[0]["backend"] == "local" ? lookup(
@@ -122,7 +117,6 @@ locals {
       action              = v.action != null ? v.action : "No-op"
       assign_chassis      = v.assign_chassis != null ? v.assign_chassis : false
       description         = v.description != null ? v.description : ""
-      organization        = v.organization != null ? v.organization : "default"
       imc_access_policy   = v.imc_access_policy != null ? v.imc_access_policy : ""
       power_policy        = v.power_policy != null ? v.power_policy : ""
       serial_number       = v.serial_number != null ? v.serial_number : ""
@@ -138,7 +132,6 @@ locals {
       action         = v.action
       assign_chassis = v.assign_chassis
       description    = v.description
-      organization   = v.organization
       imc_access_policy = v.imc_access_policy != "" ? {
         moid        = local.imc_access_policies[v.imc_access_policy]
         object_type = "access.Policy"
@@ -167,7 +160,6 @@ locals {
       action              = v.action
       assign_chassis      = v.assign_chassis
       description         = v.description
-      organization        = v.organization
       policy_bucket       = toset(flatten([v.imc_access_policy, v.power_policy, v.snmp_policy, v.thermal_policy]))
       serial_number       = v.serial_number
       tags                = v.tags
@@ -181,188 +173,185 @@ locals {
   #
   # UCS Domain Profiles Section - Locals
   #__________________________________________________________
-  # ucs_domain_profiles = {
-  #   for k, v in var.ucs_domain_profiles : k => {
-  #     action          = v.action != null ? v.action : "No-op"
-  #     assign_switches = v.assign_switches != null ? v.assign_switches : false
-  #     device_model = length(
-  #       regexall("(UCS-FI-6454|UCS-FI-64108)", coalesce(v.device_model, "EMPTY"))
-  #     ) > 0 ? v.device_model : "UCS-FI-6454"
-  #     description                 = v.description != null ? v.description : ""
-  #     network_connectivity_policy = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
-  #     ntp_policy                  = v.ntp_policy != null ? v.ntp_policy : ""
-  #     organization                = v.organization != null ? v.organization : "default"
-  #     port_policy_fabric_a        = v.port_policy_fabric_a != null ? v.port_policy_fabric_a : ""
-  #     port_policy_fabric_b        = v.port_policy_fabric_b != null ? v.port_policy_fabric_b : ""
-  #     serial_number_fabric_a      = v.serial_number_fabric_a != null ? v.serial_number_fabric_a : ""
-  #     serial_number_fabric_b      = v.serial_number_fabric_b != null ? v.serial_number_fabric_b : ""
-  #     snmp_policy                 = v.snmp_policy != null ? v.snmp_policy : ""
-  #     switch_control_policy       = v.switch_control_policy != null ? v.switch_control_policy : ""
-  #     syslog_policy               = v.syslog_policy != null ? v.syslog_policy : ""
-  #     system_qos_policy           = v.system_qos_policy != null ? v.system_qos_policy : ""
-  #     tags                        = v.tags != null ? v.tags : []
-  #     vlan_policy_fabric_a        = v.vlan_policy_fabric_a != null ? v.vlan_policy_fabric_a : ""
-  #     vlan_policy_fabric_b        = v.vlan_policy_fabric_b != null ? v.vlan_policy_fabric_b : ""
-  #     vsan_policy_fabric_a        = v.vsan_policy_fabric_a != null ? v.vsan_policy_fabric_a : ""
-  #     vsan_policy_fabric_b        = v.vsan_policy_fabric_b != null ? v.vsan_policy_fabric_b : ""
-  #   }
-  # }
+  /*
+  ucs_domain_profiles = {
+    for k, v in var.ucs_domain_profiles : k => {
+      action          = v.action != null ? v.action : "No-op"
+      assign_switches = v.assign_switches != null ? v.assign_switches : false
+      device_model = length(
+        regexall("(UCS-FI-6454|UCS-FI-64108)", coalesce(v.device_model, "EMPTY"))
+      ) > 0 ? v.device_model : "UCS-FI-6454"
+      description                 = v.description != null ? v.description : ""
+      network_connectivity_policy = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
+      ntp_policy                  = v.ntp_policy != null ? v.ntp_policy : ""
+      port_policy_fabric_a        = v.port_policy_fabric_a != null ? v.port_policy_fabric_a : ""
+      port_policy_fabric_b        = v.port_policy_fabric_b != null ? v.port_policy_fabric_b : ""
+      serial_number_fabric_a      = v.serial_number_fabric_a != null ? v.serial_number_fabric_a : ""
+      serial_number_fabric_b      = v.serial_number_fabric_b != null ? v.serial_number_fabric_b : ""
+      snmp_policy                 = v.snmp_policy != null ? v.snmp_policy : ""
+      switch_control_policy       = v.switch_control_policy != null ? v.switch_control_policy : ""
+      syslog_policy               = v.syslog_policy != null ? v.syslog_policy : ""
+      system_qos_policy           = v.system_qos_policy != null ? v.system_qos_policy : ""
+      tags                        = v.tags != null ? v.tags : []
+      vlan_policy_fabric_a        = v.vlan_policy_fabric_a != null ? v.vlan_policy_fabric_a : ""
+      vlan_policy_fabric_b        = v.vlan_policy_fabric_b != null ? v.vlan_policy_fabric_b : ""
+      vsan_policy_fabric_a        = v.vsan_policy_fabric_a != null ? v.vsan_policy_fabric_a : ""
+      vsan_policy_fabric_b        = v.vsan_policy_fabric_b != null ? v.vsan_policy_fabric_b : ""
+    }
+  }
 
-  # ucs_domain_switch_a_loop = {
-  #   for k, v in local.ucs_domain_profiles : "${k}_A_SIDE" => {
-  #     action                      = v.action
-  #     assign_switches             = v.assign_switches
-  #     device_model                = v.device_model
-  #     description                 = v.description
-  #     domain_profile              = k
-  #     fabric                      = "A"
-  #     organization                = v.organization
-  #     serial_number               = v.serial_number_fabric_a
-  #     tags                        = v.tags
-  #     network_connectivity_policy = v.network_connectivity_policy != "" ? {
-  #       moid        = local.network_connectivity_policies[v.network_connectivity_policy]
-  #       object_type = "networkconfig.Policy"
-  #     } : null
-  #     ntp_policy = v.ntp_policy != "" ? {
-  #       moid        = local.ntp_policies[v.ntp_policy]
-  #       object_type = "ntp.Policy"
-  #     } : null
-  #     port_policy = v.port_policy_fabric_a != "" ? {
-  #       moid        = local.port_policies[v.port_policy_fabric_a]
-  #       object_type = "fabric.PortPolicy"
-  #     } : null
-  #     snmp_policy = v.snmp_policy != "" ? {
-  #       moid        = local.snmp_policies[v.snmp_policy]
-  #       object_type = "snmp.Policy"
-  #     } : null
-  #     switch_control_policy = v.switch_control_policy != "" ? {
-  #       moid        = local.switch_control_policies[v.switch_control_policy]
-  #       object_type = "fabric.SwitchControlPolicy"
-  #     } : null
-  #     syslog_policy = v.syslog_policy != "" ? {
-  #       moid        = local.syslog_policies[v.syslog_policy]
-  #       object_type = "syslog.Policy"
-  #     } : null
-  #     system_qos_policy = v.system_qos_policy != "" ? {
-  #       moid        = local.system_qos_policies[v.system_qos_policy]
-  #       object_type = "fabric.SystemQosPolicy"
-  #     } : null
-  #     vlan_policy = v.vlan_policy_fabric_a != "" ? {
-  #       moid        = local.vlan_policies[v.vlan_policy_fabric_a]
-  #       object_type = "fabric.Vlan"
-  #     } : null
-  #     vsan_policy = v.vsan_policy_fabric_a != "" ? {
-  #       moid        = local.vsan_policies[v.vsan_policy_fabric_a]
-  #       object_type = "fabric.Vsan"
-  #     } : null
-  #   }
-  # }
+  ucs_domain_switch_a_loop = {
+    for k, v in local.ucs_domain_profiles : "${k}_A_SIDE" => {
+      action                      = v.action
+      assign_switches             = v.assign_switches
+      device_model                = v.device_model
+      description                 = v.description
+      domain_profile              = k
+      fabric                      = "A"
+      serial_number               = v.serial_number_fabric_a
+      tags                        = v.tags
+      network_connectivity_policy = v.network_connectivity_policy != "" ? {
+        moid        = local.network_connectivity_policies[v.network_connectivity_policy]
+        object_type = "networkconfig.Policy"
+      } : null
+      ntp_policy = v.ntp_policy != "" ? {
+        moid        = local.ntp_policies[v.ntp_policy]
+        object_type = "ntp.Policy"
+      } : null
+      port_policy = v.port_policy_fabric_a != "" ? {
+        moid        = local.port_policies[v.port_policy_fabric_a]
+        object_type = "fabric.PortPolicy"
+      } : null
+      snmp_policy = v.snmp_policy != "" ? {
+        moid        = local.snmp_policies[v.snmp_policy]
+        object_type = "snmp.Policy"
+      } : null
+      switch_control_policy = v.switch_control_policy != "" ? {
+        moid        = local.switch_control_policies[v.switch_control_policy]
+        object_type = "fabric.SwitchControlPolicy"
+      } : null
+      syslog_policy = v.syslog_policy != "" ? {
+        moid        = local.syslog_policies[v.syslog_policy]
+        object_type = "syslog.Policy"
+      } : null
+      system_qos_policy = v.system_qos_policy != "" ? {
+        moid        = local.system_qos_policies[v.system_qos_policy]
+        object_type = "fabric.SystemQosPolicy"
+      } : null
+      vlan_policy = v.vlan_policy_fabric_a != "" ? {
+        moid        = local.vlan_policies[v.vlan_policy_fabric_a]
+        object_type = "fabric.Vlan"
+      } : null
+      vsan_policy = v.vsan_policy_fabric_a != "" ? {
+        moid        = local.vsan_policies[v.vsan_policy_fabric_a]
+        object_type = "fabric.Vsan"
+      } : null
+    }
+  }
 
-  # ucs_domain_switch_a = {
-  #   for k, v in local.ucs_domain_switch_a_loop : k => {
-  #     action                      = v.action
-  #     assign_switches             = v.assign_switches
-  #     device_model                = v.device_model
-  #     description                 = v.description
-  #     domain_profile              = v.domain_profile
-  #     fabric                      = v.fabric
-  #     organization                = v.organization
-  #     policy_bucket = toset(flatten(
-  #       [
-  #         v.network_connectivity_policy,
-  #         v.ntp_policy,
-  #         v.port_policy,
-  #         v.snmp_policy,
-  #         v.switch_control_policy,
-  #         v.syslog_policy,
-  #         v.system_qos_policy,
-  #         v.vlan_policy,
-  #         v.vsan_policy
-  #       ]
-  #     ))
-  #     serial_number               = v.serial_number
-  #     tags                        = v.tags
-  #   }
-  # }
+  ucs_domain_switch_a = {
+    for k, v in local.ucs_domain_switch_a_loop : k => {
+      action                      = v.action
+      assign_switches             = v.assign_switches
+      device_model                = v.device_model
+      description                 = v.description
+      domain_profile              = v.domain_profile
+      fabric                      = v.fabric
+      policy_bucket = toset(flatten(
+        [
+          v.network_connectivity_policy,
+          v.ntp_policy,
+          v.port_policy,
+          v.snmp_policy,
+          v.switch_control_policy,
+          v.syslog_policy,
+          v.system_qos_policy,
+          v.vlan_policy,
+          v.vsan_policy
+        ]
+      ))
+      serial_number               = v.serial_number
+      tags                        = v.tags
+    }
+  }
 
-  # ucs_domain_switch_b_loop = {
-  #   for k, v in local.ucs_domain_profiles : "${k}_B_SIDE" => {
-  #     action                      = v.action
-  #     assign_switches             = v.assign_switches
-  #     device_model                = v.device_model
-  #     description                 = v.description
-  #     domain_profile              = k
-  #     fabric                      = "B"
-  #     organization                = v.organization
-  #     serial_number               = v.serial_number_fabric_b
-  #     tags                        = v.tags
-  #     network_connectivity_policy = v.network_connectivity_policy != "" ? {
-  #       moid        = local.network_connectivity_policies[v.network_connectivity_policy]
-  #       object_type = "networkconfig.Policy"
-  #     } : null
-  #     ntp_policy = v.ntp_policy != "" ? {
-  #       moid        = local.ntp_policies[v.ntp_policy]
-  #       object_type = "ntp.Policy"
-  #     } : null
-  #     port_policy = v.port_policy_fabric_b != "" ? {
-  #       moid        = local.port_policies[v.port_policy_fabric_b]
-  #       object_type = "fabric.PortPolicy"
-  #     } : null
-  #     snmp_policy = v.snmp_policy != "" ? {
-  #       moid        = local.snmp_policies[v.snmp_policy]
-  #       object_type = "snmp.Policy"
-  #     } : null
-  #     switch_control_policy = v.switch_control_policy != "" ? {
-  #       moid        = local.switch_control_policies[v.switch_control_policy]
-  #       object_type = "fabric.SwitchControlPolicy"
-  #     } : null
-  #     syslog_policy = v.syslog_policy != "" ? {
-  #       moid        = local.syslog_policies[v.syslog_policy]
-  #       object_type = "syslog.Policy"
-  #     } : null
-  #     system_qos_policy = v.system_qos_policy != "" ? {
-  #       moid        = local.system_qos_policies[v.system_qos_policy]
-  #       object_type = "fabric.SystemQosPolicy"
-  #     } : null
-  #     vlan_policy = v.vlan_policy_fabric_b != "" ? {
-  #       moid        = local.vlan_policies[v.vlan_policy_fabric_b]
-  #       object_type = "fabric.Vlan"
-  #     } : null
-  #     vsan_policy = v.vsan_policy_fabric_b != "" ? {
-  #       moid        = local.vsan_policies[v.vsan_policy_fabric_b]
-  #       object_type = "fabric.Vsan"
-  #     } : null
-  #   }
-  # }
+  ucs_domain_switch_b_loop = {
+    for k, v in local.ucs_domain_profiles : "${k}_B_SIDE" => {
+      action                      = v.action
+      assign_switches             = v.assign_switches
+      device_model                = v.device_model
+      description                 = v.description
+      domain_profile              = k
+      fabric                      = "B"
+      serial_number               = v.serial_number_fabric_b
+      tags                        = v.tags
+      network_connectivity_policy = v.network_connectivity_policy != "" ? {
+        moid        = local.network_connectivity_policies[v.network_connectivity_policy]
+        object_type = "networkconfig.Policy"
+      } : null
+      ntp_policy = v.ntp_policy != "" ? {
+        moid        = local.ntp_policies[v.ntp_policy]
+        object_type = "ntp.Policy"
+      } : null
+      port_policy = v.port_policy_fabric_b != "" ? {
+        moid        = local.port_policies[v.port_policy_fabric_b]
+        object_type = "fabric.PortPolicy"
+      } : null
+      snmp_policy = v.snmp_policy != "" ? {
+        moid        = local.snmp_policies[v.snmp_policy]
+        object_type = "snmp.Policy"
+      } : null
+      switch_control_policy = v.switch_control_policy != "" ? {
+        moid        = local.switch_control_policies[v.switch_control_policy]
+        object_type = "fabric.SwitchControlPolicy"
+      } : null
+      syslog_policy = v.syslog_policy != "" ? {
+        moid        = local.syslog_policies[v.syslog_policy]
+        object_type = "syslog.Policy"
+      } : null
+      system_qos_policy = v.system_qos_policy != "" ? {
+        moid        = local.system_qos_policies[v.system_qos_policy]
+        object_type = "fabric.SystemQosPolicy"
+      } : null
+      vlan_policy = v.vlan_policy_fabric_b != "" ? {
+        moid        = local.vlan_policies[v.vlan_policy_fabric_b]
+        object_type = "fabric.Vlan"
+      } : null
+      vsan_policy = v.vsan_policy_fabric_b != "" ? {
+        moid        = local.vsan_policies[v.vsan_policy_fabric_b]
+        object_type = "fabric.Vsan"
+      } : null
+    }
+  }
 
-  # ucs_domain_switch_b = {
-  #   for k, v in local.ucs_domain_switch_b_loop : k => {
-  #     action                      = v.action
-  #     assign_switches             = v.assign_switches
-  #     device_model                = v.device_model
-  #     description                 = v.description
-  #     domain_profile              = v.domain_profile
-  #     fabric                      = v.fabric
-  #     organization                = v.organization
-  #     policy_bucket = toset(flatten(
-  #       [
-  #         v.network_connectivity_policy,
-  #         v.ntp_policy,
-  #         v.port_policy,
-  #         v.snmp_policy,
-  #         v.switch_control_policy,
-  #         v.syslog_policy,
-  #         v.system_qos_policy,
-  #         v.vlan_policy,
-  #         v.vsan_policy
-  #       ]
-  #     ))
-  #     serial_number               = v.serial_number
-  #     tags                        = v.tags
-  #   }
-  # }
+  ucs_domain_switch_b = {
+    for k, v in local.ucs_domain_switch_b_loop : k => {
+      action                      = v.action
+      assign_switches             = v.assign_switches
+      device_model                = v.device_model
+      description                 = v.description
+      domain_profile              = v.domain_profile
+      fabric                      = v.fabric
+      policy_bucket = toset(flatten(
+        [
+          v.network_connectivity_policy,
+          v.ntp_policy,
+          v.port_policy,
+          v.snmp_policy,
+          v.switch_control_policy,
+          v.syslog_policy,
+          v.system_qos_policy,
+          v.vlan_policy,
+          v.vsan_policy
+        ]
+      ))
+      serial_number               = v.serial_number
+      tags                        = v.tags
+    }
+  }
 
-  # merged_ucs_switches = merge(local.ucs_domain_switch_a, local.ucs_domain_switch_b)
+  merged_ucs_switches = merge(local.ucs_domain_switch_a, local.ucs_domain_switch_b)
+  */
 
   #__________________________________________________________
   #
@@ -385,7 +374,6 @@ locals {
       local_user_policy             = v.local_user_policy != null ? v.local_user_policy : null
       network_connectivity_policy   = v.network_connectivity_policy != null ? v.network_connectivity_policy : null
       ntp_policy                    = v.ntp_policy != null ? v.ntp_policy : null
-      organization                  = v.organization != null ? v.organization : "default"
       persistent_memory_policy      = v.persistent_memory_policy != null ? v.persistent_memory_policy : null
       power_policy                  = v.power_policy != null ? v.power_policy : null
       resource_pool                 = v.resource_pool != null ? v.resource_pool : ""
@@ -433,7 +421,6 @@ locals {
       network_connectivity_policy   = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
       ntp_policy                    = v.ntp_policy != null ? v.ntp_policy : ""
       operating_system              = v.operating_system != null ? v.operating_system : "VMware"
-      organization                  = v.organization != null ? v.organization : "default"
       persistent_memory_policy      = v.persistent_memory_policy != null ? v.persistent_memory_policy : ""
       power_policy                  = v.power_policy != null ? v.power_policy : ""
       san_connectivity_policy       = v.san_connectivity_policy != null ? v.san_connectivity_policy : ""
@@ -668,9 +655,8 @@ locals {
 
   ucs_server_profiles = {
     for k, v in local.server_bucket_loop : k => {
-      action       = v.action
-      description  = v.description
-      organization = v.organization
+      action      = v.action
+      description = v.description
       policy_bucket = toset(flatten(
         [
           v.adapter_configuration_policy,

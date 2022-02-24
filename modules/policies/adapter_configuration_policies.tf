@@ -15,7 +15,6 @@ variable "adapter_configuration_policies" {
       fec_mode_2          = "cl91"
       fec_mode_3          = "cl91"
       fec_mode_4          = "cl91"
-      organization        = "default"
       pci_slot            = "MLOM"
       tags                = []
     }
@@ -36,8 +35,6 @@ variable "adapter_configuration_policies" {
     - cl91 - (Default) Use cl91 standard as FEC mode setting. 'Clause 91' aka RS-FEC ('ReedSolomon' FEC) offers better
       error protection against bursty and random errors but adds latency.
     - Off - Disable FEC mode on the DCE Interface.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * pci_slot - PCIe slot where the VIC adapter is installed. Supported values are (1-15) and MLOM.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
@@ -51,7 +48,6 @@ variable "adapter_configuration_policies" {
       fec_mode_2          = optional(string)
       fec_mode_3          = optional(string)
       fec_mode_4          = optional(string)
-      organization        = optional(string)
       pci_slot            = optional(string)
       tags                = optional(list(map(string)))
     }
@@ -67,13 +63,13 @@ variable "adapter_configuration_policies" {
 
 resource "intersight_adapter_config_policy" "adapter_configuration_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.adapter_configuration_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Adapter Configuration Policy."
   name        = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   settings {

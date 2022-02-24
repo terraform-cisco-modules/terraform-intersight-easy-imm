@@ -65,10 +65,10 @@ variable "tfc_workspaces" {
 # Global Variables
 #__________________________________________________________
 
-variable "organizations" {
-  default     = ["default"]
-  description = "Intersight Organization Names."
-  type        = set(string)
+variable "organization" {
+  default     = "default"
+  description = "Intersight Organization Names to Apply Policy to.  https://intersight.com/an/settings/organizations/."
+  type        = string
 }
 
 variable "tags" {

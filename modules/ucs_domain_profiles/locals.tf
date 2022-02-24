@@ -4,13 +4,8 @@
 #__________________________________________________________
 
 locals {
-  # Intersight Organization Variables
-  organizations = var.organizations
-  org_moids = {
-    for v in sort(keys(data.intersight_organization_organization.org_moid)) : v => {
-      moid = data.intersight_organization_organization.org_moid[v].results[0].moid
-    }
-  }
+  # Intersight Organization Variable
+  org_moid = data.intersight_organization_organization.org_moid.results[0].moid
 
   # Tags for Deployment
   tags = var.tags
@@ -29,7 +24,6 @@ locals {
       description                 = v.description != null ? v.description : ""
       network_connectivity_policy = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
       ntp_policy                  = v.ntp_policy != null ? v.ntp_policy : ""
-      organization                = v.organization != null ? v.organization : "default"
       port_policy_fabric_a        = v.port_policy_fabric_a != null ? v.port_policy_fabric_a : ""
       port_policy_fabric_b        = v.port_policy_fabric_b != null ? v.port_policy_fabric_b : ""
       serial_number_fabric_a      = v.serial_number_fabric_a != null ? v.serial_number_fabric_a : ""
@@ -56,7 +50,6 @@ locals {
       fabric                      = "A"
       network_connectivity_policy = v.network_connectivity_policy
       ntp_policy                  = v.ntp_policy
-      organization                = v.organization
       port_policy                 = v.port_policy_fabric_a
       serial_number               = v.serial_number_fabric_a
       snmp_policy                 = v.snmp_policy
@@ -79,7 +72,6 @@ locals {
       fabric                      = "B"
       network_connectivity_policy = v.network_connectivity_policy
       ntp_policy                  = v.ntp_policy
-      organization                = v.organization
       port_policy                 = v.port_policy_fabric_b
       serial_number               = v.serial_number_fabric_b
       snmp_policy                 = v.snmp_policy

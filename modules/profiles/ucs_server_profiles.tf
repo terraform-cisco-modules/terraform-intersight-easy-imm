@@ -144,7 +144,7 @@ variable "ucs_server_profiles" {
 
 resource "intersight_server_profile" "ucs_server_profiles" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
   ]
   for_each               = local.ucs_server_profiles
   action                 = each.value.action
@@ -159,7 +159,7 @@ resource "intersight_server_profile" "ucs_server_profiles" {
   ) > 0 ? "POOL" : each.value.static_uuid_address != "" ? "STATIC" : "NONE"
   wait_for_completion = each.value.wait_for_completion
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "assigned_server" {

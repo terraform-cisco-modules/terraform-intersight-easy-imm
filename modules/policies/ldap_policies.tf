@@ -31,7 +31,6 @@ variable "ldap_policies" {
       ldap_groups                = {}
       ldap_servers               = {}
       nested_group_search_depth  = 128
-      organization               = "default"
       search_parameters = {
         attribute       = "CiscoAvPair"
         filter          = "samAccountName"
@@ -75,8 +74,6 @@ variable "ldap_policies" {
     Key - Name of the LDAP Server
     - port - Port to Assign to the LDAP Server.  Range is 1-65535.
   * nested_group_search_depth - Search depth to look for a nested LDAP group in an LDAP group map.  Range is 1 to 128.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * search_parameters
     - attribute - Role and locale information of the user.
     - filter - Criteria to identify entries in search requests.
@@ -124,7 +121,6 @@ variable "ldap_policies" {
         }
       )))
       nested_group_search_depth = optional(number)
-      organization              = optional(string)
       search_parameters = object(
         {
           attribute       = optional(string)
@@ -152,7 +148,7 @@ variable "ldap_policies" {
 
 resource "intersight_iam_ldap_policy" "ldap_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.ldap_policies
   description = each.value.description != "" ? each.value.description : "${each.key} LDAP Policy"
@@ -186,7 +182,7 @@ resource "intersight_iam_ldap_policy" "ldap_policies" {
   }
   user_search_precedence = each.value.user_search_precedence
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {
@@ -206,7 +202,7 @@ resource "intersight_iam_ldap_policy" "ldap_policies" {
 
 resource "intersight_iam_ldap_provider" "ldap_servers" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     intersight_iam_ldap_policy.ldap_policies
   ]
   for_each = local.ldap_servers
@@ -227,7 +223,7 @@ resource "intersight_iam_ldap_group" "ldap_group" {
   depends_on = [
     data.intersight_iam_end_point_role.roles,
     intersight_iam_ldap_policy.ldap_policies,
-    local.org_moids
+    local.org_moid
   ]
   for_each = local.ldap_groups
   domain   = each.value.domain

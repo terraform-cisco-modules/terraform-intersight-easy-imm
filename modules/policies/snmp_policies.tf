@@ -220,7 +220,6 @@ variable "snmp_policies" {
       access_community_string = 0
       description             = ""
       enable_snmp             = true
-      organization            = "default"
       snmp_community_access   = "Full"
       snmp_engine_input_id    = ""
       snmp_port               = 161
@@ -237,8 +236,6 @@ variable "snmp_policies" {
   * access_community_string - Default is 0.  A number Between 1-5 to denote to use one of the variables access_community_string_[1-5].  Any other number means no community string.
   * description - Description to Assign to the Policy.
   * enable_snmp - State of the SNMP Policy on the endpoint. If enabled, the endpoint sends SNMP traps to the designated host.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * snmp_community_access - Controls access to the information in the inventory tables. Applicable only for SNMPv1 and SNMPv2c.
     - Disabled - (Defualt) - Blocks access to the information in the inventory tables.
     - Full - Full access to read the information in the inventory tables.
@@ -285,7 +282,6 @@ variable "snmp_policies" {
       access_community_string = optional(number)
       description             = optional(string)
       enable_snmp             = optional(bool)
-      organization            = optional(string)
       snmp_community_access   = optional(string)
       snmp_engine_input_id    = optional(string)
       snmp_port               = optional(number)
@@ -323,7 +319,7 @@ variable "snmp_policies" {
 
 resource "intersight_snmp_policy" "snmp_policies" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     local.ucs_domain_policies
   ]
   for_each = local.snmp_policies
@@ -360,7 +356,7 @@ resource "intersight_snmp_policy" "snmp_policies" {
   v2_enabled = length(regexall("[1-5]", each.value.access_community_string)) > 0 ? true : false
   v3_enabled = length(each.value.snmp_users) > 0 ? true : false
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "profiles" {

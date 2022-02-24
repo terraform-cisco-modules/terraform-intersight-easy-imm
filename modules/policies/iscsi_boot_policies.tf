@@ -29,7 +29,6 @@ variable "iscsi_boot_policies" {
       iscsi_adapter_policy    = ""
       password                = 0
       primary_target_policy   = ""
-      organization            = "default"
       secondary_target_policy = ""
       target_source_type      = "Auto"
       tags                    = []
@@ -61,8 +60,6 @@ variable "iscsi_boot_policies" {
   * mutual_chap - Defines the Authentication as CHAP Authentication
     - password - Mutual Chap Password Identifier. I.e. 1 would be for iscsi_boot_password.
     - user_id - Mutual Chap User Id.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * password - If doing CHAP or Mutual Chap authentication set this to 1 and configure the iscsi_boot_password.
   * primary_target_policy - Name of the Primary iSCSI Static Target Policy to Associate to the iSCSI Boot Policy.
   * secondary_target_policy - Name of the Secondary iSCSI Static Target Policy to Associate to the iSCSI Boot Policy.
@@ -89,7 +86,6 @@ variable "iscsi_boot_policies" {
         }
       ))
       iscsi_adapter_policy    = optional(string)
-      organization            = optional(string)
       password                = optional(number)
       primary_target_policy   = optional(string)
       secondary_target_policy = optional(string)
@@ -110,7 +106,7 @@ variable "iscsi_boot_policies" {
 resource "intersight_vnic_iscsi_boot_policy" "iscsi_boot_policies" {
   depends_on = [
     local.ip_pools,
-    local.org_moids,
+    local.org_moid,
     intersight_vnic_iscsi_adapter_policy.iscsi_adapter_policies,
     intersight_vnic_iscsi_static_target_policy.iscsi_static_target_policies,
   ]
@@ -153,7 +149,7 @@ resource "intersight_vnic_iscsi_boot_policy" "iscsi_boot_policies" {
   name               = each.key
   target_source_type = each.value.target_source_type != null ? each.value.target_source_type : "Auto"
   organization {
-    moid        = each.value.organization != null ? local.org_moids[each.value.organization].moid : local.org_moids["default"].moid
+    moid        = each.value.organization != null ? local.org_moid : local.org_moid["default"].moid
     object_type = "organization.Organization"
   }
   dynamic "initiator_ip_pool" {

@@ -7,11 +7,10 @@
 variable "link_control_policies" {
   default = {
     default = {
-      admin_state  = "Enabled"
-      description  = ""
-      mode         = "normal"
-      organization = "default"
-      tags         = []
+      admin_state = "Enabled"
+      description = ""
+      mode        = "normal"
+      tags        = []
     }
   }
   description = <<-EOT
@@ -23,17 +22,14 @@ variable "link_control_policies" {
   * mode - Admin configured UDLD Mode for this port.
     - normal - (Default) - Admin configured 'normal' UDLD mode.
     - aggressive - Admin configured 'aggressive' UDLD mode.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
-      admin_state  = optional(string)
-      description  = optional(string)
-      mode         = optional(string)
-      organization = optional(string)
-      tags         = optional(list(map(string)))
+      admin_state = optional(string)
+      description = optional(string)
+      mode        = optional(string)
+      tags        = optional(list(map(string)))
     }
   ))
 }
@@ -47,13 +43,13 @@ variable "link_control_policies" {
 
 resource "intersight_fabric_link_control_policy" "link_control_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.link_control_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Link Control Policy"
   name        = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   udld_settings {

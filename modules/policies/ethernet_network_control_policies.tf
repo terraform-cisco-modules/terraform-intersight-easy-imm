@@ -14,7 +14,6 @@ variable "ethernet_network_control_policies" {
       lldp_enable_transmit  = false
       mac_register_mode     = "nativeVlanOnly"
       mac_security_forge    = "allow"
-      organization          = "default"
       tags                  = []
     }
   }
@@ -34,8 +33,6 @@ variable "ethernet_network_control_policies" {
   * mac_security_forge - Default is allow.  Determines if the MAC forging is allowed or denied on an interface.  Options are:
     - allow
     - deny
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - Default is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
@@ -47,7 +44,6 @@ variable "ethernet_network_control_policies" {
       lldp_enable_transmit  = optional(bool)
       mac_register_mode     = optional(string)
       mac_security_forge    = optional(string)
-      organization          = optional(string)
       tags                  = optional(list(map(string)))
     }
   ))
@@ -61,7 +57,7 @@ variable "ethernet_network_control_policies" {
 
 resource "intersight_fabric_eth_network_control_policy" "ethernet_network_control_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each              = local.ethernet_network_control_policies
   cdp_enabled           = each.value.cdp_enable
@@ -76,7 +72,7 @@ resource "intersight_fabric_eth_network_control_policy" "ethernet_network_contro
     transmit_enabled = each.value.lldp_enable_transmit
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

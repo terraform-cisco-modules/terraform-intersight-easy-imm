@@ -9,7 +9,6 @@ variable "resource_pools" {
     default = { # The Pool Name will be {each.key}.  In this case it would be default if left like this.
       assignment_order   = "default"
       description        = ""
-      organization       = "default"
       pool_type          = "Static"
       resource_type      = "Server"
       serial_number_list = ["**REQUIRED**"]
@@ -23,8 +22,6 @@ variable "resource_pools" {
     - default - (Default) Assignment order is decided by the system.
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
-  * organization - Name of the Intersight Organization to assign this pool to.  Default is default.
-    - https://intersight.com/an/settings/organizations/
   * pool_type - The resource management type in the pool, it can be either static or dynamic.
     - Dynamic - The resources in the pool will be updated dynamically based on the condition.
     - Static - The resources in the pool will not be changed until user manually update it.
@@ -41,7 +38,6 @@ variable "resource_pools" {
     {
       assignment_order   = optional(string)
       description        = optional(string)
-      organization       = optional(string)
       pool_type          = optional(string)
       resource_type      = optional(string)
       serial_number_list = set(string)
@@ -65,7 +61,7 @@ variable "resource_pools" {
 
 module "resource_pools" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   version            = ">=0.9.6"
   source             = "terraform-cisco-modules/imm/intersight//modules/resource_pools"
@@ -73,7 +69,7 @@ module "resource_pools" {
   assignment_order   = each.value.assignment_order
   description        = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} Resource Pool."
   name               = each.key
-  org_moid           = local.org_moids[each.value.organization].moid
+  org_moid           = local.org_moid
   pool_type          = each.value.pool_type
   resource_type      = each.value.resource_type
   serial_number_list = each.value.serial_number_list

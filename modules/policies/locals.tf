@@ -4,13 +4,8 @@
 #__________________________________________________________
 
 locals {
-  # Intersight Organization Variables
-  organizations = var.organizations
-  org_moids = {
-    for v in sort(keys(data.intersight_organization_organization.org_moid)) : v => {
-      moid = data.intersight_organization_organization.org_moid[v].results[0].moid
-    }
-  }
+  # Intersight Organization Variable
+  org_moid = data.intersight_organization_organization.org_moid.results[0].moid
 
   # Tags for Deployment
   tags = var.tags
@@ -52,7 +47,6 @@ locals {
     for k, v in local.ucs_domain_profiles : k => {
       moid                        = local.ucs_domain_moids[k]
       object_type                 = "fabric.SwitchProfile"
-      organization                = v.organization
       network_connectivity_policy = v.network_connectivity_policy != null ? v.network_connectivity_policy : ""
       ntp_policy                  = v.ntp_policy != null ? v.ntp_policy : ""
       port_policy                 = v.port_policy != null ? v.port_policy : ""
@@ -82,7 +76,6 @@ locals {
       fec_mode_2          = v.fec_mode_2 != null ? v.fec_mode_2 : "cl91"
       fec_mode_3          = v.fec_mode_3 != null ? v.fec_mode_3 : "cl91"
       fec_mode_4          = v.fec_mode_4 != null ? v.fec_mode_4 : "cl91"
-      organization        = v.organization != null ? v.organization : "default"
       pci_slot            = v.pci_slot != null ? v.pci_slot : "MLOM"
       tags                = v.tags != null ? v.tags : []
     }
@@ -247,7 +240,6 @@ locals {
       onboard_scu_storage_support           = v.onboard_scu_storage_support != null ? v.onboard_scu_storage_support : "platform-default"
       onboard_scu_storage_sw_stack          = v.onboard_scu_storage_sw_stack != null ? v.onboard_scu_storage_sw_stack : "platform-default"
       operation_mode                        = v.operation_mode != null ? v.operation_mode : "platform-default"
-      organization                          = v.organization != null ? v.organization : "default"
       os_boot_watchdog_timer                = v.os_boot_watchdog_timer != null ? v.os_boot_watchdog_timer : "platform-default"
       os_boot_watchdog_timer_policy         = v.os_boot_watchdog_timer_policy != null ? v.os_boot_watchdog_timer_policy : "platform-default"
       os_boot_watchdog_timer_timeout        = v.os_boot_watchdog_timer_timeout != null ? v.os_boot_watchdog_timer_timeout : "platform-default"
@@ -506,7 +498,6 @@ locals {
       boot_mode          = v.boot_mode != null ? v.boot_mode : "Uefi"
       description        = v.description != null ? v.description : ""
       enable_secure_boot = v.enable_secure_boot != null ? v.enable_secure_boot : false
-      organization       = v.organization != null ? v.organization : "default"
       tags               = v.tags != null ? v.tags : []
     }
   }
@@ -656,7 +647,6 @@ locals {
       boot_mode          = value.boot_mode
       description        = value.description
       enable_secure_boot = value.enable_secure_boot
-      organization       = value.organization
       tags               = value.tags
     }
   }
@@ -670,12 +660,11 @@ locals {
 
   certificate_management_policies = {
     for k, v in var.certificate_management_policies : k => {
-      certificate  = v.certificate != null ? v.certificate : 1
-      description  = v.description != null ? v.description : ""
-      enabled      = v.enabled != null ? v.enabled : true
-      organization = v.organization != null ? v.organization : "default"
-      private_key  = v.private_key != null ? v.private_key : 1
-      tags         = v.tags != null ? v.tags : []
+      certificate = v.certificate != null ? v.certificate : 1
+      description = v.description != null ? v.description : ""
+      enabled     = v.enabled != null ? v.enabled : true
+      private_key = v.private_key != null ? v.private_key : 1
+      tags        = v.tags != null ? v.tags : []
     }
   }
 
@@ -689,7 +678,6 @@ locals {
     for k, v in var.device_connector_policies : k => {
       description           = v.description != null ? v.description : ""
       configuration_lockout = v.configuration_lockout != null ? v.configuration_lockout : false
-      organization          = v.organization != null ? v.organization : "default"
       tags                  = v.tags != null ? v.tags : []
     }
   }
@@ -766,7 +754,6 @@ locals {
         regexall("(Linux-NVMe-RoCE|MQ|Win-AzureStack)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 256 : length(
         regexall("(usNICOracleRAC)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? 1024 : v.adapter_template != null ? 8 : v.interrupts != null ? v.interrupts : 8
-      organization = v.organization != null ? v.organization : "default"
       receive_queue_count = length(
         regexall("(Linux|Linux-NVMe-RoCE|Solaris|VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 1 : length(
         regexall("(usNIC)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 6 : length(
@@ -869,7 +856,6 @@ locals {
       lldp_enable_transmit  = v.lldp_enable_transmit != null ? v.lldp_enable_transmit : false
       mac_register_mode     = v.mac_register_mode != null ? v.mac_register_mode : "nativeVlanOnly"
       mac_security_forge    = v.mac_security_forge != null ? v.mac_security_forge : "allow"
-      organization          = v.organization != null ? v.organization : "default"
       tags                  = v.tags != null ? v.tags : []
     }
   }
@@ -885,7 +871,6 @@ locals {
       allowed_vlans = v.allowed_vlans != null ? v.allowed_vlans : ""
       description   = v.description != null ? v.description : ""
       native_vlan   = v.native_vlan != null ? v.native_vlan : 0
-      organization  = v.organization != null ? v.organization : "default"
       tags          = v.tags != null ? v.tags : []
       vlan_mode     = v.vlan_mode != null ? v.vlan_mode : "ACCESS"
     }
@@ -901,7 +886,6 @@ locals {
       allowed_vlans = v.allowed_vlans != null ? v.allowed_vlans : ""
       description   = v.description != null ? v.description : ""
       native_vlan   = v.native_vlan != null ? v.native_vlan : null
-      organization  = v.organization != null ? v.organization : "default"
       tags          = v.tags != null ? v.tags : []
     }
   }
@@ -919,7 +903,6 @@ locals {
       description           = v.description != null ? v.description : ""
       enable_trust_host_cos = v.enable_trust_host_cos != null ? v.enable_trust_host_cos : false
       mtu                   = v.mtu != null ? v.mtu : 1500
-      organization          = v.organization != null ? v.organization : "default"
       priority              = v.priority != null ? v.priority : "Best Effort"
       rate_limit            = v.rate_limit != null ? v.rate_limit : 0
       tags                  = v.tags != null ? v.tags : []
@@ -959,7 +942,6 @@ locals {
       io_throttle_count   = v.io_throttle_count != null ? v.io_throttle_count : 256
       lun_queue_depth     = v.lun_queue_depth != null ? v.lun_queue_depth : 20
       max_luns_per_target = v.max_luns_per_target != null ? v.max_luns_per_target : 1024
-      organization        = v.organization != null ? v.organization : "default"
       plogi_retries       = v.plogi_retries != null ? v.plogi_retries : 8
       plogi_timeout       = v.adapter_template == "WindowsBoot" ? 4000 : v.plogi_timeout != null ? v.plogi_timeout : 20000
       receive_ring_size = length(
@@ -985,7 +967,6 @@ locals {
     for k, v in var.fibre_channel_network_policies : k => {
       default_vlan_id = v.default_vlan_id != null ? v.default_vlan_id : 0
       description     = v.description != null ? v.description : ""
-      organization    = v.organization != null ? v.organization : "default"
       tags            = v.tags != null ? v.tags : []
       vsan_id         = v.vsan_id != null ? v.vsan_id : 4
     }
@@ -1003,7 +984,6 @@ locals {
       cos                 = v.cos != null ? v.cos : 3
       description         = v.description != null ? v.description : ""
       max_data_field_size = v.max_data_field_size != null ? v.max_data_field_size : 2112
-      organization        = v.organization != null ? v.organization : "default"
       rate_limit          = v.rate_limit != null ? v.rate_limit : 0
       tags                = v.tags != null ? v.tags : []
     }
@@ -1017,12 +997,11 @@ locals {
 
   flow_control_policies = {
     for k, v in var.flow_control_policies : k => {
-      description  = v.description != null ? v.description : ""
-      priority     = v.priority != null ? v.priority : "auto"
-      organization = v.organization != null ? v.organization : "default"
-      receive      = v.receive != null ? v.receive : "Disabled"
-      send         = v.send != null ? v.send : "Disabled"
-      tags         = v.tags != null ? v.tags : []
+      description = v.description != null ? v.description : ""
+      priority    = v.priority != null ? v.priority : "auto"
+      receive     = v.receive != null ? v.receive : "Disabled"
+      send        = v.send != null ? v.send : "Disabled"
+      tags        = v.tags != null ? v.tags : []
     }
   }
 
@@ -1039,7 +1018,6 @@ locals {
       inband_vlan_id             = v.inband_vlan_id != null ? v.inband_vlan_id : 4
       ipv4_address_configuration = v.ipv4_address_configuration != null ? v.ipv4_address_configuration : true
       ipv6_address_configuration = v.ipv6_address_configuration != null ? v.ipv6_address_configuration : false
-      organization               = v.organization != null ? v.organization : "default"
       out_of_band_ip_pool        = v.out_of_band_ip_pool != null ? v.out_of_band_ip_pool : ""
       tags                       = v.tags != null ? v.tags : []
     }
@@ -1053,12 +1031,11 @@ locals {
 
   ipmi_over_lan_policies = {
     for k, v in var.ipmi_over_lan_policies : k => {
-      description  = v.description != null ? v.description : ""
-      enabled      = v.enabled != null ? v.enabled : true
-      ipmi_key     = v.ipmi_key != null ? v.ipmi_key : null
-      organization = v.organization != null ? v.organization : "default"
-      privilege    = v.privilege != null ? v.privilege : "admin"
-      tags         = v.tags != null ? v.tags : []
+      description = v.description != null ? v.description : ""
+      enabled     = v.enabled != null ? v.enabled : true
+      ipmi_key    = v.ipmi_key != null ? v.ipmi_key : null
+      privilege   = v.privilege != null ? v.privilege : "admin"
+      tags        = v.tags != null ? v.tags : []
     }
   }
 
@@ -1070,7 +1047,6 @@ locals {
       iqn_allocation_type         = v.iqn_allocation_type != null ? v.iqn_allocation_type : "None"
       iqn_pool                    = v.iqn_pool != null ? v.iqn_pool : ""
       iqn_static_identifier       = v.iqn_static_identifier != null ? v.iqn_static_identifier : ""
-      organization                = v.organization != null ? v.organization : "default"
       tags                        = v.tags != null ? v.tags : []
       target_platform             = v.target_platform != null ? v.target_platform : "FIAttached"
       vnic_placement_mode         = v.vnic_placement_mode != null ? v.vnic_placement_mode : "custom"
@@ -1143,7 +1119,6 @@ locals {
       ldap_groups                = v.ldap_groups != null ? v.ldap_groups : {}
       ldap_servers               = v.ldap_servers != null ? v.ldap_servers : {}
       nested_group_search_depth  = v.nested_group_search_depth != null ? v.nested_group_search_depth : 128
-      organization               = v.organization != null ? v.organization : "default"
       search_parameters = {
         attribute       = v.search_parameters.attribute != null ? v.search_parameters.attribute : "CiscoAvPair"
         filter          = v.search_parameters.filter != null ? v.search_parameters.filter : "samAccountName"
@@ -1193,7 +1168,6 @@ locals {
     for k, v in var.link_aggregation_policies : k => {
       description        = v.description != null ? v.description : ""
       lacp_rate          = v.lacp_rate != null ? v.lacp_rate : "normal"
-      organization       = v.organization != null ? v.organization : "default"
       suspend_individual = v.suspend_individual != null ? v.suspend_individual : false
       tags               = v.tags != null ? v.tags : []
     }
@@ -1207,11 +1181,10 @@ locals {
 
   link_control_policies = {
     for k, v in var.link_control_policies : k => {
-      admin_state  = v.admin_state != null ? v.admin_state : "Enabled"
-      description  = v.description != null ? v.description : ""
-      mode         = v.mode != null ? v.mode : "normal"
-      organization = v.organization != null ? v.organization : "default"
-      tags         = v.tags != null ? v.tags : []
+      admin_state = v.admin_state != null ? v.admin_state : "Enabled"
+      description = v.description != null ? v.description : ""
+      mode        = v.mode != null ? v.mode : "normal"
+      tags        = v.tags != null ? v.tags : []
     }
   }
 
@@ -1229,7 +1202,6 @@ locals {
       enforce_strong_password   = v.enforce_strong_password != null ? v.enforce_strong_password : true
       grace_period              = v.grace_period != null ? v.grace_period : 0
       notification_period       = v.notification_period != null ? v.notification_period : 15
-      organization              = v.organization != null ? v.organization : "default"
       password_expiry_duration  = v.password_expiry_duration != null ? v.password_expiry_duration : 90
       password_history          = v.password_history != null ? v.password_history : 5
       tags                      = v.tags != null ? v.tags : []
@@ -1240,12 +1212,11 @@ locals {
   local_users_loop = flatten([
     for k, v in local.local_user_policies : [
       for key, value in v.users : {
-        enabled      = value.enabled != null ? value.enabled : true
-        password     = value.password != null ? value.password : 1
-        role         = value.role != null ? value.role : "admin"
-        policy       = k
-        organization = v.organization != null ? v.organization : "default"
-        username     = key
+        enabled  = value.enabled != null ? value.enabled : true
+        password = value.password != null ? value.password : 1
+        role     = value.role != null ? value.role : "admin"
+        policy   = k
+        username = key
       }
     ]
   ])
@@ -1281,7 +1252,6 @@ locals {
   multicast_policies = {
     for k, v in var.multicast_policies : k => {
       description             = v.description != null ? v.description : ""
-      organization            = v.organization != null ? v.organization : "default"
       querier_ip_address      = v.querier_ip_address != null ? v.querier_ip_address : ""
       querier_ip_address_peer = v.querier_ip_address_peer != null ? v.querier_ip_address_peer : ""
       querier_state           = v.querier_state != null ? v.querier_state : "Disabled"
@@ -1302,7 +1272,6 @@ locals {
       dns_servers_v6     = v.dns_servers_v6 != null ? v.dns_servers_v6 : []
       enable_dynamic_dns = v.enable_dynamic_dns != null ? v.enable_dynamic_dns : false
       enable_ipv6        = v.enable_ipv6 != null ? v.enable_ipv6 : false
-      organization       = v.organization != null ? v.organization : "default"
       tags               = v.tags != null ? v.tags : []
       update_domain      = v.update_domain != null ? v.update_domain : ""
     }
@@ -1316,12 +1285,11 @@ locals {
 
   ntp_policies = {
     for k, v in var.ntp_policies : k => {
-      description  = v.description != null ? v.description : ""
-      enabled      = v.enabled != null ? v.enabled : true
-      ntp_servers  = v.ntp_servers != null ? v.ntp_servers : ["time-a-g.nist.gov", "time-b-g.nist.gov"]
-      organization = v.organization != null ? v.organization : "default"
-      tags         = v.tags != null ? v.tags : []
-      timezone     = v.timezone != null ? v.timezone : "Etc/GMT"
+      description = v.description != null ? v.description : ""
+      enabled     = v.enabled != null ? v.enabled : true
+      ntp_servers = v.ntp_servers != null ? v.ntp_servers : ["time-a-g.nist.gov", "time-b-g.nist.gov"]
+      tags        = v.tags != null ? v.tags : []
+      timezone    = v.timezone != null ? v.timezone : "Etc/GMT"
     }
   }
 
@@ -1337,7 +1305,6 @@ locals {
       management_mode        = v.management_mode != null ? v.management_mode : "configured-from-intersight"
       memory_mode_percentage = v.memory_mode_percentage != null ? v.memory_mode_percentage : 0
       namespaces             = v.namespaces != null ? v.namespaces : {}
-      organization           = v.organization != null ? v.organization : "default"
       persistent_memory_type = v.persistent_memory_type != null ? v.persistent_memory_type : "app-direct"
       retain_namespaces      = v.retain_namespaces != null ? v.retain_namespaces : true
       tags                   = v.tags != null ? v.tags : []
@@ -1354,7 +1321,6 @@ locals {
     for k, v in var.port_policies : k => {
       description                   = v.description != null ? v.description : ""
       device_model                  = v.device_model != null ? v.device_model : "UCS-FI-6454"
-      organization                  = v.organization != null ? v.organization : "default"
       port_channel_appliances       = v.port_channel_appliances != null ? v.port_channel_appliances : {}
       port_channel_ethernet_uplinks = v.port_channel_ethernet_uplinks != null ? v.port_channel_ethernet_uplinks : {}
       port_channel_fc_uplinks       = v.port_channel_fc_uplinks != null ? v.port_channel_fc_uplinks : {}
@@ -1378,12 +1344,11 @@ locals {
   port_modes_loop = flatten([
     for key, value in local.port_policies : [
       for k, v in value.port_modes : {
-        custom_mode  = v.custom_mode != null ? v.custom_mode : "FibreChannel"
-        organization = value.organization != null ? value.organization : "default"
-        port_list    = v.port_list != null ? v.port_list : [1, 4]
-        port_policy  = key
-        slot_id      = v.slot_id != null ? v.slot_id : null
-        tags         = value.tags != null ? value.tags : []
+        custom_mode = v.custom_mode != null ? v.custom_mode : "FibreChannel"
+        port_list   = v.port_list != null ? v.port_list : [1, 4]
+        port_policy = key
+        slot_id     = v.slot_id != null ? v.slot_id : null
+        tags        = value.tags != null ? value.tags : []
       }
     ]
   ])
@@ -1952,7 +1917,6 @@ locals {
     for k, v in var.power_policies : k => {
       description               = v.description != null ? v.description : ""
       dynamic_power_rebalancing = v.dynamic_power_rebalancing != null ? v.dynamic_power_rebalancing : "Enabled"
-      organization              = v.organization != null ? v.organization : "default"
       power_allocation          = v.power_allocation != null ? v.power_allocation : 0
       power_priority            = v.power_priority != null ? v.power_priority : "Low"
       power_profiling           = v.power_profiling != null ? v.power_profiling : "Enabled"
@@ -1972,7 +1936,6 @@ locals {
   san_connectivity_policies = {
     for k, v in var.san_connectivity_policies : k => {
       description          = v.description != null ? v.description : ""
-      organization         = v.organization != null ? v.organization : "default"
       tags                 = v.tags != null ? v.tags : []
       target_platform      = v.target_platform != null ? v.target_platform : "FIAttached"
       vhba_placement_mode  = v.vhba_placement_mode != null ? v.vhba_placement_mode : "custom"
@@ -2022,7 +1985,6 @@ locals {
       enable_huu         = v.enable_huu != null ? v.enable_huu : false
       enable_os          = v.enable_os != null ? v.enable_os : false
       enable_scu         = v.enable_scu != null ? v.enable_scu : false
-      organization       = v.organization != null ? v.organization : "default"
       tags               = v.tags != null ? v.tags : []
     }
   }
@@ -2035,13 +1997,12 @@ locals {
 
   serial_over_lan_policies = {
     for k, v in var.serial_over_lan_policies : k => {
-      baud_rate    = v.baud_rate != null ? v.baud_rate : 115200
-      com_port     = v.com_port != null ? v.com_port : "com0"
-      description  = v.description != null ? v.description : ""
-      enabled      = v.enabled != null ? v.enabled : true
-      organization = v.organization != null ? v.organization : "default"
-      ssh_port     = v.ssh_port != null ? v.ssh_port : 2400
-      tags         = v.tags != null ? v.tags : []
+      baud_rate   = v.baud_rate != null ? v.baud_rate : 115200
+      com_port    = v.com_port != null ? v.com_port : "com0"
+      description = v.description != null ? v.description : ""
+      enabled     = v.enabled != null ? v.enabled : true
+      ssh_port    = v.ssh_port != null ? v.ssh_port : 2400
+      tags        = v.tags != null ? v.tags : []
     }
   }
 
@@ -2057,7 +2018,6 @@ locals {
       enable_smtp               = v.enable_smtp != null ? v.enable_smtp : true
       mail_alert_recipients     = v.mail_alert_recipients != null ? v.mail_alert_recipients : []
       minimum_severity          = v.minimum_severity != null ? v.minimum_severity : "critical"
-      organization              = v.organization != null ? v.organization : "default"
       smtp_alert_sender_address = v.smtp_alert_sender_address != null ? v.smtp_alert_sender_address : ""
       smtp_port                 = v.smtp_port != null ? v.smtp_port : 25
       smtp_server_address       = v.smtp_server_address != null ? v.smtp_server_address : ""
@@ -2075,7 +2035,6 @@ locals {
       access_community_string = v.access_community_string != null ? v.access_community_string : 0
       description             = v.description != null ? v.description : ""
       enable_snmp             = v.enable_snmp != null ? v.enable_snmp : true
-      organization            = v.organization != null ? v.organization : "default"
       snmp_community_access   = v.snmp_community_access != null ? v.snmp_community_access : "Disabled"
       snmp_engine_input_id    = v.snmp_engine_input_id != null ? v.snmp_engine_input_id : ""
       snmp_port               = v.snmp_port != null ? v.snmp_port : 161
@@ -2096,12 +2055,11 @@ locals {
 
   ssh_policies = {
     for k, v in var.ssh_policies : k => {
-      description  = v.description != null ? v.description : ""
-      enable_ssh   = v.enable_ssh != null ? v.enable_ssh : true
-      organization = v.organization != null ? v.organization : "default"
-      ssh_port     = v.ssh_port != null ? v.ssh_port : 22
-      ssh_timeout  = v.ssh_timeout != null ? v.ssh_timeout : 1800
-      tags         = v.tags != null ? v.tags : []
+      description = v.description != null ? v.description : ""
+      enable_ssh  = v.enable_ssh != null ? v.enable_ssh : true
+      ssh_port    = v.ssh_port != null ? v.ssh_port : 22
+      ssh_timeout = v.ssh_timeout != null ? v.ssh_timeout : 1800
+      tags        = v.tags != null ? v.tags : []
     }
   }
 
@@ -2116,7 +2074,6 @@ locals {
       description       = v.description != null ? v.description : ""
       drive_group       = v.drive_group != null ? v.drive_group : {}
       global_hot_spares = v.global_hot_spares != null ? v.global_hot_spares : ""
-      organization      = v.organization != null ? v.organization : "default"
       m2_configuration  = v.m2_configuration != null ? v.m2_configuration : {}
       single_drive_raid_configuration = v.single_drive_raid_configuration != null ? {
         for key, value in v.single_drive_raid_configuration : key => {
@@ -2149,7 +2106,6 @@ locals {
 
           }
         } : {}
-        organization = value.organization != null ? value.organization : "default"
         manual_drive_group = v.manual_drive_group != null ? {
           for x, y in v.manual_drive_group : x => {
             dedicated_hot_spares = y.dedicated_hot_spares != null ? y.dedicated_hot_spares : ""
@@ -2199,7 +2155,6 @@ locals {
       fc_switching_mode            = v.fc_switching_mode != null ? v.fc_switching_mode : "end-host"
       mac_address_table_aging      = v.mac_address_table_aging != null ? v.mac_address_table_aging : "Default"
       mac_aging_time               = v.mac_aging_time != null ? v.mac_aging_time : 14500
-      organization                 = v.organization != null ? v.organization : "default"
       tags                         = v.tags != null ? v.tags : []
       udld_message_interval        = v.udld_message_interval != null ? v.udld_message_interval : 15
       udld_recovery_action         = v.udld_recovery_action != null ? v.udld_recovery_action : "none"
@@ -2217,7 +2172,6 @@ locals {
     for k, v in var.syslog_policies : k => {
       description        = v.description != null ? v.description : ""
       local_min_severity = v.local_min_severity != null ? v.local_min_severity : "warning"
-      organization       = v.organization != null ? v.organization : "default"
       remote_clients     = v.remote_clients != null ? v.remote_clients : []
       tags               = v.tags != null ? v.tags : []
     }
@@ -2233,7 +2187,6 @@ locals {
     for k, v in var.thermal_policies : k => {
       description      = v.description != null ? v.description : ""
       fan_control_mode = v.fan_control_mode != null ? v.fan_control_mode : "Balanced"
-      organization     = v.organization != null ? v.organization : "default"
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -2251,7 +2204,6 @@ locals {
       enable_video_encryption   = v.enable_video_encryption != null ? v.enable_video_encryption : false
       enable_virtual_kvm        = v.enable_virtual_kvm != null ? v.enable_virtual_kvm : true
       maximum_sessions          = v.maximum_sessions != null ? v.maximum_sessions : 4
-      organization              = v.organization != null ? v.organization : "default"
       remote_port               = v.remote_port != null ? v.remote_port : 2068
       tags                      = v.tags != null ? v.tags : []
     }
@@ -2269,7 +2221,6 @@ locals {
       enable_low_power_usb            = v.enable_low_power_usb != null ? v.enable_low_power_usb : false
       enable_virtual_media            = v.enable_virtual_media != null ? v.enable_virtual_media : true
       enable_virtual_media_encryption = v.enable_virtual_media_encryption != null ? v.enable_virtual_media_encryption : true
-      organization                    = v.organization != null ? v.organization : "default"
       tags                            = v.tags != null ? v.tags : []
       vmedia_mappings                 = v.vmedia_mappings != null ? v.vmedia_mappings : {}
     }
@@ -2301,10 +2252,9 @@ locals {
 
   vlan_policies = {
     for k, v in var.vlan_policies : k => {
-      description  = v.description != null ? v.description : ""
-      organization = v.organization != null ? v.organization : "default"
-      tags         = v.tags != null ? v.tags : []
-      vlans        = v.vlans != null ? v.vlans : {}
+      description = v.description != null ? v.description : ""
+      tags        = v.tags != null ? v.tags : []
+      vlans       = v.vlans != null ? v.vlans : {}
     }
   }
 
@@ -2382,7 +2332,6 @@ locals {
   vsan_policies = {
     for k, v in var.vsan_policies : k => {
       description     = v.description != null ? v.description : ""
-      organization    = v.organization != null ? v.organization : "default"
       tags            = v.tags != null ? v.tags : []
       uplink_trunking = v.uplink_trunking != null ? v.uplink_trunking : false
       vsans           = v.vsans != null ? v.vsans : {}

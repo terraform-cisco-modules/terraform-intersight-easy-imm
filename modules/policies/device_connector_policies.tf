@@ -9,7 +9,6 @@ variable "device_connector_policies" {
     default = {
       configuration_lockout = false
       description           = ""
-      organization          = "default"
       tags                  = []
     }
   }
@@ -17,15 +16,12 @@ variable "device_connector_policies" {
   key - Name of the Device Connector Policy.
   * configuration_lockout - Locks Down Configuration to Intersight Only.
   * description - Description to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
       configuration_lockout = optional(bool)
       description           = optional(string)
-      organization          = optional(string)
       tags                  = optional(list(map(string)))
     }
   ))
@@ -40,14 +36,14 @@ variable "device_connector_policies" {
 
 resource "intersight_deviceconnector_policy" "device_connector_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each        = local.device_connector_policies
   description     = each.value.description != "" ? each.value.description : "${each.key} Device Connector Policy"
   lockout_enabled = each.value.configuration_lockout
   name            = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

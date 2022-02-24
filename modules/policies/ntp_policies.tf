@@ -7,12 +7,11 @@
 variable "ntp_policies" {
   default = {
     default = {
-      description  = ""
-      enabled      = true
-      ntp_servers  = ["time-a-g.nist.gov", "time-b-g.nist.gov"]
-      organization = "default"
-      tags         = []
-      timezone     = "Etc/GMT"
+      description = ""
+      enabled     = true
+      ntp_servers = ["time-a-g.nist.gov", "time-b-g.nist.gov"]
+      tags        = []
+      timezone    = "Etc/GMT"
     }
   }
   description = <<-EOT
@@ -20,20 +19,17 @@ variable "ntp_policies" {
   * description - Description to Assign to the Policy.
   * enabled - Flag to Enable or Disable the Policy.
   * ntp_servers - List of NTP Servers to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   * timezone - Timezone to Assign to the Policy.  For a List of supported timezones see the following URL.
-    - https://github.com/terraform-cisco-modules/terraform-intersight-imm/blob/master/modules/policies_ntp/README.md.
+    - https://github.com/terraform-cisco-modules/terraform-intersight-imm/blob/master/modules/ntp_policies/README.md.
   EOT
   type = map(object(
     {
-      description  = optional(string)
-      enabled      = optional(bool)
-      ntp_servers  = optional(set(string))
-      organization = optional(string)
-      tags         = optional(list(map(string)))
-      timezone     = optional(string)
+      description = optional(string)
+      enabled     = optional(bool)
+      ntp_servers = optional(set(string))
+      tags        = optional(list(map(string)))
+      timezone    = optional(string)
     }
   ))
 }
@@ -47,7 +43,7 @@ variable "ntp_policies" {
 
 resource "intersight_ntp_policy" "ntp_policies" {
   depends_on = [
-    local.org_moids,
+    local.org_moid,
     local.ucs_domain_policies
   ]
   for_each    = local.ntp_policies
@@ -57,7 +53,7 @@ resource "intersight_ntp_policy" "ntp_policies" {
   ntp_servers = each.value.ntp_servers
   timezone    = each.value.timezone
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   # dynamic "authenticated_ntp_servers" {

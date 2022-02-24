@@ -4,13 +4,9 @@
 #__________________________________________________________
 
 locals {
-  # Intersight Organization Variables
-  organizations = var.organizations
-  org_moids = {
-    for v in sort(keys(data.intersight_organization_organization.org_moid)) : v => {
-      moid = data.intersight_organization_organization.org_moid[v].results[0].moid
-    }
-  }
+  # Intersight Organization Variable
+  org_moid = data.intersight_organization_organization.org_moid.results[0].moid
+
   # Intersight Provider Variables
   endpoint = var.endpoint
 
@@ -30,7 +26,6 @@ locals {
       ipv4_config      = v.ipv4_config != null ? v.ipv4_config : {}
       ipv6_blocks      = v.ipv6_blocks != null ? v.ipv6_blocks : {}
       ipv6_config      = v.ipv6_config != null ? v.ipv6_config : {}
-      organization     = v.organization != null ? v.organization : "default"
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -46,7 +41,6 @@ locals {
       description      = v.description != null ? v.description : ""
       prefix           = v.prefix != null ? v.prefix : "iqn.1984-12.com.cisco"
       iqn_blocks       = v.iqn_blocks != null ? v.iqn_blocks : {}
-      organization     = v.organization != null ? v.organization : "default"
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -61,7 +55,6 @@ locals {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
       mac_blocks       = v.mac_blocks != null ? v.mac_blocks : {}
-      organization     = v.organization != null ? v.organization : "default"
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -75,7 +68,6 @@ locals {
     for k, v in var.resource_pools : k => {
       assignment_order   = v.assignment_order != null ? v.assignment_order : "default"
       description        = v.description != null ? v.description : ""
-      organization       = v.organization != null ? v.organization : "default"
       pool_type          = v.pool_type != null ? v.pool_type : "Static"
       resource_type      = v.resource_type != null ? v.resource_type : "Server"
       serial_number_list = v.serial_number_list
@@ -93,7 +85,6 @@ locals {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
       prefix           = v.prefix != null ? v.prefix : "000025B5-0000-0000"
-      organization     = v.organization != null ? v.organization : "default"
       tags             = v.tags != null ? v.tags : []
       uuid_blocks      = v.uuid_blocks != null ? v.uuid_blocks : {}
     }
@@ -109,7 +100,6 @@ locals {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
       id_blocks        = v.id_blocks != null ? v.id_blocks : {}
-      organization     = v.organization != null ? v.organization : "default"
       pool_purpose     = v.pool_purpose != null ? v.pool_purpose : "WWPN"
       tags             = v.tags != null ? v.tags : []
     }
@@ -125,7 +115,6 @@ locals {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
       id_blocks        = v.id_blocks != null ? v.id_blocks : {}
-      organization     = v.organization != null ? v.organization : "default"
       pool_purpose     = v.pool_purpose != null ? v.pool_purpose : "WWPN"
       tags             = v.tags != null ? v.tags : []
     }

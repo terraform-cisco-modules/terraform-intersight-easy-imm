@@ -77,12 +77,11 @@ variable "base64_private_key_5" {
 variable "certificate_management_policies" {
   default = {
     default = {
-      certificate  = 1
-      description  = ""
-      enabled      = true
-      organization = "default"
-      private_key  = 1
-      tags         = []
+      certificate = 1
+      description = ""
+      enabled     = true
+      private_key = 1
+      tags        = []
     }
   }
   description = <<-EOT
@@ -90,19 +89,16 @@ variable "certificate_management_policies" {
   * certificate - The Number of the base64_certificate Variable.  i.e. 1 = base64_certificate_1.
   * description - Description to Assign to the Policy.
   * enabled - "Enable/Disable the Certificate Management policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * private_key - The Number of the base64_private_key Variable.  i.e. 1 = base64_private_key_1.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
   type = map(object(
     {
-      certificate  = number
-      description  = optional(string)
-      enabled      = optional(bool)
-      organization = optional(string)
-      private_key  = number
-      tags         = optional(list(map(string)))
+      certificate = number
+      description = optional(string)
+      enabled     = optional(bool)
+      private_key = number
+      tags        = optional(list(map(string)))
     }
   ))
 }
@@ -116,13 +112,13 @@ variable "certificate_management_policies" {
 
 resource "intersight_certificatemanagement_policy" "certificate_management_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.certificate_management_policies
   description = each.value.description != "" ? each.value.description : "${each.key} Certificate Management Policy."
   name        = each.key
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   certificates {

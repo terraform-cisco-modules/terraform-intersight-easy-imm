@@ -7,19 +7,16 @@
 variable "flow_control_policies" {
   default = {
     default = {
-      description  = ""
-      organization = "default"
-      priority     = "auto"
-      receive      = "Disabled"
-      send         = "Disabled"
-      tags         = []
+      description = ""
+      priority    = "auto"
+      receive     = "Disabled"
+      send        = "Disabled"
+      tags        = []
     }
   }
   description = <<-EOT
   key - Name of the Flow Control Policy.
   * description - Description to Assign to the Policy.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * priority - Configure PFC on a per-port basis to enable the no-drop behavior for the CoS as defined by the active network qos policy.
     - auto - (Default) Enables the no-drop CoS values to be advertised by the DCBXP and negotiated with the peer.  A successful negotiation enables PFC on the no-drop CoS.  Any failures because of a mismatch in the capability of peers causes the PFC not to be enabled.
     - on - Enables PFC on the local port regardless of the capability of the peers.
@@ -33,12 +30,11 @@ variable "flow_control_policies" {
   EOT
   type = map(object(
     {
-      description  = optional(string)
-      organization = optional(string)
-      priority     = optional(string)
-      receive      = optional(string)
-      send         = optional(string)
-      tags         = optional(list(map(string)))
+      description = optional(string)
+      priority    = optional(string)
+      receive     = optional(string)
+      send        = optional(string)
+      tags        = optional(list(map(string)))
     }
   ))
 }
@@ -52,7 +48,7 @@ variable "flow_control_policies" {
 
 resource "intersight_fabric_flow_control_policy" "flow_control_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each                   = local.flow_control_policies
   description                = each.value.description != "" ? each.value.description : "${each.key} Flow Control Policy"
@@ -61,7 +57,7 @@ resource "intersight_fabric_flow_control_policy" "flow_control_policies" {
   receive_direction          = each.value.receive
   send_direction             = each.value.send
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {

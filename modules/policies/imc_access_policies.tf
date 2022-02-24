@@ -12,7 +12,6 @@ variable "imc_access_policies" {
       inband_vlan_id             = 4
       ipv4_address_configuration = true
       ipv6_address_configuration = false
-      organization               = "default"
       out_of_band_ip_pool        = ""
       tags                       = []
     }
@@ -24,8 +23,6 @@ variable "imc_access_policies" {
   * inband_vlan_id - VLAN ID to Assign as the Inband Management VLAN for IMC Access.
   * ipv4_address_configuration - Flag to Enable or Disable the IPv4 Address Family for Poliices.
   * ipv6_address_configuration - Flag to Enable or Disable the IPv6 Address Family for Poliices.
-  * organization - Name of the Intersight Organization to assign this Policy to.
-    - https://intersight.com/an/settings/organizations/
   * out_of_band_ip_pool - Name of the IP Pool to Assign to the Out-of-Band Configuration of the IMC Access Policy.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
@@ -36,7 +33,6 @@ variable "imc_access_policies" {
       inband_vlan_id             = optional(number)
       ipv4_address_configuration = optional(bool)
       ipv6_address_configuration = optional(bool)
-      organization               = optional(string)
       out_of_band_ip_pool        = optional(string)
       tags                       = optional(list(map(string)))
     }
@@ -52,7 +48,7 @@ variable "imc_access_policies" {
 
 resource "intersight_access_policy" "imc_access_policies" {
   depends_on = [
-    local.org_moids
+    local.org_moid
   ]
   for_each    = local.imc_access_policies
   description = each.value.description != "" ? each.value.description : "${each.key} IMC Access Policy"
@@ -73,7 +69,7 @@ resource "intersight_access_policy" "imc_access_policies" {
     object_type = "ippool.Pool"
   }
   organization {
-    moid        = local.org_moids[each.value.organization].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   out_of_band_ip_pool {
