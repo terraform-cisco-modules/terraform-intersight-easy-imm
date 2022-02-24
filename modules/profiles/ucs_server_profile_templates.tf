@@ -21,7 +21,6 @@ variable "ucs_server_profile_templates" {
       network_connectivity_policy   = ""
       ntp_policy                    = ""
       operating_system              = "VMware"
-      organization                  = "default"
       persistent_memory_policy      = ""
       power_policy                  = ""
       san_connectivity_policy       = ""
@@ -58,8 +57,6 @@ variable "ucs_server_profile_templates" {
     - Linux
     - VMware - (Default)
     - Windows
-  * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
-    -  https://intersight.com/an/settings/organizations/
   * persistent_memory_policy - Name of the Persistent Memory Policy to assign to the Template.
   * power_policy - Name of the Power Policy to assign to the Template.
   * san_connectivity_policy - Name of the SAN Connectivity Policy to assign to the Template.
@@ -94,7 +91,6 @@ variable "ucs_server_profile_templates" {
       network_connectivity_policy   = optional(string)
       ntp_policy                    = optional(string)
       operating_system              = optional(string)
-      organization                  = optional(string)
       persistent_memory_policy      = optional(string)
       power_policy                  = optional(string)
       san_connectivity_policy       = optional(string)

@@ -10,7 +10,6 @@ variable "ucs_chassis_profiles" {
       action              = "No-op"
       assign_chassis      = false
       imc_access_policy   = ""
-      organization        = "default"
       power_policy        = ""
       snmp_policy         = ""
       target_platform     = "FIAttached"
@@ -30,8 +29,6 @@ variable "ucs_chassis_profiles" {
   * assign_chassis - Set flag to True to Assign the Profile to a Physical Chassis Serial Number.
   * description - Description for the Profile.
   * imc_access_policy - Name of the IMC Access Policy to Assign.
-  * organization - Name of the Intersight Organization to assign this Profile to.  Default is default.
-    -  https://intersight.com/an/settings/organizations/
   * power_policy - Name of the Power Policy to Assign.
   * serial_number - Serial Number of the Chassis to Assign.
   * snmp_policy - Name of the SNMP Policy to Assign.
@@ -47,7 +44,6 @@ variable "ucs_chassis_profiles" {
       assign_chassis      = optional(bool)
       description         = optional(string)
       imc_access_policy   = optional(string)
-      organization        = optional(string)
       power_policy        = optional(string)
       serial_number       = optional(string)
       snmp_policy         = optional(string)

@@ -369,6 +369,7 @@ locals {
       device_connector_policy       = v.device_connector_policy != null ? v.device_connector_policy : null
       imc_access_policy             = v.imc_access_policy != null ? v.imc_access_policy : null
       ipmi_over_lan_policy          = v.ipmi_over_lan_policy != null ? v.ipmi_over_lan_policy : null
+      key_name                      = ""
       lan_connectivity_policy       = v.lan_connectivity_policy != null ? v.lan_connectivity_policy : null
       ldap_policy                   = v.ldap_policy != null ? v.ldap_policy : null
       local_user_policy             = v.local_user_policy != null ? v.local_user_policy : null
@@ -482,7 +483,6 @@ locals {
         ntp_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.ntp_policy, "_EMPTY"))
         ) > 0 ? v.ntp_policy : v.ucs_server_profile_template != "" ? value.ntp_policy : ""
-        organization = v.organization != null ? v.organization : v.ucs_server_profile_template != "" ? value.organization : ""
         persistent_memory_policy = length(
           regexall("^[a-zA-Z0-9]", coalesce(v.persistent_memory_policy, "_EMPTY"))
         ) > 0 ? v.persistent_memory_policy : v.ucs_server_profile_template != "" ? value.persistent_memory_policy : ""
@@ -548,7 +548,6 @@ locals {
     for k, v in local.ucs_server_merged : k => {
       action                      = v.action
       description                 = v.description
-      organization                = v.organization
       resource_pool               = v.resource_pool
       serial_number               = v.serial_number
       server_assignment_mode      = v.server_assignment_mode
