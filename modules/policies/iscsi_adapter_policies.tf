@@ -51,7 +51,7 @@ resource "intersight_vnic_iscsi_adapter_policy" "iscsi_adapter_policies" {
   lun_busy_retry_count = each.value.lun_busy_retry_count != null ? each.value.lun_busy_retry_count : 15
   name                 = each.key
   organization {
-    moid        = each.value.organization != null ? local.org_moid : local.org_moid["default"].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "tags" {
