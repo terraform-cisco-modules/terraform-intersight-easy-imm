@@ -10,10 +10,12 @@ terraform {
 variable "tfc_workspaces" {
   default = [
     {
-      backend                = "remote"
-      tfc_organization       = "default"
-      ws_pools               = "default_pools"
-      ws_ucs_domain_profiles = "default_ucs_domain_profiles"
+      backend             = "remote"
+      tfc_organization    = "default"
+      domain_profiles_dir = "../ucs_domain_profiles/"
+      domain_profiles_ws  = "default_ucs_domain_profiles"
+      pools_dir           = "../pools/"
+      pools_ws            = "default_pools"
     }
   ]
   description = <<-EOT
@@ -21,15 +23,19 @@ variable "tfc_workspaces" {
     - local - The backend is on the Local Machine
     - Remote - The backend is in TFCB.
   * tfc_organization: Name of the Terraform Cloud Organization
-  * ws_pools: Name of the pools workspace.
-  * ws_ucs_domain_profiles: Name of the ucs_domain_profiles workspace
+  * doman_profiles_dir: Name of the UCS Domain Profiles directory when the backend is local.
+  * doman_profiles_ws: Name of the UCS Domain Profiles workspace in Terraform Cloud.
+  * pools_dir: Name of the Pools directory when the backend is local.
+  * pools_ws: Name of the Pools workspace in Terraform Cloud.
   EOT
   type = list(object(
     {
-      backend                = string
-      tfc_organization       = string
-      ws_pools               = string
-      ws_ucs_domain_profiles = string
+      backend             = string
+      tfc_organization    = optional(string)
+      domain_profiles_dir = optional(string)
+      domain_profiles_ws  = optional(string)
+      pools_dir           = optional(string)
+      pools_ws            = optional(string)
     }
   ))
 }

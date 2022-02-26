@@ -159,7 +159,8 @@ resource "intersight_server_profile" "ucs_server_profiles" {
     object_type = "organization.Organization"
   }
   dynamic "assigned_server" {
-    for_each = each.value.server_assignment_mode == "Static" ? [
+    for_each = each.value.server_assignment_mode != "Pool" && length(
+      regexall("[[:alnum:]]", each.value.serial_number)) > 0 ? [
       {
         moid        = data.intersight_compute_physical_summary.server[each.key].results[0].moid
         object_type = data.intersight_compute_physical_summary.server[each.key].results[0].source_object_type

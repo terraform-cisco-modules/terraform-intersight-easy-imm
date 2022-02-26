@@ -36,24 +36,30 @@ variable "tfc_workspaces" {
     {
       backend          = "remote"
       tfc_organization = "default"
-      ws_pools         = "default_pools"
-      ws_policies      = "default_ucs_domain_profiles"
+      policies_dir     = "../policies/"
+      policies_ws      = "default_policies"
+      pools_dir        = "../pools/"
+      pools_ws         = "default_pools"
     }
   ]
   description = <<-EOT
   * backend: Options are:
     - local - The backend is on the Local Machine
     - Remote - The backend is in TFCB.
-  * tfc_organization: Name of the Terraform Cloud Organization
-  * ws_policies: Name of the policies workspace
-  * ws_pools: Name of the pools workspace.
+  * tfc_organization: Name of the Terraform Cloud Organization when backend is remote.
+  * policies_dir: Name of the Policies directory when the backend is local.
+  * policies_ws: Name of the Policies workspace in Terraform Cloud.
+  * pools_dir: Name of the Pools directory when the backend is local.
+  * pools_ws: Name of the Pools workspace in Terraform Cloud.
   EOT
   type = list(object(
     {
       backend          = string
-      tfc_organization = string
-      ws_pools         = string
-      ws_policies      = string
+      tfc_organization = optional(string)
+      policies_dir     = optional(string)
+      policies_ws      = optional(string)
+      pools_dir        = optional(string)
+      pools_ws         = optional(string)
     }
   ))
 }

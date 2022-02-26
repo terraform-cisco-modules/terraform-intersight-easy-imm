@@ -4,6 +4,18 @@
 #__________________________________________________________
 
 locals {
+  # Output Sources for Policies and Pools
+  tfc_workspaces = {
+    for k, v in var.tfc_workspaces : k => {
+      backend             = v.backend
+      tfc_organization    = v.tfc_organization != null ? v.tfc_organization : "default"
+      domain_profiles_dir = v.domain_profiles_dir != null ? v.domain_profiles_dir : "../policies/"
+      domain_profiles_ws  = v.domain_profiles_ws != null ? v.domain_profiles_ws : "default_ucs_domain_profiles"
+      pools_dir           = v.pools_dir != null ? v.pools_dir : "../pools/"
+      pools_ws            = v.pools_ws != null ? v.pools_ws : "default_pools"
+    }
+  }
+
   # Intersight Organization Variable
   org_moid = data.intersight_organization_organization.org_moid.results[0].moid
 

@@ -3,40 +3,40 @@
 # Get outputs from the Terraform Workspaces
 #__________________________________________________________
 
-data "terraform_remote_state" "local_pools" {
-  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "local" }
-  backend  = each.value.backend
-  config = {
-    path = "../pools/terraform.tfstate"
-  }
-}
-
-data "terraform_remote_state" "remote_pools" {
-  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "remote" }
-  backend  = each.value.backend
-  config = {
-    organization = each.value.tfc_organization
-    workspaces = {
-      name = each.value.ws_pools
-    }
-  }
-}
-
 data "terraform_remote_state" "local_policies" {
-  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "local" }
+  for_each = { for k, v in local.tfc_workspaces : k => v if v.backend == "local" }
   backend  = each.value.backend
   config = {
-    path = "../policies/terraform.tfstate"
+    path = "${each.value.profiles_dir}terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "local_pools" {
+  for_each = { for k, v in local.tfc_workspaces : k => v if v.backend == "local" }
+  backend  = each.value.backend
+  config = {
+    path = "${each.value.pools_dir}terraform.tfstate"
   }
 }
 
 data "terraform_remote_state" "remote_policies" {
-  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "remote" }
+  for_each = { for k, v in local.tfc_workspaces : k => v if v.backend == "remote" }
   backend  = each.value.backend
   config = {
     organization = each.value.tfc_organization
     workspaces = {
-      name = each.value.ws_policies
+      name = each.value.profiles_ws
+    }
+  }
+}
+
+data "terraform_remote_state" "remote_pools" {
+  for_each = { for k, v in local.tfc_workspaces : k => v if v.backend == "remote" }
+  backend  = each.value.backend
+  config = {
+    organization = each.value.tfc_organization
+    workspaces = {
+      name = each.value.pools_ws
     }
   }
 }
