@@ -152,7 +152,6 @@ resource "intersight_vmedia_policy" "virtual_media_policies" {
       device_type             = mappings.value.device_type
       file_location           = mappings.value.file_location
       host_name               = ""
-      is_password_set         = mappings.value.password != 0 ? true : false
       mount_options           = mappings.value.mount_options
       mount_protocol          = mappings.value.protocol
       object_type             = "vmedia.Mapping"
