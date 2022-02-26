@@ -149,7 +149,7 @@ resource "intersight_vnic_iscsi_boot_policy" "iscsi_boot_policies" {
   name               = each.key
   target_source_type = each.value.target_source_type != null ? each.value.target_source_type : "Auto"
   organization {
-    moid        = each.value.organization != null ? local.org_moid : local.org_moid["default"].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "initiator_ip_pool" {
