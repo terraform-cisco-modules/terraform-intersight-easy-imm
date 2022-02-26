@@ -4,43 +4,22 @@
 #______________________________________________
 
 link_control_policies = {
-  "Asgard_linkctrl" = {
-    admin_state  = "Enabled"
-    description  = ""
-    mode         = "normal"
-    organization = "Asgard"
-    tags         = []
+  "linkctrl" = {
+    admin_state = "Enabled"
+    description = ""
+    mode        = "normal"
+    tags        = []
   }
   "UCS-DEMO2" = {
-    admin_state  = "Disabled"
-    description  = ""
-    mode         = "normal"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    admin_state = "Disabled"
+    description = ""
+    mode        = "normal"
+    tags        = []
   }
   "test" = {
-    admin_state  = "Enabled"
-    description  = ""
-    mode         = "aggressive"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    admin_state = "Enabled"
+    description = ""
+    mode        = "aggressive"
+    tags        = []
   }
 }

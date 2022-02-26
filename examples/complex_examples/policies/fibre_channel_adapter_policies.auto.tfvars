@@ -18,7 +18,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -26,16 +25,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 1
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "FCNVMeInitiator" = {
     description                       = "Recommended-adapter-settings-for-FC-NVMe-Initiator-Mode"
@@ -51,7 +41,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -59,16 +48,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 16
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "FCNVMeTarget" = {
     description                       = "Recommended-adapter-settings-for-FC-NVMe-Target-Mode"
@@ -84,7 +64,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -92,16 +71,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 16
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "Initiator" = {
     description                       = "Recommended-adapter-settings-for-FC-Initiator-Mode"
@@ -117,7 +87,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -125,16 +94,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 1
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "Linux" = {
     description                       = "Recommended-adapter-settings-for-Linux"
@@ -150,7 +110,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -158,16 +117,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 1
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "Solaris" = {
     description                       = "Recommended-adapter-settings-for-Solaris"
@@ -183,7 +133,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -191,16 +140,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 1
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "Target" = {
     description                       = "Recommended-adapter-settings-for-FC-Target-Mode"
@@ -216,7 +156,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -224,16 +163,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 1
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "VMWare" = {
     description                       = "Recommended-adapter-settings-for-VMWare"
@@ -249,7 +179,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -257,16 +186,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 1
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "Windows" = {
     description                       = "Recommended-adapter-settings-for-Windows"
@@ -282,7 +202,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 20000
     resource_allocation_timeout       = 10000
@@ -290,16 +209,7 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 1
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
   "WindowsBoot" = {
     description                       = "Recommended-adapter-settings-for-Windows-SAN-Boot"
@@ -315,7 +225,6 @@ fibre_channel_adapter_policies = {
     io_throttle_count                 = 256
     lun_queue_depth                   = 20
     max_luns_per_target               = 1024
-    organization                      = "UCS-DEMO2"
     plogi_retries                     = 8
     plogi_timeout                     = 4000
     resource_allocation_timeout       = 10000
@@ -323,15 +232,6 @@ fibre_channel_adapter_policies = {
     scsi_io_queue_count               = 1
     scsi_io_ring_size                 = 512
     transmit_ring_size                = 64
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                              = []
   }
 }

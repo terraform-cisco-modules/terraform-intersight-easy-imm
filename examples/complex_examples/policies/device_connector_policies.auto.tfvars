@@ -4,11 +4,10 @@
 #______________________________________________
 
 device_connector_policies = {
-  "Asgard_devconn" = {
-    description  = ""
-    lockout      = false
-    organization = "Asgard"
-    tags         = []
+  "devconn" = {
+    description = ""
+    lockout     = false
+    tags        = []
   }
 }
 

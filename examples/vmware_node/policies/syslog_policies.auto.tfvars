@@ -4,11 +4,25 @@
 #______________________________________________
 
 syslog_policies = {
-  "#Organization#_syslog" = {
+  "syslog" = {
     description        = ""
     local_min_severity = "warning"
-    organization       = "#Organization#"
-    remote_clients     = []
-    tags               = []
+    remote_clients = [
+      {
+        enabled      = false
+        hostname     = "0.0.0.0"
+        min_severity = "warning"
+        port         = 514
+        protocol     = "udp"
+      },
+      {
+        enabled      = false
+        hostname     = "0.0.0.0"
+        min_severity = "warning"
+        port         = 514
+        protocol     = "udp"
+      }
+    ]
+    tags = []
   }
 }

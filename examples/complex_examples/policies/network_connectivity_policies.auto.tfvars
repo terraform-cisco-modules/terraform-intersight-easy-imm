@@ -4,12 +4,11 @@
 #______________________________________________
 
 network_connectivity_policies = {
-  "Asgard_dns" = {
+  "dns" = {
     description        = ""
     dns_servers_v6     = []
     enable_dynamic_dns = false
     enable_ipv6        = false
-    organization       = "Asgard"
     tags               = []
     update_domain      = ""
     dns_servers_v4 = [
@@ -21,7 +20,6 @@ network_connectivity_policies = {
     description        = ""
     enable_dynamic_dns = false
     enable_ipv6        = true
-    organization       = "UCS-DEMO2"
     update_domain      = ""
     dns_servers_v4 = [
       "1.2.3.4",
@@ -31,15 +29,6 @@ network_connectivity_policies = {
       "2001:420:44f0::1",
       "::"
     ]
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
 }

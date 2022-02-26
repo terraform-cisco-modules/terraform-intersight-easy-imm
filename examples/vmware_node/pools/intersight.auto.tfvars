@@ -4,7 +4,7 @@
 #__________________________________________________________
 
 # endpoint     = "https://intersight.com"
-organizations = ["#Organization#"]
+organization = "#Organization#"
 
 # secretkey    = "../../../../intersight.secret"
 /*

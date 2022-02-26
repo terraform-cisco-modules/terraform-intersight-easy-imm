@@ -4,12 +4,11 @@
 #______________________________________________
 
 virtual_media_policies = {
-  "Asgard_vmedia_usb" = {
+  "vmedia_usb" = {
     description                     = ""
     enabled                         = true
     enable_low_power_usb            = true
     enable_virtual_media_encryption = false
-    organization                    = "Asgard"
     tags                            = []
     vmedia_mappings                 = []
   }
@@ -17,17 +16,7 @@ virtual_media_policies = {
     description                     = ""
     enable_low_power_usb            = false
     enable_virtual_media_encryption = false
-    organization                    = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                            = []
     vmedia_mounts = [
       {
         device_type = "cdd",
@@ -44,17 +33,7 @@ virtual_media_policies = {
     description                     = ""
     enable_low_power_usb            = false
     enable_virtual_media_encryption = false
-    organization                    = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                            = []
     vmedia_mounts = [
       {
         device_type = "cdd",

@@ -4,12 +4,11 @@
 #______________________________________________
 
 flow_control_policies = {
-  "#Organization#_flowctrl" = {
-    description  = ""
-    priority     = "auto"
-    receive      = "Disabled"
-    send         = "Disabled"
-    organization = "#Organization#"
-    tags         = []
+  "flowctrl" = {
+    description = ""
+    priority    = "auto"
+    receive     = "Disabled"
+    send        = "Disabled"
+    tags        = []
   }
 }

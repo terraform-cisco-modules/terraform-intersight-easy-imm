@@ -4,14 +4,12 @@
 #______________________________________________
 
 mac_pools = {
-  Asgard_mac_pool_a = {
+  "mac_pool_a" = {
     assignment_order = "sequential"
-    organization     = "Asgard"
     # mac_blocks = [] # Accepting Default MAC Block
   }
-  Asgard_mac_pool_b = {
+  "mac_pool_b" = {
     assignment_order = "sequential"
-    organization     = "Asgard"
     mac_blocks = [
       {
         from = "00:25:B5:0b:00:00"
@@ -22,96 +20,46 @@ mac_pools = {
   "DEMO" = {
     mac_blocks = [
       {
-        from = "00:25:B5:11:C1:00",
-        to   = "00:25:B5:11:C1:FF",
-      },
+        from = "00:25:B5:11:C1:00"
+        to   = "00:25:B5:11:C1:FF"
+      }
     ]
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
   "ISCSI-A" = {
     mac_blocks = [
       {
-        from = "00:25:B5:00:0A:08",
-        to   = "00:25:B5:00:0A:11",
-      },
+        from = "00:25:B5:00:0A:08"
+        to   = "00:25:B5:00:0A:11"
+      }
     ]
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
   "ISCSI-B" = {
     mac_blocks = [
       {
-        from = "00:25:B5:00:0B:08",
-        to   = "00:25:B5:00:0B:11",
-      },
+        from = "00:25:B5:00:0B:08"
+        to   = "00:25:B5:00:0B:11"
+      }
     ]
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
   "OCB-ESXi" = {
     mac_blocks = [
       {
-        from = "00:25:B5:00:00:00",
-        to   = "00:25:B5:00:01:F3",
-      },
+        from = "00:25:B5:00:00:00"
+        to   = "00:25:B5:00:01:F3"
+      }
     ]
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
   "test" = {
     mac_blocks = [
       {
-        from = "00:25:B5:FF:FF:00",
-        to   = "00:25:B5:FF:FF:03",
-      },
+        from = "00:25:B5:FF:FF:00"
+        to   = "00:25:B5:FF:FF:03"
+      }
     ]
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
 }

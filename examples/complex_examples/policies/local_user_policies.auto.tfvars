@@ -4,7 +4,7 @@
 #______________________________________________
 
 local_user_policies = {
-  "Asgard_users" = {
+  "users" = {
     description             = ""
     enforce_strong_password = true
     force_send_password     = false
@@ -22,7 +22,6 @@ local_user_policies = {
       }
     }
     notification_period      = 15
-    organization             = "Asgard"
     password_expiry          = false
     password_expiry_duration = 90
     password_history         = 5

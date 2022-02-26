@@ -10,19 +10,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "eth0" = {
         enable_failover                 = false
@@ -71,19 +61,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "data-1" = {
         enable_failover                 = false
@@ -249,19 +229,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "DATA-A" = {
         cdn_source                      = "vnic"
@@ -353,19 +323,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "DATA-A" = {
         cdn_source                      = "vnic"
@@ -623,19 +583,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "ETH0" = {
         enable_failover                 = false
@@ -697,19 +647,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "ETH0" = {
         enable_failover                 = false
@@ -745,19 +685,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "eth0" = {
         enable_failover                 = false
@@ -780,19 +710,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "eth0" = {
         enable_failover                 = false
@@ -815,19 +735,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "vnic0" = {
         enable_failover                 = true
@@ -850,19 +760,9 @@ lan_connectivity_policies = {
     iqn_allocation_type         = "None"
     iqn_pool                    = ""
     iqn_static_identifier       = ""
-    organization                = "UCS-DEMO2"
     vnic_placement_mode         = "auto"
     target_platform             = "FIAttached"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
     vnics = {
       "vnic0" = {
         enable_failover                 = true

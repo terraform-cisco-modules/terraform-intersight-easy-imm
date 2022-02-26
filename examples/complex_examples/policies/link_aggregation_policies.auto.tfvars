@@ -4,43 +4,22 @@
 #______________________________________________
 
 link_aggregation_policies = {
-  "Asgard_linkagg" = {
+  "linkagg" = {
     description        = ""
     lacp_rate          = "normal"
-    organization       = "Asgard"
     suspend_individual = false
     tags               = []
   }
   "UCS-DEMO2" = {
     description        = ""
     lacp_rate          = "normal"
-    organization       = "UCS-DEMO2"
     suspend_individual = false
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
   }
   "lacp_pol" = {
     description        = ""
     lacp_rate          = "fast"
-    organization       = "UCS-DEMO2"
     suspend_individual = true
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
   }
 }

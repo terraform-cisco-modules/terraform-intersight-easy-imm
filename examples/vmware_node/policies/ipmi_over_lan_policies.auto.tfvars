@@ -4,12 +4,11 @@
 #______________________________________________
 
 ipmi_over_lan_policies = {
-  "#Organization#_ipmi" = {
-    description  = "#Organization# IPMI over LAN Policy."
-    enabled      = true
-    ipmi_key     = null
-    privilege    = "admin"
-    organization = "#Organization#"
-    tags         = []
+  "ipmi" = {
+    description = "IPMI over LAN Policy."
+    enabled     = true
+    ipmi_key    = null
+    privilege   = "admin"
+    tags        = []
   }
 }

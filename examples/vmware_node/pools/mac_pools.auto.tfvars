@@ -4,23 +4,21 @@
 #______________________________________________
 
 mac_pools = {
-  "#Organization#_Fabric_A" = {
+  "Fabric_A" = {
     assignment_order = "sequential"
-    organization     = "#Organization#"
     mac_blocks = [
       {
-        from = "00:25:B5:0a:00:00"
-        to   = "00:25:B5:0a:00:ff"
+        from = "00:25:B5:0A:00:00"
+        to   = "00:25:B5:0A:00:FF"
       }
     ]
   }
-  "#Organization#_Fabric_B" = {
+  "Fabric_B" = {
     assignment_order = "sequential"
-    organization     = "#Organization#"
     mac_blocks = [
       {
-        from = "00:25:B5:0b:00:00"
-        to   = "00:25:B5:0b:00:ff"
+        from = "00:25:B5:0B:00:00"
+        to   = "00:25:B5:0B:00:FF"
       }
     ]
   }

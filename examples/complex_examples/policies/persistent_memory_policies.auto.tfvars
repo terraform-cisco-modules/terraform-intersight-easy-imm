@@ -4,7 +4,7 @@
 #______________________________________________
 
 persistent_memory_policies = {
-  "Asgard_persistent_memory" = {
+  "persistent_memory" = {
     description                  = ""
     goals_memory_percentage      = 0
     goals_persistent_memory_type = "app-direct"
@@ -18,7 +18,6 @@ persistent_memory_policies = {
       }
     ]
     management_mode   = "configured-from-intersight"
-    organization      = "Asgard"
     retain_namespaces = true
     tags              = []
   }

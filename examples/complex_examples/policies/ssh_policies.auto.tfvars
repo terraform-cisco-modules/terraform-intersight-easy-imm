@@ -4,13 +4,12 @@
 #______________________________________________
 
 ssh_policies = {
-  "Asgard_ssh" = {
-    description  = ""
-    enabled      = true
-    organization = "Asgard"
-    ssh_port     = 22
-    tags         = []
-    timeout      = 1800
+  "ssh" = {
+    description = ""
+    enabled     = true
+    ssh_port    = 22
+    tags        = []
+    timeout     = 1800
   }
 }
 

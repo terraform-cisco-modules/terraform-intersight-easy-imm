@@ -7,7 +7,6 @@ port_policies = {
   "UCS-DEMO2-A" = {
     description  = ""
     device_model = "UCS-FI-6454"
-    organization = "UCS-DEMO2"
     port_channel_appliances = {
       "36" = {
         admin_speed                     = "25Gbps"
@@ -192,21 +191,11 @@ port_policies = {
         slot_id   = 1
       }
     }
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
   "UCS-DEMO2-B" = {
     description             = ""
     device_model            = "UCS-FI-6454"
-    organization            = "UCS-DEMO2"
     port_channel_appliances = {}
     port_channel_ethernet_uplinks = {
       "1" = {
@@ -308,15 +297,6 @@ port_policies = {
         slot_id   = 1
       }
     }
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
 }

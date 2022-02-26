@@ -4,12 +4,11 @@
 #______________________________________________
 
 network_connectivity_policies = {
-  "#Organization#_dns" = {
-    description        = "#Organization# DNS Policy."
+  "dns" = {
+    description        = "DNS Policy."
     dns_servers_v6     = []
     enable_dynamic_dns = false
     enable_ipv6        = true
-    organization       = "#Organization#"
     tags               = []
     update_domain      = ""
     dns_servers_v4 = [

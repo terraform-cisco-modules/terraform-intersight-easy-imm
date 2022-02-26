@@ -100,7 +100,6 @@ locals {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
       id_blocks        = v.id_blocks != null ? v.id_blocks : {}
-      pool_purpose     = v.pool_purpose != null ? v.pool_purpose : "WWPN"
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -115,7 +114,6 @@ locals {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
       id_blocks        = v.id_blocks != null ? v.id_blocks : {}
-      pool_purpose     = v.pool_purpose != null ? v.pool_purpose : "WWPN"
       tags             = v.tags != null ? v.tags : []
     }
   }

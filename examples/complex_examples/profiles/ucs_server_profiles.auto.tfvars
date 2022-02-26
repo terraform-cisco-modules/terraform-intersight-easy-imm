@@ -15,46 +15,26 @@ ucs_server_profiles = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "aaa_LCP"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = "aaa_SCP"
     serial_number                 = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "esxi1" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-OCB-POC"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "esxi3" = {
     action                        = "No-op"
@@ -67,179 +47,89 @@ ucs_server_profiles = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "esxi3_LCP"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = ""
     serial_number                 = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "esxi8" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-ISCSI-AUTO"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "ESXIVCF1" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-VCF-WLD"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "ESXIVCF2" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-VCF-WLD"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "ESXIVCF3" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-VCF-WLD"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "ESXIVCF4" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-VCF-WLD"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "ESXIWLD1" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "ESXIWLD2" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "ESXIWLD3" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "ESXI-VCF-WLD-FC"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "ipvtest" = {
     action                        = "No-op"
@@ -252,27 +142,17 @@ ucs_server_profiles = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "ipvtest_LCP"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = ""
     serial_number                 = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "test1" = {
     action                        = "No-op"
@@ -285,27 +165,17 @@ ucs_server_profiles = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "test1_LCP"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = ""
     serial_number                 = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "TEST-PLACEMENT" = {
     action                        = "No-op"
@@ -318,65 +188,35 @@ ucs_server_profiles = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "TEST-PLACEMENT_LCP"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = "TEST-PLACEMENT_SCP"
     serial_number                 = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "TEST-PLACEMENT-TEMPL-1" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "TEST-PLACEMENT-TEMPLATE"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "TEST-PLACEMENT-TEMPL-2" = {
     action                      = "No-op"
     assign_server               = false
     description                 = ""
-    organization                = "UCS-DEMO2"
     serial_number               = ""
-    target_platform             = "FI-Attached"
+    target_platform             = "FIAttached"
     ucs_server_profile_template = "TEST-PLACEMENT-TEMPLATE"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                        = []
   }
   "UPDATE" = {
     action                        = "No-op"
@@ -389,26 +229,16 @@ ucs_server_profiles = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = ""
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = ""
     serial_number                 = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
 }

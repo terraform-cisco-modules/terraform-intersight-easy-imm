@@ -4,9 +4,8 @@
 #______________________________________________
 
 ethernet_adapter_policies = {
-  "#Organization#_eth_Virtualization" = {
+  "Virtualization" = {
     adapter_template = "VMWare"
-    organization     = "#Organization#"
     tags             = []
   }
 }

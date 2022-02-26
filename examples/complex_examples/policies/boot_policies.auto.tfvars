@@ -8,17 +8,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true
@@ -55,17 +45,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true
@@ -92,17 +72,7 @@ boot_policies = {
     boot_mode          = "Uefi"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         bootloader_description = "UEFI Bootloader",
@@ -132,17 +102,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true
@@ -154,17 +114,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1_primary" = {
         enabled         = true
@@ -182,17 +132,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true
@@ -245,17 +185,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true
@@ -282,17 +212,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1_primary" = {
         enabled         = true
@@ -310,17 +230,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true
@@ -351,17 +261,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true
@@ -392,17 +292,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true
@@ -425,17 +315,7 @@ boot_policies = {
     boot_mode          = "Uefi"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         bootloader_description = "UEFI Bootloader",
@@ -471,17 +351,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1_primary" = {
         enabled         = true
@@ -499,17 +369,7 @@ boot_policies = {
     boot_mode          = "Legacy"
     enable_secure_boot = false
     description        = ""
-    organization       = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags               = []
     boot_devices = {
       "1" = {
         enabled     = true

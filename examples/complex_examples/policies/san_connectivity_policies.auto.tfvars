@@ -6,22 +6,12 @@
 san_connectivity_policies = {
   "aaa_SCP" = {
     description          = ""
-    organization         = "UCS-DEMO2"
     target_platform      = "FIAttached"
     vhba_placement_mode  = "auto"
     wwnn_allocation_type = "POOL"
     wwnn_static_address  = ""
     wwnn_pool            = "DEMO"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                 = []
     vhbas = {
       "fc0" = {
         fibre_channel_adapter_policy = "default"
@@ -49,22 +39,12 @@ san_connectivity_policies = {
   }
   "ESXi-OCB" = {
     description          = ""
-    organization         = "UCS-DEMO2"
     target_platform      = "FIAttached"
     vhba_placement_mode  = "auto"
     wwnn_allocation_type = "POOL"
     wwnn_static_address  = ""
     wwnn_pool            = "NN-ESXi-OCB"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                 = []
     vhbas = {
       "SAN-A" = {
         fibre_channel_adapter_policy = "VMWare"
@@ -92,22 +72,12 @@ san_connectivity_policies = {
   }
   "TEST-PLACEMENT_SCP" = {
     description          = ""
-    organization         = "UCS-DEMO2"
     target_platform      = "FIAttached"
     vhba_placement_mode  = "auto"
     wwnn_allocation_type = "POOL"
     wwnn_static_address  = ""
     wwnn_pool            = "DEMO"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                 = []
     vhbas = {
       "vhba0" = {
         fibre_channel_adapter_policy = "Linux"
@@ -124,22 +94,12 @@ san_connectivity_policies = {
   }
   "TEST-PLACEMENT-TEMPLATE_SCP" = {
     description          = ""
-    organization         = "UCS-DEMO2"
     target_platform      = "FIAttached"
     vhba_placement_mode  = "auto"
     wwnn_allocation_type = "POOL"
     wwnn_static_address  = ""
     wwnn_pool            = "DEMO"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                 = []
     vhbas = {
       "vhba0" = {
         fibre_channel_adapter_policy = "VMWare"

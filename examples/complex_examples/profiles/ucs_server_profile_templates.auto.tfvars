@@ -13,26 +13,16 @@ ucs_server_profile_templates = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "ISCSI-BOOT-2"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = "ESXI7.0"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "ESXI-OCB-POC" = {
     bios_policy                   = ""
@@ -43,26 +33,16 @@ ucs_server_profile_templates = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "ISCSI-BOOT"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "ESXI-VCF-WLD" = {
     bios_policy                   = ""
@@ -73,26 +53,16 @@ ucs_server_profile_templates = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "ESXI-VCF-WLD_LCP"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = ""
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "ESXI-VCF-WLD-FC" = {
     bios_policy                   = ""
@@ -103,26 +73,16 @@ ucs_server_profile_templates = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "ESXI-VCF-WLD-FC_LCP"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = "ESXi-OCB"
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = "ESXI7.0"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
   "TEST-PLACEMENT-TEMPLATE" = {
     bios_policy                   = ""
@@ -133,25 +93,15 @@ ucs_server_profile_templates = {
     ipmi_over_lan_policy          = ""
     lan_connectivity_policy       = "TEST-PLACEMENT-TEMPLATE_LCP"
     local_user_policy             = ""
-    organization                  = "UCS-DEMO2"
     san_connectivity_policy       = "TEST-PLACEMENT-TEMPLATE_SCP"
     sd_card_policy                = ""
     serial_over_lan_policy        = ""
     snmp_policy                   = ""
     storage_policy                = ""
-    target_platform               = "FI-Attached"
+    target_platform               = "FIAttached"
     syslog_policy                 = ""
     virtual_kvm_policy            = "default"
     virtual_media_policy          = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                          = []
   }
 }

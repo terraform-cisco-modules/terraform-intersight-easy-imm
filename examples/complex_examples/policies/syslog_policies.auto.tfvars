@@ -4,10 +4,9 @@
 #______________________________________________
 
 syslog_policies = {
-  "Asgard_syslog" = {
+  "syslog" = {
     description        = ""
     local_min_severity = "warning"
-    organization       = "Asgard"
     remote_clients = [
       {
         enabled      = true
@@ -29,7 +28,6 @@ syslog_policies = {
   "UCS-DEMO2_domain" = {
     description        = ""
     local_min_severity = "critical"
-    organization       = "UCS-DEMO2"
     remote_clients = [
       {
         enabled      = true
@@ -39,15 +37,6 @@ syslog_policies = {
         protocol     = "udp"
       },
     ]
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags = []
   }
 }

@@ -6,18 +6,8 @@
 vsan_policies = {
   "UCS-DEMO2-A" = {
     description     = ""
-    organization    = "UCS-DEMO2"
     uplink_trunking = true
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags            = []
     vsans = {
       1 = {
         fcoe_vlan_id   = 4048
@@ -41,18 +31,8 @@ vsan_policies = {
   }
   "UCS-DEMO2-B" = {
     description     = ""
-    organization    = "UCS-DEMO2"
     uplink_trunking = false
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags            = []
     vsans = {
       1 = {
         fcoe_vlan_id   = 4048

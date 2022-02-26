@@ -5,19 +5,9 @@
 
 bios_policies = {
   "0BB5D83A32DF4EB" = {
-    description  = ""
-    name         = "0BB5D83A32DF4EB"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "0BB5D83A32DF4EB"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "enabled",
@@ -127,19 +117,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "0D2B2D691FC24A0" = {
-    description  = ""
-    name         = "0D2B2D691FC24A0"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "0D2B2D691FC24A0"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "disabled",
@@ -246,19 +226,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "2B8AF04F9BC246C" = {
-    description  = ""
-    name         = "2B8AF04F9BC246C"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "2B8AF04F9BC246C"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "enabled",
@@ -368,19 +338,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "2FA25243AF9A475" = {
-    description  = ""
-    name         = "2FA25243AF9A475"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "2FA25243AF9A475"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "disabled",
@@ -490,19 +450,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "5A74BDA0A387422" = {
-    description  = ""
-    name         = "5A74BDA0A387422"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "5A74BDA0A387422"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "enabled",
@@ -612,19 +562,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "6FA5FA8E81F9448" = {
-    description  = ""
-    name         = "6FA5FA8E81F9448"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "6FA5FA8E81F9448"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "enabled",
@@ -733,19 +673,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "549CF793F86A4DA" = {
-    description  = ""
-    name         = "549CF793F86A4DA"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "549CF793F86A4DA"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "enabled",
@@ -855,19 +785,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "6913BA68BDA94C1" = {
-    description  = ""
-    name         = "6913BA68BDA94C1"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "6913BA68BDA94C1"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "disabled",
@@ -977,19 +897,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "11410EF106FA4D3" = {
-    description  = ""
-    name         = "11410EF106FA4D3"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "11410EF106FA4D3"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "enabled",
@@ -1100,19 +1010,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "84409AB145B9468" = {
-    description  = ""
-    name         = "84409AB145B9468"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "84409AB145B9468"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "disabled",
@@ -1222,19 +1122,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "251307A1A5184D3" = {
-    description  = ""
-    name         = "251307A1A5184D3"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "251307A1A5184D3"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "enabled",
@@ -1344,19 +1234,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "0446462B764F4F1" = {
-    description  = ""
-    name         = "0446462B764F4F1"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "0446462B764F4F1"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "disabled",
@@ -1465,19 +1345,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "86564216ED84425" = {
-    description  = ""
-    name         = "86564216ED84425"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "86564216ED84425"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "disabled",
@@ -1586,19 +1456,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "AE6E291CE28C4EF" = {
-    description  = ""
-    name         = "AE6E291CE28C4EF"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "AE6E291CE28C4EF"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "disabled",
@@ -1707,19 +1567,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "B866FDF6E5454F4" = {
-    description  = ""
-    name         = "B866FDF6E5454F4"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "B866FDF6E5454F4"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "enabled",
@@ -1828,19 +1678,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "B642683A0D7C4DF" = {
-    description  = ""
-    name         = "B642683A0D7C4DF"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "B642683A0D7C4DF"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "disabled",
@@ -1950,19 +1790,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "CB5DD6BDDEF94F0" = {
-    description  = ""
-    name         = "CB5DD6BDDEF94F0"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "CB5DD6BDDEF94F0"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "disabled",
     all_usb_devices                    = "enabled",
@@ -2071,19 +1901,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "DSS-M3" = {
-    description  = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
-    name         = "DSS-M3"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = "BIOS-Policy-for-Analytics-Database-Decision-Support-System-on-Cisco-UCS-M3-Servers"
+    name        = "DSS-M3"
+    tags        = []
     # BIOS Customization Settings
     core_multi_processing           = "all",
     cpu_performance                 = "enterprise",
@@ -2100,19 +1920,9 @@ bios_policies = {
     select_memory_ras_configuration = "maximum-performance",
   }
   "E57F56C058AD413" = {
-    description  = ""
-    name         = "E57F56C058AD413"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "E57F56C058AD413"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "disabled",
@@ -2219,19 +2029,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "ED91BDCB6A8E45A" = {
-    description  = ""
-    name         = "ED91BDCB6A8E45A"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "ED91BDCB6A8E45A"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "enabled",
@@ -2340,19 +2140,9 @@ bios_policies = {
     work_load_config                   = "Balanced",
   }
   "ESX" = {
-    description  = ""
-    name         = "ESX"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "ESX"
+    tags        = []
     # BIOS Customization Settings
     enhanced_intel_speed_step_tech  = "disabled",
     execute_disable_bit             = "enabled",
@@ -2363,36 +2153,16 @@ bios_policies = {
     intel_vtd_interrupt_remapping   = "enabled",
   }
   "ESXi" = {
-    description  = ""
-    name         = "ESXi"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "ESXi"
+    tags        = []
     # BIOS Customization Settings
     cdn_enable = "enabled",
   }
   "FBA2D5AA2296430" = {
-    description  = ""
-    name         = "FBA2D5AA2296430"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "FBA2D5AA2296430"
+    tags        = []
     # BIOS Customization Settings
     adjacent_cache_line_prefetch       = "enabled",
     all_usb_devices                    = "enabled",
@@ -2501,19 +2271,9 @@ bios_policies = {
     work_load_config                   = "I/O Sensitive",
   }
   "HyperV" = {
-    description  = ""
-    name         = "HyperV"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "HyperV"
+    tags        = []
     # BIOS Customization Settings
     cdn_enable                      = "enabled",
     enhanced_intel_speed_step_tech  = "disabled",
@@ -2524,53 +2284,23 @@ bios_policies = {
     intel_vt_for_directed_io        = "enabled",
   }
   "SRIOV" = {
-    description  = ""
-    name         = "SRIOV"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "SRIOV"
+    tags        = []
     # BIOS Customization Settings
     cbs_cmn_gnb_nb_iommu = "enabled",
     svm_mode             = "enabled",
   }
   "test" = {
-    description  = ""
-    name         = "test"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "test"
+    tags        = []
     # BIOS Customization Settings
   }
   "usNIC" = {
-    description  = "Recommended-bios-settings-for-usNIC-vNICs"
-    name         = "usNIC"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = "Recommended-bios-settings-for-usNIC-vNICs"
+    name        = "usNIC"
+    tags        = []
     # BIOS Customization Settings
     core_multi_processing           = "all",
     direct_cache_access             = "enabled",
@@ -2590,19 +2320,9 @@ bios_policies = {
     select_memory_ras_configuration = "maximum-performance",
   }
   "Virtual-Host" = {
-    description  = ""
-    name         = "Virtual-Host"
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    name        = "Virtual-Host"
+    tags        = []
     # BIOS Customization Settings
     cdn_enable             = "enabled",
     cpu_energy_performance = "performance",

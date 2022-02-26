@@ -4,10 +4,9 @@
 #______________________________________________
 
 snmp_policies = {
-  "Asgard_snmp" = {
+  "snmp" = {
     description           = ""
     enable_snmp           = true
-    organization          = "Asgard"
     snmp_community_access = "Full"
     snmp_engine_input_id  = ""
     snmp_port             = 161
@@ -39,24 +38,14 @@ snmp_policies = {
     }
   }
   "UCS-DEMO2" = {
-    description           = ""
-    enabled               = false
-    organization          = "UCS-DEMO2"
-    snmp_community_access = ""
-    snmp_engine_input_id  = ""
-    snmp_port             = 161
-    system_contact        = "Parlab Team (parlab@cisco.com)"
-    system_location       = ""
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description            = ""
+    enabled                = false
+    snmp_community_access  = ""
+    snmp_engine_input_id   = ""
+    snmp_port              = 161
+    system_contact         = "Parlab Team (parlab@cisco.com)"
+    system_location        = ""
+    tags                   = []
     snmp_trap_destinations = {}
     snmp_users             = {}
   }

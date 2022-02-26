@@ -4,14 +4,12 @@
 #______________________________________________
 
 wwnn_pools = {
-  "#Organization#_WWNN" = {
+  "WWNN" = {
     assignment_order = "sequential"
-    organization     = "#Organization#"
-    pool_purpose     = "WWNN"
     id_blocks = [
       {
         from = "20:00:00:25:B5:00:00:00"
-        to   = "20:00:00:25:B5:00:00:ff"
+        to   = "20:00:00:25:B5:00:00:FF"
       }
     ]
   }

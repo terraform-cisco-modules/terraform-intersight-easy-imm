@@ -4,9 +4,8 @@
 #______________________________________________
 
 vsan_policies = {
-  "#Organization#_Fabric_A" = {
-    description     = "#Organization# Fabric A VSAN Policy."
-    organization    = "#Organization#"
+  "Fabric_A" = {
+    description     = "Fabric A VSAN Policy."
     uplink_trunking = false
     tags            = []
     vsans = {
@@ -17,9 +16,8 @@ vsan_policies = {
       },
     }
   }
-  "#Organization#_Fabric_B" = {
-    description     = "#Organization# Fabric B VSAN Policy."
-    organization    = "#Organization#"
+  "Fabric_B" = {
+    description     = "Fabric B VSAN Policy."
     uplink_trunking = false
     tags            = []
     vsans = {

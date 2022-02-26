@@ -4,7 +4,7 @@
 #______________________________________________
 
 ldap_policies = {
-  "Asgard_ldap" = {
+  "ldap" = {
     description                     = ""
     ldap_attribute                  = "CiscoAvPair"
     ldap_base_dn                    = "dc=rich,dc=ciscolabs,dc=com"
@@ -38,7 +38,6 @@ ldap_policies = {
     }
     ldap_timeout                = 0
     ldap_user_search_precedence = "LocalUserDb"
-    organization                = "Asgard"
     tags                        = []
   }
 }

@@ -4,7 +4,7 @@
 #______________________________________________
 
 ip_pools = {
-  "#Organization#_ip_pool" = {
+  "ip_pool" = {
     assignment_order = "sequential"
     ipv4_block = [
       {
@@ -20,9 +20,8 @@ ip_pools = {
         secondary_dns = "208.67.222.222"
       }
     }
-    ipv6_block   = []
-    ipv6_config  = {}
-    organization = "#Organization#"
-    tags         = []
+    ipv6_block  = []
+    ipv6_config = {}
+    tags        = []
   }
 }

@@ -4,23 +4,21 @@
 #______________________________________________
 
 wwpn_pools = {
-  "#Organization#_WWPN_Fabric_A" = {
+  "WWPN_Fabric_A" = {
     assignment_order = "sequential"
-    organization     = "#Organization#"
     id_blocks = [
       {
-        from = "20:00:00:25:B5:0a:00:00"
-        to   = "20:00:00:25:B5:0a:00:ff"
+        from = "20:00:00:25:B5:0B:00:00"
+        to   = "20:00:00:25:B5:0B:00:FF"
       }
     ]
   }
-  "#Organization#_WWPN_Fabric_A" = {
+  "WWPN_Fabric_A" = {
     assignment_order = "sequential"
-    organization     = "#Organization#"
     id_blocks = [
       {
-        from = "20:00:00:25:B5:0b:00:00"
-        to   = "20:00:00:25:B5:0b:00:ff"
+        from = "20:00:00:25:B5:0B:00:00"
+        to   = "20:00:00:25:B5:0B:00:FF"
       }
     ]
   }

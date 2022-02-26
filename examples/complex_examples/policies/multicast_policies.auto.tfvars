@@ -4,9 +4,8 @@
 #______________________________________________
 
 multicast_policies = {
-  "Asgard_multicast" = {
+  "multicast" = {
     description             = ""
-    organization            = "Asgard"
     querier_ip_address      = ""
     querier_ip_address_peer = ""
     querier_state           = "Disabled"
@@ -15,74 +14,34 @@ multicast_policies = {
   }
   "UCS-DEMO2" = {
     description             = ""
-    organization            = "UCS-DEMO2"
     querier_ip_address      = ""
     querier_ip_address_peer = ""
     querier_state           = "Disabled"
     snooping_state          = "Enabled"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                    = []
   }
   "HyperFlex" = {
     description             = ""
-    organization            = "UCS-DEMO2"
     querier_ip_address      = ""
     querier_ip_address_peer = ""
     querier_state           = "Disabled"
     snooping_state          = "Enabled"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                    = []
   }
   "multi_poli" = {
     description             = ""
-    organization            = "UCS-DEMO2"
     querier_ip_address      = "10.1.0.1"
     querier_ip_address_peer = "10.2.0.1"
     querier_state           = "Enabled"
     snooping_state          = "Enabled"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                    = []
   }
   "test" = {
     description             = ""
-    organization            = "UCS-DEMO2"
     querier_ip_address      = ""
     querier_ip_address_peer = ""
     querier_state           = "Disabled"
     snooping_state          = "Disabled"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                    = []
   }
 }

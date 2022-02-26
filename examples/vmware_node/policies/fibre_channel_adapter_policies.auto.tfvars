@@ -4,10 +4,9 @@
 #______________________________________________
 
 fibre_channel_adapter_policies = {
-  "#Organization#_fc_Virtualization" = {
+  "Virtualization" = {
     adapter_template = "VMware"
     description      = "Virtualization Adapter Policy"
-    organization     = "#Organization#"
     tags             = []
   }
 }

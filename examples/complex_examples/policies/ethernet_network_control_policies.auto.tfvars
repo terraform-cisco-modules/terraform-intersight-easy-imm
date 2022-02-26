@@ -12,17 +12,7 @@ ethernet_network_control_policies = {
     lldp_enable_transmit  = true
     mac_register_mode     = "nativeVlanOnly"
     mac_security_forge    = "allow"
-    organization          = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                  = []
   }
   "ncp-appliance_appliance" = {
     action_on_uplink_fail = "linkDown"
@@ -32,17 +22,7 @@ ethernet_network_control_policies = {
     lldp_enable_transmit  = true
     mac_register_mode     = "nativeVlanOnly"
     mac_security_forge    = "allow"
-    organization          = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                  = []
   }
   "CDP-enable" = {
     action_on_uplink_fail = "linkDown"
@@ -52,17 +32,7 @@ ethernet_network_control_policies = {
     lldp_enable_transmit  = false
     mac_register_mode     = "nativeVlanOnly"
     mac_security_forge    = "allow"
-    organization          = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                  = []
   }
   "CDP-LLDP-ENABLE" = {
     action_on_uplink_fail = "linkDown"
@@ -72,17 +42,7 @@ ethernet_network_control_policies = {
     lldp_enable_transmit  = true
     mac_register_mode     = "nativeVlanOnly"
     mac_security_forge    = "allow"
-    organization          = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                  = []
   }
   "default" = {
     action_on_uplink_fail = "linkDown"
@@ -92,17 +52,7 @@ ethernet_network_control_policies = {
     lldp_enable_transmit  = false
     mac_register_mode     = "nativeVlanOnly"
     mac_security_forge    = "allow"
-    organization          = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                  = []
   }
   "Enable-CDP-LLDP" = {
     action_on_uplink_fail = "linkDown"
@@ -112,16 +62,6 @@ ethernet_network_control_policies = {
     lldp_enable_transmit  = true
     mac_register_mode     = "nativeVlanOnly"
     mac_security_forge    = "allow"
-    organization          = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                  = []
   }
 }

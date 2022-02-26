@@ -9,7 +9,6 @@ variable "wwpn_pools" {
     default = {
       assignment_order = "default"
       description      = ""
-      pool_purpose     = "WWPN"
       tags             = []
       id_blocks = {
         default = {
@@ -30,9 +29,6 @@ variable "wwpn_pools" {
     - from - Staring WWxN Address.  An Example is "20:00:00:25:B5:0A:00:00".
     - size - Size of WWxN Pool.  An Example is 1000.
     - to - Ending WWxN Address.  An Example is "20:00:00:25:B5:0A:03:E7".
-  * pool_purpose - What type of Fiber-Channel Pool is this.  Options are:
-    - WWNN
-    - WWPN - (Default)
   * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
   EOT
   type = map(object(
@@ -70,9 +66,9 @@ resource "intersight_fcpool_pool" "wwpn_pools" {
   ]
   for_each         = local.wwpn_pools
   assignment_order = each.value.assignment_order
-  description      = each.value.description != "" ? each.value.description : "${each.key} ${each.value.pool_purpose} Pool."
+  description      = each.value.description != "" ? each.value.description : "${each.key} WWPN Pool."
   name             = each.key
-  pool_purpose     = each.value.pool_purpose
+  pool_purpose     = "WWPN"
   dynamic "id_blocks" {
     for_each = each.value.id_blocks
     content {

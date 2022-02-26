@@ -4,21 +4,20 @@
 #______________________________________________
 
 vlan_policies = {
-  "Asgard_vlangroup_1" = {
-    description  = ""
-    organization = "Asgard"
-    tags         = []
+  "vlangroup_1" = {
+    description = ""
+    tags        = []
     vlans = {
       0 = {
         auto_allow_on_uplinks = true
-        multicast_policy      = "Asgard_multicast"
+        multicast_policy      = "multicast"
         name                  = "default"
         native_vlan           = true
         vlan_list             = "1"
       },
       1 = {
         auto_allow_on_uplinks = true
-        multicast_policy      = "Asgard_multicast"
+        multicast_policy      = "multicast"
         name                  = "default"
         native_vlan           = false
         vlan_list             = "101-199,201-299,1100-1299,1700-1799"
@@ -26,18 +25,8 @@ vlan_policies = {
     }
   }
   "UCS-DEMO2-A" = {
-    description  = ""
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    tags        = []
     vlans = {
       1 = {
         auto_allow_on_uplinks = true
@@ -1246,18 +1235,8 @@ vlan_policies = {
     }
   }
   "UCS-DEMO2-B" = {
-    description  = ""
-    organization = "UCS-DEMO2"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    tags        = []
     vlans = {
       1 = {
         auto_allow_on_uplinks = true

@@ -3,11 +3,13 @@
 # Terraform Cloud Variables
 #__________________________________________________________
 
-# agent_pool        = "Richfield_Agents"
-# terraform_version = "1.0.3"
-# tfc_email         = "tyscott@cisco.com"
-# tfc_organization = "Cisco-Richfield-Lab"
-# vcs_repo         = "scotttyso/terraform-intersight-easy-imm"
+tfc_workspaces = [{
+  backend          = "remote"
+  tfc_organization = "#TFCB_Organization#"
+  policies_ws      = "#Organization#_policies"
+  pools_ws         = "#Organization#_pools"
+}]
+
 /*
   We highly recommend that for the terraform_cloud_token you use an environment variable for input:
   - export TF_VAR_terraform_cloud_token="abcdefghijklmnopqrstuvwxyz.0123456789"
@@ -28,12 +30,12 @@
 #__________________________________________________________
 
 # endpoint     = "https://intersight.com"
-organizations = ["Asgard", "UCS-DEMO2"]
+organization = "#Organization#"
 
-# secretkey    = "../../../../intersight.secret"
+# secretkey    = "~/Downloads/SecretKey.txt"
 /*
   To export the Secret Key via an Environment Variable the format is as follows (Note: they are not quotation marks, but escape characters):
-  - export TF_VAR_secretkey=`cat ../../intersight.secret`
+  - export TF_VAR_secretkey=`cat ~/Downloads/SecretKey.txt`
   Either way will work in this case as we are not posting the contents of the file here.
 */
 /*

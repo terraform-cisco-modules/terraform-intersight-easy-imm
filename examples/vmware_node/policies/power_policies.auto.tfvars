@@ -4,31 +4,28 @@
 #______________________________________________
 
 power_policies = {
-  "#Organization#_power_5108" = {
-    allocated_budget    = 0
-    description         = "#Organization# 5108 Power Policy."
-    organization        = "#Organization#"
-    power_profiling     = "Enabled"
-    power_restore_state = "AlwaysOff"
-    redundancy_mode     = "Grid"
-    tags                = []
+  "power_5108" = {
+    description      = "5108 Power Policy."
+    power_allocation = 0
+    power_profiling  = "Enabled"
+    power_redunancy  = "Grid"
+    power_restore    = "AlwaysOff"
+    tags             = []
   }
-  "#Organization#_power_9508" = {
-    allocated_budget    = 0
-    description         = "#Organization# X-Series Power Policy."
-    organization        = "#Organization#"
-    power_profiling     = "Enabled"
-    power_restore_state = "AlwaysOff"
-    redundancy_mode     = "Grid"
-    tags                = []
+  "power_9508" = {
+    description      = "X-Series Power Policy."
+    power_allocation = 0
+    power_profiling  = "Enabled"
+    power_redunancy  = "Grid"
+    power_restore    = "AlwaysOff"
+    tags             = []
   }
-  "#Organization#_power_server" = {
-    allocated_budget    = 0
-    description         = "#Organization# Server Power Policy"
-    organization        = "#Organization#"
-    power_profiling     = "Enabled"
-    power_restore_state = "LastState"
-    redundancy_mode     = "Grid"
-    tags                = []
+  "power_server" = {
+    description      = "Server Power Policy"
+    power_allocation = 0
+    power_profiling  = "Enabled"
+    power_redunancy  = "Grid"
+    power_restore    = "LastState"
+    tags             = []
   }
 }

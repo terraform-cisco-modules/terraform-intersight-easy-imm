@@ -4,11 +4,10 @@
 #______________________________________________
 
 smtp_policies = {
-  "Asgard_smtp" = {
+  "smtp" = {
     description     = ""
     enabled         = true
     min_severity    = "critical"
-    organization    = "Asgard"
     sender_email    = "rich-lab@cisco.com"
     smtp_port       = 25
     smtp_recipients = ["rich-lab@cisco.com"]

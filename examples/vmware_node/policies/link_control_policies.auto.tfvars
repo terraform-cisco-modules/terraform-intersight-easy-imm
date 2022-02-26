@@ -4,11 +4,10 @@
 #______________________________________________
 
 link_control_policies = {
-  "#Organization#_linkctrl" = {
-    admin_state  = "Enabled"
-    description  = ""
-    mode         = "normal"
-    organization = "#Organization#"
-    tags         = []
+  "linkctrl" = {
+    admin_state = "Enabled"
+    description = ""
+    mode        = "normal"
+    tags        = []
   }
 }

@@ -7,7 +7,6 @@ storage_policies = {
   "CEPH-BOOT" = {
     description        = ""
     global_hot_spares  = ""
-    organization       = "UCS-DEMO2"
     unused_disks_state = "NoChange"
     drive_group = {
       CEPH-BOOT = {
@@ -37,15 +36,6 @@ storage_policies = {
     }
     m2_configuration                = {}
     single_drive_raid_configuration = {}
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                            = []
   }
 }

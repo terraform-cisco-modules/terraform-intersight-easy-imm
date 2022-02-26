@@ -4,63 +4,32 @@
 #______________________________________________
 
 flow_control_policies = {
-  "Asgard_flowctrl" = {
-    description  = ""
-    priority     = "auto"
-    receive      = "Disabled"
-    send         = "Disabled"
-    organization = "Asgard"
-    tags         = []
+  "flowctrl" = {
+    description = ""
+    priority    = "auto"
+    receive     = "Disabled"
+    send        = "Disabled"
+    tags        = []
   }
   "UCS-DEMO2" = {
-    description  = ""
-    organization = "UCS-DEMO2"
-    priority     = "auto"
-    receive      = "Disabled"
-    send         = "Disabled"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    priority    = "auto"
+    receive     = "Disabled"
+    send        = "Disabled"
+    tags        = []
   }
   "flow_ctrl" = {
-    description  = ""
-    organization = "UCS-DEMO2"
-    priority     = "auto"
-    receive      = "Enabled"
-    send         = "Enabled"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    priority    = "auto"
+    receive     = "Enabled"
+    send        = "Enabled"
+    tags        = []
   }
   "flow_ctrl2" = {
-    description  = ""
-    organization = "UCS-DEMO2"
-    priority     = "on"
-    receive      = "Disabled"
-    send         = "Disabled"
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    description = ""
+    priority    = "on"
+    receive     = "Disabled"
+    send        = "Disabled"
+    tags        = []
   }
 }

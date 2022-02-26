@@ -4,40 +4,36 @@
 #______________________________________________
 
 power_policies = {
-  "Asgard_power_5108" = {
-    allocated_budget    = 0
-    description         = "Asgard 5108 Power Policy."
-    organization        = "Asgard"
-    power_profiling     = "Enabled"
-    power_restore_state = "AlwaysOff"
-    redundancy_mode     = "Grid"
-    tags                = []
+  "5108" = {
+    description      = "5108 Power Policy."
+    power_allocation = 0
+    power_profiling  = "Enabled"
+    power_redunancy  = "Grid"
+    power_restore    = "AlwaysOff"
+    tags             = []
   }
-  "Asgard_power_9508" = {
-    allocated_budget    = 0
-    description         = "Asgard X-Series Power Policy."
-    organization        = "Asgard"
-    power_profiling     = "Enabled"
-    power_restore_state = "AlwaysOff"
-    redundancy_mode     = "Grid"
-    tags                = []
+  "9508" = {
+    description      = "X-Series Power Policy."
+    power_allocation = 0
+    power_profiling  = "Enabled"
+    power_redunancy  = "Grid"
+    power_restore    = "AlwaysOff"
+    tags             = []
   }
-  "Asgard_power_server" = {
-    allocated_budget    = 0
-    description         = "Asgard Server Power Policy"
-    organization        = "Asgard"
-    power_profiling     = "Enabled"
-    power_restore_state = "LastState"
-    redundancy_mode     = "Grid"
-    tags                = []
+  "Server" = {
+    description      = "Server Power Policy"
+    power_allocation = 0
+    power_profiling  = "Enabled"
+    power_redunancy  = "Grid"
+    power_restore    = "LastState"
+    tags             = []
   }
   "UCS-DEMO2" = {
-    allocated_budget    = 0
-    description         = ""
-    power_profiling     = "Enabled"
-    power_restore_state = "LastState"
-    redundancy_mode     = "N+1"
-    organization        = "UCS-DEMO2"
-    tags                = []
+    description      = ""
+    power_allocation = 0
+    power_profiling  = "Enabled"
+    power_redunancy  = "N+1"
+    power_restore    = "LastState"
+    tags             = []
   }
 }

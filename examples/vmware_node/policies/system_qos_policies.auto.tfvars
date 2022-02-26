@@ -4,7 +4,7 @@
 #______________________________________________
 
 system_qos_policies = {
-  "#Organization#_system_qos" = {
+  "system_qos" = {
     classes = {
       "Bronze" = {
         bandwidth_percent  = 0
@@ -61,8 +61,7 @@ system_qos_policies = {
         weight             = 5
       },
     }
-    description  = "#Organization# System QoS Policy."
-    organization = "#Organization#"
-    tags         = []
+    description = "System QoS Policy."
+    tags        = []
   }
 }

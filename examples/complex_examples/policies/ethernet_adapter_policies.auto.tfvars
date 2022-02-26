@@ -18,7 +18,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -42,16 +41,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "Linux" = {
     completion_queue_count                   = 2
@@ -67,7 +57,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -91,16 +80,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "Linux-NVMe-RoCE" = {
     completion_queue_count                   = 2
@@ -116,7 +96,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 256
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = true
     roce_memory_regions                      = 131072
@@ -140,16 +119,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "MQ" = {
     completion_queue_count                   = 576
@@ -165,7 +135,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 256
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -189,16 +158,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 64
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "MQ-SMBd" = {
     completion_queue_count                   = 576
@@ -214,7 +174,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 512
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = true
     roce_memory_regions                      = 65536
@@ -238,16 +197,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 64
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "SMBClient" = {
     completion_queue_count                   = 5
@@ -263,7 +213,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 8
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = true
     roce_memory_regions                      = 131072
@@ -287,16 +236,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "SMBServer" = {
     completion_queue_count                   = 5
@@ -312,7 +252,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 8
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = true
     roce_memory_regions                      = 131072
@@ -336,16 +275,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "Solaris" = {
     completion_queue_count                   = 2
@@ -361,7 +291,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -385,16 +314,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "SRIOV" = {
     completion_queue_count                   = 5
@@ -410,7 +330,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 32
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -434,16 +353,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "TestAzureGeneve" = {
     completion_queue_count                   = 2
@@ -459,7 +369,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -483,16 +392,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "usNIC" = {
     completion_queue_count                   = 12
@@ -508,7 +408,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 6
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -532,16 +431,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 6
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 0
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "usNICOracleRAC" = {
     completion_queue_count                   = 2000
@@ -557,7 +447,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 1024
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -581,16 +470,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1000
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 0
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "VMWare" = {
     completion_queue_count                   = 2
@@ -606,7 +486,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 4
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -630,16 +509,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "VMware-HighTrf" = {
     completion_queue_count                   = 16
@@ -655,7 +525,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 18
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -679,16 +548,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 8
     transmit_ring_size                       = 4096
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "VMWarePassThru" = {
     completion_queue_count                   = 8
@@ -704,7 +564,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSI"
     interrupt_timer                          = 125
     interrupts                               = 12
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -728,16 +587,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 4
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "WIN-AzureStack" = {
     completion_queue_count                   = 11
@@ -753,7 +603,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 256
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = true
     roce_memory_regions                      = 131072
@@ -777,16 +626,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 3
     transmit_ring_size                       = 1024
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "Win-HPN" = {
     completion_queue_count                   = 5
@@ -802,7 +642,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 512
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -826,16 +665,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "Win-HPN-SMBd" = {
     completion_queue_count                   = 5
@@ -851,7 +681,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 512
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = true
     roce_memory_regions                      = 131072
@@ -875,16 +704,7 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
   "Windows" = {
     completion_queue_count                   = 5
@@ -900,7 +720,6 @@ ethernet_adapter_policies = {
     interrupt_mode                           = "MSIx"
     interrupt_timer                          = 125
     interrupts                               = 8
-    organization                             = "UCS-DEMO2"
     roce_cos                                 = 5
     roce_enable                              = false
     roce_memory_regions                      = 0
@@ -924,15 +743,6 @@ ethernet_adapter_policies = {
     transmit_queue_count                     = 1
     transmit_ring_size                       = 256
     uplink_failback_timeout                  = 5
-    tags = [
-      {
-        key   = "easyucs_origin",
-        value = "convert",
-      },
-      {
-        key   = "easyucs_version",
-        value = "0.9.8",
-      },
-    ]
+    tags                                     = []
   }
 }
