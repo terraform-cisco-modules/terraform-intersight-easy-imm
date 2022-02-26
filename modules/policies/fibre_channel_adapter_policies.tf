@@ -137,7 +137,6 @@ resource "intersight_vnic_fc_adapter_policy" "fibre_channel_adapter_policies" {
     timeout = each.value.plogi_timeout
   }
   rx_queue_settings {
-    nr_count  = 1
     ring_size = each.value.receive_ring_size
   }
   scsi_queue_settings {
@@ -145,7 +144,6 @@ resource "intersight_vnic_fc_adapter_policy" "fibre_channel_adapter_policies" {
     ring_size = each.value.scsi_io_ring_size
   }
   tx_queue_settings {
-    nr_count  = 1
     ring_size = each.value.transmit_ring_size
   }
   dynamic "tags" {

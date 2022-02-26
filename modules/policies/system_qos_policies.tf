@@ -93,7 +93,7 @@ resource "intersight_fabric_system_qos_policy" "system_qos_policies" {
   description = each.value.description != null ? each.value.description : "${each.key} System QoS Policy"
   name        = each.key
   organization {
-    moid        = each.value.organization != null ? local.org_moid : local.org_moid["default"].moid
+    moid        = local.org_moid
     object_type = "organization.Organization"
   }
   dynamic "classes" {
