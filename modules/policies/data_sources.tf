@@ -4,7 +4,7 @@
 #__________________________________________________________
 
 data "terraform_remote_state" "local_domain_profiles" {
-  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "local" }
+  for_each = { for k, v in local.tfc_workspaces : k => v if v.backend == "local" }
   backend  = each.value.backend
   config = {
     path = "${each.value.domain_profiles_dir}terraform.tfstate"
@@ -12,7 +12,7 @@ data "terraform_remote_state" "local_domain_profiles" {
 }
 
 data "terraform_remote_state" "local_pools" {
-  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "local" }
+  for_each = { for k, v in local.tfc_workspaces : k => v if v.backend == "local" }
   backend  = each.value.backend
   config = {
     path = "${each.value.pools_dir}terraform.tfstate"
@@ -20,7 +20,7 @@ data "terraform_remote_state" "local_pools" {
 }
 
 data "terraform_remote_state" "remote_domain_profiles" {
-  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "remote" }
+  for_each = { for k, v in local.tfc_workspaces : k => v if v.backend == "remote" }
   backend  = each.value.backend
   config = {
     organization = each.value.tfc_organization
@@ -31,7 +31,7 @@ data "terraform_remote_state" "remote_domain_profiles" {
 }
 
 data "terraform_remote_state" "remote_pools" {
-  for_each = { for k, v in var.tfc_workspaces : k => v if v.backend == "remote" }
+  for_each = { for k, v in local.tfc_workspaces : k => v if v.backend == "remote" }
   backend  = each.value.backend
   config = {
     organization = each.value.tfc_organization
