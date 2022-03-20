@@ -2211,6 +2211,7 @@ locals {
 
   virtual_kvm_policies = {
     for k, v in var.virtual_kvm_policies : k => {
+      allow_tunneled_vkvm       = v.allow_tunneled_vkvm != null ? v.allow_tunneled_vkvm : false
       description               = v.description != null ? v.description : ""
       enable_local_server_video = v.enable_local_server_video != null ? v.enable_local_server_video : true
       enable_video_encryption   = v.enable_video_encryption != null ? v.enable_video_encryption : false

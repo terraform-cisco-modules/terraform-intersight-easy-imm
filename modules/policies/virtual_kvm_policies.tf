@@ -7,6 +7,7 @@
 variable "virtual_kvm_policies" {
   default = {
     default = {
+      allow_tunneled_vkvm       = false
       description               = ""
       enable_local_server_video = true
       enable_video_encryption   = true
@@ -18,6 +19,7 @@ variable "virtual_kvm_policies" {
   }
   description = <<-EOT
   key - Name of the Virtual KVM Policy.
+  * allow_tunneled_vkvm - Enables Tunneled vKVM on the endpoint. Applicable only for Device Connectors that support Tunneled vKVM.
   * description - Description to Assign to the Policy.
   * enable_local_server_video - Default is true.  If enabled, displays KVM session on any monitor attached to the server.
   * enable_video_encryption - Default is true.  If enabled, encrypts all video information sent through KVM.
@@ -28,6 +30,7 @@ variable "virtual_kvm_policies" {
   EOT
   type = map(object(
     {
+      allow_tunneled_vkvm       = optional(bool)
       description               = optional(string)
       enable_local_server_video = optional(bool)
       enable_video_encryption   = optional(bool)
@@ -58,6 +61,7 @@ resource "intersight_kvm_policy" "virtual_kvm_policies" {
   maximum_sessions          = each.value.maximum_sessions
   name                      = each.key
   remote_port               = each.value.remote_port
+  tunneled_kvm_enabled      = each.value.allow_tunneled_vkvm
   organization {
     moid        = local.org_moid
     object_type = "organization.Organization"
