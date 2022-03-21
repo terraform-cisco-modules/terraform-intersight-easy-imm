@@ -126,18 +126,32 @@ Once finished with the modification commit the changes to your reposotiry.
 
 The Following examples are for a Linux based Operating System.  Note that the TF_VAR_ prefix is used as a notification to the terraform engine that the environment variable will be consumed by terraform.
 
-* Terraform Cloud Variables
+* Terraform Cloud Variables - Linux
 
 ```bash
 export TF_VAR_terraform_cloud_token="your_cloud_token"
 export TF_VAR_tfc_oauth_token="your_oath_token"
 ```
 
-* Intersight apikey and secretkey
+* Terraform Cloud Variables - Windows
+
+```powershell
+$env:TF_VAR_terraform_cloud_token="your_cloud_token"
+$env:TF_VAR_tfc_oauth_token="your_oath_token"
+```
+
+* Intersight apikey and secretkey - Linux
 
 ```bash
 export TF_VAR_apikey="your_api_key"
-export TF_VAR_secretkey=`../../../../intersight_secretkey.txt`
+export TF_VAR_secretkey=`cat ~/Downloads/SecretKey.txt`
+```
+
+* Intersight apikey and secretkey - Windows
+
+```powershell
+$env:TF_VAR_apikey="your_api_key"
+$env:TF_VAR_secretkey="$HOME\Downloads\SecretKey.txt"
 ```
 
 ### IPMI over LAN Secure Variables
@@ -150,6 +164,10 @@ Use the following environment variable, based on your deployment, for IPMI over 
 export TF_VAR_ipmi_key_1="your_password"
 ```
 
+```powershell
+$env:TF_VAR_ipmi_key_1="your_password"
+```
+
 ### LDAP Secure Variables
 
 Use the following environment variable, based on your deployment, for LDAP Policy Binding Settings.
@@ -158,6 +176,10 @@ Use the following environment variable, based on your deployment, for LDAP Polic
 
 ```bash
 export TF_VAR_ldap_password="your_password"
+```
+
+```powershell
+$env:TF_VAR_ldap_password="your_password"
 ```
 
 ### Local User Secure Variables
@@ -174,6 +196,14 @@ export TF_VAR_local_user_password_4="your_password"
 export TF_VAR_local_user_password_5="your_password"
 ```
 
+```powershell
+$env:TF_VAR_local_user_password_1="your_password"
+$env:TF_VAR_local_user_password_2="your_password"
+$env:TF_VAR_local_user_password_3="your_password"
+$env:TF_VAR_local_user_password_4="your_password"
+$env:TF_VAR_local_user_password_5="your_password"
+```
+
 ### Persistent Memory Secure Variables
 
 Use the following environment variable, based on your deployment, for Persistent Memory Encryption.
@@ -182,6 +212,10 @@ Use the following environment variable, based on your deployment, for Persistent
 
 ```bash
 export TF_VAR_persistent_passphrase="your_password"
+```
+
+```powershell
+$env:TF_VAR_persistent_passphrase="your_password"
 ```
 
 ### SNMP Secure Variables
@@ -203,6 +237,19 @@ export TF_VAR_snmp_privacy_password_4="your_password"
 export TF_VAR_snmp_privacy_password_5="your_password"
 ```
 
+```powershell
+$env:TF_VAR_snmp_auth_password_1="your_password"
+$env:TF_VAR_snmp_auth_password_2="your_password"
+$env:TF_VAR_snmp_auth_password_3="your_password"
+$env:TF_VAR_snmp_auth_password_4="your_password"
+$env:TF_VAR_snmp_auth_password_5="your_password"
+$env:TF_VAR_snmp_privacy_password_1="your_password"
+$env:TF_VAR_snmp_privacy_password_2="your_password"
+$env:TF_VAR_snmp_privacy_password_3="your_password"
+$env:TF_VAR_snmp_privacy_password_4="your_password"
+$env:TF_VAR_snmp_privacy_password_5="your_password"
+```
+
 * SNMP Communities
 
 ```bash
@@ -216,6 +263,19 @@ export TF_VAR_snmp_trap_community_2="your_community"
 export TF_VAR_snmp_trap_community_3="your_community"
 export TF_VAR_snmp_trap_community_4="your_community"
 export TF_VAR_snmp_trap_community_5="your_community"
+```
+
+```powershell
+$env:TF_VAR_access_community_string_1="your_community"
+$env:TF_VAR_access_community_string_2="your_community"
+$env:TF_VAR_access_community_string_3="your_community"
+$env:TF_VAR_access_community_string_4="your_community"
+$env:TF_VAR_access_community_string_5="your_community"
+$env:TF_VAR_snmp_trap_community_1="your_community"
+$env:TF_VAR_snmp_trap_community_2="your_community"
+$env:TF_VAR_snmp_trap_community_3="your_community"
+$env:TF_VAR_snmp_trap_community_4="your_community"
+$env:TF_VAR_snmp_trap_community_5="your_community"
 ```
 
 ## Execute the Terraform Plan
