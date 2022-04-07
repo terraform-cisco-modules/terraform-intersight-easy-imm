@@ -37,7 +37,7 @@ variable "ip_pools" {
     - to - Ending IPv6 Address.
   * ipv6_config - IPv6 Configuration to assign to the ipv6_blocks.
     - gateway - Gateway to assign to the pool.
-    - netmask - Netmask to assign to the pool.
+    - prefix - Prefix to assign to the pool.
     - primary_dns = Primary DNS Server to Assign to the Pool
     - secondary_dns = Secondary DNS Server to Assign to the Pool
   * tags - List of Key/Value Pairs to Assign as Attributes to the Pool.
