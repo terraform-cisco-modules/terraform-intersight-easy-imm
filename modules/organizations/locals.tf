@@ -26,11 +26,11 @@ locals {
   resource_groups_loop_1 = flatten([
     for key, value in local.organizations : [
       for k, v in value.resource_groups : {
-        create_org                 = value.create_org
-        description                = v.description != null ? v.description : ""
-        organization               = key
-        qualifier                  = v.qualifier != null ? v.qualifier : "Allow-Selectors"
-        selectors                  = v.selectors != null ? v.selectors : []
+        create_org   = value.create_org
+        description  = v.description != null ? v.description : ""
+        organization = key
+        qualifier    = v.qualifier != null ? v.qualifier : "Allow-Selectors"
+        selectors    = v.selectors != null ? v.selectors : []
       }
     ]
   ])

@@ -60,9 +60,9 @@ variable "organizations" {
       ]
       resource_groups = [
         {
-          description                = ""
-          qualifier = "Allow-Selectors"
-          selectors = []
+          description = ""
+          qualifier   = "Allow-Selectors"
+          selectors   = []
         }
       ]
       roles = [
@@ -135,8 +135,8 @@ variable "organizations" {
       resource_groups = optional(list(object(
         {
           description = optional(string)
-          qualifier = optional(string)
-          selectors = optional(list(string))
+          qualifier   = optional(string)
+          selectors   = optional(list(string))
         }
       )))
       roles = list(object(
