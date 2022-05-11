@@ -9,14 +9,14 @@ variable "ip_pools" {
     default = {
       assignment_order = "default"
       description      = ""
-      ipv4_blocks      = [
+      ipv4_blocks = [
         {
           from = "198.18.0.10"
           size = 245
           # to   = "198.18.0.254"
         }
       ]
-      ipv4_config      = [
+      ipv4_config = [
         {
           gateway       = "198.18.0.1"
           netmask       = "255.255.255.0"
@@ -24,9 +24,9 @@ variable "ip_pools" {
           secondary_dns = "208.67.222.222"
         }
       ]
-      ipv6_blocks      = []
-      ipv6_config      = []
-      tags             = []
+      ipv6_blocks = []
+      ipv6_config = []
+      tags        = []
     }
   }
   description = <<-EOT

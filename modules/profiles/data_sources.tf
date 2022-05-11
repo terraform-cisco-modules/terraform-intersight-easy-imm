@@ -63,7 +63,7 @@ data "intersight_organization_organization" "org_moid" {
 data "intersight_equipment_chassis" "chassis" {
   for_each = {
     for k, v in local.ucs_chassis_profiles : k => v
-    if v.assign_chassis == true
+    if v.serial_number != ""
   }
   serial = each.value.serial_number
 }
