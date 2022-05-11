@@ -14,7 +14,7 @@ variable "wwnn_pools" {
         {
           from = "20:00:00:25:B5:00:00:00"
           size = 1000
-          to   = "20:00:00:25:B5:00:03:E7"
+          # to   = "20:00:00:25:B5:00:03:E7"
         }
       ]
     }
@@ -87,5 +87,14 @@ resource "intersight_fcpool_pool" "wwnn_pools" {
       key   = tags.value.key
       value = tags.value.value
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      id_blocks[0].to,
+      id_blocks[1].to,
+      id_blocks[2].to,
+      id_blocks[3].to,
+      id_blocks[4].to
+    ]
   }
 }

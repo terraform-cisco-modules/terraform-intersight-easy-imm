@@ -16,7 +16,7 @@ variable "iqn_pools" {
           from   = 0
           size   = 1000
           suffix = "ucs-host"
-          to     = 1000
+          # to     = 1000
         }
       ]
     }
@@ -93,5 +93,14 @@ resource "intersight_iqnpool_pool" "iqn_pools" {
       key   = tags.value.key
       value = tags.value.value
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      iqn_suffix_blocks[0].to,
+      iqn_suffix_blocks[1].to,
+      iqn_suffix_blocks[2].to,
+      iqn_suffix_blocks[3].to,
+      iqn_suffix_blocks[4].to
+    ]
   }
 }

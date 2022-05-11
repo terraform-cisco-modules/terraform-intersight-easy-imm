@@ -9,8 +9,21 @@ variable "ip_pools" {
     default = {
       assignment_order = "default"
       description      = ""
-      ipv4_blocks      = []
-      ipv4_config      = []
+      ipv4_blocks      = [
+        {
+          from = "198.18.0.10"
+          size = 245
+          # to   = "198.18.0.254"
+        }
+      ]
+      ipv4_config      = [
+        {
+          gateway       = "198.18.0.1"
+          netmask       = "255.255.255.0"
+          primary_dns   = "208.67.220.220"
+          secondary_dns = "208.67.222.222"
+        }
+      ]
       ipv6_blocks      = []
       ipv6_config      = []
       tags             = []
@@ -145,5 +158,19 @@ resource "intersight_ippool_pool" "ip_pools" {
       key   = tags.value.key
       value = tags.value.value
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      ip_v4_blocks[0].to,
+      ip_v4_blocks[1].to,
+      ip_v4_blocks[2].to,
+      ip_v4_blocks[3].to,
+      ip_v4_blocks[4].to,
+      ip_v6_blocks[0].to,
+      ip_v6_blocks[1].to,
+      ip_v6_blocks[2].to,
+      ip_v6_blocks[3].to,
+      ip_v6_blocks[4].to
+    ]
   }
 }

@@ -14,7 +14,7 @@ variable "mac_pools" {
         {
           from = "00:25:B5:0A:00:00"
           size = 1000
-          to   = "00:25:B5:0A:03:E7"
+          # to   = "00:25:B5:0A:03:E7"
         }
       ]
     }
@@ -86,5 +86,14 @@ resource "intersight_macpool_pool" "mac_pools" {
       key   = tags.value.key
       value = tags.value.value
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      mac_blocks[0].to,
+      mac_blocks[1].to,
+      mac_blocks[2].to,
+      mac_blocks[3].to,
+      mac_blocks[4].to
+    ]
   }
 }

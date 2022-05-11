@@ -15,7 +15,7 @@ variable "uuid_pools" {
         {
           from = "0000-000000000000"
           size = 1000
-          to   = "0000-0000000003E7"
+          # to   = "0000-0000000003E7"
         }
       ]
     }
@@ -90,5 +90,14 @@ resource "intersight_uuidpool_pool" "uuid_pools" {
       key   = tags.value.key
       value = tags.value.value
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      uuid_suffix_blocks[0].to,
+      uuid_suffix_blocks[1].to,
+      uuid_suffix_blocks[2].to,
+      uuid_suffix_blocks[3].to,
+      uuid_suffix_blocks[4].to
+    ]
   }
 }
