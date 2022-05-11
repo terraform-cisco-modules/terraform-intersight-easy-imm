@@ -10,13 +10,13 @@ variable "wwnn_pools" {
       assignment_order = "default"
       description      = ""
       tags             = []
-      id_blocks = {
-        default = {
+      id_blocks = [
+        {
           from = "20:00:00:25:B5:00:00:00"
           size = 1000
           to   = "20:00:00:25:B5:00:03:E7"
         }
-      }
+      ]
     }
   }
   description = <<-EOT
@@ -25,7 +25,7 @@ variable "wwnn_pools" {
     - default - Assignment order is decided by the system - Default value.
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
-  * id_blocks - Map of Addresses to Assign to the Pool.
+  * id_blocks - List  of Address ranges to Assign to the Pool.
     - from - Staring WWxN Address.  An Example is "20:00:00:25:B5:00:00:00".
     - size - Size of WWxN Pool.  An Example is 1000.
     - to - Ending WWxN Address.  An Example is "20:00:00:25:B5:00:03:E7".
@@ -35,7 +35,7 @@ variable "wwnn_pools" {
     {
       assignment_order = optional(string)
       description      = optional(string)
-      id_blocks = optional(map(object(
+      id_blocks = optional(list(object(
         {
           from = string
           size = optional(number)

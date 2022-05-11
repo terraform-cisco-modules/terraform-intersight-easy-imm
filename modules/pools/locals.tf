@@ -22,10 +22,10 @@ locals {
     for k, v in var.ip_pools : k => {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
-      ipv4_blocks      = v.ipv4_blocks != null ? v.ipv4_blocks : {}
-      ipv4_config      = v.ipv4_config != null ? v.ipv4_config : {}
-      ipv6_blocks      = v.ipv6_blocks != null ? v.ipv6_blocks : {}
-      ipv6_config      = v.ipv6_config != null ? v.ipv6_config : {}
+      ipv4_blocks      = v.ipv4_blocks != null ? v.ipv4_blocks : []
+      ipv4_config      = v.ipv4_config != null ? v.ipv4_config : []
+      ipv6_blocks      = v.ipv6_blocks != null ? v.ipv6_blocks : []
+      ipv6_config      = v.ipv6_config != null ? v.ipv6_config : []
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -40,7 +40,7 @@ locals {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
       prefix           = v.prefix != null ? v.prefix : "iqn.1984-12.com.cisco"
-      iqn_blocks       = v.iqn_blocks != null ? v.iqn_blocks : {}
+      iqn_blocks       = v.iqn_blocks != null ? v.iqn_blocks : []
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -54,7 +54,7 @@ locals {
     for k, v in var.mac_pools : k => {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
-      mac_blocks       = v.mac_blocks != null ? v.mac_blocks : {}
+      mac_blocks       = v.mac_blocks != null ? v.mac_blocks : []
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -86,7 +86,7 @@ locals {
       description      = v.description != null ? v.description : ""
       prefix           = v.prefix != null ? v.prefix : "000025B5-0000-0000"
       tags             = v.tags != null ? v.tags : []
-      uuid_blocks      = v.uuid_blocks != null ? v.uuid_blocks : {}
+      uuid_blocks      = v.uuid_blocks != null ? v.uuid_blocks : []
     }
   }
 
@@ -99,7 +99,7 @@ locals {
     for k, v in var.wwnn_pools : k => {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
-      id_blocks        = v.id_blocks != null ? v.id_blocks : {}
+      id_blocks        = v.id_blocks != null ? v.id_blocks : []
       tags             = v.tags != null ? v.tags : []
     }
   }
@@ -113,7 +113,7 @@ locals {
     for k, v in var.wwpn_pools : k => {
       assignment_order = v.assignment_order != null ? v.assignment_order : "default"
       description      = v.description != null ? v.description : ""
-      id_blocks        = v.id_blocks != null ? v.id_blocks : {}
+      id_blocks        = v.id_blocks != null ? v.id_blocks : []
       tags             = v.tags != null ? v.tags : []
     }
   }

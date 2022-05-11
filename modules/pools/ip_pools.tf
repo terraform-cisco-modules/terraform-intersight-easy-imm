@@ -9,10 +9,10 @@ variable "ip_pools" {
     default = {
       assignment_order = "default"
       description      = ""
-      ipv4_blocks      = {}
-      ipv4_config      = {}
-      ipv6_blocks      = {}
-      ipv6_config      = {}
+      ipv4_blocks      = []
+      ipv4_config      = []
+      ipv6_blocks      = []
+      ipv6_config      = []
       tags             = []
     }
   }
@@ -22,7 +22,7 @@ variable "ip_pools" {
     - default - (Default) Assignment order is decided by the system.
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
-  * ipv4_blocks - Map of Addresses to Assign to the Pool.
+  * ipv4_blocks - List of Address ranges to Assign to the Pool.
     - from - Starting IPv4 Address.
     - size - Size of the IPv4 Address Pool
     - to - Ending IPv4 Address.
@@ -31,7 +31,7 @@ variable "ip_pools" {
     - netmask - Netmask to assign to the pool.
     - primary_dns = Primary DNS Server to Assign to the Pool
     - secondary_dns = Secondary DNS Server to Assign to the Pool
-  * ipv6_blocks - Map of Addresses to Assign to the Pool.
+  * ipv6_blocks - List of Address ranges to Assign to the Pool.
     - from - Starting IPv6 Address.
     - size - Size of the IPv6 Address Pool
     - to - Ending IPv6 Address.
@@ -46,14 +46,14 @@ variable "ip_pools" {
     {
       assignment_order = optional(string)
       description      = optional(string)
-      ipv4_blocks = optional(map(object(
+      ipv4_blocks = optional(list(object(
         {
           from = string
           size = optional(number)
           to   = optional(string)
         }
       )))
-      ipv4_config = optional(map(object(
+      ipv4_config = optional(list(object(
         {
           gateway       = string
           netmask       = string
@@ -61,14 +61,14 @@ variable "ip_pools" {
           secondary_dns = optional(string)
         }
       )))
-      ipv6_blocks = optional(map(object(
+      ipv6_blocks = optional(list(object(
         {
           from = string
           size = optional(number)
           to   = optional(string)
         }
       )))
-      ipv6_config = optional(map(object(
+      ipv6_config = optional(list(object(
         {
           gateway       = string
           prefix        = number

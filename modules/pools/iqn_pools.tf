@@ -11,14 +11,14 @@ variable "iqn_pools" {
       description      = ""
       prefix           = "iqn.1984-12.com.cisco"
       tags             = []
-      iqn_blocks = {
-        "default" = {
+      iqn_blocks = [
+        {
           from   = 0
           size   = 1000
           suffix = "ucs-host"
           to     = 1000
         }
-      }
+      ]
     }
   }
   description = <<-EOT
@@ -27,7 +27,7 @@ variable "iqn_pools" {
     - default - (Default) Assignment order is decided by the system.
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
-  * iqn_blocks - Map of Addresses to Assign to the Pool.
+  * iqn_blocks - List of Addresses to Assign to the Pool.
     - from - Staring IQN Address.  An Exmaple is 0.
     - size - Size of the IQN Pool.  An Exmaple is 1000.
     - suffix - Suffix to assign to the IQN Pool.  An Exmaple is "ucs-host".
@@ -39,7 +39,7 @@ variable "iqn_pools" {
     {
       assignment_order = optional(string)
       description      = optional(string)
-      iqn_blocks = optional(map(object(
+      iqn_blocks = optional(list(object(
         {
           from   = string
           size   = optional(number)

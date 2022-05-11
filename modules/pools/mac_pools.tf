@@ -10,13 +10,13 @@ variable "mac_pools" {
       assignment_order = "default"
       description      = ""
       tags             = []
-      mac_blocks = {
-        default = {
+      mac_blocks = [
+        {
           from = "00:25:B5:0A:00:00"
           size = 1000
           to   = "00:25:B5:0A:03:E7"
         }
-      }
+      ]
     }
   }
   description = <<-EOT
@@ -25,7 +25,7 @@ variable "mac_pools" {
     - default - (Default) Assignment order is decided by the system.
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
-  * mac_blocks - Map of Addresses to Assign to the Pool.
+  * mac_blocks - List of Address ranges to Assign to the Pool.
     - from - Staring MAC Address.  An Example is "00:25:B5:0A:00:00".
     - size - Size of MAC Address Pool.  An Example is 1000.
     - to - Ending MAC Address.  An Example is "00:25:B5:0A:03:E7".
@@ -35,7 +35,7 @@ variable "mac_pools" {
     {
       assignment_order = optional(string)
       description      = optional(string)
-      mac_blocks = optional(map(object(
+      mac_blocks = optional(list(object(
         {
           from = string
           size = optional(number)

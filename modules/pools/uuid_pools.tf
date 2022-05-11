@@ -11,13 +11,13 @@ variable "uuid_pools" {
       description      = ""
       prefix           = "000025B5-0000-0000"
       tags             = []
-      uuid_blocks = {
-        default = {
+      uuid_blocks = [
+        {
           from = "0000-000000000000"
           size = 1000
           to   = "0000-0000000003E7"
         }
-      }
+      ]
     }
   }
   description = <<-EOT
@@ -27,7 +27,7 @@ variable "uuid_pools" {
     - sequential - Identifiers are assigned in a sequential order.
   * description - Description to Assign to the Pool.
   * prefix - Prefix to assign to the UUID Pool..  The default is "000025B5-0000-0000".
-  * uuid_blocks - Map of Addresses to Assign to the Pool.
+  * uuid_blocks - List of Address ranges to Assign to the Pool.
     - from - Starting UUID Address.  An Example is "0000-000000000000".
     - size - Size of UUID Pool.  An Example is 1000.
     - to - Ending UUID Address.  An Example is "0000-0000000003E7".
@@ -39,7 +39,7 @@ variable "uuid_pools" {
       description      = optional(string)
       prefix           = optional(string)
       tags             = optional(list(map(string)))
-      uuid_blocks = optional(map(object(
+      uuid_blocks = optional(list(object(
         {
           from = string
           size = optional(number)
