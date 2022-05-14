@@ -2094,18 +2094,18 @@ locals {
       description       = v.description != null ? v.description : ""
       drive_group       = v.drive_group != null ? v.drive_group : {}
       global_hot_spares = v.global_hot_spares != null ? v.global_hot_spares : ""
-      m2_configuration  = v.m2_configuration != null ? v.m2_configuration : {}
-      single_drive_raid_configuration = v.single_drive_raid_configuration != null ? {
-        for key, value in v.single_drive_raid_configuration : key => {
-          access_policy = value.access_policy != null ? value.access_policy : "Default"
-          drive_cache   = value.drive_cache != null ? value.drive_cache : "Default"
-          drive_slots   = value.drive_slots
-          enable        = value.enable != null ? value.enable : true
-          read_policy   = value.read_policy != null ? value.read_policy : "Default"
-          strip_size    = value.strip_size != null ? value.strip_size : 64
-          write_policy  = value.write_policy != null ? value.write_policy : "Default"
+      m2_configuration  = v.m2_configuration != null ? v.m2_configuration : []
+      single_drive_raid_configuration = v.single_drive_raid_configuration != null ? [
+        for s in v.single_drive_raid_configuration : {
+          access_policy = s.access_policy != null ? s.access_policy : "Default"
+          drive_cache   = s.drive_cache != null ? s.drive_cache : "Default"
+          drive_slots   = s.drive_slots
+          enable        = s.enable != null ? s.enable : true
+          read_policy   = s.read_policy != null ? s.read_policy : "Default"
+          strip_size    = s.strip_size != null ? s.strip_size : 64
+          write_policy  = s.write_policy != null ? s.write_policy : "Default"
         }
-      } : {}
+      ] : []
       tags                     = v.tags != null ? v.tags : []
       unused_disks_state       = v.unused_disks_state != null ? v.unused_disks_state : "NoChange"
       use_jbod_for_vd_creation = v.use_jbod_for_vd_creation != null ? v.use_jbod_for_vd_creation : false

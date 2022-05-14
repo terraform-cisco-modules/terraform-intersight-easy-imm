@@ -8,12 +8,6 @@ variable "storage_policies" {
   default = {
     default = {
       description                     = ""
-      global_hot_spares               = ""
-      m2_configuration                = {}
-      single_drive_raid_configuration = {}
-      tags                            = []
-      unused_disks_state              = "NoChange"
-      use_jbod_for_vd_creation        = false
       drive_group = {
         default = {
           automatic_drive_group = {}
@@ -22,52 +16,17 @@ variable "storage_policies" {
           virtual_drives        = {}
         }
       }
+      global_hot_spares               = ""
+      m2_configuration                = []
+      single_drive_raid_configuration = []
+      tags                            = []
+      unused_disks_state              = "NoChange"
+      use_jbod_for_vd_creation        = false
     }
   }
   description = <<-EOT
   key - Name for the Storage Policy.
   * description - Description to Assign to the Policy.
-  * global_hot_spares - A collection of disks that is to be used as hot spares, globally, for all the RAID groups. Allowed value is a number range separated by a comma or a hyphen.
-  * m2_configuration - Slot of the M.2 RAID controller for virtual drive creation.
-    - controller_slot - Options are:
-      * MSTOR-RAID-1 - Virtual drive will be created on the M.2 RAID controller in the first slot.
-      * MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in the second slot, if available.
-      * MSTOR-RAID-1,MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in both the slots, if available.
-    - enable - If enabled, this will create a virtual drive on the M.2 RAID controller.
-  * single_drive_raid_configuration - M.2 Virtual Drive Configuration.
-    - access_policy - Access policy that host has on this virtual drive.
-      * Default - Use platform default access mode.
-      * ReadWrite - Enables host to perform read-write on the VD.
-      * ReadOnly - Host can only read from the VD.
-      * Blocked - Host can neither read nor write to the VD.
-    - drive_cache - Disk cache policy for the virtual drive.
-      * Default - Use platform default drive cache mode.
-      * NoChange - Drive cache policy is unchanged.
-      * Enable - Enables IO caching on the drive.
-      * Disable - Disables IO caching on the drive.
-    - drive_slots - The set of drive slots where RAID0 virtual drives must be created.
-    - enable - If enabled, this will create a RAID0 virtual drive per disk and encompassing the whole disk.
-    - read_policy - Read ahead mode to be used to read data from this virtual drive.
-      * Default - Use platform default read ahead mode.
-      * ReadAhead - Use read ahead mode for the policy.
-      * NoReadAhead - Do not use read ahead mode for the policy.
-    - strip_size - Desired strip size - Allowed values are 64, 128, 256, 512, 1024.
-      * 64 - Number of bytes in a strip is 64 Kibibytes.
-      * 128 - Number of bytes in a strip is 128 Kibibytes.
-      * 256 - Number of bytes in a strip is 256 Kibibytes.
-      * 512 - Number of bytes in a strip is 512 Kibibytes.
-      * 1024 - Number of bytes in a strip is 1024 Kibibytes or 1 Mebibyte.
-    - write_policy:(string) Write mode to be used to write data to this virtual drive.
-      * Default - Use platform default write mode.
-      * WriteThrough - Data is written through the cache and to the physical drives. Performance is improved, because subsequent reads of that data can be satisfied from the cache.
-      * WriteBackGoodBbu - Data is stored in the cache, and is only written to the physical drives when space in the cache is needed. Virtual drives requesting this policy fall back to Write Through caching when the battery backup unit (BBU) cannot guarantee the safety of the cache in the event of a power failure.
-      * AlwaysWriteBack - With this policy, write caching remains Write Back even if the battery backup unit is defective or discharged.
-  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
-  * unused_disks_state - State to which disks, not used in this policy, are to be moved.
-    - NoChange - (Default) Drive state will not be modified by Storage Policy.
-    - UnconfiguredGood - Unconfigured good state -ready to be added in a RAID group.
-    - Jbod - JBOD state where the disks start showing up to Host OS.
-  * use_jbod_for_vd_creation - Default is false.  Disks in JBOD State are used to create virtual drives.
   * drive_group - Drive Group(s) to Assign to the Storage Policy.
     key - Name of the Drive Group.
     - automatic_drive_group - This drive group is created using automatic drive selection.  This complex property has following sub-properties:
@@ -127,31 +86,51 @@ variable "storage_policies" {
         - WriteThrough - Data is written through the cache and to the physical drives. Performance is improved, because subsequent reads of that data can be satisfied from the cache.
         - WriteBackGoodBbu - Data is stored in the cache, and is only written to the physical drives when space in the cache is needed. Virtual drives requesting this policy fall back to Write Through caching when the battery backup unit (BBU) cannot guarantee the safety of the cache in the event of a power failure.
         - AlwaysWriteBack - With this policy, write caching remains Write Back even if the battery backup unit is defective or discharged.
+  * global_hot_spares - A collection of disks that is to be used as hot spares, globally, for all the RAID groups. Allowed value is a number range separated by a comma or a hyphen.
+  * m2_configuration - Slot of the M.2 RAID controller for virtual drive creation.
+    - controller_slot - Options are:
+      * MSTOR-RAID-1 - Virtual drive will be created on the M.2 RAID controller in the first slot.
+      * MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in the second slot, if available.
+      * MSTOR-RAID-1,MSTOR-RAID-2 - Virtual drive will be created on the M.2 RAID controller in both the slots, if available.
+    - enable - If enabled, this will create a virtual drive on the M.2 RAID controller.
+  * single_drive_raid_configuration - M.2 Virtual Drive Configuration.
+    - access_policy - Access policy that host has on this virtual drive.
+      * Default - Use platform default access mode.
+      * ReadWrite - Enables host to perform read-write on the VD.
+      * ReadOnly - Host can only read from the VD.
+      * Blocked - Host can neither read nor write to the VD.
+    - drive_cache - Disk cache policy for the virtual drive.
+      * Default - Use platform default drive cache mode.
+      * NoChange - Drive cache policy is unchanged.
+      * Enable - Enables IO caching on the drive.
+      * Disable - Disables IO caching on the drive.
+    - drive_slots - The set of drive slots where RAID0 virtual drives must be created.
+    - enable - If enabled, this will create a RAID0 virtual drive per disk and encompassing the whole disk.
+    - read_policy - Read ahead mode to be used to read data from this virtual drive.
+      * Default - Use platform default read ahead mode.
+      * ReadAhead - Use read ahead mode for the policy.
+      * NoReadAhead - Do not use read ahead mode for the policy.
+    - strip_size - Desired strip size - Allowed values are 64, 128, 256, 512, 1024.
+      * 64 - Number of bytes in a strip is 64 Kibibytes.
+      * 128 - Number of bytes in a strip is 128 Kibibytes.
+      * 256 - Number of bytes in a strip is 256 Kibibytes.
+      * 512 - Number of bytes in a strip is 512 Kibibytes.
+      * 1024 - Number of bytes in a strip is 1024 Kibibytes or 1 Mebibyte.
+    - write_policy:(string) Write mode to be used to write data to this virtual drive.
+      * Default - Use platform default write mode.
+      * WriteThrough - Data is written through the cache and to the physical drives. Performance is improved, because subsequent reads of that data can be satisfied from the cache.
+      * WriteBackGoodBbu - Data is stored in the cache, and is only written to the physical drives when space in the cache is needed. Virtual drives requesting this policy fall back to Write Through caching when the battery backup unit (BBU) cannot guarantee the safety of the cache in the event of a power failure.
+      * AlwaysWriteBack - With this policy, write caching remains Write Back even if the battery backup unit is defective or discharged.
+  * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
+  * unused_disks_state - State to which disks, not used in this policy, are to be moved.
+    - NoChange - (Default) Drive state will not be modified by Storage Policy.
+    - UnconfiguredGood - Unconfigured good state -ready to be added in a RAID group.
+    - Jbod - JBOD state where the disks start showing up to Host OS.
+  * use_jbod_for_vd_creation - Default is false.  Disks in JBOD State are used to create virtual drives.
   EOT
   type = map(object(
     {
       description       = optional(string)
-      global_hot_spares = optional(string)
-      m2_configuration = optional(map(object(
-        {
-          controller_slot = string
-          enable          = bool
-        }
-      )))
-      single_drive_raid_configuration = optional(map(object(
-        {
-          access_policy = optional(string)
-          drive_cache   = optional(string)
-          drive_slots   = string
-          enable        = optional(bool)
-          read_policy   = optional(string)
-          strip_size    = optional(string)
-          write_policy  = optional(string)
-        }
-      )))
-      tags                     = optional(list(map(string)))
-      unused_disks_state       = optional(string)
-      use_jbod_for_vd_creation = optional(bool)
       drive_group = map(object(
         {
           automatic_drive_group = optional(map(object(
@@ -189,6 +168,27 @@ variable "storage_policies" {
           )))
         }
       ))
+      global_hot_spares = optional(string)
+      m2_configuration = optional(list(object(
+        {
+          controller_slot = string
+          enable          = bool
+        }
+      )))
+      single_drive_raid_configuration = optional(list(object(
+        {
+          access_policy = optional(string)
+          drive_cache   = optional(string)
+          drive_slots   = string
+          enable        = optional(bool)
+          read_policy   = optional(string)
+          strip_size    = optional(string)
+          write_policy  = optional(string)
+        }
+      )))
+      tags                     = optional(list(map(string)))
+      unused_disks_state       = optional(string)
+      use_jbod_for_vd_creation = optional(bool)
     }
   ))
 }
