@@ -7,7 +7,7 @@
 variable "storage_policies" {
   default = {
     default = {
-      description                     = ""
+      description = ""
       drive_group = {
         default = {
           automatic_drive_group = {}
@@ -130,7 +130,7 @@ variable "storage_policies" {
   EOT
   type = map(object(
     {
-      description       = optional(string)
+      description = optional(string)
       drive_group = map(object(
         {
           automatic_drive_group = optional(map(object(
