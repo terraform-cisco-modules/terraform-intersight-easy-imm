@@ -2160,7 +2160,7 @@ locals {
   ])
 
   drive_groups = {
-    for k, v in local.drive_groups_loop : v.key => v
+    for k, v in local.drive_groups_loop : "${v.storage_policy}_${v.key}" => v
   }
 
   #__________________________________________________________
@@ -2333,10 +2333,9 @@ locals {
         multicast_policy      = v.multicast_policy
         name                  = v.name
         native_vlan           = v.native_vlan
-        vlan_id               = s
-        vlan_list             = v.vlan_list
+        vlan_id               = tonumber(s)
         vlan_policy           = v.vlan_policy
-      }
+      } if s != ""
     ]
   ])
 
