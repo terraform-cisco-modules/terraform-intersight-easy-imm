@@ -8,7 +8,6 @@ variable "ucs_chassis_profiles" {
   default = {
     default = {
       action              = "No-op"
-      assign_chassis      = false
       imc_access_policy   = ""
       power_policy        = ""
       snmp_policy         = ""
@@ -26,7 +25,6 @@ variable "ucs_chassis_profiles" {
     - Deploy
     - No-op
     - Unassign
-  * assign_chassis - Set flag to True to Assign the Profile to a Physical Chassis Serial Number.
   * description - Description for the Profile.
   * imc_access_policy - Name of the IMC Access Policy to Assign.
   * power_policy - Name of the Power Policy to Assign.
@@ -41,7 +39,6 @@ variable "ucs_chassis_profiles" {
   type = map(object(
     {
       action              = optional(string)
-      assign_chassis      = optional(bool)
       description         = optional(string)
       imc_access_policy   = optional(string)
       power_policy        = optional(string)
@@ -78,7 +75,8 @@ resource "intersight_chassis_profile" "ucs_chassis_profiles" {
     object_type = "organization.Organization"
   }
   dynamic "assigned_chassis" {
-    for_each = each.value.assign_chassis == true ? [
+    for_each = length(
+      regexall("[[:alnum:]]", each.value.serial_number)) > 0 ? [
       {
         moid = data.intersight_equipment_chassis.chassis[each.key].results[0].moid
       }

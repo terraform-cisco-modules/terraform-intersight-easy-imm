@@ -127,7 +127,6 @@ locals {
   chassis_policies_loop_1 = {
     for k, v in var.ucs_chassis_profiles : k => {
       action              = v.action != null ? v.action : "No-op"
-      assign_chassis      = v.assign_chassis != null ? v.assign_chassis : false
       description         = v.description != null ? v.description : ""
       imc_access_policy   = v.imc_access_policy != null ? v.imc_access_policy : ""
       power_policy        = v.power_policy != null ? v.power_policy : ""
@@ -141,9 +140,8 @@ locals {
   }
   chassis_policies_loop_2 = {
     for k, v in local.chassis_policies_loop_1 : k => {
-      action         = v.action
-      assign_chassis = v.assign_chassis
-      description    = v.description
+      action      = v.action
+      description = v.description
       imc_access_policy = v.imc_access_policy != "" ? {
         moid        = local.imc_access_policies[v.imc_access_policy]
         object_type = "access.Policy"

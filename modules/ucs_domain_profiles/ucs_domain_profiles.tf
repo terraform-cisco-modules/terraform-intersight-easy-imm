@@ -2,7 +2,6 @@ variable "ucs_domain_profiles" {
   default = {
     default = {
       action                      = "No-op"
-      assign_switches             = false
       description                 = ""
       device_model                = "UCS-FI-6454"
       network_connectivity_policy = ""
@@ -28,7 +27,6 @@ variable "ucs_domain_profiles" {
     - Deploy
     - No-op
     - Unassign
-  * assign_switches - Flag to define if the physical FI's should be assigned to the policy.  Default is false.
   * description - Description to Assign to the Profile.
   * device_model - This field specifies the device model that this Port Policy is being configured for.
     - UCS-FI-6454 - (Default) - The standard 4th generation UCS Fabric Interconnect with 54 ports.
@@ -53,7 +51,6 @@ variable "ucs_domain_profiles" {
   type = map(object(
     {
       action                      = optional(string)
-      assign_switches             = optional(bool)
       description                 = optional(string)
       device_model                = optional(string)
       network_connectivity_policy = optional(string)
@@ -124,7 +121,9 @@ resource "intersight_fabric_switch_profile" "ucs_domain_switches" {
     ].moid
   }
   dynamic "assigned_switch" {
-    for_each = each.value.assign_switches == true ? [
+    for_each = length(
+      regexall("[[:alnum:]]", each.value.serial_number_fabric_a)) > 0 && length(
+      regexall("[[:alnum:]]", each.value.serial_number_fabric_b)) > 0 ? [
       data.intersight_network_element_summary.fis[each.key
     ].results.0.moid] : []
     content {

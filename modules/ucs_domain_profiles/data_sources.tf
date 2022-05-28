@@ -19,7 +19,9 @@ data "intersight_organization_organization" "org_moid" {
 data "intersight_network_element_summary" "fis" {
   for_each = {
     for k, v in local.merged_ucs_switches : k => v
-    if v.assign_switches == true
+    if length(
+      regexall("[[:alnum:]]", each.value.serial_number_fabric_a)) > 0 && length(
+    regexall("[[:alnum:]]", each.value.serial_number_fabric_b)) > 0
   }
   serial = each.value.serial_number
 }
