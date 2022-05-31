@@ -122,8 +122,7 @@ resource "intersight_fabric_switch_profile" "ucs_domain_switches" {
   }
   dynamic "assigned_switch" {
     for_each = length(
-      regexall("[[:alnum:]]", each.value.serial_number_fabric_a)) > 0 && length(
-      regexall("[[:alnum:]]", each.value.serial_number_fabric_b)) > 0 ? [
+      regexall("[[:alnum:]]", each.value.serial_number)) > 0 ? [
       data.intersight_network_element_summary.fis[each.key
     ].results.0.moid] : []
     content {

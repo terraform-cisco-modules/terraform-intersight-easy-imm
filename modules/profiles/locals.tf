@@ -168,7 +168,6 @@ locals {
   ucs_chassis_profiles = {
     for k, v in local.chassis_policies_loop_2 : k => {
       action              = v.action
-      assign_chassis      = v.assign_chassis
       description         = v.description
       policy_bucket       = toset(flatten([v.imc_access_policy, v.power_policy, v.snmp_policy, v.thermal_policy]))
       serial_number       = v.serial_number
