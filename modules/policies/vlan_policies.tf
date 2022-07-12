@@ -99,7 +99,7 @@ resource "intersight_fabric_vlan" "vlan_policies_add_vlans" {
   auto_allow_on_uplinks = each.value.auto_allow_on_uplinks
   is_native             = each.value.native_vlan
   name = length(
-    regexall("^[0-9]+$", each.value.vlan_list)
+    regexall("^[0-9]+$", each.value.vlan_id)
     ) > 0 ? each.value.name : length(
     regexall("^[0-9]{4}$", each.value.vlan_id)
     ) > 0 ? join("-vl", [each.value.name, each.value.vlan_id]) : length(
