@@ -30,12 +30,12 @@ variable "ethernet_adapter_policies" {
       roce_queue_pairs                         = 256
       roce_resource_groups                     = 4
       roce_version                             = 1
-      rss_enable_ipv4_hash                     = true
+      rss_enable_ipv4_hash                     = false
       rss_enable_ipv6_extensions_hash          = false
-      rss_enable_ipv6_hash                     = true
-      rss_enable_tcp_and_ipv4_hash             = true
+      rss_enable_ipv6_hash                     = false
+      rss_enable_tcp_and_ipv4_hash             = false
       rss_enable_tcp_and_ipv6_extensions_hash  = false
-      rss_enable_tcp_and_ipv6_hash             = true
+      rss_enable_tcp_and_ipv6_hash             = false
       rss_enable_udp_and_ipv4_hash             = false
       rss_enable_udp_and_ipv6_hash             = false
       tags                                     = []
@@ -100,12 +100,12 @@ variable "ethernet_adapter_policies" {
   * roce_version - Default is 1.  Configure RDMA over Converged Ethernet (RoCE) version on the virtual interface. Only RoCEv1 is supported on Cisco VIC 13xx series adapters and only RoCEv2 is supported on Cisco VIC 14xx series adapters.  Options are:
     - 1
     - 2
-  * rss_enable_ipv4_hash - Default is true.  When enabled, the IPv4 address is used for traffic distribution.
+  * rss_enable_ipv4_hash - Default is false.  When enabled, the IPv4 address is used for traffic distribution.
   * rss_enable_ipv6_extensions_hash - Default is false.  When enabled, the IPv6 extensions are used for traffic distribution.
-  * rss_enable_ipv6_hash - Default is true.  When enabled, the IPv6 address is used for traffic distribution.
-  * rss_enable_tcp_and_ipv4_hash - Default is true.  When enabled, both the IPv4 address and TCP port number are used for traffic distribution.
+  * rss_enable_ipv6_hash - Default is false.  When enabled, the IPv6 address is used for traffic distribution.
+  * rss_enable_tcp_and_ipv4_hash - Default is false.  When enabled, both the IPv4 address and TCP port number are used for traffic distribution.
   * rss_enable_tcp_and_ipv6_extensions_hash - Default is false.  When enabled, both the IPv6 extensions and TCP port number are used for traffic distribution.
-  * rss_enable_tcp_and_ipv6_hash - Default is true.  When enabled, both the IPv6 address and TCP port number are used for traffic distribution.
+  * rss_enable_tcp_and_ipv6_hash - Default is false.  When enabled, both the IPv6 address and TCP port number are used for traffic distribution.
   * rss_enable_udp_and_ipv4_hash - Default is false.  When enabled, both the IPv4 address and UDP port number are used for traffic distribution.
   * rss_enable_udp_and_ipv6_hash - Default is false.  When enabled, both the IPv6 address and UDP port number are used for traffic distribution.
   * tags - Default is [].  List of Key/Value Pairs to Assign as Attributes to the Policy.

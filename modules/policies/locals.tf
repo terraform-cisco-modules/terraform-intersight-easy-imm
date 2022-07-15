@@ -734,29 +734,38 @@ locals {
         regexall("(Windows)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? "Recommended adapter settings for Windows." : v.description != null ? v.description : ""
       enable_accelerated_receive_flow_steering = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.enable_accelerated_receive_flow_steering != null ? v.enable_accelerated_receive_flow_steering : false
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.enable_accelerated_receive_flow_steering])
+      ) > 0 ? v.enable_accelerated_receive_flow_steering : false
       enable_advanced_filter = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.enable_advanced_filter != null ? v.enable_advanced_filter : false
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.enable_advanced_filter])
+      ) > 0 ? v.enable_advanced_filter : false
       enable_geneve_offload = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.enable_geneve_offload != null ? v.enable_geneve_offload : false
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.enable_geneve_offload])
+      ) > 0 ? v.enable_geneve_offload : false
       enable_interrupt_scaling = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.enable_interrupt_scaling != null ? v.enable_interrupt_scaling : false
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.enable_interrupt_scaling])
+      ) > 0 ? v.enable_interrupt_scaling : false
       enable_nvgre_offload = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.enable_nvgre_offload != null ? v.enable_nvgre_offload : false
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.enable_nvgre_offload])
+      ) > 0 ? v.enable_nvgre_offload : false
       enable_vxlan_offload = length(
         regexall("(Win-AzureStack|Win-HPN|Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? true : v.adapter_template != null ? false : v.enable_vxlan_offload != null ? v.enable_vxlan_offload : false
+        ) > 0 ? true : length(compact([v.adapter_template])
+      ) > 0 ? false : v.enable_vxlan_offload != null ? v.enable_vxlan_offload : false
       interrupt_coalescing_type = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? "MIN" : v.adapter_template != null ? "MIN" : v.interrupt_coalescing_type != null ? v.interrupt_coalescing_type : "MIN"
+        compact([v.adapter_template])) > 0 ? "MIN" : length(
+        compact([v.interrupt_coalescing_type])
+      ) > 0 ? v.interrupt_coalescing_type : "MIN"
       interrupt_mode = length(
         regexall("(VMwarePassThru)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? "MSI" : v.adapter_template != null ? "MSIx" : v.interrupt_mode != null ? v.interrupt_mode : "MSIx"
+        ) > 0 ? "MSI" : length(compact([v.adapter_template])
+        ) > 0 ? "MSIx" : length(compact([v.interrupt_mode])
+      ) > 0 ? v.interrupt_mode : "MSIx"
       interrupt_timer = v.adapter_template != null ? 125 : v.interrupt_timer != null ? v.interrupt_timer : 125
       interrupts = length(
         regexall("(Linux|Solaris|VMware)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 4 : length(
@@ -801,50 +810,57 @@ locals {
         regexall("(Linux-NVMe-RoCE|MQ-SMBd|Win-AzureStack|Win-HPN-SMBd)", coalesce(v.adapter_template, "EMPTY"))
       ) > 0 ? 2 : v.roce_version != null ? v.roce_version : 1
       rss_enable_ipv4_hash = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-        ) > 0 ? true : v.adapter_template != null ? true : v.rss_enable_ipv4_hash != null ? v.rss_enable_ipv4_hash : length(
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.rss_enable_ipv4_hash])) > 0 ? v.rss_enable_ipv4_hash : length(
         regexall(true, coalesce(v.receive_side_scaling_enable, false))
       ) > 0 ? true : false
       rss_enable_ipv6_extensions_hash = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.rss_enable_ipv6_extensions_hash != null ? v.rss_enable_ipv6_extensions_hash : false
+        compact([v.adapter_template])) > 0 ? false : length(
+      compact([v.rss_enable_ipv6_extensions_hash])) > 0 ? v.rss_enable_ipv6_extensions_hash : false
       rss_enable_ipv6_hash = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-        ) > 0 ? true : v.adapter_template != null ? true : v.rss_enable_ipv6_hash != null ? v.rss_enable_ipv6_hash : length(
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.rss_enable_ipv6_hash])
+        ) > 0 ? v.rss_enable_ipv6_hash : length(
         regexall(true, coalesce(v.receive_side_scaling_enable, false))
       ) > 0 ? true : false
       rss_enable_tcp_and_ipv4_hash = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-        ) > 0 ? true : v.adapter_template != null ? true : v.rss_enable_tcp_and_ipv4_hash != null ? v.rss_enable_tcp_and_ipv4_hash : length(
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.rss_enable_tcp_and_ipv4_hash])) > 0 ? v.rss_enable_tcp_and_ipv4_hash : length(
         regexall(true, coalesce(v.receive_side_scaling_enable, false))
       ) > 0 ? true : false
       rss_enable_tcp_and_ipv6_extensions_hash = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.rss_enable_tcp_and_ipv6_extensions_hash != null ? v.rss_enable_tcp_and_ipv6_extensions_hash : false
+        compact([v.adapter_template])) > 0 ? false : length(
+      compact([v.rss_enable_tcp_and_ipv6_extensions_hash])) > 0 ? v.rss_enable_tcp_and_ipv6_extensions_hash : false
       rss_enable_tcp_and_ipv6_hash = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-        ) > 0 ? true : v.adapter_template != null ? true : v.rss_enable_tcp_and_ipv6_hash != null ? v.rss_enable_tcp_and_ipv6_hash : length(
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.rss_enable_tcp_and_ipv6_hash])) > 0 ? v.rss_enable_tcp_and_ipv6_hash : length(
         regexall(true, coalesce(v.receive_side_scaling_enable, false))
       ) > 0 ? true : false
       rss_enable_udp_and_ipv4_hash = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.rss_enable_udp_and_ipv4_hash != null ? v.rss_enable_udp_and_ipv4_hash : false
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.rss_enable_udp_and_ipv4_hash])
+      ) > 0 ? v.rss_enable_udp_and_ipv4_hash : false
       rss_enable_udp_and_ipv6_hash = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? false : v.adapter_template != null ? false : v.rss_enable_udp_and_ipv6_hash != null ? v.rss_enable_udp_and_ipv6_hash : false
+        compact([v.adapter_template])) > 0 ? false : length(
+        compact([v.rss_enable_udp_and_ipv6_hash])
+      ) > 0 ? v.rss_enable_udp_and_ipv6_hash : false
       tags = v.tags != null ? v.tags : []
       tcp_offload_large_recieve = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? true : v.adapter_template != null ? true : v.tcp_offload_large_recieve != null ? v.tcp_offload_large_recieve : true
+        compact([v.adapter_template])) > 0 ? true : length(
+        compact([v.tcp_offload_large_recieve])
+      ) > 0 ? v.tcp_offload_large_recieve : true
       tcp_offload_large_send = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? true : v.adapter_template != null ? true : v.tcp_offload_large_send != null ? v.tcp_offload_large_send : true
+        compact([v.adapter_template])) > 0 ? true : length(
+        compact([v.tcp_offload_large_send])
+      ) > 0 ? v.tcp_offload_large_send : true
       tcp_offload_rx_checksum = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? true : v.adapter_template != null ? true : v.tcp_offload_rx_checksum != null ? v.tcp_offload_rx_checksum : true
+        compact([v.adapter_template])) > 0 ? true : length(
+        compact([v.tcp_offload_rx_checksum])
+      ) > 0 ? v.tcp_offload_rx_checksum : true
       tcp_offload_tx_checksum = length(
-        regexall("(DUMMY)", coalesce(v.adapter_template, "EMPTY"))
-      ) > 0 ? true : v.adapter_template != null ? true : v.tcp_offload_tx_checksum != null ? v.tcp_offload_tx_checksum : true
+        compact([v.adapter_template])) > 0 ? true : length(
+        compact([v.tcp_offload_tx_checksum])
+      ) > 0 ? v.tcp_offload_tx_checksum : true
       transmit_queue_count = length(
         regexall("(Win-AzureStack)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 3 : length(
         regexall("(VMwarePassThru)", coalesce(v.adapter_template, "EMPTY"))) > 0 ? 4 : length(

@@ -64,17 +64,23 @@ resource "intersight_access_policy" "imc_access_policies" {
     configure_out_of_band = each.value.out_of_band_ip_pool != "" ? true : false
   }
 
-  inband_ip_pool {
-    moid        = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
-    object_type = "ippool.Pool"
+  dynamic "inband_ip_pool" {
+    for_each = { for k, v in toset([each.value.inband_ip_pool]): k => v if length(each.value.inband_ip_pool) > 0 }
+    content {
+      moid        = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
+      object_type = "ippool.Pool"
+    }
   }
   organization {
     moid        = local.org_moid
     object_type = "organization.Organization"
   }
-  out_of_band_ip_pool {
-    moid        = each.value.out_of_band_ip_pool != "" ? local.ip_pools[each.value.out_of_band_ip_pool] : null
-    object_type = "ippool.Pool"
+  dynamic "out_of_band_ip_pool" {
+    for_each = { for k, v in toset([each.value.out_of_band_ip_pool]): k => v if length(each.value.out_of_band_ip_pool) > 0 }
+    content {
+      moid        = each.value.out_of_band_ip_pool != "" ? local.ip_pools[each.value.out_of_band_ip_pool] : null
+      object_type = "ippool.Pool"
+    }
   }
   dynamic "tags" {
     for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags

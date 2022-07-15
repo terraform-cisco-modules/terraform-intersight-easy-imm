@@ -72,19 +72,15 @@ resource "intersight_power_policy" "power_policies" {
   depends_on = [
     local.org_moid
   ]
-  for_each = local.power_policies
-  additional_properties = jsonencode(
-    {
-      DynamicRebalancing = each.value.dynamic_power_rebalancing
-      PowerPriority      = each.value.power_priority
-      PowerSaveMode      = each.value.power_save_mode
-    }
-  )
+  for_each            = local.power_policies
   allocated_budget    = each.value.power_allocation
   description         = each.value.description != "" ? each.value.description : "${each.key} Power Policy"
+  dynamic_rebalancing = each.value.dynamic_power_rebalancing
   name                = each.key
+  power_priority      = each.value.power_priority
   power_profiling     = each.value.power_profiling
   power_restore_state = each.value.power_restore
+  power_save_mode     = each.value.power_save_mode
   redundancy_mode     = each.value.power_redunancy
   organization {
     moid        = local.org_moid
