@@ -32,6 +32,7 @@
 * Ethernet Network Control (CDP/LLDP)
 * Ethernet Network Group (VLAN Groups)
 * Ethernet QoS (vNIC QoS)
+* FC Zone (Fibre-Channel Zoning Policy)
 * Fibre Channel Adapter (vHBA Adapter Policy)
 * Fibre Channel Network
 * Fibre Channel QoS (vHBA QoS)
