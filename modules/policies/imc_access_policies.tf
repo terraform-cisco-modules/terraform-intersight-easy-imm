@@ -65,7 +65,7 @@ resource "intersight_access_policy" "imc_access_policies" {
   }
 
   dynamic "inband_ip_pool" {
-    for_each = { for k, v in toset([each.value.inband_ip_pool]): k => v if length(each.value.inband_ip_pool) > 0 }
+    for_each = { for k, v in toset([each.value.inband_ip_pool]) : k => v if length(each.value.inband_ip_pool) > 0 }
     content {
       moid        = each.value.inband_ip_pool != "" ? local.ip_pools[each.value.inband_ip_pool] : null
       object_type = "ippool.Pool"
@@ -76,7 +76,7 @@ resource "intersight_access_policy" "imc_access_policies" {
     object_type = "organization.Organization"
   }
   dynamic "out_of_band_ip_pool" {
-    for_each = { for k, v in toset([each.value.out_of_band_ip_pool]): k => v if length(each.value.out_of_band_ip_pool) > 0 }
+    for_each = { for k, v in toset([each.value.out_of_band_ip_pool]) : k => v if length(each.value.out_of_band_ip_pool) > 0 }
     content {
       moid        = each.value.out_of_band_ip_pool != "" ? local.ip_pools[each.value.out_of_band_ip_pool] : null
       object_type = "ippool.Pool"

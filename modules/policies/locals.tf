@@ -948,6 +948,27 @@ locals {
 
   #__________________________________________________________
   #
+  # FC Zoning Policy Section - Locals
+  #__________________________________________________________
+
+  fc_zone_policies = {
+    for k, v in var.fc_zone_policies : k => {
+      description           = v.description != null ? v.description : ""
+      fc_target_zoning_type = v.fc_target_zoning_type != null ? v.fc_target_zoning_type : "None"
+      tags                  = v.tags != null ? v.tags : []
+      targets = length(v.targets) > 0 ? {
+        for key, value in v.targets : value.name => {
+          switch_id = value.switch_id
+          vsan_id   = value.vsan_id
+          wwpn      = value.wwpn
+        }
+      } : {}
+    }
+  }
+
+
+  #__________________________________________________________
+  #
   # Fibre Channel Adapter Policy Section - Locals
   #__________________________________________________________
 
