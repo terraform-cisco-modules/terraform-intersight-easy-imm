@@ -2006,6 +2006,7 @@ locals {
   vhbas_loop = flatten([
     for key, value in var.san_connectivity_policies : [
       for v in value.vhbas : {
+        fc_zone_policies             = v.fc_zone_policies != null ? v.fc_zone_policies : []
         fibre_channel_adapter_policy = v.fibre_channel_adapter_policy != null ? v.fibre_channel_adapter_policy : ""
         fibre_channel_network_policy = v.fibre_channel_network_policy != null ? v.fibre_channel_network_policy : ""
         fibre_channel_qos_policy     = v.fibre_channel_qos_policy != null ? v.fibre_channel_qos_policy : ""

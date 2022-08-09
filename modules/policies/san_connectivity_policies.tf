@@ -16,6 +16,7 @@ variable "san_connectivity_policies" {
       wwnn_static_address  = ""
       vhbas = {
         default = {
+          fc_zone_policies             = []
           fibre_channel_adapter_policy = "**REQUIRED**"
           fibre_channel_network_policy = "**REQUIRED**"
           fibre_channel_qos_policy     = "**REQUIRED**"
@@ -50,6 +51,7 @@ variable "san_connectivity_policies" {
   * wwnn_pool - WWNN Pool to Assign to the Policy.
   * wwnn_static_address - The WWNN address for the server node must be in hexadecimal format xx:xx:xx:xx:xx:xx:xx:xx.Allowed ranges are 20:00:00:00:00:00:00:00 to 20:FF:FF:FF:FF:FF:FF:FF or from 50:00:00:00:00:00:00:00 to 5F:FF:FF:FF:FF:FF:FF:FF.To ensure uniqueness of WWN's in the SAN fabric, you are strongly encouraged to use the WWN prefix - 20:00:00:25:B5:xx:xx:xx.
   * vhbas - List of vHBAs to add to the SAN Connectivity Policy.
+    - fc_zone_policies - List of FC Zone Policy Names to attach to the vHBA.
     - fibre_channel_adapter_policy - The Name of the Fibre Channel Adapter Policy to Assign to the vHBA.
     - fibre_channel_network_policy - The Name of the Fibre Channel Network Policy to Assign to the vHBA.
     - fibre_channel_qos_policy - The Name of the Fibre Channel QoS Policy to Assign to the vHBA.
@@ -84,6 +86,7 @@ variable "san_connectivity_policies" {
       wwnn_static_address  = optional(string)
       vhbas = optional(map(object(
         {
+          fc_zone_policies             = optional(list(string))
           fibre_channel_adapter_policy = string
           fibre_channel_network_policy = string
           fibre_channel_qos_policy     = string
@@ -151,6 +154,7 @@ resource "intersight_vnic_san_connectivity_policy" "san_connectivity_policies" {
 resource "intersight_vnic_fc_if" "vhbas" {
   depends_on = [
     local.org_moid,
+    intersight_fabric_fc_zone_policy.fc_zone_policies,
     intersight_vnic_fc_adapter_policy.fibre_channel_adapter_policies,
     intersight_vnic_fc_network_policy.fibre_channel_network_policies,
     intersight_vnic_fc_qos_policy.fibre_channel_qos_policies,
@@ -188,6 +192,12 @@ resource "intersight_vnic_fc_if" "vhbas" {
     pci_link  = each.value.placement_pci_link
     switch_id = each.value.placement_switch_id
     uplink    = each.value.placement_uplink_port
+  }
+  dynamic "fc_zone_policies" {
+    for_each = toset(each.value.fc_zone_policies)
+    content {
+      moid = intersight_fabric_fc_zone_policy.fc_zone_policies[fc_zone_policies.value].moid
+    }
   }
   dynamic "wwpn_pool" {
     for_each = each.value.wwpn_allocation_type == "POOL" ? [local.wwpn_pools[each.value.wwpn_pool]] : []
