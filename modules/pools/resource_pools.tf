@@ -50,6 +50,16 @@ variable "resource_pools" {
 
 #____________________________________________________________
 #
+# Server Moid Data Source
+# GUI Location:
+#   Operate > Servers > Copy the Serial from the Column.
+#____________________________________________________________
+
+data "intersight_compute_physical_summary" "servers" {
+}
+
+#____________________________________________________________
+#
 # Intersight Pools Module
 # GUI Location: Pools > Create Pool
 #____________________________________________________________
@@ -59,20 +69,47 @@ variable "resource_pools" {
 # Resource Pools
 #______________________________________________
 
-module "resource_pools" {
+resource "intersight_resourcepool_pool" "resource_pools" {
   depends_on = [
     local.org_moid
   ]
-  version            = ">=0.9.6"
-  source             = "terraform-cisco-modules/imm/intersight//modules/resource_pools"
-  for_each           = local.resource_pools
-  assignment_order   = each.value.assignment_order
-  description        = each.value.description != "" ? each.value.description : "${each.value.organization} ${each.key} Resource Pool."
-  name               = each.key
-  org_moid           = local.org_moid
-  pool_type          = each.value.pool_type
-  resource_type      = each.value.resource_type
-  serial_number_list = each.value.serial_number_list
-  server_type        = each.value.server_type
-  tags               = each.value.tags != [] ? each.value.tags : local.tags
+  for_each         = local.resource_pools
+  assignment_order = each.value.assignment_order
+  description      = each.value.description != "" ? each.value.description : "${each.key} Resource Pool."
+  name             = each.key
+  pool_type        = each.value.pool_type
+  resource_pool_parameters = [
+    {
+      additional_properties = jsonencode(
+        {
+          ManagementMode = "Intersight"
+        }
+      )
+      class_id    = "resourcepool.ServerPoolParameters"
+      object_type = "resourcepool.ServerPoolParameters"
+    }
+  ]
+  resource_type = each.value.resource_type
+  selectors = [
+    {
+      additional_properties = ""
+      class_id              = "resource.Selector"
+      object_type           = "resource.Selector"
+      selector = "/api/v1/compute/${each.value.server_type}?$filter=(Moid in (${join(
+        ", ", [for s in each.value.serial_number_list : data.intersight_compute_physical_summary.servers.results[
+          index(data.intersight_compute_physical_summary.servers.results.*.serial, "${s}")].moid
+      ])})) and (ManagementMode eq 'Intersight')"
+    }
+  ]
+  organization {
+    moid        = local.org_moid
+    object_type = "organization.Organization"
+  }
+  dynamic "tags" {
+    for_each = length(each.value.tags) > 0 ? each.value.tags : local.tags
+    content {
+      key   = tags.value.key
+      value = tags.value.value
+    }
+  }
 }

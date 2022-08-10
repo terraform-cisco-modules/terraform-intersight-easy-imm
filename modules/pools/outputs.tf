@@ -43,10 +43,10 @@ output "mac_pools" {
 #__________________________________________________________
 
 output "resource_pools" {
-  description = "moid of the UUID Pools."
+  description = "moid of the Resource Pools."
   value = var.resource_pools != {} ? { for v in sort(
-    keys(module.resource_pools)
-  ) : v => module.resource_pools[v].moid } : {}
+    keys(intersight_resourcepool_pool.resource_pools)
+  ) : v => intersight_resourcepool_pool.resource_pools[v].moid } : {}
 }
 
 

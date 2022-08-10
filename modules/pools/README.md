@@ -30,9 +30,7 @@ This module will create Pool resources in Intersight.  These pools can be assign
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_resource_pools"></a> [resource\_pools](#module\_resource\_pools) | terraform-cisco-modules/imm/intersight//modules/resource_pools | >=0.9.6 |
+No modules.
 
 ## Resources
 
@@ -43,7 +41,9 @@ This module will create Pool resources in Intersight.  These pools can be assign
 | [intersight_ippool_pool.ip_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/ippool_pool) | resource |
 | [intersight_iqnpool_pool.iqn_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/iqnpool_pool) | resource |
 | [intersight_macpool_pool.mac_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/macpool_pool) | resource |
+| [intersight_resourcepool_pool.resource_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/resourcepool_pool) | resource |
 | [intersight_uuidpool_pool.uuid_pools](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/resources/uuidpool_pool) | resource |
+| [intersight_compute_physical_summary.servers](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/compute_physical_summary) | data source |
 | [intersight_organization_organization.org_moid](https://registry.terraform.io/providers/CiscoDevNet/intersight/latest/docs/data-sources/organization_organization) | data source |
 
 ## Inputs
@@ -70,7 +70,7 @@ This module will create Pool resources in Intersight.  These pools can be assign
 | <a name="output_ip_pools"></a> [ip\_pools](#output\_ip\_pools) | moid of the IP Pools. |
 | <a name="output_iqn_pools"></a> [iqn\_pools](#output\_iqn\_pools) | moid of the IQN Pools. |
 | <a name="output_mac_pools"></a> [mac\_pools](#output\_mac\_pools) | moid of the MAC Pools. |
-| <a name="output_resource_pools"></a> [resource\_pools](#output\_resource\_pools) | moid of the UUID Pools. |
+| <a name="output_resource_pools"></a> [resource\_pools](#output\_resource\_pools) | moid of the Resource Pools. |
 | <a name="output_uuid_pools"></a> [uuid\_pools](#output\_uuid\_pools) | moid of the UUID Pools. |
 | <a name="output_wwnn_pools"></a> [wwnn\_pools](#output\_wwnn\_pools) | moid of the Fibre-Channel WWNN Pools. |
 | <a name="output_wwpn_pools"></a> [wwpn\_pools](#output\_wwpn\_pools) | moid of the Fibre-Channel WWPN Pools. |
