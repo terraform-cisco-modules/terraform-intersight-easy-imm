@@ -81,7 +81,7 @@ data "intersight_equipment_chassis" "chassis" {
 # data "intersight_network_element_summary" "fis" {
 #   for_each = {
 #     for k, v in local.merged_ucs_switches : k => v
-#     if v.assign_switches == true
+#     if v.serial_number != ""
 #   }
 #   serial = each.value.serial_number
 # }

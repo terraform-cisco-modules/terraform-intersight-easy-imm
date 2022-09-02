@@ -185,8 +185,7 @@ locals {
   /*
   ucs_domain_profiles = {
     for k, v in var.ucs_domain_profiles : k => {
-      action          = v.action != null ? v.action : "No-op"
-      assign_switches = v.assign_switches != null ? v.assign_switches : false
+      action = v.action != null ? v.action : "No-op"
       device_model = length(
         regexall("(UCS-FI-6454|UCS-FI-64108)", coalesce(v.device_model, "EMPTY"))
       ) > 0 ? v.device_model : "UCS-FI-6454"
@@ -212,7 +211,6 @@ locals {
   ucs_domain_switch_a_loop = {
     for k, v in local.ucs_domain_profiles : "${k}_A_SIDE" => {
       action                      = v.action
-      assign_switches             = v.assign_switches
       device_model                = v.device_model
       description                 = v.description
       domain_profile              = k
@@ -249,11 +247,11 @@ locals {
       } : null
       vlan_policy = v.vlan_policy_fabric_a != "" ? {
         moid        = local.vlan_policies[v.vlan_policy_fabric_a]
-        object_type = "fabric.Vlan"
+        object_type = "fabric.EthNetworkPolicy"
       } : null
       vsan_policy = v.vsan_policy_fabric_a != "" ? {
         moid        = local.vsan_policies[v.vsan_policy_fabric_a]
-        object_type = "fabric.Vsan"
+        object_type = "fabric.FcNetworkPolicy"
       } : null
     }
   }
@@ -287,7 +285,6 @@ locals {
   ucs_domain_switch_b_loop = {
     for k, v in local.ucs_domain_profiles : "${k}_B_SIDE" => {
       action                      = v.action
-      assign_switches             = v.assign_switches
       device_model                = v.device_model
       description                 = v.description
       domain_profile              = k
@@ -324,11 +321,11 @@ locals {
       } : null
       vlan_policy = v.vlan_policy_fabric_b != "" ? {
         moid        = local.vlan_policies[v.vlan_policy_fabric_b]
-        object_type = "fabric.Vlan"
+        object_type = "fabric.EthNetworkPolicy"
       } : null
       vsan_policy = v.vsan_policy_fabric_b != "" ? {
         moid        = local.vsan_policies[v.vsan_policy_fabric_b]
-        object_type = "fabric.Vsan"
+        object_type = "fabric.FcNetworkPolicy"
       } : null
     }
   }
@@ -336,7 +333,6 @@ locals {
   ucs_domain_switch_b = {
     for k, v in local.ucs_domain_switch_b_loop : k => {
       action                      = v.action
-      assign_switches             = v.assign_switches
       device_model                = v.device_model
       description                 = v.description
       domain_profile              = v.domain_profile
