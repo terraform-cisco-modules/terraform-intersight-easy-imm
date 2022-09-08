@@ -56,6 +56,8 @@ variable "resource_pools" {
 #____________________________________________________________
 
 data "intersight_compute_physical_summary" "servers" {
+  for_each = toset(local.resource_pool_list)
+  serial   = each.value
 }
 
 #____________________________________________________________
@@ -95,10 +97,11 @@ resource "intersight_resourcepool_pool" "resource_pools" {
       additional_properties = ""
       class_id              = "resource.Selector"
       object_type           = "resource.Selector"
-      selector = "/api/v1/compute/${each.value.server_type}?$filter=(Moid in (${join(
-        ", ", [for s in each.value.serial_number_list : data.intersight_compute_physical_summary.servers.results[
-          index(data.intersight_compute_physical_summary.servers.results.*.serial, "${s}")].moid
-      ])})) and (ManagementMode eq 'Intersight')"
+      selector = "/api/v1/compute/${each.value.server_type}?$filter=(Moid in (${format(
+        "'%s'", join("', '", [
+          for s in each.value.serial_number_list : data.intersight_compute_physical_summary.servers[
+          "${s}"].results[0].moid
+      ]))})) and (ManagementMode eq 'Intersight')"
     }
   ]
   organization {

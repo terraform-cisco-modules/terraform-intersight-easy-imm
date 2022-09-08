@@ -1403,7 +1403,7 @@ locals {
       for k, v in value.port_modes : {
         custom_mode = v.custom_mode != null ? v.custom_mode : "FibreChannel"
         port_list   = v.port_list != null ? v.port_list : [1, 4]
-        xport = v.port_list != null ? v.port_list[0] : 1
+        xport       = v.port_list != null ? v.port_list[0] : 1
         port_policy = key
         slot_id     = v.slot_id != null ? v.slot_id : null
         tags        = value.tags != null ? value.tags : []

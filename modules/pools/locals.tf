@@ -76,6 +76,14 @@ locals {
     }
   }
 
+  resource_pool_list = flatten([
+    for k, v in local.resource_pools : [
+      for s in v.serial_number_list : [
+        s
+      ]
+    ]
+  ])
+
   #______________________________________________
   #
   # UUID Pools
