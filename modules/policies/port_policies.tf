@@ -41,10 +41,10 @@ variable "port_policies" {
       * 100Gbps - Admin configurable speed 100Gbps.
     - ethernet_network_control_policy - Name of the Ethernet Network Control policy.
     - ethernet_network_group_policy - Name of the Ethernet Network Group policy.
-    interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
-      - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
-      - port_id - Port ID to Assign to the LAN Port-Channel Policy.
-      - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
+    - interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
+      * breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+      * port_id - Port ID to Assign to the LAN Port-Channel Policy.
+      * slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
     - mode - Port mode to be set on the appliance Port-Channel.
       * access - Access Mode Switch Port Type.
       * trunk (default) - Trunk Mode Switch Port Type.
@@ -67,9 +67,9 @@ variable "port_policies" {
     - ethernet_network_group_policy - Name of the Ethernet Network Group policy.
     - flow_control_policy - Name of the Flow Control policy.
     - interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
-      - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
-      - port_id - Port ID to Assign to the LAN Port-Channel Policy.
-      - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
+      * breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+      * port_id - Port ID to Assign to the LAN Port-Channel Policy.
+      * slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
     - link_aggregation_policy - Name of the Link Aggregation policy.
     - link_control_policy - Name of the Link Control policy.
   * port_channel_fc_uplinks - Use this Map to Configure Ports for Fibre-Channel Port-Channels.
@@ -82,10 +82,11 @@ variable "port_policies" {
     - fill_pattern - Fill pattern to differentiate the configs in NPIV.
       * Arbff - Fc Fill Pattern type Arbff.
       * Idle - Fc Fill Pattern type Idle.
-    interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
-      - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
-      - port_id - Port ID to Assign to the LAN Port-Channel Policy.
-      - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
+    - interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
+      * breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+      * port_id - Port ID to Assign to the LAN Port-Channel Policy.
+      * slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
+    - vsan_id: (required) - VSAN to Assign to the Fibre-Channel Uplink.
   * port_channel_fcoe_uplinks - Use this Map to Configure Ports for Appliance Port-Channels.
     key - Port-Channel Identifier.
     - admin_speed - Admin configured speed for the port.
@@ -95,10 +96,10 @@ variable "port_policies" {
       * 25Gbps - Admin configurable speed 25Gbps.
       * 40Gbps - Admin configurable speed 40Gbps.
       * 100Gbps - Admin configurable speed 100Gbps.
-    interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
-      - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
-      - port_id - Port ID to Assign to the LAN Port-Channel Policy.
-      - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
+    - interfaces - list of interfaces {breakout_port_id/port_id/slot_id} to assign to the Port-Channel Policy.
+      * breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
+      * port_id - Port ID to Assign to the LAN Port-Channel Policy.
+      * slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
     - link_aggregation_policy - Name of the Link Aggregation policy.
     - link_control_policy - Name of the Link Control policy.
   * port_modes - List of Ports to change the default Mode (Breakout Mode|Unified Mode).
@@ -198,7 +199,7 @@ variable "port_policies" {
   * port_role_servers - Use this Map to Configure Ports for Servers.
     key - Unique Identifier.
     - breakout_port_id - Default is 0.  Breakout port Identifier of the Switch Interface.  When a port is not configured as a breakout port, the aggregatePortId is set to 0, and unused.  When a port is configured as a breakout port, the 'aggregatePortId' port number as labeled on the equipment, e.g. the id of the port on the switch.
-        - port_list - Ports to Assign to the Server Port Policy.
+    - port_list - Ports to Assign to the Server Port Policy.
     - slot_id - Default is 1.  Slot Identifier of the Switch/FEX/Chassis Interface.
   * tags - List of Key/Value Pairs to Assign as Attributes to the Policy.
   EOT
