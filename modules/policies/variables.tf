@@ -1,7 +1,3 @@
-terraform {
-  experiments = [module_variable_optional_attrs]
-}
-
 #__________________________________________________________
 #
 # Terraform Workspace Variables
