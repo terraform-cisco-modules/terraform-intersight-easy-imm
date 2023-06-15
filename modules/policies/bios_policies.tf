@@ -3261,7 +3261,9 @@ resource "intersight_bios_policy" "bios_policies" {
   enable_sgx                      = each.value.enable_sgx                      # Software Guard Extensions
   enable_tme                      = each.value.enable_tme                      # Total Memory Encryption
   epoch_update                    = each.value.epoch_update                    # Select Owner EPOCH Input Type
-  sha1pcr_bank                    = each.value.sha1pcr_bank                    # SHA-1 PCR Bank
+  sha1pcr_bank                    = length(                                    # SHA-1 PCR Bank
+    regexall("_tpm", each.value.bios_template)
+  ) > 0 ? "disabled" : each.value.sha1pcr_bank
   sha256pcr_bank                  = each.value.sha256pcr_bank                  # SHA256 PCR Bank
   sgx_auto_registration_agent     = each.value.sgx_auto_registration_agent     # SGX Auto MP Registration Agent
   sgx_epoch0                      = each.value.sgx_epoch0                      # SGX Epoch 0
