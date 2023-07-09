@@ -517,6 +517,11 @@ variable "bios_policies" {
     - M6_HPC_tpm - High-Performance Computing with TPM Enabled.
     - M6_relational_DB_tpm - M6 Relational Database Systems with TPM Enabled.
     - M6_Virtualization_tpm - Virtual Host with TPM Enabled.
+    - M7_analytical_DB_tpm - M6 Analytical Database Systems with TPM Enabled.
+    - M7_Data_tpm - M6 Data Analytics with TPM Enabled.
+    - M7_HPC_tpm - High-Performance Computing with TPM Enabled.
+    - M7_relational_DB_tpm - M6 Relational Database Systems with TPM Enabled.
+    - M7_Virtualization_tpm - Virtual Host with TPM Enabled.
     - OLTP - Online Transaction Processing.
     - OLTP_tpm - Online Transaction Processing with TPM Enabled.
     - Virtualization - Virtual Host.
