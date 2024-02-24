@@ -1,3 +1,9 @@
+# Archived
+
+This repository will be archived.  It is superseeded by a newer, more simplified Easy IMM, based on a YAML Schema Model.
+
+## [Easy IMM](https://github.com/terraform-cisco-modules/easy-imm)
+
 # Intersight Module - Easy Intersight Managed Mode
 
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/terraform-cisco-modules/terraform-intersight-easy-imm)
